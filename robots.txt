@@ -1,0 +1,3 @@
+Sitemap: https://saaennuste.fi/assets/sitemap.xml
+User-agent: *
+Allow: /

@@ -1,28 +1,337 @@
 <!doctype html>
-<html lang="en">
+<html lang="fi">
+  <head>
+    <meta charset="utf-8">
+    <base href="/">
+    <meta name="keywords" content="sää, sääennuste, sääsovellus, täsmäsää, paras, helsinki, espoo, tampere, vantaa, oulu, turku">
+    <meta name="author" content="Jani Säntti">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="Description" content="Put your description here.">
-  <base href="/">
+    <title>🌞Sääennuste - Paras sääsovellus - Ilmatieteen laitoksen sää</title>
+    <meta name="description" content="Paras, yksinkertaisin ja nopein sääennuste. Perustuu Ilmatieteen laitoksen avoimeen dataan.">
 
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background-color: #ededed;
-    }
-  </style>
-  <title>weather-forecast</title>
-</head>
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="assets/manifest.json">
+    <link rel="icon" type="image/png" href="assets/image/logo-32x32.png" sizes="32x32">  
+    
+    <!--script defer src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script-->
+    <script defer type="module" src="./src/weather-app.js"> </script>
+      
+    
+    <!-- Loading web fonts asynchronoysly, see-->
+    <script>
 
-<body>
-  <weather-forecast></weather-forecast>
+      WebFontConfig = {
+        google: {
+          families: ['Open Sans Condensed:300']
+        }
+      };
 
-  <script type="module" src="./src/weather-forecast.js"></script>
-</body>
+      (function(d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+
+    </script>
+
+    <!-- set mock backend -->
+    <!-- script src="node_modules/@polymer/sinonjs/sinon.js"></script>
+    <script type="module" src="src/mock/mockSetup.js"></script -->
+    
+    <meta name="theme-color" content="#84b9ff">
+
+    <!-- iOS -->
+
+    <!-- Allow full-screen mode. -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- Status bar style -->
+    <!-- meta name="apple-mobile-web-app-status-bar-style" content="black" -->
+
+    <!-- iPhone non-retina icon -->
+    <link rel="apple-touch-icon" href="image/weather-icon-57x57.png">
+
+    <!-- override title -->
+    <meta name="apple-mobile-web-app-title" content="Sää">
+
+    <!-- social media meta data-->
+    <meta property="og:title" content="Sääennuste" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://saaennuste.fi" />
+    <meta property="og:image" content="https://saaennuste.fi/image/weather-icon-192x192.png" />
+    <meta property="og:site_name" content="Sääennuste">
+    <meta property="og:description" content="Paras, yksinkertaisin ja nopein sääennuste. Perustuu Ilmatieteen laitoksen avoimeen dataan.">
+
+    <!-- iOS startup image -->
+    <!-- see media queries: https://gist.github.com/jabez128/28c19b386f610f8a0cf3#file-ios-8-web-app-html-L36-->
+
+    <!-- iPhone 6 startup image -->
+    <link href="image/ios-startup-750x1294.png"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+
+    <style>        
+        .loading-view {
+          background-color: white;
+          height: 100vh;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+
+        html.wf-loading weather-app {
+          visibility: hidden;
+        }
+
+        html {
+          background-color: rgb(232, 233, 236);
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+
+          /* COLORS */
+          --color-black: #111;
+          --color-white: #fff;
+
+          --color-gray-300: #f5f5f5;
+          --color-gray-400: #eee;
+          --color-gray-500: #ccc;
+          --color-gray-600: #999;
+          --color-gray-800: #545454;
+          --color-gray-900: #424242;
+
+          --color-red-500: #ed332b;
+          --color-red-800: #5f1411;
+
+          --color-blue-300: #219ebd;
+          --color-blue-500: #20639b;
+          --color-blue-700: #174972;
+          --color-blue-800: #173f5f;
+
+          --color-green-300: hsl(152, 41%, 80%);
+          --color-green-500: hsl(153, 41%, 72%);
+          --color-green-700: hsl(152, 41%, 42%);
+          --color-green-800: #1f5b55;
+
+          --color-yellow-300: #fbecb6;
+          --color-yellow-500: #f6d55c;
+          --color-orange-500: #ffa800;
+
+          /* main colors */
+          --color-primary: var(--color-blue-500);
+          --color-secondary: var(--color-blue-800);
+          --color-tertiary: var(--color-blue-800);
+      
+          /* 
+           * Modular scale base 1em, ratio 1.25 (modularscale.com)
+           * e.g. 1em, 1.25em, 1.563em, 1.953em, 2.441em, 3.052em, 3.814,
+           */
+          --font-size-xxs: 0.64rem;
+          --font-size-xs: 0.8rem; 
+          --font-size-s: 1rem;
+          --font-size-m: 1.25rem;
+          --font-size-l: 1.563rem;
+          --font-size-xl: 1.953rem;
+          --font-size-xxl: 2.441rem;
+          --font-size-xxxl: 3.052rem;
+          --font-size-xxxxl: 3.815rem;
+
+          --font-weight-normal: 300;
+          --font-weight-bold: 700;
+          --font-weight-boldest: 900;
+
+          /* Use 0.25rem grid everywhere */
+          --space-s: 0.25rem;
+          --space-m: 0.5rem;
+          --space-l: 1rem;
+          --space-xl: 2rem;
+          
+          --font-family: "Open Sans Condensed", sans-serif;
+          --font-family-secondary: sans-serif;
+
+          --line-height--tight: 1;
+          --padding-header-footer: 1rem;
+          --notification-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.05);
+          --box-shadow:  0px -1px 4px 0px rgba(0, 0, 0, 0.3);
+
+          --border-radius: 0.25rem;
+          --header-background-expand: 3rem;
+
+          --background-header: linear-gradient(
+            to right,
+            #20649bc5,
+              #20649bb4
+            );
+
+          --background-footer: linear-gradient(
+            to right,
+            #20649b18,
+            #20649b04
+          );
+
+          color: var(--color-white);
+          font-family: var(--font-family);
+
+          font-size: 16px;
+          
+          margin: 0 auto;
+          max-width: 52rem;
+          padding: 0;
+        }
+        weather-app {
+          background: var(--background-footer);
+        }
+        
+        .visually-hidden {
+          position: absolute !important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding:0 !important;
+          border:0 !important;
+          height: 1px !important; 
+          width: 1px !important; 
+          overflow: hidden;
+        }
+
+        .sun-icon {
+          display: block;
+          margin: auto;
+
+          width: 128px;
+          height: 128px;
+
+          animation: rotation 23s infinite linear;
+          -webkit-animation: rotation 23s infinite linear;
+        }
+
+        @keyframes rotation {
+          from {
+              transform: rotate(0deg);
+          }
+          to {
+              transform: rotate(359deg);
+          }
+        }
+        
+        @-webkit-keyframes rotation {
+          from {
+              -webkit-transform: rotate(0deg);
+          }
+          to {
+              -webkit-transform: rotate(359deg);
+          }
+        }
+    </style>
+     <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
+      <template>
+        <style>
+          [part="label"] {
+            /* hide visually */
+            position: absolute !important;
+            clip: rect(1px, 1px, 1px, 1px);
+            padding:0 !important;
+            border:0 !important;
+            height: 1px !important; 
+            width: 1px !important; 
+            overflow: hidden;
+          }
+
+          [part="value"] {
+            text-align: center;
+            padding: 0 !important;
+          }
+
+        </style>
+      </template>
+    </dom-module>
+    <dom-module id="vaadin-combo-box-styles" theme-for="vaadin-combo-box">
+      <template>
+        <style>
+
+        [part="clear-button"] {
+          display: none;
+        }
+
+        [part="text-field"] {
+          margin-left: -1rem;
+          color: var(--color-white);
+        }
+
+        [part="toggle-button"] {
+          color: var(--color-black) !important;
+          font-size: 32px !important; 
+        }
+        </style>
+      </template>
+    </dom-module>
+
+  </head>
+  <body>
+    <h1 class="visually-hidden">Sääennuste - paras sääsovellus Ilmatieteen laitoksen datalla</h1>
+    <!-- show sun icon even before polymer is loaded -->
+    
+    <weather-app>
+      <h2 slot="place" class="visually-hidden">Sää <span id="place">Espoo</span> nyt</h2>
+      <div slot="header">
+        <h2 class="visually-hidden">Sääennuste</h2>
+        <h3 class="visually-hidden">Sää tänään, huomenna ja ylihuomenna</h3>
+      </div
+    </weather-app>
+
+    <div id="loading-view" class="loading-view" aria-label="ladataan...">
+        <svg 
+          class="sun-icon" 
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 37 37">
+          <g>
+            <polygon fill="#ffa800" points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
+              30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
+              11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237">
+            </polygon>
+            <circle fill="#ffa800" stroke="#FFFFFF" stroke-width="1.3028" cx="18.499" cy="18.363" r="6.362"></circle>
+          </g>
+        </svg>
+      </div>  
+
+    <script>
+      document.addEventListener('location-selector.location-changed', (event) => {
+        document.querySelector("#place").innerHTML = event.detail.city;
+      });
+      document.addEventListener('forecast-data.fetch-done', function (event)
+      {
+        let loadingView = document.getElementById('loading-view');
+        if(loadingView) {
+          loadingView.parentNode.removeChild(loadingView);
+        }
+      });
+    </script>
+    <noscript>
+      Please enable JavaScript to view this website!
+    </noscript>
+  </body>
+
+  <!-- script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+  const config = {
+    apiKey: "AIzaSyB0X1pp_9a5h21K27BlTFyOs7LTdI0V0DU",
+    authDomain: "saa-appi.firebaseapp.com",
+    databaseURL: "https://saa-appi.firebaseio.com",
+    projectId: "saa-appi",
+    storageBucket: "saa-appi.appspot.com",
+  };
+  firebase.initializeApp(config);
+  </script -->
 
 </html>
