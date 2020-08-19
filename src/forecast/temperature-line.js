@@ -36,12 +36,14 @@ class TemperatureLine extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       <!-- placeholder for chart -->
       <div class="chart"></div>
     `;
   }
+
   constructor() {
     super();
 
@@ -88,23 +90,23 @@ class TemperatureLine extends LitElement {
       return;
     }
 
-    let svg = this._svg();
+    const svg = this._svg();
 
     const coordinates = this._temperatureCoordinates(dayData);
     const firstX = this._xCoordinate(this._getFirstTemperatureIndex(dayData));
     const lastX = this._xCoordinate(this._getLastTemperatureIndex(dayData));
 
-    let line = this._temperatureLine(coordinates, firstX, lastX);
+    const line = this._temperatureLine(coordinates, firstX, lastX);
     svg.appendChild(line);
 
     this._$('.chart').appendChild(svg);
   }
 
   _svg() {
-    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
     // min-x, min-y, width and height
-    svg.setAttribute('viewBox', '0 0 240 ' + this._chartHeight);
+    svg.setAttribute('viewBox', `0 0 240 ${this._chartHeight}`);
     svg.setAttribute('id', 'chartsvg');
     svg.setAttribute('width', '100%');
     svg.setAttribute('height', this._chartHeight);
@@ -114,7 +116,7 @@ class TemperatureLine extends LitElement {
   }
 
   _temperatureLine(coordinates, firstX, lastX) {
-    let line = document.createElementNS(
+    const line = document.createElementNS(
       'http://www.w3.org/2000/svg',
       'polyline'
     );
@@ -164,9 +166,11 @@ class TemperatureLine extends LitElement {
 
     return points;
   }
+
   _xCoordinate(index) {
     return index * 10;
   }
+
   _yCoordinate(baseY, temperature, lineVariance) {
     return baseY + temperature * -lineVariance;
   }

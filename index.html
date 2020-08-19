@@ -28,7 +28,7 @@
       };
 
       (function(d) {
-            var wf = d.createElement('script'), s = d.scripts[0];
+            const wf = d.createElement('script'); const s = d.scripts[0];
             wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
             wf.async = true;
             s.parentNode.insertBefore(wf, s);
@@ -308,9 +308,9 @@
       document.addEventListener('location-selector.location-changed', (event) => {
         document.querySelector("#place").innerHTML = event.detail.city;
       });
-      document.addEventListener('forecast-data.fetch-done', function (event)
+      document.addEventListener('forecast-data.fetch-done', () =>
       {
-        let loadingView = document.getElementById('loading-view');
+        const loadingView = document.getElementById('loading-view');
         if(loadingView) {
           loadingView.parentNode.removeChild(loadingView);
         }

@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit-element';
 
 import './feels-like-icon.js';
 import './time-now.js';
-import '../common/weather-symbol.js';
 import './weather-symbol-name.js';
 import '../common/wind-icon.js';
+import '../common/svg-icon.js';
 
 class ForecastHeader extends LitElement {
   static get is() {
@@ -50,16 +50,15 @@ class ForecastHeader extends LitElement {
         padding-top: 1rem;
       }
 
-      weather-symbol {
+      svg-icon {
+        --width: 80px;
+        --height: 80px;
         grid-area: icon;
         margin: -1rem 0 -1.5rem 0;
       }
 
       .place {
         text-align: center;
-        display: flex;
-        justify-content: center;
-        margin-left: 1.8rem;
       }
 
       h2 {
@@ -118,6 +117,7 @@ class ForecastHeader extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       <header>
@@ -134,12 +134,14 @@ class ForecastHeader extends LitElement {
           </h2>
 
           <div class="temperature">
-            ${this._round(this.temperature)}
+            ${ForecastHeader._round(this.temperature)}
             <span class="degree">°C</span>
           </div>
 
-          <weather-symbol .symbolId="${this.symbol}" ?large="${true}">
-          </weather-symbol>
+          <svg-icon
+            path="assets/image/weather-symbols.svg#weatherSymbol${this.symbol}"
+          >
+          </svg-icon>
 
           <weather-symbol-name .symbolId="${this.symbol}">
           </weather-symbol-name>
@@ -192,25 +194,28 @@ class ForecastHeader extends LitElement {
   _toggleFeelsLike() {
     this.shadowRoot.querySelector('#feelsLike').classList.toggle('selected');
 
-    var toggleFeelsLike = new CustomEvent('forecast-header.toggle-feels-like', {
-      bubbles: true,
-      composed: true,
-    });
+    const toggleFeelsLike = new CustomEvent(
+      'forecast-header.toggle-feels-like',
+      {
+        bubbles: true,
+        composed: true,
+      }
+    );
     this.dispatchEvent(toggleFeelsLike);
 
-    //this._deselectWind();
+    // this._deselectWind();
   }
 
   _toggleWind() {
     this.shadowRoot.querySelector('#wind').classList.toggle('selected');
 
-    var toggleWind = new CustomEvent('forecast-header.toggle-wind', {
+    const toggleWind = new CustomEvent('forecast-header.toggle-wind', {
       bubbles: true,
       composed: true,
     });
     this.dispatchEvent(toggleWind);
 
-    //this._deselectFeelsLike();
+    // this._deselectFeelsLike();
   }
 
   _deselectWind() {
@@ -220,13 +225,14 @@ class ForecastHeader extends LitElement {
 
     if (windSelected) {
       this.shadowRoot.querySelector('#wind').classList.remove('selected');
-      var toggleWind = new CustomEvent('forecast-header.toggle-wind', {
+      const toggleWind = new CustomEvent('forecast-header.toggle-wind', {
         bubbles: true,
         composed: true,
       });
       this.dispatchEvent(toggleWind);
     }
   }
+
   _deselectFeelsLike() {
     const feelsSelected = this.shadowRoot
       .querySelector('#feelsLike')
@@ -234,7 +240,7 @@ class ForecastHeader extends LitElement {
 
     if (feelsSelected) {
       this.shadowRoot.querySelector('#feelsLike').classList.remove('selected');
-      var toggleFeelsLike = new CustomEvent(
+      const toggleFeelsLike = new CustomEvent(
         'forecast-header.toggle-feels-like',
         { bubbles: true, composed: true }
       );
@@ -242,7 +248,7 @@ class ForecastHeader extends LitElement {
     }
   }
 
-  _round(value) {
+  static _round(value) {
     if (Number.isNaN(value)) {
       return '';
     }

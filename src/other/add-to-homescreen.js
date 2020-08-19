@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '@polymer/iron-icon/iron-icon.js';
+import '../common/svg-icon.js';
 
 class AddToHomescreen extends LitElement {
   static get is() {
@@ -76,17 +76,18 @@ class AddToHomescreen extends LitElement {
         ? html`
             <section id="install-prompt">
               <button @click="${this._install}">
-                <iron-icon
+                <svg-icon
                   class="sun"
-                  icon="weather-symbol-icons:weatherSymbol1"
-                ></iron-icon>
+                  path="assets/image/weather-symbols.svg#weatherSymbol1"
+                ></svg-icon>
+
                 <div>
                   ASENNA SOVELLUS
                 </div>
-                <iron-icon
+                <svg-icon
                   class="sun sun--hidden"
-                  icon="weather-symbol-icons:weatherSymbol1"
-                ></iron-icon>
+                  path="assets/image/weather-symbols.svg#weatherSymbol1"
+                ></svg-icon>
               </button>
 
               ${this._iosInstructionsVisible === true
@@ -95,10 +96,10 @@ class AddToHomescreen extends LitElement {
 
               <ol class="text">
                 <li>Napauta sivun alalaidasta
-                  <iron-icon
-                    class="share"
-                    icon="weather-icons:iosShare"
-                  ></iron-icon>
+                  <svg-icon
+                  class="share"
+                  path="assets/image/icons.svg#iosShare"
+                ></svg-icon>
                 </li>
                 <li>vieritä alaspäin</li>
                 <li>valitse "lisää Koti-valikkoon"</li>
@@ -128,7 +129,7 @@ class AddToHomescreen extends LitElement {
     this._floating = true;
     this._installButtonVisible = this._showInstallButton();
 
-    window.addEventListener('beforeinstallprompt', (event) => {
+    window.addEventListener('beforeinstallprompt', event => {
       // prevent install prompt so it can be triggered later
       event.preventDefault();
       this._deferredPrompt = event;
@@ -176,7 +177,7 @@ class AddToHomescreen extends LitElement {
   }
 
   _isSafari() {
-    const userAgent = window.navigator.userAgent;
+    const { userAgent } = window.navigator;
     return (
       !/CriOS/.test(userAgent) &&
       !/FxiOS/.test(userAgent) &&

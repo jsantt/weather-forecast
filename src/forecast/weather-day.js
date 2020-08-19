@@ -12,7 +12,6 @@ import './wind-speed.js';
 import '../common/weather-symbol.js';
 import '../common/weather-symbol-small.js';
 
-import './wind-helper.js';
 import '../common/wind-icon.js';
 
 class WeatherDay extends LitElement {
@@ -260,6 +259,7 @@ class WeatherDay extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
      <wind-helper></wind-helper>
@@ -452,7 +452,7 @@ class WeatherDay extends LitElement {
   }
 
   _weekday(number) {
-    let day = new Date();
+    const day = new Date();
     day.setDate(day.getDate() + (number - 1));
     return day.toLocaleString('fi-FI', { weekday: 'short' });
   }

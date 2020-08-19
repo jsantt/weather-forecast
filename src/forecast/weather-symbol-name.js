@@ -18,6 +18,7 @@ class WeatherSymbolName extends LitElement {
       }
     `;
   }
+
   render() {
     return html`<h2>${this._symbolName(this.symbolId)}</h2> `;
   }

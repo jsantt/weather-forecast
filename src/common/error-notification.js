@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '@polymer/iron-icon/iron-icon.js';
+import './svg-icon.js';
 
 class ErrorNotification extends LitElement {
   static get is() {
@@ -30,10 +30,14 @@ class ErrorNotification extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       <section>
-        <iron-icon icon="weather-symbol-icons:weatherSymbol64"></iron-icon>
+        <svg-icon
+          path="assets/image/weather-symbols.svg#weatherSymbol64"
+        ></svg-icon>
+
         <div>
           ${this.errorText}${navigator.onLine === false
             ? html`, verkkoyhteydessäsi näyttää olevan ongelmia`

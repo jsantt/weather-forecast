@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../common/all-icons.js';
+import '../common/svg-icon.js';
 import './footer-section.js';
 import 'suncalc';
 
@@ -33,7 +33,9 @@ class SunriseSunset extends LitElement {
         color: var(--color-blue-700);
       }
 
-      svg {
+      svg-icon {
+        --height: 24px;
+        --width: 24px;
         fill: var(--color-blue-700);
       }
     `;
@@ -147,7 +149,7 @@ class SunriseSunset extends LitElement {
 
         <div slot="footer-left"></div>
         <div slot="footer-right">
-          <iron-icon icon="all-icons:uvIndex"></iron-icon>
+          <svg-icon path="assets/image/icons.svg#uvIndex"></svg-icon>
           <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
             UV-indeksi
           </a>
@@ -196,9 +198,9 @@ class SunriseSunset extends LitElement {
 
   _formatTime(time) {
     const minutes = time.getMinutes();
-    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-    return time.getHours() + '.' + fullMinutes;
+    return `${time.getHours()}.${fullMinutes}`;
   }
 }
 window.customElements.define(SunriseSunset.is, SunriseSunset);

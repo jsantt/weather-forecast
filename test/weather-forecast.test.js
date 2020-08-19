@@ -1,13 +1,11 @@
 import { html, fixture, expect } from '@open-wc/testing';
 
-import '../src/weather-forecast.js';
+import '../src/weather-app.js';
 
 describe('WeatherForecast', () => {
   let element;
   beforeEach(async () => {
-    element = await fixture(html`
-      <weather-forecast></weather-forecast>
-    `);
+    element = await fixture(html` <weather-app></weather-app> `);
   });
 
   it('renders a h1', () => {

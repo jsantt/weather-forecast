@@ -1,14 +1,12 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './common/all-icons.js';
-
 // no lazy loading at the moment, consider taking into use
 import './common/lazy-resources.js';
 
 import './forecast/location-selector.js';
 
 import './common/error-notification.js';
-import './forecast/forecast-header';
+import './forecast/forecast-header.js';
 import './forecast/weather-days.js';
 import './forecast-data.js';
 
@@ -180,8 +178,15 @@ class WeatherApp extends LitElement {
         display: flex;
         justify-content: center;
       }
+
+      svg-icon {
+        --height: 24px;
+        --width: 24px;
+        fill: var(--color-blue-700);
+      }
     `;
   }
+
   render() {
     return html` <weather-analytics key="UA-114081578-1"></weather-analytics>
 
@@ -190,8 +195,6 @@ class WeatherApp extends LitElement {
 
       <forecast-data .weatherLocation="${this._weatherLocation}">
       </forecast-data>
-
-      <paper-toast id="locateError" duration="5000"> </paper-toast>
 
       ${this._forecastError === true
         ? html`
@@ -242,7 +245,9 @@ class WeatherApp extends LitElement {
                   </div>
                   <div slot="footer-left"></div>
                   <div slot="footer-right">
-                    <iron-icon icon="all-icons:longTimeWeather"></iron-icon>
+                    <svg-icon
+                      path="assets/image/icons.svg#longTimeWeather"
+                    ></svg-icon>
 
                     <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
                       >10&nbsp;vrk&nbsp;sää</a
@@ -273,7 +278,10 @@ class WeatherApp extends LitElement {
                 class="section section--informationOnService"
                 header="Tietoja palvelusta"
               >
-                <iron-icon class="info-icon" icon="all-icons:info"></iron-icon>
+                <svg-icon
+                  class="info-icon"
+                  path="assets/image/icons.svg#info"
+                ></svg-icon>
 
                 Saaennuste.fi on nopein ja paras sääsovellus. Löydät Helsingin,
                 Espoon ja muiden kaupunkien lisäksi myös tarkan täsmäsään 2.5km
@@ -295,7 +303,7 @@ class WeatherApp extends LitElement {
 
                 <div slot="footer-left"></div>
                 <div slot="footer-right">
-                  <iron-icon icon="all-icons:email"></iron-icon>
+                  <svg-icon path="assets/image/icons.svg#email"></svg-icon>
                   palaute@saaennuste.fi
                 </div>
               </footer-section>
@@ -314,12 +322,12 @@ class WeatherApp extends LitElement {
                 seuraamiseen
                 <div slot="footer-left"></div>
                 <div slot="footer-right">
-                  <iron-icon icon="all-icons:cookie"></iron-icon>
+                  <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
                 </div>
               </footer-section>
 
               <footer-section class="section section--copyright">
-                <iron-icon icon="all-icons:copyright"></iron-icon>
+                <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
                 <div>Design / toteutus Jani Säntti</div>
                 <div>Säädata ja symbolit Ilmatieteen laitos</div>
 
@@ -456,15 +464,15 @@ class WeatherApp extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    /*if ('serviceWorker' in navigator) {
+    /* if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js', { scope: '/' });
-    }*/
+    } */
   }
 
   _fetchDone() {
     this._firstLoading = false;
 
-    const weatherNowData = this._getWeatherNow(this._forecastData);
+    const weatherNowData = WeatherApp._getWeatherNow(this._forecastData);
 
     this._currentFeelsLike = weatherNowData.feelsLike;
     this._currentSymbol = weatherNowData.symbol;
@@ -475,37 +483,31 @@ class WeatherApp extends LitElement {
     this._currentWindGust = weatherNowData.windGust;
   }
 
-  _getWeatherNow(data) {
+  static _getWeatherNow(data) {
     if (data === undefined) {
       return {};
     }
 
-    const time = this._nextIsoHour();
+    const time = WeatherApp._nextIsoHour();
 
     if (data === undefined) {
       return {};
     }
 
-    const hourForecast = data.filter(function (item) {
+    const hourForecast = data.filter(item => {
       return item.time === time;
     })[0];
 
     return hourForecast;
   }
 
-  _nextIsoHour() {
-    let timeNow = new Date();
+  static _nextIsoHour() {
+    const timeNow = new Date();
 
     timeNow.setHours(timeNow.getHours() + 1);
     timeNow.setMinutes(0, 0, 0);
 
-    return timeNow.toISOString().split('.')[0] + 'Z';
-  }
-
-  _showError(event) {
-    this.shadowRoot
-      .querySelector('#locateError')
-      .show({ text: event.detail.text });
+    return `${timeNow.toISOString().split('.')[0]}Z`;
   }
 }
 

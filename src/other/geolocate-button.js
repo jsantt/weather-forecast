@@ -50,6 +50,7 @@ class GeolocateButton extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       ${this.loading === true
@@ -99,18 +100,16 @@ class GeolocateButton extends LitElement {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const coordinates =
-            position.coords.latitude + ',' + position.coords.longitude;
-          const url =
-            position.coords.latitude + '-' + position.coords.longitude;
+        position => {
+          const coordinates = `${position.coords.latitude},${position.coords.longitude}`;
+          const url = `${position.coords.latitude}-${position.coords.longitude}`;
 
           this._dispatchEvent(
             'location-selector.location-changed',
             this._formPlaceObject(coordinates)
           );
         },
-        (error) => {
+        error => {
           this._dispatchEvent('location-selector.locate-error', {
             text: 'salli paikannus nähdäksesi paikkakuntasi sää',
           });
@@ -133,7 +132,7 @@ class GeolocateButton extends LitElement {
   }
 
   _formPlaceObject(coordinates) {
-    return { city: undefined, coordinates: coordinates };
+    return { city: undefined, coordinates };
   }
 }
 

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../common/all-icons.js';
+import '../common/svg-icon.js';
 import './footer-section.js';
 
 class PublicHolidays extends LitElement {
@@ -32,7 +32,10 @@ class PublicHolidays extends LitElement {
         text-align: right;
         padding-right: 0.5rem;
       }
-      .calendar-logo {
+
+      svg-icon {
+        --height: 24px;
+        --width: 24px;
         fill: var(--color-blue-700);
       }
     `;
@@ -42,7 +45,7 @@ class PublicHolidays extends LitElement {
     return html`
       <footer-section header="Juhlapäivät 2020">
         ${this._holidays.map(
-          (item) =>
+          item =>
             html`
               <section class="${item.today === true ? 'today' : ''}">
                 <div class="date">
@@ -81,7 +84,7 @@ class PublicHolidays extends LitElement {
         )}
         <div slot="footer-left"></div>
         <div slot="footer-right">
-          <iron-icon icon="all-icons:calendar"></iron-icon>
+          <svg-icon path="assets/image/icons.svg#calendar"></svg-icon>
           <a href="https://www.paivyri.fi/">kalenteri</a>
         </div>
       </footer-section>
@@ -91,9 +94,9 @@ class PublicHolidays extends LitElement {
   constructor() {
     super();
 
-    let holidays = this._publicHolidays();
+    const holidays = this._publicHolidays();
 
-    let today = holidays.find((day) => this._isToday(new Date(day.d)));
+    const today = holidays.find(day => this._isToday(new Date(day.d)));
     if (today === undefined) {
       const today = { d: new Date(), n: 'Tänään', today: true };
       holidays.push(today);

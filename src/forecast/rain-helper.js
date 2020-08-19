@@ -43,7 +43,7 @@ function totalSnow(weatherDay) {
 
 function _round(total) {
   let roundedTotal;
-  if (0 < total && total < 0.5) {
+  if (total > 0 && total < 0.5) {
     roundedTotal = '<1';
   } else {
     roundedTotal = total === 0 ? '' : Math.round(total);

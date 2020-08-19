@@ -29,7 +29,7 @@ function _windClassification(windSpeed) {
   }
 
   const rows = _WIND_TABLE.filter(
-    (item) => item.min <= windSpeed && windSpeed < item.max
+    item => item.min <= windSpeed && windSpeed < item.max
   );
 
   return rows[0].rate;
@@ -42,9 +42,9 @@ function _max(forecastData, property) {
 
   let maxWind = 0;
 
-  const upcomingHours = forecastData.filter((item) => !item.past);
+  const upcomingHours = forecastData.filter(item => !item.past);
 
-  upcomingHours.map((item) => {
+  upcomingHours.map(item => {
     maxWind = item[property] > maxWind ? item[property] : maxWind;
   });
 
@@ -54,7 +54,7 @@ function _max(forecastData, property) {
 function _windDescription(maxWind) {
   let windDescription;
 
-  _WIND_TABLE.map((item) => {
+  _WIND_TABLE.map(item => {
     if (item.min <= maxWind && maxWind < item.max) {
       windDescription = item.description;
     }

@@ -1,13 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
-
-import { CITIES, TOP_10_CITIES } from './city-list';
+import './combo-box.js';
+import { CITIES, TOP_10_CITIES } from './city-list.js';
 
 /**
  * @customElement
- * @polymer
  */
 class LocationSelector extends LitElement {
   static get is() {
@@ -17,8 +14,6 @@ class LocationSelector extends LitElement {
   static get styles() {
     return css`
       :host {
-        --paper-spinner-color: var(--color-white);
-
         display: inline-block;
 
         margin: 0 0 0.2rem 0;
@@ -35,29 +30,64 @@ class LocationSelector extends LitElement {
         --vaadin-text-field-default-width: 13.5rem;
       }
 
-      .locate_loadIcon {
-        padding: 0 0.6rem;
+      .lds-ripple {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+      }
+      .lds-ripple div {
+        position: absolute;
+        border: 4px solid #fff;
+        opacity: 1;
+        border-radius: 50%;
+        animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      }
+      .lds-ripple div:nth-child(2) {
+        animation-delay: -0.5s;
+      }
+      @keyframes lds-ripple {
+        0% {
+          top: 36px;
+          left: 36px;
+          width: 0;
+          height: 0;
+          opacity: 1;
+        }
+        100% {
+          top: 0px;
+          left: 0px;
+          width: 52px;
+          height: 52px;
+          opacity: 0;
+        }
       }
     `;
   }
+
   render() {
-    return html` ${this.loading
-      ? html` <paper-spinner-lite
-          class="locate_loadIcon"
-          active=""
-        ></paper-spinner-lite>`
+    return html` ${this.loading === true
+      ? html` <div class="locate_loadIcon lds-ripple" active="">
+          <div></div>
+        </div>`
       : html`
-          <vaadin-combo-box
+          <!--vaadin-combo-box
             id="placeSelection"
             item-label-path="city"
             item-value-path="coordinates"
-            @opened-changed="${(event) => this._openedChanged(event)}"
+            @opened-changed="${event => this._openedChanged(event)}"
             label="Sää paikassa"
           >
             <template>
               <div>[[item.city]]</div>
             </template>
-          </vaadin-combo-box>
+          </vaadin-combo-box-->
+          <!-- todo: listen and set new value  -->
+          <combo-box
+            value="${this.place === undefined ? '' : this.place.name}"
+            .items="${CITIES}"
+            key="city"
+          ></combo-box>
         `}`;
   }
 
@@ -68,16 +98,19 @@ class LocationSelector extends LitElement {
     return {
       _defaultPlace: {
         type: Object,
+        reflect: true,
       },
       _previousPlace: {
         type: Object,
+        reflect: true,
       },
       loading: {
         type: Boolean,
+        reflect: true,
       },
       place: {
         type: Object,
-        observer: '_newPlace',
+        reflect: true,
       },
     };
   }
@@ -94,6 +127,10 @@ class LocationSelector extends LitElement {
       if (document.hidden === false) {
         this._notifyPreviousPlace();
       }
+    });
+
+    this.addEventListener('combo-box.new-value', event => {
+      this.place = event.detail;
     });
   }
 
@@ -113,23 +150,14 @@ class LocationSelector extends LitElement {
    * When customer chooses geolocate, we need to wait response containing place name
    */
   _newPlace() {
-    setTimeout(() => {
-      let combobox = this.shadowRoot.querySelector('#placeSelection');
+    // combobox.selectedItem = this.place.name;
 
-      if (combobox) {
-        combobox.selectedItem = this.place.name;
+    const url = this.place.name;
 
-        const url = this.place.name;
+    this._changeUrl('place', url);
+    this._store('place', this.place.name, this.place.coordinates);
 
-        this._changeUrl('place', url);
-        this._store('place', this.place.name, this.place.coordinates);
-
-        combobox.items = this._placeList();
-      } else {
-        // TODO: not sure if this is needed
-        this._newPlace();
-      }
-    }, 0);
+    // combobox.items = this._placeList();
   }
 
   _notifyPreviousPlace() {
@@ -149,11 +177,11 @@ class LocationSelector extends LitElement {
   }
 
   _openedChanged(customEvent) {
-    let combobox = this.shadowRoot.querySelector('#placeSelection');
+    const combobox = this.shadowRoot.querySelector('#placeSelection');
 
     if (this._isComboboxOpen(customEvent)) {
       combobox.focus();
-      this._previousPlace = combobox.selectedItem; //this._formPlaceObject(this.placeName);
+      this._previousPlace = combobox.selectedItem; // this._formPlaceObject(this.placeName);
       combobox.selectedItem = null;
     } else if (this._isComboboxPlaceSelected(combobox)) {
       this._dispatchEvent(
@@ -205,7 +233,7 @@ class LocationSelector extends LitElement {
       } else {
         navigator.permissions
           .query({ name: 'geolocation' })
-          .then((permission) =>
+          .then(permission =>
             permission.state === 'granted' ? resolve : reject
           );
       }
@@ -215,8 +243,8 @@ class LocationSelector extends LitElement {
   _getUrlParams(name, url) {
     name = name.replace(/[\[\]]/g, '\\$&');
 
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
+    const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
+    const results = regex.exec(url);
     if (!results) {
       return null;
     }
@@ -228,7 +256,7 @@ class LocationSelector extends LitElement {
   }
 
   _changeUrl(paramName, paramValue) {
-    history.replaceState(null, null, '?' + paramName + '=' + paramValue);
+    history.replaceState(null, null, `?${paramName}=${paramValue}`);
   }
 
   _dispatchEvent(name, payload) {
@@ -241,7 +269,7 @@ class LocationSelector extends LitElement {
   }
 
   _formPlaceObject(city, coordinates) {
-    return { city: city, coordinates: coordinates };
+    return { city, coordinates };
   }
 
   _store(key, city, coordinates) {
@@ -249,7 +277,7 @@ class LocationSelector extends LitElement {
     const previousPlaces = this._getFromLocalStorage('place');
 
     const filtered10 = newPlace.concat(
-      previousPlaces.filter((item) => item.city !== city).slice(0, 9)
+      previousPlaces.filter(item => item.city !== city).slice(0, 9)
     );
     this._storeIntoLocalStorage(key, filtered10);
   }
@@ -257,6 +285,7 @@ class LocationSelector extends LitElement {
   _storeIntoLocalStorage(key, valueObject) {
     localStorage.setItem(key, JSON.stringify(valueObject));
   }
+
   _getFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
   }

@@ -2,7 +2,21 @@ import merge from 'deepmerge';
 // use createSpaConfig for bundling a Single Page App
 import { createSpaConfig } from '@open-wc/building-rollup';
 
+import analyze from 'rollup-plugin-analyzer';
 import copy from 'rollup-plugin-copy';
+
+const limitBytes = 1140000;
+
+const onAnalysis = ({ bundleSize }) => {
+  // eslint-disable-next-line no-console
+  console.log(`Bundle size is ${bundleSize} bytes`);
+
+  if (bundleSize > limitBytes) {
+    // eslint-disable-next-line no-console
+    console.log(`Bundle size exceeds ${limitBytes} bytes: ${bundleSize} bytes`);
+    return process.exit(1);
+  }
+};
 
 // use createBasicConfig to do regular JS to JS bundling
 // import { createBasicConfig } from '@open-wc/building-rollup';
@@ -35,6 +49,7 @@ export default merge(baseConfig, {
     copy({
       targets: [{ src: './robots.txt', dest: './dist/' }],
     }),
+    analyze({ onAnalysis, summaryOnly: false }),
   ],
 
   // alternatively, you can use your JS as entrypoint for rollup and

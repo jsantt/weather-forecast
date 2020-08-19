@@ -44,6 +44,7 @@ class WindIcon extends LitElement {
       }
     `;
   }
+
   render() {
     return html`<svg
       id="windIcon"
@@ -51,7 +52,7 @@ class WindIcon extends LitElement {
       viewBox="0 0 115 110"
       preserveAspectRatio="xMidYMid meet"
     >
-      <g transform="${this._rotate(this.degrees)}">
+      <g transform="${WindIcon._rotate(this.degrees)}">
         <polyline
           class="windIcon_arrow"
           stroke-width="4"
@@ -66,7 +67,7 @@ class WindIcon extends LitElement {
         ></circle>
       </g>
       <text text-anchor="middle" x="49" y="79" class="windSpeed">
-        ${this._round(this.windSpeed)}
+        ${WindIcon._round(this.windSpeed)}
       </text>
       <text
         text-anchor="middle"
@@ -78,7 +79,7 @@ class WindIcon extends LitElement {
           ? 'windGustSpeed--white'
           : ''}"
       >
-        ${this._round(this.windGustSpeed)}
+        ${WindIcon._round(this.windGustSpeed)}
       </text>
     </svg>`;
   }
@@ -112,7 +113,7 @@ class WindIcon extends LitElement {
     };
   }
 
-  _rotate(degrees) {
+  static _rotate(degrees) {
     let transform = 0;
 
     if (Number.isFinite(degrees)) {
@@ -122,7 +123,7 @@ class WindIcon extends LitElement {
     return `rotate(${transform}, 50, 60)`;
   }
 
-  _round(value) {
+  static _round(value) {
     if (Number.isNaN(value)) {
       return '';
     }

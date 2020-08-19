@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
-import '@polymer/iron-icon/iron-icon.js';
+import './svg-icon.js';
 
 /**
  * Snow: 41, 42, 43, 51, 52, 53 / [40-60]
@@ -17,9 +17,9 @@ class WeatherSymbolSmall extends LitElement {
         display: inline-block;
       }
 
-      iron-icon {
-        --iron-icon-width: 16px;
-        --iron-icon-height: 16px;
+      svg-icon {
+        --width: 16px;
+        --height: 16px;
         z-index: 20;
       }
     `;
@@ -30,9 +30,11 @@ class WeatherSymbolSmall extends LitElement {
       return html``;
     }
 
-    return html` <iron-icon
-      .icon="weather-symbol-small-icons:${this._getRightIcon(this.symbolId)}"
-    ></iron-icon>`;
+    return html` <svg-icon
+      path="assets/image/weather-symbols.svg#${this._getRightIcon(
+        this.symbolId
+      )}"
+    ></svg-icon>`;
   }
 
   static get properties() {

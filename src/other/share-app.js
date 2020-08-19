@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '@polymer/iron-icon/iron-icon.js';
+import '../common/svg-icon.js';
 
 class ShareApp extends LitElement {
   static get is() {
@@ -38,7 +38,7 @@ class ShareApp extends LitElement {
     return html` ${this._show === true
       ? html` <a @click="${this._share}">
           Jaa sovellus
-          <iron-icon class="share" icon="weather-icons:iosShare"></iron-icon>
+          <svg-icon path="assets/image/icons.svg#iosShare"></svg-icon>
         </a>`
       : ''}`;
   }

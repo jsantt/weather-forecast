@@ -58,15 +58,15 @@ class ForecastData extends LitElement {
     const params = this._getHarmonieParams(this.weatherLocation);
 
     const queryParams = Object.keys(params)
-      .map((key) => key + '=' + params[key])
+      .map(key => `${key}=${params[key]}`)
       .join('&');
 
     const query = `https://opendata.fmi.fi/wfs?${queryParams}`;
 
     fetch(query)
-      .then((response) => response.text())
-      .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
-      .then((data) => {
+      .then(response => response.text())
+      .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
+      .then(data => {
         this._sendNotification(
           this._parseLocationGeoid(data),
           parseLocationName(data),
@@ -75,7 +75,7 @@ class ForecastData extends LitElement {
         );
 
         const filteredResponse = this._filterResponse(data);
-        let json = this._toJson(filteredResponse);
+        const json = this._toJson(filteredResponse);
 
         // enrich data here to keep logic inside components simple
         const hourAdded = this._addFullHour(json);
@@ -84,11 +84,11 @@ class ForecastData extends LitElement {
 
         this._dispatch('forecast-data.new-data', forecastData);
       })
-      .catch((rejected) => {
+      .catch(rejected => {
         raiseEvent(this, 'forecast-data.fetch-error', {
           text: 'Virhe haettaessa ennustetietoja',
         });
-        console.log('error ' + rejected.stack);
+        console.log(`error ${rejected.stack}`);
       })
       .then(() => {
         raiseEvent(this, 'forecast-data.fetch-done', {
@@ -98,7 +98,7 @@ class ForecastData extends LitElement {
   }
 
   _getHarmonieParams(location) {
-    let params = this._commonParams(location);
+    const params = this._commonParams(location);
 
     params.storedquery_id =
       'fmi::forecast::harmonie::surface::point::timevaluepair';
@@ -109,7 +109,7 @@ class ForecastData extends LitElement {
   }
 
   _commonParams(location) {
-    let params = {
+    const params = {
       request: 'getFeature',
       starttime: this._todayFirstHour(),
       endtime: this._tomorrowLastHour(),
@@ -157,7 +157,7 @@ class ForecastData extends LitElement {
       'wml2:MeasurementTimeseries'
     );
 
-    let harmonieResponse = {};
+    const harmonieResponse = {};
 
     harmonieResponse.humidity = getTimeAndValuePairs(
       timeSeries,
@@ -199,7 +199,7 @@ class ForecastData extends LitElement {
   }
 
   _toJson(data) {
-    let weatherJson = [];
+    const weatherJson = [];
 
     for (let i = 0; i < data.temperature.length; i++) {
       const temperatureValue = getValue(data.temperature[i]);
@@ -224,7 +224,7 @@ class ForecastData extends LitElement {
   _enrichData(combinedData) {
     // enrich data here to simplify logic inside components
     const now = new Date();
-    combinedData.forEach((element) => {
+    combinedData.forEach(element => {
       element.hour = this._toHour(element.time);
       element.past = this._isPast(now, element.time);
     });
@@ -233,7 +233,7 @@ class ForecastData extends LitElement {
   }
 
   _addFullHour(combinedData) {
-    combinedData.forEach((element) => {
+    combinedData.forEach(element => {
       element.hour = this._toHour(element.time);
     });
 
@@ -242,7 +242,7 @@ class ForecastData extends LitElement {
 
   _markPastItems(combinedData) {
     const now = new Date();
-    combinedData.forEach((element) => {
+    combinedData.forEach(element => {
       element.past = this._isPast(now, element.time);
     });
 
@@ -253,7 +253,7 @@ class ForecastData extends LitElement {
     let previousItem;
     let currentItem;
 
-    forecastData.forEach((item) => {
+    forecastData.forEach(item => {
       previousItem = currentItem;
       currentItem = item;
 
@@ -297,7 +297,7 @@ class ForecastData extends LitElement {
   }
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 
-  <gml:identifier codeSpace="http://xml.fmi.fi/namespace/stationcode/geoid">7521689</gml:identifier>*/
+  <gml:identifier codeSpace="http://xml.fmi.fi/namespace/stationcode/geoid">7521689</gml:identifier> */
   _parseLocationGeoid(response) {
     const locations = response.getElementsByTagName('gml:identifier');
     const locationRow = getByAttributeValue(
@@ -314,10 +314,10 @@ class ForecastData extends LitElement {
   _sendNotification(geoid, name, coordinates, region) {
     const details = {
       location: {
-        geoid: geoid,
-        name: name,
-        coordinates: coordinates,
-        region: region,
+        geoid,
+        name,
+        coordinates,
+        region,
       },
     };
 
@@ -325,7 +325,7 @@ class ForecastData extends LitElement {
   }
 
   _todayFirstHour() {
-    let firstHour = new Date();
+    const firstHour = new Date();
     firstHour.setHours(1, 0, 0, 0);
 
     return firstHour.toISOString();
@@ -337,7 +337,7 @@ class ForecastData extends LitElement {
     }
 
     const dateObject = new Date(time);
-    let hour = dateObject.getHours();
+    const hour = dateObject.getHours();
 
     return hour === 0 ? 24 : dateObject.getHours();
   }
@@ -345,7 +345,7 @@ class ForecastData extends LitElement {
   _tomorrowLastHour() {
     const now = new Date();
 
-    let tomorrow = new Date();
+    const tomorrow = new Date();
     tomorrow.setDate(now.getDate() + 2);
     tomorrow.setHours(24, 0, 0, 0);
 

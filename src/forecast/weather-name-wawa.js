@@ -102,6 +102,7 @@ class WeatherNameWawa extends LitElement {
 
     return wawaNames[wawaId];
   }
+
   _cloudiness(cloudiness) {
     if (Number.isNaN(cloudiness) || cloudiness < 0 || cloudiness > 8) {
       return null;

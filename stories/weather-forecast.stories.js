@@ -1,11 +1,8 @@
-import { html } from 'lit-html';
-import '../src/weather-forecast.js';
+import { html } from 'lit-element';
+import '../src/weather-app.js';
 
 export default {
-  title: 'weather-forecast',
+  title: 'weather-app',
 };
 
-export const App = () =>
-  html`
-    <weather-forecast></weather-forecast>
-  `;
+export const App = () => html` <weather-app></weather-app> `;

@@ -27,33 +27,36 @@ class WeatherDays extends LitElement {
 
   render() {
     return html`
-      <h3 class="visually-hidden">sää tänään</h2>
-      <weather-day 
-        class="weatherGrid" 
+      <h3 class="visually-hidden">sää tänään</h3>
+      <weather-day
+        class="weatherGrid"
         .dayNumber="${1}"
         .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}" 
+        .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
-        .dayData="${this._todayData}"></weather-day>
-  
-      <h3 class="visually-hidden">sää huomenna</h2>
-      <weather-day 
-        class="weatherGrid" 
-        .dayNumber="${2}" 
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}" 
-        .showWind="${this.showWind}" 
-        .dayData="${this._day2Data}"></weather-day>
+        .dayData="${this._todayData}"
+      ></weather-day>
 
-      <h3 class="visually-hidden">sää ylihuomenna</h2>
-      <weather-day 
-        class="weatherGrid" 
-        .dayNumber="${3}" 
+      <h3 class="visually-hidden">sää huomenna</h3>
+      <weather-day
+        class="weatherGrid"
+        .dayNumber="${2}"
         .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}" 
+        .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
-        .dayData="${this._day3Data}"></weather-day>
-`;
+        .dayData="${this._day2Data}"
+      ></weather-day>
+
+      <h3 class="visually-hidden">sää ylihuomenna</h3>
+      <weather-day
+        class="weatherGrid"
+        .dayNumber="${3}"
+        .minTemperature="${this._minTemperature}"
+        .showFeelsLike="${this.showFeelsLike}"
+        .showWind="${this.showWind}"
+        .dayData="${this._day3Data}"
+      ></weather-day>
+    `;
   }
 
   static get properties() {

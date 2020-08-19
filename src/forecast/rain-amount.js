@@ -4,7 +4,7 @@ class RainAmount extends LitElement {
   static get is() {
     return 'rain-amount';
   }
-  
+
   static get styles() {
     return css`
       svg {
@@ -12,6 +12,7 @@ class RainAmount extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       ${this._hasRain(this.rainAmount) === true

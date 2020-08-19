@@ -21,6 +21,7 @@ class FeelsLikeIcon extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       <svg viewBox="-4 -4 40 40" width="36" height="36">

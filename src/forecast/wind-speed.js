@@ -15,6 +15,7 @@ class WindSpeed extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       ${this._arrayForRepeater(this.windRating).map(() => {

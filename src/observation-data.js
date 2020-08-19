@@ -42,31 +42,31 @@ class ObservationData extends LitElement {
 
     const params = this._getParams(this.place.geoid);
     const queryParams = Object.keys(params)
-      .map((key) => key + '=' + params[key])
+      .map(key => `${key}=${params[key]}`)
       .join('&');
 
     const query = `https://opendata.fmi.fi/wfs?${queryParams}`;
 
     fetch(query)
-      .then((response) => response.text())
-      .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
-      .then((req) => {
+      .then(response => response.text())
+      .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
+      .then(req => {
         const formattedObservations = this._formatObservations(req);
         this._dispatch('observation-data.new-data', formattedObservations);
       })
-      .catch((rejected) => {
+      .catch(rejected => {
         raiseEvent(this, 'observation-data.fetch-error', {
           text: 'Havaintoja ei saatavilla',
         });
-        console.log('error ' + rejected.stack);
+        console.log(`error ${rejected.stack}`);
       });
   }
 
   _getParams(geoid) {
-    let params = {
+    const params = {
       request: 'getFeature',
       storedquery_id: 'fmi::observations::weather::timevaluepair',
-      geoid: geoid,
+      geoid,
       maxlocations: 1,
       starttime: this._roundDownToFullMinutes(-12), // get the latest data only
       endtime: this._roundDownToFullMinutes(0), // get the latest data only
@@ -128,7 +128,7 @@ class ObservationData extends LitElement {
    *
    */
   _formatObservations(rawResponse) {
-    let observations = this._pickUpValues(rawResponse);
+    const observations = this._pickUpValues(rawResponse);
 
     return {
       weatherStation: parseLocationName(rawResponse),
@@ -155,9 +155,9 @@ class ObservationData extends LitElement {
       'wml2:MeasurementTimeseries'
     );
 
-    let observation = {};
+    const observation = {};
 
-    //measurementTVP
+    // measurementTVP
     observation.cloudiness = getTimeAndValuePairs(
       timeSeries,
       'obs-obs-1-1-n_man',
@@ -228,7 +228,7 @@ class ObservationData extends LitElement {
   }
 
   _roundDownToFullMinutes(minutes) {
-    let timeNow = new Date();
+    const timeNow = new Date();
 
     timeNow.setMinutes(timeNow.getMinutes() + minutes);
     timeNow.setSeconds(0, 0);

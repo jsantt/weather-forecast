@@ -38,6 +38,7 @@ class RainBars extends LitElement {
       }
     `;
   }
+
   render() {
     return html`
       <!-- placeholder for chart -->
@@ -76,7 +77,7 @@ class RainBars extends LitElement {
    * Chart containing rain bars
    */
   _createChart(dayData) {
-    let svg = this._svg();
+    const svg = this._svg();
 
     this._rainBars(svg, dayData);
 
@@ -91,10 +92,10 @@ class RainBars extends LitElement {
   }
 
   _svg() {
-    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
     // min-x, min-y, width and height
-    svg.setAttribute('viewBox', '0 0 240 ' + this._chartHeight);
+    svg.setAttribute('viewBox', `0 0 240 ${this._chartHeight}`);
     svg.setAttribute('id', 'chartsvg');
     svg.setAttribute('width', '100%');
     svg.setAttribute('height', this._chartHeight);
@@ -107,14 +108,14 @@ class RainBars extends LitElement {
   _rainBars(svg, data) {
     for (let i = 0; i < data.length; i++) {
       if (!Number.isNaN([i].rain)) {
-        let bar = document.createElementNS(
+        const bar = document.createElementNS(
           'http://www.w3.org/2000/svg',
           'rect'
         );
 
         bar.setAttribute('class', 'rainBar');
 
-        let opacity = data[i].past ? '0.3' : '1';
+        const opacity = data[i].past ? '0.3' : '1';
         bar.setAttribute('fill-opacity', opacity);
         bar.setAttribute('width', '9');
 

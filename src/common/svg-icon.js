@@ -1,18 +1,15 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './svg-icon.js';
+class SvgIcon extends LitElement {
+  static get is() {
+    return 'svg-icon';
+  }
 
-class WeatherSymbol extends LitElement {
   static get styles() {
     return css`
       :host {
         display: inline-block;
-        z-index: 20;
-      }
-
-      :host([large]) {
-        --height: 80px;
-        --width: 80px;
+        vertical-align: middle;
       }
 
       svg {
@@ -27,7 +24,6 @@ class WeatherSymbol extends LitElement {
   render() {
     return html`
       <svg
-        viewBox="0 0 37 37"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="xMidYMid meet"
         focusable="false"
@@ -37,18 +33,10 @@ class WeatherSymbol extends LitElement {
     `;
   }
 
-  static get is() {
-    return 'weather-symbol';
-  }
-
   static get properties() {
     return {
-      symbolId: {
-        type: Number,
-        reflect: true,
-      },
-      large: {
-        type: Boolean,
+      path: {
+        type: String,
         reflect: true,
       },
     };
@@ -57,12 +45,8 @@ class WeatherSymbol extends LitElement {
   updated() {
     this.shadowRoot
       .querySelector('use')
-      .setAttributeNS(
-        'http://www.w3.org/1999/xlink',
-        'xlink:href',
-        `assets/image/weather-symbols.svg#weatherSymbol${this.symbolId}`
-      );
+      .setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.path);
   }
 }
 
-window.customElements.define(WeatherSymbol.is, WeatherSymbol);
+window.customElements.define(SvgIcon.is, SvgIcon);

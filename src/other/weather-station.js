@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
-import '../common/error-notification';
+import '../common/error-notification.js';
 import '../forecast/weather-name-wawa.js';
 import './footer-section.js';
 
@@ -274,7 +274,7 @@ class WeatherStation extends LitElement {
                   : ``
               }
               ${
-                this._snow(this.observationData.snow)
+                WeatherStation._snow(this.observationData.snow)
                   ? html`
                       <div class="item">
                         Lumen syvyys: ${this.observationData.snow} cm
@@ -285,10 +285,14 @@ class WeatherStation extends LitElement {
             </div>
             
               <div slot="footer-left">
-                Kello ${this._formatTime(this.observationData.time)} havainnot
+                Kello ${WeatherStation._formatTime(
+                  this.observationData.time
+                )} havainnot
               </div>
               <div slot="footer-right">
-                <a href="${this._googleMapsURl(this.observationData.latLon)}"
+                <a href="${WeatherStation._googleMapsURl(
+                  this.observationData.latLon
+                )}"
                   >sijainti kartalla</a
                 >
               </div>
@@ -310,31 +314,31 @@ class WeatherStation extends LitElement {
     };
   }
 
-  _formatTime(time) {
+  static _formatTime(time) {
     const parsedTime = new Date(time);
 
     const minutes = parsedTime.getMinutes();
-    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-    return parsedTime.getHours() + '.' + fullMinutes;
+    return `${parsedTime.getHours()}.${fullMinutes}`;
   }
 
-  _googleMapsURl(latitudeLongitude) {
+  static _googleMapsURl(latitudeLongitude) {
     return `https://www.google.com/maps/search/?api=1&query=${latitudeLongitude}&zoom=12`;
   }
 
-  _snow(centimeters) {
+  static _snow(centimeters) {
     return centimeters > -1;
   }
 
-  /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates*/
+  /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates */
 
-  _distance(lat1, lon1, lat2, lon2) {
+  static _distance(lat1, lon1, lat2, lon2) {
     const R = 6371; // km
-    const dLat = this._toRadian(lat2 - lat1);
-    const dLon = this._toRadian(lon2 - lon1);
-    const latitude1 = this._toRadian(lat1);
-    const latitude2 = this._toRadian(lat2);
+    const dLat = WeatherStation._toRadian(lat2 - lat1);
+    const dLon = WeatherStation._toRadian(lon2 - lon1);
+    const latitude1 = WeatherStation._toRadian(lat1);
+    const latitude2 = WeatherStation._toRadian(lat2);
 
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -348,7 +352,7 @@ class WeatherStation extends LitElement {
   }
 
   // Converts numeric degrees to radians
-  _toRadian(degrees) {
+  static _toRadian(degrees) {
     return (degrees * Math.PI) / 180;
   }
 }

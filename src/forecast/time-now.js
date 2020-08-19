@@ -83,16 +83,16 @@ class TimeNow extends LitElement {
     const correctLeftOverflow = Math.max(10, margin);
     const correctRightOverflow = Math.min(correctLeftOverflow, 80);
 
-    this._timeMargin = 'margin-left:' + correctRightOverflow + '%';
+    this._timeMargin = `margin-left:${correctRightOverflow}%`;
   }
 
   _timeNow() {
     const now = new Date();
     const minutes = now.getMinutes();
 
-    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-    const time = now.getHours() + '.' + fullMinutes;
+    const time = `${now.getHours()}.${fullMinutes}`;
     this.timeNow = time;
   }
 
