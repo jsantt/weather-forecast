@@ -42,6 +42,7 @@ class ComboBox extends LitElement {
 
       input:focus {
         border: 2px solid #d6dde554;
+        outline: none;
       }
 
       .autocomplete-items {
