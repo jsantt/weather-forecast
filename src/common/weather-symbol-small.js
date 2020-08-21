@@ -31,9 +31,7 @@ class WeatherSymbolSmall extends LitElement {
     }
 
     return html` <svg-icon
-      path="assets/image/weather-symbols.svg#${this._getRightIcon(
-        this.symbolId
-      )}"
+      path="assets/image/icons.svg#${this._getRightIcon(this.symbolId)}"
     ></svg-icon>`;
   }
 
