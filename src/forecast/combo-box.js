@@ -161,10 +161,14 @@ class ComboBox extends LitElement {
   }
 
   _onInputBlur() {
-    /*const input = this.shadowRoot.querySelector('input');
-    if (input.value === undefined || input.value.name === '') {
-      input.value = this._previousValue;
-    }*/
+    if (this.currentValue === '' && this._isOpen() === false) {
+      this.currentValue = this._previousValue;
+    }
+  }
+
+  /* is combobox open */
+  _isOpen() {
+    return this.shadowRoot.querySelector('#autocomplete-list') !== null;
   }
 
   autocomplete(inp, arr, key) {
