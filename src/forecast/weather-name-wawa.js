@@ -9,7 +9,7 @@ class WeatherNameWawa extends LitElement {
   }
 
   render() {
-    return html`${this._symbolName(this.wawaId, this.cloudiness)}`;
+    return html`${WeatherNameWawa._symbolName(this.wawaId, this.cloudiness)}`;
   }
 
   static get properties() {
@@ -23,9 +23,9 @@ class WeatherNameWawa extends LitElement {
     };
   }
 
-  _symbolName(wawaId, cloudiness) {
-    const wawaName = this._wawaName(wawaId);
-    const cloudinessDescription = this._cloudiness(cloudiness);
+  static _symbolName(wawaId, cloudiness) {
+    const wawaName = WeatherNameWawa._wawaName(wawaId);
+    const cloudinessDescription = WeatherNameWawa._cloudiness(cloudiness);
 
     if (wawaId !== 0 || cloudinessDescription === null) {
       return wawaName;
@@ -34,7 +34,7 @@ class WeatherNameWawa extends LitElement {
     return cloudinessDescription;
   }
 
-  _wawaName(wawaId) {
+  static _wawaName(wawaId) {
     const wawaNames = {
       0: 'ei merkittäviä sääilmiöitä',
       4: 'Auerta, savua tai pölyä',
@@ -103,7 +103,7 @@ class WeatherNameWawa extends LitElement {
     return wawaNames[wawaId];
   }
 
-  _cloudiness(cloudiness) {
+  static _cloudiness(cloudiness) {
     if (Number.isNaN(cloudiness) || cloudiness < 0 || cloudiness > 8) {
       return null;
     }

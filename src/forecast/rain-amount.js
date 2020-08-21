@@ -15,7 +15,7 @@ class RainAmount extends LitElement {
 
   render() {
     return html`
-      ${this._hasRain(this.rainAmount) === true
+      ${RainAmount._hasRain(this.rainAmount) === true
         ? html`<svg
               class="wind-icon"
               width="12"
@@ -42,7 +42,7 @@ class RainAmount extends LitElement {
     };
   }
 
-  _hasRain(rainAmount) {
+  static _hasRain(rainAmount) {
     return rainAmount !== '';
   }
 }

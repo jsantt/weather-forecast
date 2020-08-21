@@ -34,6 +34,7 @@ class ForecastData extends LitElement {
     return {
       weatherLocation: {
         type: Object,
+        reflect: true,
       },
     };
   }

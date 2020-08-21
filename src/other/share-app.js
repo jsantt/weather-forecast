@@ -35,19 +35,19 @@ class ShareApp extends LitElement {
   }
 
   render() {
-    return html` ${this._show === true
-      ? html` <a @click="${this._share}">
+    return html` ${ShareApp._show === true
+      ? html` <a @click="${ShareApp._share}">
           Jaa sovellus
           <svg-icon path="assets/image/icons.svg#iosShare"></svg-icon>
         </a>`
       : ''}`;
   }
 
-  _show() {
+  static _show() {
     return navigator.share;
   }
 
-  _share() {
+  static _share() {
     if (navigator.share) {
       navigator.share({
         title: 'Sääennuste',

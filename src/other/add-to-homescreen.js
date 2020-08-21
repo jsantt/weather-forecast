@@ -169,14 +169,17 @@ class AddToHomescreen extends LitElement {
       return true;
     }
 
-    return this._isPortableApple() === true && this._isSafari() === true;
+    return (
+      AddToHomescreen._isPortableApple() === true &&
+      AddToHomescreen._isSafari() === true
+    );
   }
 
-  _isPortableApple() {
+  static _isPortableApple() {
     return ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
   }
 
-  _isSafari() {
+  static _isSafari() {
     const { userAgent } = window.navigator;
     return (
       !/CriOS/.test(userAgent) &&

@@ -18,7 +18,7 @@ class WindSpeed extends LitElement {
 
   render() {
     return html`
-      ${this._arrayForRepeater(this.windRating).map(() => {
+      ${WindSpeed._arrayForRepeater(this.windRating).map(() => {
         return html` <svg
           class="wind-icon"
           width="14"
@@ -70,7 +70,7 @@ class WindSpeed extends LitElement {
     };
   }
 
-  _arrayForRepeater(windRating) {
+  static _arrayForRepeater(windRating) {
     return new Array(windRating).fill(1);
   }
 }

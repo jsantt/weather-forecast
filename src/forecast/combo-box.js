@@ -19,9 +19,19 @@ class ComboBox extends LitElement {
         display: inline-block;
       }
 
-      input {
+      svg {
+        display: inline-block;
+        fill: var(--color-blue-800);
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        vertical-align: center;
+      }
+
+      input[type='text'] {
+        background: #d6dde51d;
         border: none;
-        background-color: transparent;
+        border-radius: 0.25rem;
         color: var(--color-white);
         padding: var(--space-s) 0;
         font-size: var(--font-size-xl);
@@ -31,8 +41,7 @@ class ComboBox extends LitElement {
       }
 
       input:focus {
-        border-bottom: 1px solid var(--color-gray-500);
-        outline: none;
+        border: 2px solid #d6dde554;
       }
 
       .autocomplete-items {
@@ -85,13 +94,24 @@ class ComboBox extends LitElement {
       <!--Make sure the form has the autocomplete function switched off:-->
       <form autocomplete="off">
         <div class="autocomplete">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="36"
+            viewBox="0 0 24 24"
+            width="36"
+          >
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path
+              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+            />
+          </svg>
+
           <input
-            id="myInput"
+            id="comboInput"
             type="text"
             name="myCountry"
-            .value="${this.value}"
+            .value="${this.currentValue}"
             aria-label="Sää paikassa"
-            @blur="${() => this._onInputBlur()}"
             @click="${() => this._onInputClick()}"
           />
         </div>
@@ -102,10 +122,10 @@ class ComboBox extends LitElement {
 
   static get properties() {
     return {
-      value: { type: Object },
+      currentValue: { type: String, reflect: true },
       items: { type: Array },
-      key: { type: String },
-      _previousValue: { type: Object },
+      key: { type: String, reflect: true },
+      _previousValue: { type: Object, reflect: true },
     };
   }
 
@@ -116,30 +136,34 @@ class ComboBox extends LitElement {
   }
 
   firstUpdated() {
-    /* initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values: */
+    /* initiate the autocomplete function on the "comboInput" element, and pass along the countries array as possible autocomplete values: */
     this.autocomplete(
-      this.shadowRoot.getElementById('myInput'),
+      this.shadowRoot.getElementById('comboInput'),
       this.items,
       this.key
     );
+  }
+
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'currentValue') {
+        this.shadowRoot.getElementById('comboInput').value = this.currentValue;
+      }
+    });
   }
 
   _onInputClick() {
-    this._previousValue = this.shadowRoot.querySelector('input');
-    this._dispatch('combo-box.new-value', { name: '' });
-
-    this.autocomplete(
-      this.shadowRoot.getElementById('myInput'),
-      this.items,
-      this.key
-    );
+    if (this.currentValue !== undefined && this.currentValue.length > 0) {
+      this._previousValue = this.currentValue;
+    }
+    this._dispatch('combo-box.new-value', '');
   }
 
   _onInputBlur() {
-    const input = this.shadowRoot.querySelector('input');
+    /*const input = this.shadowRoot.querySelector('input');
     if (input.value === undefined || input.value.name === '') {
       input.value = this._previousValue;
-    }
+    }*/
   }
 
   autocomplete(inp, arr, key) {
@@ -165,7 +189,7 @@ class ComboBox extends LitElement {
       /* append the DIV element as a child of the autocomplete container: */
       this.shadowRoot.querySelector('div').appendChild(a);
       /* for each item in the array... */
-      for (i = 0; i < arr.length; i = i + 1) {
+      for (i = 0; i < arr.length; i += 1) {
         /* check if the item starts with the same letters as the text field value: */
         if (
           arr[i][this.key].substr(0, val.length).toUpperCase() ==
@@ -180,8 +204,16 @@ class ComboBox extends LitElement {
           b.innerHTML += `<input type='hidden' value='${arr[i][key]}'>`;
           /* execute a function when someone clicks on the item value (DIV element): */
           b.addEventListener('click', event => {
+            let clickedValue;
             /* insert the value for the autocomplete text field: */
-            inp.value = event.target.querySelector('input').value;
+            if (event.target.querySelector('input') === null) {
+              // when clicked to <strong> element
+              clickedValue = event.target.parentNode.querySelector('input')
+                .value;
+            } else {
+              clickedValue = event.target.querySelector('input').value;
+            }
+            this._dispatch('combo-box.new-value', clickedValue);
             /* close the list of autocompleted values,
                 (or any other open lists of autocompleted values: */
             this.closeAllLists(undefined, inp);
@@ -197,7 +229,7 @@ class ComboBox extends LitElement {
       if (e.keyCode == 40) {
         /* If the arrow DOWN key is pressed,
           increase the this.currentFocus variable: */
-        this.currentFocus = this.currentFocus + 1;
+        this.currentFocus += 1;
         /* and and make the current item more visible: */
         this.addActive(x);
       } else if (e.keyCode == 38) {
@@ -240,7 +272,7 @@ class ComboBox extends LitElement {
     /* close all autocomplete lists in the document,
     except the one passed as an argument: */
     const x = this.shadowRoot.querySelectorAll('.autocomplete-items');
-    for (let i = 0; i < x.length; i = i + 1) {
+    for (let i = 0; i < x.length; i += 1) {
       if (elmnt != x[i] && elmnt != inp) {
         x[i].parentNode.removeChild(x[i]);
       }

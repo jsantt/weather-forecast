@@ -1,3 +1,8 @@
+const DEFAULT_PLACE = {
+  city: 'Helsinki',
+  coordinates: '60.1698557,24.9383791',
+};
+
 /**
  * Top 10 Finnish cities by population. Shown in city selection
  * combobox
@@ -359,4 +364,4 @@ const CITIES = [
   { city: 'Äänekoski', coordinates: '62.604167,25.726389' },
 ];
 
-export { CITIES, TOP_10_CITIES };
+export { CITIES, DEFAULT_PLACE, TOP_10_CITIES };

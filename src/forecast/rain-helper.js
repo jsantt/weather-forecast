@@ -1,3 +1,14 @@
+function _round(total) {
+  let roundedTotal;
+  if (total > 0 && total < 0.5) {
+    roundedTotal = '<1';
+  } else {
+    roundedTotal = total === 0 ? '' : Math.round(total);
+  }
+
+  return roundedTotal;
+}
+
 /**
  * Sleet is counted as rain
  */
@@ -39,17 +50,6 @@ function totalSnow(weatherDay) {
   }, 0.0);
 
   return _round(total);
-}
-
-function _round(total) {
-  let roundedTotal;
-  if (total > 0 && total < 0.5) {
-    roundedTotal = '<1';
-  } else {
-    roundedTotal = total === 0 ? '' : Math.round(total);
-  }
-
-  return roundedTotal;
 }
 
 export { totalRain, totalSnow };

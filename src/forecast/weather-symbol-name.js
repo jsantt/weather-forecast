@@ -20,7 +20,7 @@ class WeatherSymbolName extends LitElement {
   }
 
   render() {
-    return html`<h2>${this._symbolName(this.symbolId)}</h2> `;
+    return html`<h2>${WeatherSymbolName._symbolName(this.symbolId)}</h2> `;
   }
 
   static get properties() {
@@ -31,7 +31,7 @@ class WeatherSymbolName extends LitElement {
     };
   }
 
-  _symbolName(symbolId) {
+  static _symbolName(symbolId) {
     const names = {
       1: 'selkeää',
       2: 'puolipilvistä',
@@ -65,8 +65,8 @@ class WeatherSymbolName extends LitElement {
     // see wawa names: https://helda.helsinki.fi/bitstream/handle/10138/37284/PRO_GRADU_BOOK_HERMAN.pdf?sequence=2
     const wawaNames = {
       0: 'selkeää', // also default if no other match
-      99: 'puolipilvistä',
-      99: 'pilvistä',
+      2: 'puolipilvistä',
+      3: 'pilvistä',
 
       10: 'utua',
       30: 'sumua',

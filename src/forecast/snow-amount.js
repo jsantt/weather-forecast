@@ -18,7 +18,7 @@ class SnowAmount extends LitElement {
 
   render() {
     return html`
-      ${this._hasSnow(this.snowAmount)
+      ${SnowAmount._hasSnow(this.snowAmount)
         ? html`
             <svg width="12" height="12" viewBox="0 0 32 32">
               <g>
@@ -45,7 +45,7 @@ class SnowAmount extends LitElement {
     };
   }
 
-  _hasSnow(snowAmount) {
+  static _hasSnow(snowAmount) {
     return snowAmount !== '';
   }
 }

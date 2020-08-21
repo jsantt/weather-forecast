@@ -51,7 +51,7 @@
     <!-- meta name="apple-mobile-web-app-status-bar-style" content="black" -->
 
     <!-- iPhone non-retina icon -->
-    <link rel="apple-touch-icon" href="image/weather-icon-57x57.png">
+    <link rel="apple-touch-icon" href="assets/image/weather-icon-57x57.png">
 
     <!-- override title -->
     <meta name="apple-mobile-web-app-title" content="Sää">
@@ -60,7 +60,7 @@
     <meta property="og:title" content="Sääennuste" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="http://saaennuste.fi" />
-    <meta property="og:image" content="https://saaennuste.fi/image/weather-icon-192x192.png" />
+    <meta property="og:image" content="https://saaennuste.fi/assets/image/weather-icon-192x192.png" />
     <meta property="og:site_name" content="Sääennuste">
     <meta property="og:description" content="Paras, yksinkertaisin ja nopein sääennuste. Perustuu Ilmatieteen laitoksen avoimeen dataan.">
 
@@ -68,7 +68,7 @@
     <!-- see media queries: https://gist.github.com/jabez128/28c19b386f610f8a0cf3#file-ios-8-web-app-html-L36-->
 
     <!-- iPhone 6 startup image -->
-    <link href="image/ios-startup-750x1294.png"
+    <link href="assets/image/ios-startup-750x1294.png"
           media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image">
 
@@ -232,49 +232,7 @@
           }
         }
     </style>
-     <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
-      <template>
-        <style>
-          [part="label"] {
-            /* hide visually */
-            position: absolute !important;
-            clip: rect(1px, 1px, 1px, 1px);
-            padding:0 !important;
-            border:0 !important;
-            height: 1px !important; 
-            width: 1px !important; 
-            overflow: hidden;
-          }
-
-          [part="value"] {
-            text-align: center;
-            padding: 0 !important;
-          }
-
-        </style>
-      </template>
-    </dom-module>
-    <dom-module id="vaadin-combo-box-styles" theme-for="vaadin-combo-box">
-      <template>
-        <style>
-
-        [part="clear-button"] {
-          display: none;
-        }
-
-        [part="text-field"] {
-          margin-left: -1rem;
-          color: var(--color-white);
-        }
-
-        [part="toggle-button"] {
-          color: var(--color-black) !important;
-          font-size: 32px !important; 
-        }
-        </style>
-      </template>
-    </dom-module>
-
+     
   </head>
   <body>
     <h1 class="visually-hidden">Sääennuste - paras sääsovellus Ilmatieteen laitoksen datalla</h1>

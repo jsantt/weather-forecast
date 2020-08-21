@@ -94,12 +94,15 @@ class PublicHolidays extends LitElement {
   constructor() {
     super();
 
-    const holidays = this._publicHolidays();
+    const holidays = PublicHolidays._publicHolidays();
 
-    const today = holidays.find(day => this._isToday(new Date(day.d)));
+    const today = holidays.find(day =>
+      PublicHolidays._isToday(new Date(day.d))
+    );
+
     if (today === undefined) {
-      const today = { d: new Date(), n: 'Tänään', today: true };
-      holidays.push(today);
+      const now = { d: new Date(), n: 'Tänään', today: true };
+      holidays.push(now);
       holidays.sort((first, second) => {
         return new Date(first.d) <= new Date(second.d) ? -1 : 1;
       });
@@ -113,7 +116,7 @@ class PublicHolidays extends LitElement {
   /**
    * free=vapaapäivä, f=liputuspäivä, static=always the same date
    */
-  _publicHolidays() {
+  static _publicHolidays() {
     return [
       { d: '2020-01-01', n: 'Uudenvuodenpäivä', free: true, static: true },
       { d: '2020-01-06', n: 'Loppiainen', free: true, static: true },
@@ -191,7 +194,7 @@ class PublicHolidays extends LitElement {
     ];
   }
 
-  _isToday(date) {
+  static _isToday(date) {
     const now = new Date();
     return (
       date.getDate() === now.getDate() &&

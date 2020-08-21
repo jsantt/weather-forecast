@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
 import './combo-box.js';
-import { CITIES, TOP_10_CITIES } from './city-list.js';
+import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list.js';
 
 /**
  * @customElement
@@ -21,27 +21,22 @@ class LocationSelector extends LitElement {
         padding-bottom: 0.5rem;
       }
 
-      vaadin-combo-box {
-        /* overwriting Vaadin's default styles */
-        --lumo-contrast-10pct: transparent;
-        --lumo-font-size-m: var(--font-size-l);
-        --lumo-font-weight: var(--font-weight-boldest);
-        --lumo-font-family: 'Open Sans Condensed', sans-serif;
-        --vaadin-text-field-default-width: 13.5rem;
+      combo-box {
+        margin-bottom: 0.5rem;
       }
 
       .lds-ripple {
         display: inline-block;
         position: relative;
-        width: 80px;
-        height: 80px;
+        width: 66px;
+        height: 66px;
       }
       .lds-ripple div {
         position: absolute;
         border: 4px solid #fff;
         opacity: 1;
         border-radius: 50%;
-        animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        animation: lds-ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
       }
       .lds-ripple div:nth-child(2) {
         animation-delay: -0.5s;
@@ -71,20 +66,8 @@ class LocationSelector extends LitElement {
           <div></div>
         </div>`
       : html`
-          <!--vaadin-combo-box
-            id="placeSelection"
-            item-label-path="city"
-            item-value-path="coordinates"
-            @opened-changed="${event => this._openedChanged(event)}"
-            label="Sää paikassa"
-          >
-            <template>
-              <div>[[item.city]]</div>
-            </template>
-          </vaadin-combo-box-->
-          <!-- todo: listen and set new value  -->
           <combo-box
-            value="${this.place === undefined ? '' : this.place.name}"
+            .currentValue="${this.city}"
             .items="${CITIES}"
             key="city"
           ></combo-box>
@@ -112,11 +95,17 @@ class LocationSelector extends LitElement {
         type: Object,
         reflect: true,
       },
+      city: {
+        type: String,
+        reflect: true,
+      },
     };
   }
 
   constructor() {
     super();
+
+    this.city = DEFAULT_PLACE.city;
 
     this._defaultPlace = {
       city: 'Helsinki',
@@ -130,7 +119,18 @@ class LocationSelector extends LitElement {
     });
 
     this.addEventListener('combo-box.new-value', event => {
-      this.place = event.detail;
+      this.city = event.detail;
+
+      if (event.detail === '') {
+        return;
+      }
+
+      const cityAndCoordinates = CITIES.filter(item => item.city === this.city);
+
+      this._dispatchEvent(
+        'location-selector.location-changed',
+        cityAndCoordinates[0]
+      );
     });
   }
 
@@ -150,14 +150,12 @@ class LocationSelector extends LitElement {
    * When customer chooses geolocate, we need to wait response containing place name
    */
   _newPlace() {
-    // combobox.selectedItem = this.place.name;
+    this.city = this.place.name;
 
     const url = this.place.name;
 
     this._changeUrl('place', url);
     this._store('place', this.place.name, this.place.coordinates);
-
-    // combobox.items = this._placeList();
   }
 
   _notifyPreviousPlace() {

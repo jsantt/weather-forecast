@@ -183,20 +183,20 @@ class SunriseSunset extends LitElement {
     if (Number.isNaN(times.sunrise.getMinutes())) {
       this._sunrise = 'ei tänään';
     } else {
-      this._sunrise = this._formatTime(times.sunrise);
+      this._sunrise = SunriseSunset._formatTime(times.sunrise);
     }
 
     if (Number.isNaN(times.sunset.getMinutes())) {
       this._sunset = 'ei huomenna';
     } else {
-      this._sunset = this._formatTime(times.sunset);
+      this._sunset = SunriseSunset._formatTime(times.sunset);
     }
 
-    this._solarNoon = this._formatTime(times.solarNoon);
-    this._darkestNight = this._formatTime(times.nadir);
+    this._solarNoon = SunriseSunset._formatTime(times.solarNoon);
+    this._darkestNight = SunriseSunset._formatTime(times.nadir);
   }
 
-  _formatTime(time) {
+  static _formatTime(time) {
     const minutes = time.getMinutes();
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
