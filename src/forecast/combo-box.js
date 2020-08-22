@@ -93,7 +93,7 @@ class ComboBox extends LitElement {
   render() {
     return html`
       <!--Make sure the form has the autocomplete function switched off:-->
-      <form autocomplete="off">
+      <form autocomplete="off" spellcheck="false">
         <div class="autocomplete">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +157,8 @@ class ComboBox extends LitElement {
     if (this.currentValue !== undefined && this.currentValue.length > 0) {
       this._previousValue = this.currentValue;
     }
-    this._dispatch('combo-box.new-value', '');
+    this.shadowRoot.querySelector('input[type=text]').select();
+    // this._dispatch('combo-box.new-value', '');
   }
 
   _onInputBlur() {
