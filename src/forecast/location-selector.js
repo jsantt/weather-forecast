@@ -15,14 +15,7 @@ class LocationSelector extends LitElement {
     return css`
       :host {
         display: inline-block;
-
-        margin: 0 0 0.2rem 0;
         text-align: center;
-        padding-bottom: 0.5rem;
-      }
-
-      combo-box {
-        margin-bottom: 0.5rem;
       }
 
       .lds-ripple {
@@ -61,17 +54,12 @@ class LocationSelector extends LitElement {
   }
 
   render() {
-    return html` ${this.loading === true
-      ? html` <div class="locate_loadIcon lds-ripple" active="">
-          <div></div>
-        </div>`
-      : html`
-          <combo-box
-            .currentValue="${this.city}"
-            .items="${CITIES}"
-            key="city"
-          ></combo-box>
-        `}`;
+    return html` <combo-box
+      .currentValue="${this.city}"
+      .items="${CITIES}"
+      key="city"
+      ?loading=${this.loading}
+    ></combo-box>`;
   }
 
   /**

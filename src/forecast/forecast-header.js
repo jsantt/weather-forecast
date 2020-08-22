@@ -34,20 +34,19 @@ class ForecastHeader extends LitElement {
       .header {
         display: grid;
         grid-template-columns: 3.5rem 1fr 1fr 3.5rem;
-        grid-template-rows: 1.2rem 4.3rem 3rem 3.5rem;
+        grid-template-rows: 1rem 3.5rem 3rem 3.5rem 1rem;
         grid-template-areas:
-          'left empty empty empty'
-          'left place place aside'
+          '. place place .'
+          '. place place aside'
           'left temp  icon  aside'
-          'left text  text  aside ';
-
+          'left text  text  aside'
+          'empty empty empty empty';
         align-items: center;
       }
 
       .left {
         grid-area: left;
         height: 100%;
-        padding-top: 1rem;
       }
 
       svg-icon {
@@ -58,6 +57,7 @@ class ForecastHeader extends LitElement {
       }
 
       .place {
+        margin-top: -1.5rem;
         text-align: center;
       }
 
@@ -67,6 +67,7 @@ class ForecastHeader extends LitElement {
 
       aside {
         grid-area: aside;
+        margin-top: 2rem;
         height: 100%;
         opacity: 0.8;
       }

@@ -13,10 +13,16 @@ class ComboBox extends LitElement {
       :host {
         display: block;
       }
+
+      ::selection {
+        background-color: var(--color-yellow-500);
+      }
+
       /*the container must be positioned relative:*/
       .autocomplete {
         position: relative;
         display: inline-block;
+        width: 100%;
       }
 
       svg {
@@ -28,17 +34,41 @@ class ComboBox extends LitElement {
         vertical-align: center;
       }
 
+      :host([loading]) svg {
+        fill: var(--color-gray-400);
+
+        animation-name: swing;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+      }
+
+      :host([loading]) input[type='text'] {
+        color: var(--color-gray-400);
+      }
+
+      @keyframes swing {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       input[type='text'] {
-        background-color: rgba(245, 245, 245, 0.16);
+        /*background-color: rgba(245, 245, 245, 0.16);*/
+        background: var(--color-white);
         border: none;
         border-radius: var(--border-radius);
-        color: var(--color-white);
+        color: var(--color-blue-800);
         padding: var(--space-s) 0;
         font-size: var(--font-size-xl);
         font-family: var(--font-family-primary);
+        font-weight: var(--font-weight-bold);
         text-align: center;
         width: 100%;
-        -webkit-user-select: none;
+        /*user-select: none;
+        -webkit-user-select: none;*/
       }
 
       input:focus {
@@ -127,6 +157,7 @@ class ComboBox extends LitElement {
       currentValue: { type: String, reflect: true },
       items: { type: Array },
       key: { type: String, reflect: true },
+      loading: { type: Boolean, reflect: true },
       _previousValue: { type: Object, reflect: true },
     };
   }
