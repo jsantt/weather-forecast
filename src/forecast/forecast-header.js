@@ -49,8 +49,8 @@ class ForecastHeader extends LitElement {
       }
 
       svg-icon {
-        --width: 130px;
-        --height: 130px;
+        --width: 100px;
+        --height: 100px;
         grid-area: icon;
         margin: -1rem 0 -1.5rem 0;
       }
@@ -105,7 +105,7 @@ class ForecastHeader extends LitElement {
 
       .temperature {
         grid-area: temp;
-        font-size: var(--font-size-xxxxxl);
+        font-size: var(--font-size-xxxxl);
         line-height: 1.15;
         margin: 0 0 0 auto;
       }
