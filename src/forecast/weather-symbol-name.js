@@ -12,7 +12,7 @@ class WeatherSymbolName extends LitElement {
       }
 
       h2 {
-        font-size: var(--font-size-l);
+        font-size: var(--font-size-xl);
         font-weight: var(--font-weight-normal);
       }
     `;

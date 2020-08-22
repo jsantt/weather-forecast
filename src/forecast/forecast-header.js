@@ -34,7 +34,7 @@ class ForecastHeader extends LitElement {
       .header {
         display: grid;
         grid-template-columns: 3.5rem 1fr 1fr 3.5rem;
-        grid-template-rows: 1rem 1rem 5rem 3.5rem;
+        grid-template-rows: 1rem 1rem 7.5rem 2rem;
         grid-template-areas:
           '.... place place .....'
           '.... place place aside'
@@ -49,8 +49,8 @@ class ForecastHeader extends LitElement {
       }
 
       svg-icon {
-        --width: 80px;
-        --height: 80px;
+        --width: 130px;
+        --height: 130px;
         grid-area: icon;
         margin: -1rem 0 -1.5rem 0;
       }
@@ -105,7 +105,7 @@ class ForecastHeader extends LitElement {
 
       .temperature {
         grid-area: temp;
-        font-size: var(--font-size-xxxl);
+        font-size: var(--font-size-xxxxxl);
         line-height: 1.15;
         margin: 0 0 0 auto;
       }
@@ -121,6 +121,7 @@ class ForecastHeader extends LitElement {
 
       weather-symbol-name {
         grid-area: text;
+        margin-top: -1rem;
         text-align: center;
       }
     `;
