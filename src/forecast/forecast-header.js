@@ -73,7 +73,6 @@ class ForecastHeader extends LitElement {
 
       .aside-item {
         font-size: var(--font-size-s);
-        padding-top: 0.5rem;
         text-align: center;
       }
 
@@ -87,10 +86,12 @@ class ForecastHeader extends LitElement {
 
       .feelsLike {
         border-top-left-radius: var(--border-radius);
+        padding-top: var(--space-s);
       }
 
       .wind {
         border-bottom-left-radius: var(--border-radius);
+        padding-top: var(--space-m);
       }
 
       .item-text--feelsLike {

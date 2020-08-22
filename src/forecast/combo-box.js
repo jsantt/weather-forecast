@@ -29,7 +29,7 @@ class ComboBox extends LitElement {
       }
 
       input[type='text'] {
-        background: #d6dde51d;
+        background-color: rgba(245, 245, 245, 0.16);
         border: none;
         border-radius: var(--border-radius);
         color: var(--color-white);
@@ -38,6 +38,7 @@ class ComboBox extends LitElement {
         font-family: var(--font-family-primary);
         text-align: center;
         width: 100%;
+        -webkit-user-select: none;
       }
 
       input:focus {
