@@ -8,7 +8,6 @@ class FooterSection extends LitElement {
   static get styles() {
     return css`
       :host {
-        border-radius: 0.15rem;
         color: var(--color-blue-800);
 
         display: flex;

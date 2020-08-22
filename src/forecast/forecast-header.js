@@ -36,7 +36,7 @@ class ForecastHeader extends LitElement {
         grid-template-columns: 3.5rem 1fr 1fr 3.5rem;
         grid-template-rows: 1.2rem 4.3rem 3rem 3.5rem;
         grid-template-areas:
-          'left empty empty aside'
+          'left empty empty empty'
           'left place place aside'
           'left temp  icon  aside'
           'left text  text  aside ';
@@ -68,7 +68,6 @@ class ForecastHeader extends LitElement {
       aside {
         grid-area: aside;
         height: 100%;
-        padding-top: 1.6rem;
         opacity: 0.8;
       }
 
@@ -84,6 +83,14 @@ class ForecastHeader extends LitElement {
 
       .aside-icon:hover {
         transform: scale(1.1);
+      }
+
+      .feelsLike {
+        border-top-left-radius: var(--border-radius);
+      }
+
+      .wind {
+        border-bottom-left-radius: var(--border-radius);
       }
 
       .item-text--feelsLike {
