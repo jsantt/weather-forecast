@@ -7,7 +7,6 @@ class WeatherSymbol extends LitElement {
     return css`
       :host {
         display: inline-block;
-        z-index: 20;
       }
 
       :host([large]) {

@@ -111,7 +111,6 @@ class WeatherDay extends LitElement {
 
       .past-hour {
         opacity: 0.1;
-        z-index: 1;
       }
 
       .symbol,
@@ -119,6 +118,7 @@ class WeatherDay extends LitElement {
         grid-column: span 3;
         grid-row: 4;
         text-align: center;
+        z-index: var(--z-index-1);
       }
       .symbol--empty {
         grid-column: span 1;
@@ -132,7 +132,7 @@ class WeatherDay extends LitElement {
 
         font-size: var(--font-size-m);
         text-align: center;
-        z-index: 2;
+        z-index: var(--z-index-1);
       }
 
       .temperature_line {
@@ -153,8 +153,6 @@ class WeatherDay extends LitElement {
 
         margin-top: -0.25rem;
         text-align: right;
-
-        z-index: 100;
       }
 
       .feelsLike,
@@ -185,8 +183,6 @@ class WeatherDay extends LitElement {
       .feelsLike--empty {
         background-color: var(--color-toggle-background);
         margin-top: var(--space-m);
-
-        z-index: 2;
       }
 
       .wind,
@@ -206,17 +202,21 @@ class WeatherDay extends LitElement {
         overflow: hidden;
 
         will-change: max-height;
-        z-index: 2;
+      }
+
+      .wind,
+      .feelsLike,
+      .wind--empty,
+      .feelsLike--empty,
+      .wind_header,
+      .feelsLike_header {
+        z-index: var(--z-index-2);
       }
 
       .wind--hidden,
       .feelsLike--hidden {
         max-height: 0;
         padding: 0;
-      }
-
-      .wind_header {
-        margin-top: -0.6rem;
       }
 
       .wind-icon {
@@ -240,7 +240,6 @@ class WeatherDay extends LitElement {
         grid-column: span 25;
         grid-row: 12;
         padding-top: 1.55rem;
-        z-index: 1;
       }
 
       .feelsLikeValue {
@@ -251,7 +250,7 @@ class WeatherDay extends LitElement {
         grid-row: 13;
         margin-top: -1.5rem;
 
-        z-index: 2;
+        z-index: var(--z-index-1);
       }
 
       .tinySymbol {

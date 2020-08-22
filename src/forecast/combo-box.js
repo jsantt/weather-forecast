@@ -51,7 +51,7 @@ class ComboBox extends LitElement {
         color: var(--color-gray-600);
         position: absolute;
 
-        z-index: 99;
+        z-index: var(--z-index-floating-2);
         /*position the autocomplete items to be the same width as the container:*/
         top: 100%;
         left: 0;

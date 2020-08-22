@@ -27,6 +27,8 @@ class WeatherApp extends LitElement {
   static get styles() {
     return css`
       :host {
+        --header-background-expand: 3rem;
+
         display: block;
       }
 

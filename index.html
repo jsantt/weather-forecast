@@ -100,7 +100,24 @@
 
         body {
 
-          /* COLORS */
+          --background-header: linear-gradient(
+            to right,
+            #20649bc5,
+              #20649bb4
+            );
+
+          --background-footer: linear-gradient(
+            to right,
+            #20649b18,
+            #20649b04
+          );
+
+          --box-shadow:  0px -1px 4px 0px rgba(0, 0, 0, 0.3);
+          --border-radius: 0.25rem;
+          
+          
+
+          /* Colors */
           --color-black: #111;
           --color-white: #fff;
 
@@ -128,11 +145,15 @@
           --color-yellow-500: #f6d55c;
           --color-orange-500: #ffa800;
 
-          /* main colors */
+          /* Main colors */
           --color-primary: var(--color-blue-500);
           --color-secondary: var(--color-blue-800);
           --color-tertiary: var(--color-blue-800);
-      
+          
+          /* Font */
+          --font-family: "Open Sans Condensed", sans-serif;
+          --font-family-secondary: sans-serif;
+
           /* 
            * Modular scale base 1em, ratio 1.25 (modularscale.com)
            * e.g. 1em, 1.25em, 1.563em, 1.953em, 2.441em, 3.052em, 3.814,
@@ -156,29 +177,18 @@
           --space-m: 0.5rem;
           --space-l: 1rem;
           --space-xl: 2rem;
+
+
+          /* z-index-1 and 2 are for ordering elements that are not lifted from UI */
+          --z-index-1: 1;
+          --z-index-2: 2;
+
+          /* Use only for floating/fixed elements that must be in front of everything */
+          --z-index-floating-1: 3;
+          --z-index-floating-2: 4;
           
-          --font-family: "Open Sans Condensed", sans-serif;
-          --font-family-secondary: sans-serif;
 
-          --line-height--tight: 1;
-          --padding-header-footer: 1rem;
-          --notification-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.05);
-          --box-shadow:  0px -1px 4px 0px rgba(0, 0, 0, 0.3);
-
-          --border-radius: 0.25rem;
-          --header-background-expand: 3rem;
-
-          --background-header: linear-gradient(
-            to right,
-            #20649bc5,
-              #20649bb4
-            );
-
-          --background-footer: linear-gradient(
-            to right,
-            #20649b18,
-            #20649b04
-          );
+          /* End of common CSS properties */ 
 
           color: var(--color-white);
           font-family: var(--font-family);
@@ -189,6 +199,7 @@
           max-width: 52rem;
           padding: 0;
         }
+
         weather-app {
           background: var(--background-footer);
         }
