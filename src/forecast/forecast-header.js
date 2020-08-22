@@ -56,7 +56,7 @@ class ForecastHeader extends LitElement {
       }
 
       .place {
-        margin-top: -0.6rem;
+        margin-top: -0.7rem;
         text-align: center;
       }
 

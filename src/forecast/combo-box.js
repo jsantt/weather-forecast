@@ -27,7 +27,7 @@ class ComboBox extends LitElement {
 
       svg {
         display: inline-block;
-        fill: var(--color-blue-800);
+        fill: var(--color-red-500);
         position: absolute;
         left: 2px;
         top: 2px;
@@ -56,9 +56,9 @@ class ComboBox extends LitElement {
       }
 
       input[type='text'] {
-        /*background-color: rgba(245, 245, 245, 0.16);*/
+        background-color: rgba(245, 245, 245, 0.93);
 
-        background: var(--color-gray-400);
+        /*background: var(--color-gray-400);*/
         border: none;
         border-radius: var(--border-radius);
         color: var(--color-blue-800);
