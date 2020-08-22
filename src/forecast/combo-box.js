@@ -57,11 +57,12 @@ class ComboBox extends LitElement {
 
       input[type='text'] {
         /*background-color: rgba(245, 245, 245, 0.16);*/
-        background: var(--color-white);
+
+        background: var(--color-gray-400);
         border: none;
         border-radius: var(--border-radius);
         color: var(--color-blue-800);
-        padding: var(--space-s) 0;
+        padding: var(--space-m);
         font-size: var(--font-size-xl);
         font-family: var(--font-family-primary);
         font-weight: var(--font-weight-bold);

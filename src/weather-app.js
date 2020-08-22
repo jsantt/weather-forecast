@@ -44,7 +44,7 @@ class WeatherApp extends LitElement {
         max-width: 49.5rem;
         margin: 0 auto 5rem auto;
         /* padding to fix a bug. 1px padding corrects space color */
-        padding-top: 1.75rem;
+        padding-top: 1rem;
       }
 
       .section {
@@ -55,6 +55,10 @@ class WeatherApp extends LitElement {
         font-weight: var(--font-weight-bold);
         border-radius: 0;
         text-align: center;
+      }
+
+      .section--install {
+        padding-bottom: 2.75rem;
       }
 
       .section--sun,
@@ -90,7 +94,7 @@ class WeatherApp extends LitElement {
           grid-auto-rows: minmax(10px, auto);
 
           grid-template-areas:
-            'install  install   install'
+            '........ ........  install'
             'forecast forecast  sun'
             'forecast forecast  observations'
             'forecast forecast  feedback'
@@ -106,6 +110,7 @@ class WeatherApp extends LitElement {
 
         .section--install {
           grid-area: install;
+          padding-bottom: 0;
         }
 
         .section--forecast {

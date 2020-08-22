@@ -13,10 +13,6 @@ class AddToHomescreen extends LitElement {
         display: block;
       }
 
-      #install-prompt {
-        margin: var(--space-l);
-      }
-
       button {
         box-sizing: border-box;
         background-color: var(--color-white);
@@ -53,9 +49,6 @@ class AddToHomescreen extends LitElement {
       }
 
       .sun {
-        --iron-icon-width: 32px;
-        --iron-icon-height: 32px;
-
         padding: 0 var(--space-l);
       }
 
@@ -64,8 +57,10 @@ class AddToHomescreen extends LitElement {
       }
 
       .share {
-        --iron-icon-stroke-color: var(--color-black);
-        --iron-icon-fill-color: var(--color-black);
+        fill: black;
+        stroke: black;
+        --width: 24px;
+        --height: 24px;
       }
     `;
   }

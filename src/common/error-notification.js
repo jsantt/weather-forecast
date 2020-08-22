@@ -20,7 +20,7 @@ class ErrorNotification extends LitElement {
         height: 100vh;
       }
 
-      iron-icon {
+      svg-icon {
         height: 96px;
         width: 96px;
       }

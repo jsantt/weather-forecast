@@ -9,7 +9,6 @@ class WeatherSymbolName extends LitElement {
     return css`
       :host {
         display: block;
-        padding-top: 0.5rem;
       }
 
       h2 {
