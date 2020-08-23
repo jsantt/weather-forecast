@@ -62,19 +62,24 @@ class ComboBox extends LitElement {
         border: none;
         border-radius: var(--border-radius);
         color: var(--color-blue-800);
-        padding: var(--space-m);
+        padding: var(--space-s) var(--space-l);
         font-size: var(--font-size-l);
         font-family: var(--font-family-primary);
         font-weight: var(--font-weight-bold);
         text-align: center;
-        width: 100%;
+
+        transition: padding 0.5s ease;
         /*user-select: none;
         -webkit-user-select: none;*/
       }
 
-      input:focus {
+      input[type='text']:focus {
         border: 2px solid #d6dde554;
+        padding-left: 3rem;
+        padding-right: 3rem;
         outline: none;
+
+        transition: padding 0.5s ease;
       }
 
       .autocomplete-items {

@@ -34,10 +34,9 @@ class ForecastHeader extends LitElement {
       .header {
         display: grid;
         grid-template-columns: 3.5rem 1fr 1fr 3.5rem;
-        grid-template-rows: 1rem 1rem 7.5rem 2rem;
+        grid-template-rows: 1rem 7.5rem 1rem;
         grid-template-areas:
-          '.... place place .....'
-          '.... place place aside'
+          'place place place place'
           'left temp  icon  aside'
           'left text  text  aside';
         align-items: center;
@@ -56,7 +55,7 @@ class ForecastHeader extends LitElement {
       }
 
       .place {
-        margin-top: -0.7rem;
+        margin-top: 0.2rem;
         text-align: center;
       }
 
