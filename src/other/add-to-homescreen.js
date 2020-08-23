@@ -25,15 +25,23 @@ class AddToHomescreen extends LitElement {
 
         font: inherit;
         font-weight: var(--font-weight-boldest);
+        margin-bottom: 2.75rem;
+
         text-align: center;
         text-transform: uppercase;
-
         outline: none;
         padding: 1rem;
+
         width: 100%;
 
         /* Corrects inability to style clickable input types in iOS */
         -webkit-appearance: none;
+      }
+
+      @media only screen and (min-width: 48rem) {
+        button {
+          margin-bottom: 0;
+        }
       }
 
       .notification {

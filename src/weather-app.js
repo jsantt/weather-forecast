@@ -44,7 +44,7 @@ class WeatherApp extends LitElement {
         max-width: 49.5rem;
         margin: 0 auto 5rem auto;
         /* padding to fix a bug. 1px padding corrects space color */
-        padding-top: 1rem;
+        padding-top: 2rem;
       }
 
       .section {
@@ -55,10 +55,6 @@ class WeatherApp extends LitElement {
         font-weight: var(--font-weight-bold);
         border-radius: 0;
         text-align: center;
-      }
-
-      .section--install {
-        padding-bottom: 2.75rem;
       }
 
       .section--sun,
@@ -102,6 +98,8 @@ class WeatherApp extends LitElement {
             'calendar calendar  links'
             'calendar calendar  cookies'
             'copy     copy      copy';
+
+          padding-top: 1rem;
         }
         .section {
           margin: 0;
