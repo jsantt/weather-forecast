@@ -21,13 +21,13 @@
     <!-- Loading web fonts asynchronoysly, see-->
     <script>
 
-      WebFontConfig = {
+      window.WebFontConfig = {
         google: {
           families: ['Open Sans Condensed:300']
         }
       };
 
-      (function(d) {
+      (d => {
             const wf = d.createElement('script'); const s = d.scripts[0];
             wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
             wf.async = true;

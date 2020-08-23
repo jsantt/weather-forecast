@@ -1,5 +1,6 @@
 class WeatherAnalytics extends HTMLElement {
   connectedCallback() {
+    /* eslint-disable */
     // track metrics with google analytics...
     (function (i, s, o, g, r, a, m) {
       i.GoogleAnalyticsObject = r;

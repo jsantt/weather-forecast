@@ -142,58 +142,24 @@ class LocationSelector extends LitElement {
 
     const url = this.place.name;
 
-    this._changeUrl('place', url);
+    LocationSelector._changeUrl('place', url);
     this._store('place', this.place.name, this.place.coordinates);
   }
 
   _notifyPreviousPlace() {
-    const storedPlaces = this._getFromLocalStorage('place');
+    const storedPlaces = LocationSelector._getFromLocalStorage('place');
     let currentPlace;
     if (storedPlaces) {
       currentPlace = storedPlaces[0];
     } else {
       currentPlace = this._defaultPlace;
-      this._storeIntoLocalStorage('place', TOP_10_CITIES);
+      LocationSelector._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 
-  _isHighlighted(index) {
-    return index < 10;
-  }
-
-  _openedChanged(customEvent) {
-    const combobox = this.shadowRoot.querySelector('#placeSelection');
-
-    if (this._isComboboxOpen(customEvent)) {
-      combobox.focus();
-      this._previousPlace = combobox.selectedItem; // this._formPlaceObject(this.placeName);
-      combobox.selectedItem = null;
-    } else if (this._isComboboxPlaceSelected(combobox)) {
-      this._dispatchEvent(
-        'location-selector.location-changed',
-        combobox.selectedItem
-      );
-    } else if (this._isComboboxDismiss(combobox)) {
-      combobox.selectedItem = this._previousPlace || this._defaultPlace;
-    }
-  }
-
-  _isComboboxOpen(customEvent) {
-    return customEvent.detail && customEvent.detail.value;
-  }
-
-  _isComboboxPlaceSelected(combobox) {
-    return combobox && combobox.selectedItem;
-  }
-
-  /* return if user closes the city selection modal without any selections */
-  _isComboboxDismiss(combobox) {
-    return combobox && !combobox.selectedItem;
-  }
-
   _placeList() {
-    const previousLocations = this._getFromLocalStorage('place');
+    const previousLocations = LocationSelector._getFromLocalStorage('place');
     const allLocations = previousLocations.concat(CITIES);
 
     return allLocations;
@@ -203,45 +169,11 @@ class LocationSelector extends LitElement {
    * @return whether response API is supported
    */
 
-  _responseApi() {
+  static _responseApi() {
     return navigator.permissions;
   }
 
-  /**
-   * @return whether location is already allowed and can be used without
-   * showing pop up to user
-   */
-
-  _locationAlreadyAllowed() {
-    return new Promise(function (resolve, reject) {
-      if (!this._responseApi()) {
-        reject;
-      } else {
-        navigator.permissions
-          .query({ name: 'geolocation' })
-          .then(permission =>
-            permission.state === 'granted' ? resolve : reject
-          );
-      }
-    });
-  }
-
-  _getUrlParams(name, url) {
-    name = name.replace(/[\[\]]/g, '\\$&');
-
-    const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
-    const results = regex.exec(url);
-    if (!results) {
-      return null;
-    }
-    if (!results[2]) {
-      return '';
-    }
-
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-  }
-
-  _changeUrl(paramName, paramValue) {
+  static _changeUrl(paramName, paramValue) {
     history.replaceState(null, null, `?${paramName}=${paramValue}`);
   }
 
@@ -254,25 +186,25 @@ class LocationSelector extends LitElement {
     this.dispatchEvent(event);
   }
 
-  _formPlaceObject(city, coordinates) {
+  static _formPlaceObject(city, coordinates) {
     return { city, coordinates };
   }
 
   _store(key, city, coordinates) {
-    const newPlace = [this._formPlaceObject(city, coordinates)];
-    const previousPlaces = this._getFromLocalStorage('place');
+    const newPlace = [LocationSelector._formPlaceObject(city, coordinates)];
+    const previousPlaces = LocationSelector._getFromLocalStorage('place');
 
     const filtered10 = newPlace.concat(
       previousPlaces.filter(item => item.city !== city).slice(0, 9)
     );
-    this._storeIntoLocalStorage(key, filtered10);
+    LocationSelector._storeIntoLocalStorage(key, filtered10);
   }
 
-  _storeIntoLocalStorage(key, valueObject) {
+  static _storeIntoLocalStorage(key, valueObject) {
     localStorage.setItem(key, JSON.stringify(valueObject));
   }
 
-  _getFromLocalStorage(key) {
+  static _getFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
   }
 }

@@ -4,13 +4,14 @@ function getByAttributeValue(collection, attribute, value) {
       return item;
     }
   }
+  return undefined;
 }
 
 function getTime(item) {
   return value(item.children[0]);
 }
 
-function getTimeAndValuePairs(sourceXml, attributeName, name) {
+function getTimeAndValuePairs(sourceXml, attributeName) {
   const measurementTVPs = getByAttributeValue(
     sourceXml,
     'gml:id',
@@ -69,7 +70,7 @@ function raiseEvent(context, name, payload) {
   let message = payload;
 
   if (!navigator.onLine) {
-    message = `${payload.detail}. ` + `Verkkoon ei saatu yhteyttä`;
+    message = `${payload.detail}. Verkkoon ei saatu yhteyttä`;
   }
 
   const event = new CustomEvent(name, {

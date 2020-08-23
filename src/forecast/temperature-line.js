@@ -93,8 +93,12 @@ class TemperatureLine extends LitElement {
     const svg = this._svg();
 
     const coordinates = this._temperatureCoordinates(dayData);
-    const firstX = this._xCoordinate(this._getFirstTemperatureIndex(dayData));
-    const lastX = this._xCoordinate(this._getLastTemperatureIndex(dayData));
+    const firstX = TemperatureLine._xCoordinate(
+      TemperatureLine._getFirstTemperatureIndex(dayData)
+    );
+    const lastX = TemperatureLine._xCoordinate(
+      TemperatureLine._getLastTemperatureIndex(dayData)
+    );
 
     const line = this._temperatureLine(coordinates, firstX, lastX);
     svg.appendChild(line);
@@ -131,7 +135,7 @@ class TemperatureLine extends LitElement {
     return line;
   }
 
-  _getFirstTemperatureIndex(dayData) {
+  static _getFirstTemperatureIndex(dayData) {
     function hasTemperature(element) {
       return !Number.isNaN(element.temperature);
     }
@@ -139,7 +143,7 @@ class TemperatureLine extends LitElement {
     return dayData.findIndex(hasTemperature);
   }
 
-  _getLastTemperatureIndex(dayData) {
+  static _getLastTemperatureIndex(dayData) {
     function hasTemperature(element) {
       return !Number.isNaN(element.temperature);
     }
@@ -153,10 +157,10 @@ class TemperatureLine extends LitElement {
     let points = '';
     const baseY = this._maxYCoordinate(this._lineVariance, this._bottomMargin);
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i = i + 1) {
       if (!Number.isNaN(data[i].temperature)) {
-        points = `${points}${this._xCoordinate(i)},
-                    ${this._yCoordinate(
+        points = `${points}${TemperatureLine._xCoordinate(i)},
+                    ${TemperatureLine._yCoordinate(
                       baseY,
                       data[i].temperature,
                       this._lineVariance
@@ -167,11 +171,11 @@ class TemperatureLine extends LitElement {
     return points;
   }
 
-  _xCoordinate(index) {
+  static _xCoordinate(index) {
     return index * 10;
   }
 
-  _yCoordinate(baseY, temperature, lineVariance) {
+  static _yCoordinate(baseY, temperature, lineVariance) {
     return baseY + temperature * -lineVariance;
   }
 
@@ -185,11 +189,6 @@ class TemperatureLine extends LitElement {
       this.minTemperature * lineHeightVariance -
       marginBottom
     );
-  }
-
-  _getMinColor(minTemp) {
-    const red = Math.round(minTemp) * 10;
-    const redColor = Math.min(red, 255);
   }
 
   _$(selector) {

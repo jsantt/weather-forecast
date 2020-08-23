@@ -43,6 +43,7 @@ function totalSnow(weatherDay) {
     snow = 0;
 
     if (SNOW_SYMBOLS.includes(item.symbol)) {
+      // eslint-disable-next-line no-restricted-properties
       snow = (0.016 * Math.pow(item.temperature, 2) + 1) * item.rain;
     }
 

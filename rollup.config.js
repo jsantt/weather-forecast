@@ -14,7 +14,7 @@ const onAnalysis = ({ bundleSize }) => {
   if (bundleSize > limitBytes) {
     // eslint-disable-next-line no-console
     console.log(`Bundle size exceeds ${limitBytes} bytes: ${bundleSize} bytes`);
-    return process.exit(1);
+    process.exit(1);
   }
 };
 

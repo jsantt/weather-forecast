@@ -269,20 +269,22 @@ class WeatherDay extends LitElement {
           <div class="day">
             <h3 class="day-name">
               <span class="visually-hidden">SÄÄ</span> 
-              ${this._day(this.dayNumber)} ${this._weekday(this.dayNumber)}
+              ${WeatherDay._day(this.dayNumber)} ${WeatherDay._weekday(
+      this.dayNumber
+    )}
             </h3>
 
             <span class="wind-warning">
               <wind-speed 
                 .windRating="${this._windRating(this.dayData)}" 
-                .windDescription="${this._windDescription(this.dayData)}">
+                .windDescription="${WeatherDay._windDescription(this.dayData)}">
               </wind-speed>
             </span>
             <span class="rain-amount">
-              <snow-amount .snowAmount="${this._snow(
+              <snow-amount .snowAmount="${WeatherDay._snow(
                 this.dayData
               )}"></snow-amount>
-              <rain-amount .rainAmount="${this._rain(
+              <rain-amount .rainAmount="${WeatherDay._rain(
                 this.dayData
               )}"></rain-amount>
             </span>
@@ -337,7 +339,7 @@ class WeatherDay extends LitElement {
                       : ''}"
                   >
                     ${this._notNaN(entry.temperature) === true
-                      ? html`${this._round(entry.temperature)}<span
+                      ? html`${WeatherDay._round(entry.temperature)}<span
                             class="degree"
                             >°</span
                           >`
@@ -438,7 +440,7 @@ class WeatherDay extends LitElement {
     this.dayData = [];
   }
 
-  _day(number) {
+  static _day(number) {
     const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
     return dayNames[number - 1];
   }
@@ -450,13 +452,13 @@ class WeatherDay extends LitElement {
     return classes;
   }
 
-  _weekday(number) {
+  static _weekday(number) {
     const day = new Date();
     day.setDate(day.getDate() + (number - 1));
     return day.toLocaleString('fi-FI', { weekday: 'short' });
   }
 
-  _windDescription(dayData) {
+  static _windDescription(dayData) {
     return windWarning(dayData).description;
   }
 
@@ -468,15 +470,15 @@ class WeatherDay extends LitElement {
     return windWarning(dayData).rating;
   }
 
-  _rain(dayData) {
+  static _rain(dayData) {
     return totalRain(dayData);
   }
 
-  _snow(dayData) {
+  static _snow(dayData) {
     return totalSnow(dayData);
   }
 
-  _round(item) {
+  static _round(item) {
     const rounded = Math.round(item);
     const result = Number.isNaN(rounded) ? '' : rounded;
 
