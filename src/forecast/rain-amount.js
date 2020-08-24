@@ -16,12 +16,7 @@ class RainAmount extends LitElement {
   render() {
     return html`
       ${RainAmount._hasRain(this.rainAmount) === true
-        ? html`<svg
-              class="wind-icon"
-              width="12"
-              height="12"
-              viewBox="0 0 32 32"
-            >
+        ? html`<svg width="12" height="12" viewBox="0 0 32 32">
               <g>
                 <path
                   stroke="null"

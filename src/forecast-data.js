@@ -18,7 +18,7 @@ import {
  * [{ hour: 1
  *    humidity: 50
  *    past: true|false
- *    rain: 0
+ *    rain: 0 | NAN
  *    symbol: 1
  *    temperature: 11.3
  *    time: "2018-09-26T22:00:00Z"

@@ -119,7 +119,7 @@ class RainBars extends LitElement {
         bar.setAttribute('fill-opacity', opacity);
         bar.setAttribute('width', '9');
 
-        const rectHeight = RainBars._rectHeight(data[i].rain);
+        let rectHeight = RainBars._rectHeight(data[i].rain);
 
         bar.setAttribute('height', rectHeight);
 

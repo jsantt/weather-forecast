@@ -25,17 +25,26 @@ class WeatherSymbolSmall extends LitElement {
   }
 
   render() {
-    if (this._getRightIcon(this.symbolId) === undefined) {
+    if (
+      this._removeUnnecessaryRain(this._getRightIcon(this.symbolId)) ===
+      undefined
+    ) {
       return html``;
     }
 
-    return html` <svg-icon
-      path="assets/image/icons.svg#${this._getRightIcon(this.symbolId)}"
+    return html`<svg-icon
+      path="assets/image/icons.svg#${this._removeUnnecessaryRain(
+        this._getRightIcon(this.symbolId)
+      )}"
     ></svg-icon>`;
   }
 
   static get properties() {
     return {
+      rain: {
+        type: Number,
+        refrect: true,
+      },
       symbolId: {
         type: Number,
         reflect: true,
@@ -47,6 +56,7 @@ class WeatherSymbolSmall extends LitElement {
     super();
 
     this.icons = [
+      { min: 20, max: 40, symbolName: 'rain' },
       { min: 40, max: 60, symbolName: 'snow' },
       { min: 60, max: 70, symbolName: 'thunder' },
       { min: 70, max: 90, symbolName: 'slush' },
@@ -60,6 +70,14 @@ class WeatherSymbolSmall extends LitElement {
       }
     }
     return undefined;
+  }
+
+  /* remove rain symbol if there is already rain bar shown */
+  _removeUnnecessaryRain(symbol) {
+    if (this.rain > 0 && symbol === 'rain') {
+      return undefined;
+    }
+    return symbol;
   }
 }
 
