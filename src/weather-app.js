@@ -183,8 +183,8 @@ class WeatherApp extends LitElement {
       }
 
       svg-icon {
-        --height: 24px;
-        --width: 24px;
+        height: 24px;
+        width: 24px;
         fill: var(--color-blue-700);
       }
     `;
@@ -218,6 +218,8 @@ class WeatherApp extends LitElement {
                   .feelsLike="${this._currentFeelsLike}"
                   ?loading="${this._loading}"
                   .place="${this._forecastPlace}"
+                  ?showFeelsLike="${this._showFeelsLike}"
+                  ?showWind="${this._showWind}"
                   .symbol="${this._currentSymbol}"
                   .temperature="${this._currentTemperature}"
                   .wind="${this._currentWind}"

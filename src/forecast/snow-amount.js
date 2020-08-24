@@ -39,7 +39,7 @@ class SnowAmount extends LitElement {
   static get properties() {
     return {
       snowAmount: {
-        type: String,
+        type: Number,
         reflect: true,
       },
     };

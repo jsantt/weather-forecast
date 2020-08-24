@@ -67,8 +67,8 @@ class AddToHomescreen extends LitElement {
       .share {
         fill: black;
         stroke: black;
-        --width: 24px;
-        --height: 24px;
+        width: 24px;
+        height: 24px;
       }
     `;
   }

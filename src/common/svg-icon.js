@@ -9,14 +9,17 @@ class SvgIcon extends LitElement {
     return css`
       :host {
         display: inline-block;
+        height: 45px;
+        width: 45px;
+
         vertical-align: middle;
       }
 
       svg {
         display: block;
         pointer-events: none;
-        height: var(--height, 45px);
-        width: var(--width, 45px);
+        height: 100%;
+        width: 100%;
       }
     `;
   }

@@ -21,8 +21,8 @@ class ErrorNotification extends LitElement {
       }
 
       svg-icon {
-        height: 96px;
-        width: 96px;
+        height: 124px;
+        width: 124px;
       }
 
       div {

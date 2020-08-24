@@ -277,7 +277,8 @@ class WeatherDay extends LitElement {
             <span class="wind-warning">
               <wind-speed 
                 .windRating="${this._windRating(this.dayData)}" 
-                .windDescription="${WeatherDay._windDescription(this.dayData)}">
+                .windDescription="${WeatherDay._windDescription(this.dayData)}"
+                @click="${() => this._toggleWind()}">
               </wind-speed>
             </span>
             <span class="rain-amount">
@@ -495,6 +496,14 @@ class WeatherDay extends LitElement {
 
   _notNaN(item) {
     return !Number.isNaN(item);
+  }
+
+  _toggleWind() {
+    const toggleWind = new CustomEvent(`forecast-header.toggle-wind`, {
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(toggleWind);
   }
 
   get _windHelper() {

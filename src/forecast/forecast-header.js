@@ -21,6 +21,14 @@ class ForecastHeader extends LitElement {
         padding-bottom: var(--header-background-expand);
       }
 
+      :host([showFeelsLike]) .feelsLike {
+        background-color: #f5f5f529;
+      }
+
+      :host([showWind]) .wind {
+        background-color: #f5f5f529;
+      }
+
       .visually-hidden {
         position: absolute !important;
         clip: rect(1px, 1px, 1px, 1px);
@@ -48,8 +56,8 @@ class ForecastHeader extends LitElement {
       }
 
       svg-icon {
-        --width: 100px;
-        --height: 100px;
+        width: 100px;
+        height: 100px;
         grid-area: icon;
         margin: -1rem 0 -1.5rem 0;
       }
@@ -73,10 +81,6 @@ class ForecastHeader extends LitElement {
       .aside-item {
         font-size: var(--font-size-s);
         text-align: center;
-      }
-
-      .aside-item.selected {
-        background-color: #f5f5f529;
       }
 
       .aside-icon:hover {
@@ -190,6 +194,15 @@ class ForecastHeader extends LitElement {
       loading: { type: Boolean, reflect: true },
       place: { type: Object, reflect: true },
 
+      showFeelsLike: {
+        type: Boolean,
+        reflect: true,
+      },
+      showWind: {
+        type: Boolean,
+        reflect: true,
+      },
+
       symbol: { type: Number, reflect: true },
       temperature: { type: Number, reflect: true },
 
@@ -200,8 +213,6 @@ class ForecastHeader extends LitElement {
   }
 
   _toggleFeelsLike() {
-    this.shadowRoot.querySelector('#feelsLike').classList.toggle('selected');
-
     const toggleFeelsLike = new CustomEvent(
       'forecast-header.toggle-feels-like',
       {
@@ -215,8 +226,6 @@ class ForecastHeader extends LitElement {
   }
 
   _toggleWind() {
-    this.shadowRoot.querySelector('#wind').classList.toggle('selected');
-
     const toggleWind = new CustomEvent('forecast-header.toggle-wind', {
       bubbles: true,
       composed: true,

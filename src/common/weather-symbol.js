@@ -3,6 +3,10 @@ import { css, html, LitElement } from 'lit-element';
 import './svg-icon.js';
 
 class WeatherSymbol extends LitElement {
+  static get is() {
+    return 'weather-symbol';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -10,34 +14,18 @@ class WeatherSymbol extends LitElement {
       }
 
       :host([large]) {
-        --height: 80px;
-        --width: 80px;
-      }
-
-      svg {
-        display: block;
-        pointer-events: none;
-        height: var(--height, 45px);
-        width: var(--width, 45px);
+        height: 80px;
+        width: 80px;
       }
     `;
   }
 
   render() {
     return html`
-      <svg
-        viewBox="0 0 37 37"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="xMidYMid meet"
-        focusable="false"
-      >
-        <use></use>
-      </svg>
+      <svg-icon
+        path="${`assets/image/weather-symbols.svg#weatherSymbol${this.symbolId}`}"
+      ></svg-icon>
     `;
-  }
-
-  static get is() {
-    return 'weather-symbol';
   }
 
   static get properties() {
@@ -51,16 +39,6 @@ class WeatherSymbol extends LitElement {
         reflect: true,
       },
     };
-  }
-
-  updated() {
-    this.shadowRoot
-      .querySelector('use')
-      .setAttributeNS(
-        'http://www.w3.org/1999/xlink',
-        'xlink:href',
-        `assets/image/weather-symbols.svg#weatherSymbol${this.symbolId}`
-      );
   }
 }
 

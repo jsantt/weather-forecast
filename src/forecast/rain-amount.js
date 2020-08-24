@@ -37,7 +37,7 @@ class RainAmount extends LitElement {
   static get properties() {
     return {
       rainAmount: {
-        type: String,
+        type: Number,
       },
     };
   }

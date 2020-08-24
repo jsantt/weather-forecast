@@ -34,8 +34,8 @@ class SunriseSunset extends LitElement {
       }
 
       svg-icon {
-        --height: 24px;
-        --width: 24px;
+        height: 24px;
+        width: 24px;
         fill: var(--color-blue-700);
       }
     `;
