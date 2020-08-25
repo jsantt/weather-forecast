@@ -35,7 +35,6 @@ class ComboBox extends LitElement {
       }
 
       :host([loading]) svg {
-        fill: var(--color-gray-500);
         animation: swing ease-in-out 2s infinite alternate;
         transform-origin: 24px 24px;
       }
