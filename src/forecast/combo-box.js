@@ -35,23 +35,21 @@ class ComboBox extends LitElement {
       }
 
       :host([loading]) svg {
-        fill: var(--color-gray-400);
-
-        animation-name: swing;
-        animation-duration: 4s;
-        animation-iteration-count: infinite;
+        fill: var(--color-gray-500);
+        animation: swing ease-in-out 2s infinite alternate;
+        transform-origin: 24px 24px;
       }
 
       :host([loading]) input[type='text'] {
-        color: var(--color-gray-400);
+        color: var(--color-gray-500);
       }
 
       @keyframes swing {
         0% {
-          transform: rotate(0deg);
+          transform: rotate(15deg);
         }
         100% {
-          transform: rotate(360deg);
+          transform: rotate(-15deg);
         }
       }
 
