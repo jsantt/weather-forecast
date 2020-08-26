@@ -56,7 +56,7 @@ class LocationSelector extends LitElement {
   render() {
     return html` <combo-box
       .currentValue="${this.city}"
-      .items="${CITIES}"
+      .items="${this._placeList()}"
       key="city"
       ?loading=${this.loading}
     ></combo-box>`;
