@@ -19,6 +19,19 @@ class ComboBox extends LitElement {
         background-color: var(--color-yellow-500);
       }
 
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        max-height: 500px;
+        overflow-y: auto;
+      }
+
+      li {
+        padding: var(--space-m) var(--space-s);
+        margin: 0;
+      }
+
       /*the container must be positioned relative:*/
       .autocomplete {
         position: relative;
@@ -110,7 +123,7 @@ class ComboBox extends LitElement {
       }
 
       /* when navigating through the items using the arrow keys: */
-      .autocomplete-active {
+      li[selected] {
         background: var(--color-blue-800);
         color: var(-color-gray-300);
       }
@@ -122,15 +135,6 @@ class ComboBox extends LitElement {
 
       strong {
         color: var(--color-black);
-      }
-
-      .close {
-        position: absolute;
-        right: 0rem;
-        fill: var(--color-gray-800);
-        width: 40px;
-        height: 50px;
-        bottom: -0.25rem;
       }
     `;
   }
@@ -157,14 +161,44 @@ class ComboBox extends LitElement {
             name="myCountry"
             .value="${this.currentValue}"
             aria-label="Sää paikassa"
-            @click="${() => this._onInputClick()}"
+            @click="${this._onInputClick}"
           />
-          <svg-icon
-            path="assets/image/icons.svg#close"
-            class="close"
-          ></svg-icon>
+          ${this._open === true
+            ? html`
+                <ul id="autocomplete-list" class="autocomplete-items">
+                  ${this._filteredItems.map(item => {
+                    return html` <li
+                      tabindex="-1"
+                      @click="${this._onItemClick}"
+                    >
+                      ${this._highlightMatch(item.city)}
+                      <input type="hidden" value="${item.city}" />
+                    </li>`;
+                  })}
+                </ul>
+              `
+            : ''}
         </div>
       </form>
+      <!-- example output -->
+      <!--form autocomplete="off" spellcheck="false">
+        <div class="autocomplete">
+          <input
+            id="comboInput"
+            type="text"
+            name="myCountry"
+            aria-label="Sää paikassa"
+          />
+          <ul id="autocomplete-list" class="autocomplete-items">
+            <li tabindex="-1">
+              <strong>E</strong>spoo<input type="hidden" value="Espoo" />
+            </li>
+            <li tabindex="-1" class="autocomplete-active">
+              <strong>E</strong>ckerö<input type="hidden" value="Eckerö" />
+            </li>
+          </ul>
+        </div>
+      </form-->
     `;
   }
 
@@ -174,33 +208,40 @@ class ComboBox extends LitElement {
       items: { type: Array },
       key: { type: String, reflect: true },
       loading: { type: Boolean, reflect: true },
-      _previousValue: { type: Object, reflect: true },
+      _filteredItems: { type: Array },
+      _focusIndex: { type: Number, reflect: true },
+      _open: { type: Boolean, reflect: true },
+      _previousValue: { type: Object },
     };
   }
 
   constructor() {
     super();
-
-    this.currentFocus;
+    this._filteredItems = [];
   }
 
   firstUpdated() {
-    /* initiate the autocomplete function on the "comboInput" element, and pass along the countries array as possible autocomplete values: */
-    /* execute a function when someone writes in the text field: */
-    const combobox = this.shadowRoot.getElementById('comboInput');
-    combobox.addEventListener('input', () => {
-      this._onInput(combobox, this.items, this.key);
+    this._combobox.addEventListener('input', () => {
+      const inputValue = this._combobox.value;
+      this._filteredItems = this._filterItems(inputValue);
+      this._openCombobox();
     });
 
-    combobox.addEventListener('keydown', event => {
-      this._onKeyDown(event);
+    this._combobox.addEventListener('keydown', event => {
+      this._onKeyPress(event);
     });
   }
 
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'currentValue') {
-        this.shadowRoot.getElementById('comboInput').value = this.currentValue;
+        this._combobox.value = this.currentValue;
+
+        if (this.currentValue === '') {
+          this._openCombobox();
+
+          this._focusIndex = -1;
+        }
       }
     });
   }
@@ -209,138 +250,77 @@ class ComboBox extends LitElement {
     if (this.currentValue !== undefined && this.currentValue.length > 0) {
       this._previousValue = this.currentValue;
     }
-    this.shadowRoot.querySelector('input[type=text]').select();
-
-    this._onInput(
-      this.shadowRoot.getElementById('comboInput'),
-      this.items,
-      this.key
-    );
+    this._dispatch('combo-box.clicked');
   }
 
-  _onInputBlur() {
-    if (this.currentValue === '' && this._isOpen() === false) {
-      this.currentValue = this._previousValue;
+  _setFocus(itemIndex) {
+    const items = this.shadowRoot.querySelectorAll('li');
+
+    if (itemIndex < 0 || itemIndex > this._filteredItems.length) {
     }
+
+    items[itemIndex].setAttribute('selected', 'true');
+    items[itemIndex - 1].removeAttribute('selected');
+    items[itemIndex + 1].removeAttribute('selected');
   }
 
-  /* is combobox open */
-  _isOpen() {
-    return this.shadowRoot.querySelector('#autocomplete-list') !== null;
+  _filterItems(filterText) {
+    const filtered = this.items.filter(item => {
+      return (
+        item.city.substr(0, filterText.length).toLowerCase() ===
+        filterText.toLowerCase()
+      );
+    });
+
+    return filtered;
+  }
+
+  _highlightMatch(city) {
+    const inputValue = this._combobox.value;
+
+    return html`<strong>${city.substr(0, inputValue.length)}</strong
+      >${city.substr(inputValue.length)}`;
+  }
+
+  _openCombobox() {
+    this._open = true;
+  }
+
+  _onItemClick(event) {
+    const clickedValue = event.target.querySelector('input').value;
+    this._dispatch('combo-box.new-value', clickedValue);
+
+    this._open = false;
   }
 
   /**
    * Handle keyboard navigation
    * @param {*} event
    */
-  _onKeyDown(event) {
-    let list = this.shadowRoot.getElementById(`${this.id}autocomplete-list`);
-    if (list !== null) {
-      list = list.getElementsByTagName('div');
-    }
-
+  _onKeyPress(event) {
     switch (event.keyCode) {
       case 40 /* arrow DOWN */:
-        this.currentFocus += 1;
-        this.highlightItem(list);
+        this._focusIndex += 1;
+
+        this._setFocus(this._focusIndex);
         break;
 
       case 38 /* arrow UP */:
-        this.currentFocus--;
-        this.highlightItem(list);
+        this._focusIndex--;
+        this._setFocus(this._focusIndex);
         break;
 
       case 13:
         /* If the ENTER key is pressed, prevent the form from being submitted, */
         event.preventDefault();
-        if (this.currentFocus > -1 && list) {
-          /* and simulate a click on the "active" item: */
-          list[this.currentFocus].click();
-        }
+
+        // and simulate a click on the "focused" item
+        this.shadowRoot.querySelectorAll('li')[this._focusIndex].click();
+
+        break;
+      case 27:
+        console.log('TODO close on ESC character');
       default:
-    }
-  }
-
-  _onInput(inp, arr, key) {
-    let container;
-    let item;
-
-    const val = this.shadowRoot.querySelector('input').value;
-    /* close any already open lists of autocompleted values */
-    this.closeAllLists(undefined, inp);
-    if (!val) {
-      return false;
-    }
-    this.currentFocus = -1;
-    /* create a DIV element that will contain the items (values): */
-    container = document.createElement('DIV');
-    container.setAttribute('id', `${this.id}autocomplete-list`);
-    container.setAttribute('class', 'autocomplete-items');
-    /* append the DIV element as a child of the autocomplete container: */
-    this.shadowRoot.querySelector('div').appendChild(container);
-    /* for each item in the array... */
-    for (let i = 0; i < arr.length; i += 1) {
-      /* check if the item starts with the same letters as the text field value: */
-      if (
-        arr[i][this.key].substr(0, val.length).toUpperCase() ==
-        val.toUpperCase()
-      ) {
-        /* create a DIV element for each matching element: */
-        item = document.createElement('DIV');
-        /* make the matching letters bold: */
-        item.innerHTML = `<strong>${arr[i][key].substr(
-          0,
-          val.length
-        )}</strong>`;
-        item.innerHTML += arr[i][key].substr(val.length);
-        /* insert a input field that will hold the current array item's value: */
-        item.innerHTML += `<input type='hidden' value='${arr[i][key]}'>`;
-        /* execute a function when someone clicks on the item value (DIV element): */
-        item.addEventListener('click', event => {
-          let clickedValue;
-          /* insert the value for the autocomplete text field: */
-          if (event.target.querySelector('input') === null) {
-            // when clicked to <strong> element
-            clickedValue = event.target.parentNode.querySelector('input').value;
-          } else {
-            clickedValue = event.target.querySelector('input').value;
-          }
-          this._dispatch('combo-box.new-value', clickedValue);
-          /* close the list of autocompleted values,
-              (or any other open lists of autocompleted values: */
-          this.closeAllLists(undefined, inp);
-        });
-        container.appendChild(item);
-      }
-    }
-  }
-
-  highlightItem(x) {
-    /* a function to classify an item as "active": */
-    if (!x) return false;
-    /* start by removing the "active" class on all items: */
-    this.removeActive(x);
-    if (this.currentFocus >= x.length) this.currentFocus = 0;
-    if (this.currentFocus < 0) this.currentFocus = x.length - 1;
-    /* add class "autocomplete-active": */
-    x[this.currentFocus].classList.add('autocomplete-active');
-  }
-
-  removeActive(x) {
-    /* a function to remove the "active" class from all autocomplete items: */
-    for (let i = 0; i < x.length; i++) {
-      x[i].classList.remove('autocomplete-active');
-    }
-  }
-
-  closeAllLists(elmnt, inp) {
-    /* close all autocomplete lists in the document,
-    except the one passed as an argument: */
-    const x = this.shadowRoot.querySelectorAll('.autocomplete-items');
-    for (let i = 0; i < x.length; i += 1) {
-      if (elmnt != x[i] && elmnt != inp) {
-        x[i].parentNode.removeChild(x[i]);
-      }
     }
   }
 
@@ -351,6 +331,10 @@ class ComboBox extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+  }
+
+  get _combobox() {
+    return this.shadowRoot.getElementById('comboInput');
   }
 }
 

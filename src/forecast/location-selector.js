@@ -106,10 +106,18 @@ class LocationSelector extends LitElement {
       }
     });
 
+    this.addEventListener('combo-box.clicked', () => {
+      this.city = '';
+    });
+
     this.addEventListener('combo-box.new-value', event => {
       this.city = event.detail;
 
-      if (event.detail === '') {
+      if (
+        event.detail === '' ||
+        event.detail === null ||
+        event.detail === undefined
+      ) {
         return;
       }
 
