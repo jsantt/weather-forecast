@@ -121,7 +121,10 @@ class LocationSelector extends LitElement {
         return;
       }
 
-      const cityAndCoordinates = CITIES.filter(item => item.city === this.city);
+      // combobox tells the city only, get city and coordinates from localstorage items and city list
+      let cityAndCoordinates = this._placeList().filter(
+        item => item.city === this.city
+      );
 
       this._dispatchEvent(
         'location-selector.location-changed',

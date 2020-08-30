@@ -1,9 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
 import '../common/svg-icon.js';
-/**
- * Based on https://www.w3schools.com/howto/howto_js_autocomplete.asp
- */
+
 class ComboBox extends LitElement {
   static get is() {
     return 'combo-box';
@@ -33,19 +31,30 @@ class ComboBox extends LitElement {
       }
 
       /*the container must be positioned relative:*/
-      .autocomplete {
+      .combobox {
         position: relative;
         display: inline-block;
         width: 100%;
       }
 
-      svg {
-        display: inline-block;
+      .magnifier {
         fill: var(--color-red-500);
         position: absolute;
         left: 2px;
         top: 2px;
         vertical-align: center;
+        width: 36px;
+        height: 36px;
+        visibility: hidden;
+      }
+      .refresh {
+        fill: var(--color-blue-700);
+        position: absolute;
+        right: 2px;
+        top: 1px;
+        width: 32px;
+        height: 32px;
+        padding: var(--space-s);
       }
 
       :host([loading]) svg {
@@ -64,6 +73,17 @@ class ComboBox extends LitElement {
         100% {
           transform: rotate(-15deg);
         }
+      }
+
+      label {
+        /* hide visually */
+        position: absolute !important;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0 !important;
+        border: 0 !important;
+        height: 1px !important;
+        width: 1px !important;
+        overflow: hidden;
       }
 
       input[type='text'] {
@@ -94,47 +114,34 @@ class ComboBox extends LitElement {
         transition: padding 0.5s ease;
       }
 
-      .autocomplete-items {
+      #combobox-list {
         background: var(--color-gray-300);
 
         color: var(--color-gray-600);
         position: absolute;
 
         z-index: var(--z-index-floating-2);
-        /*position the autocomplete items to be the same width as the container:*/
+        /* position the combobox list items to be the same width as the container */
         top: 100%;
         left: 0;
         right: 0;
       }
 
-      .autocomplete-items div {
-        padding: 10px;
-        cursor: pointer;
-      }
-
-      /*when hovering an item:*/
-      .autocomplete-items div:hover {
-        background: var(--color-blue-800);
-        color: var(-color-gray-300);
-      }
-
-      .autocomplete-items div:hover strong {
-        color: var(--color-white);
-      }
-
       /* when navigating through the items using the arrow keys: */
-      li[selected] {
+      li[aria-selected='true'],
+      li:hover {
         background: var(--color-blue-800);
         color: var(-color-gray-300);
       }
 
-      .autocomplete-active strong {
+      li[aria-selected='true'] strong,
+      li:hover strong {
         background: var(--color-blue-800);
         color: var(--color-white);
       }
 
       strong {
-        color: var(--color-black);
+        color: var(--color-blue-800);
       }
     `;
   }
@@ -142,30 +149,42 @@ class ComboBox extends LitElement {
   render() {
     return html`
       <form autocomplete="off" spellcheck="false">
-        <div class="autocomplete">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="36"
-            viewBox="0 0 24 24"
-            width="36"
-          >
-            <path d="M0 0h24v24H0V0z" fill="none" />
-            <path
-              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-            />
-          </svg>
-
+        <label id="label" for="comboInput">
+          Valitse kaupunki
+        </label>
+        <div
+          class="combobox"
+          role="combobox"
+          aria-owns="combobox-list"
+          aria-haspopup="true"
+          aria-expanded="${this._open === true ? 'true' : 'false'}"
+        >
+          <svg-icon
+            class="magnifier"
+            path="assets/image/icons.svg#magnifier"
+          ></svg-icon>
           <input
             id="comboInput"
             type="text"
             name="myCountry"
             .value="${this.currentValue}"
             aria-label="Sää paikassa"
+            aria-labelledby="label"
             @click="${this._onInputClick}"
           />
+          <svg-icon
+            @click="${this._refresh}"
+            class="refresh"
+            path="assets/image/icons.svg#refresh"
+          ></svg-icon>
           ${this._open === true
             ? html`
-                <ul id="autocomplete-list" class="autocomplete-items">
+                <ul
+                  @mouseover="${this._clearSelected}"
+                  id="combobox-list"
+                  aria-labelledBy="label"
+                  role="listbox"
+                >
                   ${this._filteredItems.map(item => {
                     return html` <li
                       tabindex="-1"
@@ -180,25 +199,6 @@ class ComboBox extends LitElement {
             : ''}
         </div>
       </form>
-      <!-- example output -->
-      <!--form autocomplete="off" spellcheck="false">
-        <div class="autocomplete">
-          <input
-            id="comboInput"
-            type="text"
-            name="myCountry"
-            aria-label="Sää paikassa"
-          />
-          <ul id="autocomplete-list" class="autocomplete-items">
-            <li tabindex="-1">
-              <strong>E</strong>spoo<input type="hidden" value="Espoo" />
-            </li>
-            <li tabindex="-1" class="autocomplete-active">
-              <strong>E</strong>ckerö<input type="hidden" value="Eckerö" />
-            </li>
-          </ul>
-        </div>
-      </form-->
     `;
   }
 
@@ -238,6 +238,7 @@ class ComboBox extends LitElement {
         this._combobox.value = this.currentValue;
 
         if (this.currentValue === '') {
+          this._filteredItems = this.items;
           this._openCombobox();
 
           this._focusIndex = -1;
@@ -253,15 +254,26 @@ class ComboBox extends LitElement {
     this._dispatch('combo-box.clicked');
   }
 
+  _refresh() {
+    if (this.currentValue === '') {
+      this.currentValue = this._previousValue;
+    }
+    this._closeCombobox();
+
+    this._dispatch('combo-box.new-value', this.currentValue);
+  }
+
   _setFocus(itemIndex) {
+    this._clearSelected();
+
     const items = this.shadowRoot.querySelectorAll('li');
 
-    if (itemIndex < 0 || itemIndex > this._filteredItems.length) {
+    if (items[itemIndex] === undefined) {
+      this._focusIndex = -1;
+    } else {
+      items[itemIndex].setAttribute('aria-selected', 'true');
+      items[itemIndex].scrollIntoView(false);
     }
-
-    items[itemIndex].setAttribute('selected', 'true');
-    items[itemIndex - 1].removeAttribute('selected');
-    items[itemIndex + 1].removeAttribute('selected');
   }
 
   _filterItems(filterText) {
@@ -285,12 +297,24 @@ class ComboBox extends LitElement {
   _openCombobox() {
     this._open = true;
   }
+  _closeCombobox() {
+    this._open = false;
+    if (this._combobox.value === '') {
+      this.currentValue = this._previousValue;
+    }
+  }
 
   _onItemClick(event) {
     const clickedValue = event.target.querySelector('input').value;
     this._dispatch('combo-box.new-value', clickedValue);
 
-    this._open = false;
+    this._closeCombobox();
+  }
+
+  _clearSelected() {
+    this.shadowRoot.querySelectorAll('li').forEach(item => {
+      item.removeAttribute('aria-selected');
+    });
   }
 
   /**
@@ -315,11 +339,16 @@ class ComboBox extends LitElement {
         event.preventDefault();
 
         // and simulate a click on the "focused" item
-        this.shadowRoot.querySelectorAll('li')[this._focusIndex].click();
+        const selectedItem = this.shadowRoot.querySelectorAll('li')[
+          this._focusIndex
+        ];
+        if (selectedItem !== undefined) {
+          selectedItem.click();
+        }
 
         break;
       case 27:
-        console.log('TODO close on ESC character');
+        this._closeCombobox();
       default:
     }
   }
