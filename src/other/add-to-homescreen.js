@@ -15,22 +15,20 @@ class AddToHomescreen extends LitElement {
 
       button {
         box-sizing: border-box;
-        background-color: var(--color-white);
+        background-color: white;
         border-style: none;
         color: var(--color-black);
 
         display: flex;
         align-items: center;
-        justify-content: center;
 
         font: inherit;
         font-weight: var(--font-weight-boldest);
-        margin-bottom: 2.75rem;
 
+        padding: var(--space-l);
         text-align: center;
         text-transform: uppercase;
         outline: none;
-        padding: 1rem;
 
         width: 100%;
 
@@ -47,7 +45,8 @@ class AddToHomescreen extends LitElement {
       .notification {
         background-color: var(--color-white);
         color: var(--color-black);
-        padding: var(--space-l) var(--space-m);
+        margin-top: -0.5rem;
+        padding: 0 var(--space-l) var(--space-l) var(--space-l);
       }
 
       ol {
@@ -57,7 +56,7 @@ class AddToHomescreen extends LitElement {
       }
 
       .sun {
-        padding: 0 var(--space-l);
+        padding: 0 var(--space-l) 0 0;
       }
 
       .sun--hidden {
@@ -83,14 +82,9 @@ class AddToHomescreen extends LitElement {
                   class="sun"
                   path="assets/image/weather-symbols.svg#weatherSymbol1"
                 ></svg-icon>
-
                 <div>
                   ASENNA SOVELLUS
                 </div>
-                <svg-icon
-                  class="sun sun--hidden"
-                  path="assets/image/weather-symbols.svg#weatherSymbol1"
-                ></svg-icon>
               </button>
 
               ${this._iosInstructionsVisible === true

@@ -56,7 +56,7 @@ class LocationSelector extends LitElement {
   render() {
     return html` <combo-box
       .currentValue="${this.city}"
-      .items="${CITIES}"
+      .items="${this._placeList()}"
       key="city"
       ?loading=${this.loading}
     ></combo-box>`;
@@ -106,14 +106,25 @@ class LocationSelector extends LitElement {
       }
     });
 
+    this.addEventListener('combo-box.clicked', () => {
+      this.city = '';
+    });
+
     this.addEventListener('combo-box.new-value', event => {
       this.city = event.detail;
 
-      if (event.detail === '') {
+      if (
+        event.detail === '' ||
+        event.detail === null ||
+        event.detail === undefined
+      ) {
         return;
       }
 
-      const cityAndCoordinates = CITIES.filter(item => item.city === this.city);
+      // combobox tells the city only, get city and coordinates from localstorage items and city list
+      let cityAndCoordinates = this._placeList().filter(
+        item => item.city === this.city
+      );
 
       this._dispatchEvent(
         'location-selector.location-changed',
