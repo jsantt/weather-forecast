@@ -56,6 +56,7 @@ class GeolocateButton extends LitElement {
       ${this.loading === true
         ? ''
         : html` <svg
+              tabindex="0"
               @click="${this._geolocate}"
               width="80"
               height="80"

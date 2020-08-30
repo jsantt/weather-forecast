@@ -170,8 +170,12 @@ class LocationSelector extends LitElement {
   }
 
   _placeList() {
+    let allLocations;
+
     const previousLocations = LocationSelector._getFromLocalStorage('place');
-    const allLocations = previousLocations.concat(CITIES);
+    if (previousLocations !== null) {
+      allLocations = previousLocations.concat(CITIES);
+    }
 
     return allLocations;
   }
