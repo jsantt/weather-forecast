@@ -177,7 +177,9 @@ class ComboBox extends LitElement {
           <svg-icon
             @click="${this._refresh}"
             class="refresh"
-            path="assets/image/icons.svg#refresh"
+            path="${this._open === true
+              ? 'assets/image/icons.svg#close'
+              : 'assets/image/icons.svg#refresh'}"
           ></svg-icon>
           ${this._open === true
             ? html`
@@ -244,6 +246,8 @@ class ComboBox extends LitElement {
           this._openCombobox();
 
           this._focusIndex = -1;
+        } else {
+          this._closeCombobox();
         }
       }
     });
