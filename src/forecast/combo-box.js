@@ -38,7 +38,6 @@ class ComboBox extends LitElement {
       }
 
       .magnifier {
-        fill: var(--color-red-500);
         position: absolute;
         left: 2px;
         top: 2px;
@@ -47,6 +46,7 @@ class ComboBox extends LitElement {
         height: 36px;
         visibility: hidden;
       }
+
       .refresh {
         fill: var(--color-blue-700);
         position: absolute;
@@ -57,21 +57,24 @@ class ComboBox extends LitElement {
         padding: var(--space-s);
       }
 
-      :host([loading]) svg {
-        animation: swing ease-in-out 2s infinite alternate;
-        transform-origin: 24px 24px;
+      :host([_loadingPlus]) .refresh {
+        animation: spin 1s infinite linear;
+        transform-origin: center center;
       }
 
-      :host([loading]) input[type='text'] {
-        color: var(--color-gray-500);
+      :host([_loadingPlus]) input[type='text'],
+      :host([_loadingPlus]) .magnifier,
+      :host([_loadingPlus]) .refresh {
+        color: var(--color-gray-600);
+        fill: var(--color-gray-600);
       }
 
-      @keyframes swing {
+      @keyframes spin {
         0% {
-          transform: rotate(15deg);
+          transform: rotate(0deg);
         }
         100% {
-          transform: rotate(-15deg);
+          transform: rotate(360deg);
         }
       }
 
@@ -214,6 +217,8 @@ class ComboBox extends LitElement {
       loading: { type: Boolean, reflect: true },
       _filteredItems: { type: Array },
       _focusIndex: { type: Number, reflect: true },
+      // loading plus some delay, as users might not otherwise notice the loading
+      _loadingPlus: { type: Boolean, reflect: true },
       _open: { type: Boolean, reflect: true },
       _previousValue: { type: Object },
     };
@@ -248,6 +253,16 @@ class ComboBox extends LitElement {
           this._focusIndex = -1;
         } else {
           this._closeCombobox();
+        }
+      }
+
+      if (propName === 'loading') {
+        if (this.loading === true) {
+          this._loadingPlus = this.loading;
+        } else {
+          setTimeout(() => {
+            this._loadingPlus = this.loading;
+          }, 1000);
         }
       }
     });
