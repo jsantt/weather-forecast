@@ -9,7 +9,6 @@ import './temperature-line.js';
 
 import './rain-bars.js';
 import './wind-speed.js';
-import '../common/weather-symbol.js';
 import '../common/weather-symbol-small.js';
 
 import '../common/wind-icon.js';
@@ -329,9 +328,9 @@ class WeatherDay extends LitElement {
               : html` <div
                     class="symbol ${entry.past === true ? 'past-hour' : ''}"
                   >
-                    <weather-symbol
-                      .symbolId="${entry.symbol}"
-                    ></weather-symbol>
+                    <svg-icon
+                      path="${`assets/image/weather-symbols.svg#weatherSymbol${entry.symbol}`}"
+                    ></svg-icon>
                   </div>
 
                   <div

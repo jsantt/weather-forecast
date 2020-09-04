@@ -9,6 +9,8 @@ import {
   raiseEvent,
 } from './common/xml-parser.js';
 
+import { wawaToSymbol3 } from './common/wawa-converter.js';
+
 /**
  * Observations are fetched from the nearest observation station using area name, because
  * there is no support for coordinates. New data is available every 10 minutes
@@ -65,7 +67,7 @@ class ObservationData extends LitElement {
   _getParams(geoid) {
     const params = {
       request: 'getFeature',
-      storedquery_id: 'fmi::observations::weather::timevaluepair',
+      storedquery_id: 'fmi::observations::weather::timevaluepair', // multipointcoverage',
       geoid,
       maxlocations: 1,
       starttime: this._roundDownToFullMinutes(-12), // get the latest data only
@@ -130,7 +132,7 @@ class ObservationData extends LitElement {
   _formatObservations(rawResponse) {
     const observations = this._pickUpValues(rawResponse);
 
-    return {
+    let formatted = {
       weatherStation: parseLocationName(rawResponse),
       latLon: parseLatLon(rawResponse),
       time: getTime(observations.temperature),
@@ -148,6 +150,13 @@ class ObservationData extends LitElement {
       windDirection: parseFloat(getValue(observations.windDirection)),
       windGust: parseFloat(getValue(observations.windGust)),
     };
+
+    formatted.weatherCode3 = wawaToSymbol3(
+      formatted.weatherCode,
+      formatted.cloudiness
+    );
+
+    return formatted;
   }
 
   _pickUpValues(response) {

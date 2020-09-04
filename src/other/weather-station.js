@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import '../common/error-notification.js';
+import '../common/svg-icon.js';
 import '../forecast/weather-name-wawa.js';
 import './footer-section.js';
 
@@ -159,6 +160,10 @@ class WeatherStation extends LitElement {
                         <div>
                           <span>${this.observationData.temperature}°C</span>
                         </div>
+                        <svg-icon
+                          path="assets/image/weather-symbols.svg#weatherSymbol${this
+                            .observationData.weatherCode3}"
+                        ></svg-icon>
                       `
                     : ``
                 }
