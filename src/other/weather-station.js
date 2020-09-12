@@ -17,6 +17,22 @@ class WeatherStation extends LitElement {
         display: block;
       }
 
+      section {
+        display: grid;
+        grid-template-columns: 5rem 3rem 1fr 2rem;
+        grid-template-rows: auto;
+        margin-bottom: var(--space-m);
+      }
+
+      .place {
+        grid-column: span 4;
+      }
+
+      weather-name-wawa {
+        font-style: italic;
+        padding: 0 var(--space-l);
+      }
+
       h1,
       h2,
       h3 {
@@ -46,17 +62,6 @@ class WeatherStation extends LitElement {
         line-height: 1.5;
       }
 
-      .content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-
-        align-items: center;
-        justify-items: center;
-
-        padding-top: var(--space-l);
-        text-align: center;
-      }
-
       .label {
         color: var(--color-white);
 
@@ -65,62 +70,24 @@ class WeatherStation extends LitElement {
         padding-right: var(--space-l);
         margin-bottom: var(--space-xl);
       }
-
-      .place {
-        grid-column: 1 / span 2;
-        font-size: var(--font-size-l);
+      svg-icon {
+        height: 52px;
+        width: 52px;
       }
 
       .temperature {
-        justify-self: stretch;
         font-size: var(--font-size-xxl);
         font-weight: var(--font-weight-bold);
-        grid-column: 1 / span 2;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
 
-      weather-name-wawa {
-        grid-column: 1 / span 2;
-        margin-bottom: var(--space-xl);
-        font-size: var(--font-size-l);
-        padding: 0 var(--space-m);
-      }
-
-      .item {
-        padding: 1rem 0;
+      .celcius {
+        font-size: var(--font-size-m);
+        vertical-align: top;
       }
 
       .degree {
         font-size: var(--font-size-l);
         vertical-align: super;
-      }
-
-      .rainDetails {
-        grid-column: 1 / span 2;
-      }
-      .value {
-        font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
-      }
-
-      .explanation {
-        text-transform: uppercase;
-      }
-
-      .windExplanation {
-        margin-top: -0.26rem;
-      }
-
-      footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        font-size: var(--font-size-m);
-        margin-top: var(--space-xl);
       }
 
       div[slot] {
@@ -139,179 +106,66 @@ class WeatherStation extends LitElement {
   }
 
   render() {
-    return html`
-      <footer-section header="lähin havaintoasema">
-        ${this.observationData === undefined || this.observationError
-          ? html`
-              <error-notification
-                errorText="Sääasemalle ei valitettavasti saatu yhteyttä"
-              >
-              </error-notification>
-            `
-          : html`
+    return html` <footer-section header="Lähimmät havaintoasemat">
+      ${this.observationData === undefined ||
+      this.observationData[0] === undefined ||
+      this.observationError
+        ? html`
+            <error-notification
+              errorText="Sääasemalle ei valitettavasti saatu yhteyttä"
+            >
+            </error-notification>
+          `
+        : html`
             <div class="content">
-              <div class="place">
-                ${this.observationData.weatherStation}
-              </div>
-              <div class="temperature">
-                ${
-                  this.observationData.temperature
+              ${this.observationData.map(station => {
+                return html` <section>
+                  <div class="place">
+                    ${station.name}
+                  </div>
+                  <div class="temperature">
+                    ${station.temperature
+                      ? html`
+                          <div>
+                            ${station.temperature}<span class="celcius"
+                              >°C</span
+                            >
+                          </div>
+                        `
+                      : ``}
+                  </div>
+                  <svg-icon
+                    path="assets/image/weather-symbols.svg#weatherSymbol${station.weatherCode3}"
+                  ></svg-icon>
+
+                  <weather-name-wawa
+                    .wawaId="${station.wawaCode}"
+                    .cloudiness="${station.cloudiness}"
+                  >
+                  </weather-name-wawa>
+                  ${station.wind
                     ? html`
-                        <div>
-                          <span>${this.observationData.temperature}°C</span>
+                        <div class="item">
+                          <wind-icon
+                            .degrees="${station.windDirection}"
+                            .windSpeed="${station.wind}"
+                            .windGustSpeed="${station.windGust}"
+                          >
+                          </wind-icon>
                         </div>
-                        <svg-icon
-                          path="assets/image/weather-symbols.svg#weatherSymbol${this
-                            .observationData.weatherCode3}"
-                        ></svg-icon>
                       `
-                    : ``
-                }
-              </div>
-
-              <weather-name-wawa
-                .wawaId="${this.observationData.weatherCode}"
-                .cloudiness="${this.observationData.cloudiness}"
-              >
-              </weather-name-wawa>
-
-              ${
-                this.observationData.rainExplanation
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${this.observationData.rainExplanation}mm/h
-                        </div>
-                        <div class="explanation">sateen rankkuus</div>
-                        <div></div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                this.observationData.rain
-                  ? html`
-                      <div>
-                        <div class="value">${this.observationData.rain}</div>
-                        <div class="explanation">
-                          mm sadetta / edeltävä tunti
-                        </div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                this.observationData.wind
-                  ? html`
-                      <div class="item">
-                        <wind-icon
-                          degrees="${this.observationData.windDirection}"
-                          large
-                          windSpeed="${this.observationData.wind}"
-                          windGustSpeed="${this.observationData.windGust}"
-                        >
-                        </wind-icon>
-                        <div class="explanation windExplanation">
-                          10 min keskituuli ja puuskat
-                        </div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                this.observationData.humidity
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${this.observationData.humidity}%
-                        </div>
-                        <div class="explanation">ilmankosteus</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                this.observationData.pressure
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${this.observationData.pressure} hPa
-                        </div>
-                        <div class="explanation">ilmanpaine</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                this.observationData.visibility
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${this.observationData.visibility}m
-                        </div>
-                        <div class="explanation">näkyvyys</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                this.observationData.dewPoint
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${this.observationData.dewPoint}°C
-                        </div>
-                        <div class="explanation">kastepiste</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                this.observationData.cloudiness
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${this.observationData.cloudiness} / 8
-                        </div>
-                        <div class="explanation">pilvisyys</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                WeatherStation._snow(this.observationData.snow)
-                  ? html`
-                      <div class="item">
-                        Lumen syvyys: ${this.observationData.snow} cm
-                      </div>
-                    `
-                  : ``
-              }
+                    : ``}
+                </section>`;
+              })}
             </div>
-            
-              <div slot="footer-left">
-                Kello ${WeatherStation._formatTime(
-                  this.observationData.time
-                )} havainnot
-              </div>
-              <div slot="footer-right">
-                <a href="${WeatherStation._googleMapsURl(
-                  this.observationData.latLon
-                )}"
-                  >sijainti kartalla</a
-                >
-              </div>
-            
-            </footer-section>
           `}
-      </footer-section>
-    `;
+    </footer-section>`;
   }
 
   static get properties() {
     return {
       observationData: {
-        type: Object,
+        type: Array,
       },
       observationError: {
         type: Boolean,

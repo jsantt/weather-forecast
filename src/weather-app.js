@@ -396,7 +396,7 @@ class WeatherApp extends LitElement {
         type: Boolean,
       },
       _observationData: {
-        type: Object,
+        type: Array,
       },
       _observationError: {
         type: Boolean,

@@ -1,13 +1,6 @@
 import { LitElement } from 'lit-element';
 
-import {
-  getTime,
-  getTimeAndValuePairs,
-  getValue,
-  parseLatLon,
-  parseLocationName,
-  raiseEvent,
-} from './common/xml-parser.js';
+import { raiseEvent } from './common/xml-parser.js';
 
 import { wawaToSymbol3 } from './common/wawa-converter.js';
 
@@ -52,8 +45,9 @@ class ObservationData extends LitElement {
     fetch(query)
       .then(response => response.text())
       .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
-      .then(req => {
-        const formattedObservations = this._formatObservations(req);
+      .then(parsedResponse => {
+        window.observationsTest = parsedResponse;
+        const formattedObservations = this._formatObservations(parsedResponse);
         this._dispatch('observation-data.new-data', formattedObservations);
       })
       .catch(rejected => {
@@ -67,9 +61,10 @@ class ObservationData extends LitElement {
   _getParams(geoid) {
     const params = {
       request: 'getFeature',
-      storedquery_id: 'fmi::observations::weather::timevaluepair', // multipointcoverage',
+      storedquery_id: 'fmi::observations::weather::multipointcoverage', // multipointcoverage',
       geoid,
-      maxlocations: 1,
+      meters: 'ws_10min,t2m',
+      maxlocations: 5,
       starttime: this._roundDownToFullMinutes(-12), // get the latest data only
       endtime: this._roundDownToFullMinutes(0), // get the latest data only
     };
@@ -80,160 +75,242 @@ class ObservationData extends LitElement {
   /**
    * Response example
    *
-   * <wfs:FeatureCollection>
-   *   <wfs:member>
-   *     <omso:PointTimeSeriesObservation>
-   *       <om:phenomenonTime>...
-   *       <om:resultTime>...
-   *       <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">
-   *         Helsinki Kaisaniemi
-   *       </gml:name>...
-   *       <om:result>
-   *         <wml2:MeasurementTimeseries gml:id="obs-obs-1-1-t2m">
-   *           <wml2:point>
-   *             <wml2:MeasurementTVP>
-   *               <wml2:time>2018-04-29T07:40:00Z</wml2:time>
-   *	              <wml2:value>6.4</wml2:value>...
-   *           <wml2:point>
-   *             <wml2:MeasurementTVP>
-   *               <wml2:time>2018-04-29T07:50:00Z</wml2:time>
-   *	              <wml2:value>6.4</wml2:value>
+   * Station names:
    *
-   *   wd_10min = tuulen suunta
-   *   wawa = säätila
-   *   ws_10min = tuulen nopeus
-   *   wg_10min = puuskatuuli
-   *   p_sea = ilmanpaine
-   *   rh = ilmankosteus
-   *   t2m = lämpötila
-   *   r_1h = 1h sademäärä
-   *   ri_10min = sateen rankkuus
-   *   snow_aws = lumen syvyys niiltä asemilta jossa se on
+   *  <gml:pointMember>
+   *     <gml:Point gml:id="point-101786" srsName="http://www.opengis.net/def/crs/EPSG/0/4258" srsDimension="2">
+   *       <gml:name>Oulu lentoasema</gml:name>
+   *       <gml:pos>64.93503 25.33920 </gml:pos>
+   *     </gml:Point>
+	 *   </gml:pointMember>
+   *   <gml:pointMember>
+   *     <gml:Point gml:id="point-101794" srsName="http://www.opengis.net/def/crs/EPSG/0/4258" srsDimension="2">
+   *       <gml:name>Oulu Vihreäsaari satama</gml:name>
+   *       <gml:pos>65.00640 25.39321 </gml:pos>
+   *     </gml:Point>
+	 *   </gml:pointMember>
+   *   <gml:pointMember>
+   *     <gml:Point gml:id="point-101799" srsName="http://www.opengis.net/def/crs/EPSG/0/4258" srsDimension="2">
+   *       <gml:name>Oulu Oulunsalo Pellonpää</gml:name>
+   *       <gml:pos>64.93698 25.37299 </gml:pos>
+   *     </gml:Point>
+	 *   </gml:pointMember>
+   * 
+   * Positions:
+   * 
+   * <gmlcov:positions>
+      64.93503 25.33920  1599891720
+      64.93503 25.33920  1599891780
+      64.93503 25.33920  1599891840
+      64.93503 25.33920  1599891900
+      64.93503 25.33920  1599891960
+      64.93503 25.33920  1599892020
+      64.93503 25.33920  1599892080
+      64.93503 25.33920  1599892140
+      64.93503 25.33920  1599892200
+      64.93503 25.33920  1599892260
+      64.93503 25.33920  1599892320
+      64.93503 25.33920  1599892380
+      65.00640 25.39321  1599892200
+      64.93698 25.37299  1599892200
+      </gmlcov:positions>
    *
-   *   vis = näkyvyys
+   * Values:
    *
-   * And it is converted to the following JSON and stored into this.observationData
+   * <gml:doubleOrNilReasonTupleList>
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 8.0 NaN 
+      8.9 8.9 12.4 145.0 94.0 8.0 NaN NaN NaN 999.8 12560.0 NaN 62.0 
+      7.9 3.3 6.7 152.0 99.0 7.8 NaN 0.4 -1.0 999.9 16372.0 8.0 61.0 
+    </gml:doubleOrNilReasonTupleList>
+   * 
+   * 
+   *  <swe:DataRecord>
+   *    <swe:field name="t2m"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=t2m&amp;language=eng"/>
+   *    <swe:field name="ws_10min"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=ws_10min&amp;language=eng"/>
+   *    <swe:field name="wg_10min"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=wg_10min&amp;language=eng"/>
+   *    <swe:field name="wd_10min"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=wd_10min&amp;language=eng"/>
+   *    <swe:field name="rh"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=rh&amp;language=eng"/>
+   *    <swe:field name="td"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=td&amp;language=eng"/>
+   *    <swe:field name="r_1h"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=r_1h&amp;language=eng"/>
+   *    <swe:field name="ri_10min"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=ri_10min&amp;language=eng"/>
+   *    <swe:field name="snow_aws"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=snow_aws&amp;language=eng"/>
+   *    <swe:field name="p_sea"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=p_sea&amp;language=eng"/>
+   *    <swe:field name="vis"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=vis&amp;language=eng"/>
+   *    <swe:field name="n_man"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=n_man&amp;language=eng"/>
+   *    <swe:field name="wawa"  xlink:href="https://opendata.fmi.fi/meta?observableProperty=observation&amp;param=wawa&amp;language=eng"/>
+   *    </swe:DataRecord>
+   *  </gmlcov:rangeType>
    *
-   * {
-   *   humidity: 98
-   *   pressure: 1014.8
-   *   rain: NaN
-   *   rainExplanation: 0
-   *   snow: NaN
-   *   temperature: 1.3
-   *   time: "2018-10-07T19:40:00Z"
-   *   weatherCode: 0
-   *   weatherStation: "Espoo Tapiola"
-   *   wind: 2.4
-   *   windDirection: 314
-   * }
+   *  XML response is coverted into JSON Array
+   *
+   *  [
+   *    {
+   *     humidity: 98
+   *     pressure: 1014.8
+   *     rain: NaN
+   *     rainExplanation: 0
+   *     snow: NaN
+   *     temperature: 1.3
+   *     time: "2018-10-07T19:40:00Z"
+   *     weatherCode: 0
+   *     weatherCode3: 0
+   *     weatherStation: "Espoo Tapiola"
+   *     wind: 2.4
+   *     windDirection: 314
+   * }, {...}
+   *  ]
    *
    */
-  _formatObservations(rawResponse) {
-    const observations = this._pickUpValues(rawResponse);
 
-    let formatted = {
-      weatherStation: parseLocationName(rawResponse),
-      latLon: parseLatLon(rawResponse),
-      time: getTime(observations.temperature),
-      cloudiness: getValue(observations.cloudiness),
-      dewPoint: getValue(observations.dewPoint),
-      humidity: getValue(observations.humidity),
-      pressure: getValue(observations.pressure),
-      rain: getValue(observations.rain),
-      rainExplanation: getValue(observations.rainExplanation),
-      snow: getValue(observations.snow),
-      temperature: parseFloat(getValue(observations.temperature)),
-      visibility: getValue(observations.visibility),
-      weatherCode: getValue(observations.weatherCode),
-      wind: parseFloat(getValue(observations.wind)),
-      windDirection: parseFloat(getValue(observations.windDirection)),
-      windGust: parseFloat(getValue(observations.windGust)),
-    };
+  _parseStations(xmlDocResponse) {
+    const stations = xmlDocResponse.querySelectorAll('Point');
 
-    formatted.weatherCode3 = wawaToSymbol3(
-      formatted.weatherCode,
-      formatted.cloudiness
-    );
+    const result = [];
 
-    return formatted;
+    for (let i = 0; i < stations.length; i = i + 1) {
+      const name = stations[i].querySelector('name').innerHTML.trim();
+      const position = stations[i].querySelector('pos').innerHTML.trim();
+
+      result[i] = {};
+      result[i].name = name;
+      result[i].position = position;
+
+      const positionArray = position.split(' ');
+      result[i].latitude = positionArray[0];
+      result[i].longitude = positionArray[1];
+      result[i].latLon = `${positionArray[0]} ${positionArray[1]}`;
+    }
+
+    return result;
   }
 
-  _pickUpValues(response) {
-    const timeSeries = response.getElementsByTagName(
-      'wml2:MeasurementTimeseries'
+  /**
+   * Parse stations latitude and longitude. Example of position to be parsed:
+   *
+   * <gmlcov:positions>
+   *   64.93503 25.33920  1599892620
+   *   64.93503 25.33920  1599892680
+   *   64.93503 25.33920  1599892740
+   *   64.93503 25.33920  1599892800
+   *   64.93503 25.33920  1599892860
+   *   64.93503 25.33920  1599892920
+   *   64.93503 25.33920  1599892980
+   *   64.93503 25.33920  1599893040
+   *   64.93503 25.33920  1599893100
+   *   64.93503 25.33920  1599893160
+   *   64.93503 25.33920  1599893220
+   *   65.00640 25.39321  1599892800
+   *   64.93698 25.37299  1599892800
+   * </gmlcov:positions>
+   *
+   * @param {XMLDocument} xmlDocResponse
+   */
+  _parsePositions(xmlDocResponse) {
+    const positions = xmlDocResponse
+      .querySelector('positions')
+      .innerHTML.trim();
+    const positionRows = positions.split(/\r?\n/);
+
+    const stationPositions = [];
+
+    positionRows.map(positionRow => {
+      const singleValues = positionRow.trim().split(' ');
+
+      stationPositions.push({
+        latitude: singleValues[0],
+        longitude: singleValues[1],
+        latLon: `${singleValues[0]} ${singleValues[1]}`,
+        timestamp: singleValues[3],
+      });
+    });
+
+    return stationPositions;
+  }
+
+  _parseObservations(xmlDocResponse) {
+    const observations = xmlDocResponse
+      .querySelector('doubleOrNilReasonTupleList')
+      .innerHTML.trim();
+
+    const formattedObservations = [];
+
+    const observationArray = observations.split(/\r?\n/);
+
+    observationArray.forEach(observationLine => {
+      const singleValues = observationLine.trim().split(' ');
+
+      const station = {
+        temperature: window.parseFloat(singleValues[0]), // t2m
+        wind: window.parseFloat(singleValues[1]), // ws_10min
+        windGust: window.parseFloat(singleValues[2]), // wg_10min
+        windDirection: window.parseFloat(singleValues[3]), // wd_10min
+        humidity: window.parseFloat(singleValues[4]), // rh
+        dewPoint: window.parseFloat(singleValues[5]), // td
+        rain: window.parseFloat(singleValues[6]), // r_1h
+        rainExplanation: window.parseFloat(singleValues[7]), // ri_10min
+        snow: window.parseFloat(singleValues[8]), // snow_aws
+        pressure: window.parseFloat(singleValues[9]), // p_sea
+        visibility: window.parseFloat(singleValues[10]), // vis
+        cloudiness: window.parseFloat(singleValues[11]), // n_man
+        wawaCode: window.parseFloat(singleValues[12]), // wawa
+      };
+
+      station.weatherCode3 = wawaToSymbol3(
+        station.wawaCode,
+        station.cloudiness
+      );
+
+      formattedObservations.push(station);
+    });
+
+    return formattedObservations;
+  }
+
+  _removeWithoutTemperature(observations) {
+    return observations.filter(observation =>
+      Number.isFinite(observation.temperature)
     );
+  }
 
-    const observation = {};
+  _removeDuplicates(observations) {
+    return observations.filter((observation, index) => {
+      const next = observations[index + 1];
 
-    // measurementTVP
-    observation.cloudiness = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-n_man',
-      'cloudiness'
-    )[0];
-    observation.dewPoint = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-td',
-      'dewPoint'
-    )[0];
-    observation.humidity = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-rh',
-      'humidity'
-    )[0];
-    observation.pressure = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-p_sea',
-      'pressure'
-    )[0];
-    observation.rain = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-r_1h',
-      'rain'
-    )[0];
-    observation.rainExplanation = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-ri_10min',
-      'rainExplanation'
-    )[0];
-    observation.snow = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-snow_aws',
-      'snow'
-    )[0];
-    observation.temperature = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-t2m',
-      'temperature'
-    )[0];
-    (observation.visibility = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-vis',
-      'visibility'
-    )[0]),
-      (observation.weatherCode = getTimeAndValuePairs(
-        timeSeries,
-        'obs-obs-1-1-wawa',
-        'weatherCode'
-      )[0]);
-    observation.wind = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-ws_10min',
-      'wind'
-    )[0];
-    observation.windDirection = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-wd_10min',
-      'windDirection'
-    )[0];
-    observation.windGust = getTimeAndValuePairs(
-      timeSeries,
-      'obs-obs-1-1-wg_10min',
-      'windGust'
-    )[0];
+      return next === undefined || observation.latLon !== next.latLon;
+    });
+  }
 
-    return observation;
+  _formatObservations(rawResponse) {
+    const positions = this._parsePositions(rawResponse);
+    const stations = this._parseStations(rawResponse);
+    const observations = this._parseObservations(rawResponse);
+
+    const positionAndName = positions.map(position => {
+      const correctStation = stations.find(
+        station => station.latLon === position.latLon
+      );
+      return { ...position, ...correctStation };
+    });
+
+    const combined = positionAndName.map((item, index) => {
+      return { ...item, ...observations[index] };
+    });
+
+    const filteredObservations = this._removeWithoutTemperature(combined);
+    const finalObservations = this._removeDuplicates(filteredObservations);
+
+    return finalObservations;
   }
 
   _roundDownToFullMinutes(minutes) {

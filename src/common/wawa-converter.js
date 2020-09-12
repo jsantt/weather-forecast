@@ -1,4 +1,7 @@
 function wawaToSymbol3(wawa, cloudiness) {
+  if (wawa === undefined || cloudiness === undefined) {
+    return undefined;
+  }
   const cloudinessTable = {
     0: 1, //'selkeää',
     1: 1, //'selkeää',
