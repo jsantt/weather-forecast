@@ -106,7 +106,7 @@ class RainBars extends LitElement {
   }
 
   _rainBars(svg, data) {
-    for (let i = 0; i < data.length; i = i + 1) {
+    for (let i = 0; i < data.length; i += 1) {
       if (!Number.isNaN([i].rain)) {
         const bar = document.createElementNS(
           'http://www.w3.org/2000/svg',
@@ -119,7 +119,7 @@ class RainBars extends LitElement {
         bar.setAttribute('fill-opacity', opacity);
         bar.setAttribute('width', '9');
 
-        let rectHeight = RainBars._rectHeight(data[i].rain);
+        const rectHeight = RainBars._rectHeight(data[i].rain);
 
         bar.setAttribute('height', rectHeight);
 

@@ -178,7 +178,7 @@ class ObservationData extends LitElement {
 
     const result = [];
 
-    for (let i = 0; i < stations.length; i = i + 1) {
+    for (let i = 0; i < stations.length; i += 1) {
       const name = stations[i].querySelector('name').innerHTML.trim();
       const position = stations[i].querySelector('pos').innerHTML.trim();
 
@@ -264,6 +264,7 @@ class ObservationData extends LitElement {
         visibility: window.parseFloat(singleValues[10]), // vis
         cloudiness: window.parseFloat(singleValues[11]), // n_man
         wawaCode: window.parseFloat(singleValues[12]), // wawa
+        detailsVisible: false, // toggle visibility in UI
       };
 
       station.weatherCode3 = wawaToSymbol3(

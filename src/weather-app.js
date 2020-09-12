@@ -32,6 +32,10 @@ class WeatherApp extends LitElement {
         display: block;
       }
 
+      error-notification {
+        height: 83%;
+      }
+
       div[hidden] {
         visibility: hidden;
       }
@@ -191,7 +195,8 @@ class WeatherApp extends LitElement {
   }
 
   render() {
-    return html` <weather-analytics key="UA-114081578-1"></weather-analytics>
+    return html`
+      <weather-analytics key="UA-114081578-1"></weather-analytics>
 
       <!-- Observation / weather station data -->
       <observation-data .place="${this._forecastPlace}"> </observation-data>
@@ -199,21 +204,20 @@ class WeatherApp extends LitElement {
       <forecast-data .weatherLocation="${this._weatherLocation}">
       </forecast-data>
 
-      ${this._forecastError === true
-        ? html`
-            <error-notification
-              errorText="Säätietojen haku epäonnistui"
-              id="errorNotification"
-            >
-            </error-notification>
-          `
-        : html`
-            <div class="container" ?hidden="${this._firstLoading}">
-              <add-to-homescreen
-                class="section section--install"
-              ></add-to-homescreen>
-              <main class="section section--forecast">
-                <slot id="place"></slot>
+      <div class="container" ?hidden="${this._firstLoading}">
+        <add-to-homescreen class="section section--install"></add-to-homescreen>
+        <main class="section section--forecast">
+          <slot id="place"></slot>
+
+          ${this._forecastError === true
+            ? html`
+                <error-notification
+                  errorText="Säätietojen haku epäonnistui"
+                  id="errorNotification"
+                >
+                </error-notification>
+              `
+            : html`
                 <forecast-header
                   .feelsLike="${this._currentFeelsLike}"
                   ?loading="${this._loading}"
@@ -237,115 +241,108 @@ class WeatherApp extends LitElement {
                   ?showWind="${this._showWind}"
                 >
                 </weather-days>
-                <footer-section class="provider">
-                  <div>
-                    <p>
-                      Sääennuste by Ilmatieteen laitos | avoin data
-                    </p>
-                    <img
-                      class="logo"
-                      alt="fmi logo"
-                      src="./assets/image/FMI0DATA_small.png"
-                    />
-                  </div>
-                  <div slot="footer-left"></div>
-                  <div slot="footer-right">
-                    <svg-icon
-                      path="assets/image/icons.svg#longTimeWeather"
-                    ></svg-icon>
-
-                    <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
-                      >10&nbsp;vrk&nbsp;sää</a
-                    >
-                  </div>
-                </footer-section>
-              </main>
-
-              <weather-station
-                class="section section--observations"
-                .observationData="${this._observationData}"
-                ?observationError="${this._observationError}"
-              >
-              </weather-station>
-
-              <external-links class="section section--links"></external-links>
-
-              <sunrise-sunset
-                class="section section--sun"
-                .coordinates="${this._coordinates}"
-              ></sunrise-sunset>
-
-              <public-holidays
-                class="section section--calendar"
-              ></public-holidays>
-
-              <footer-section
-                class="section section--informationOnService"
-                header="Tietoja palvelusta"
-              >
-                <svg-icon
-                  class="info-icon"
-                  path="assets/image/icons.svg#info"
-                ></svg-icon>
-
-                Saaennuste.fi on nopein ja paras sääsovellus. Löydät Helsingin,
-                Espoon ja muiden kaupunkien lisäksi myös tarkan täsmäsään 2.5km
-                alueelle. Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen
-                laitoksen
-                <a
-                  href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
-                >
-                  Harmonie-malliin</a
-                >.
-              </footer-section>
-
-              <footer-section
-                class="section section--feedback"
-                header="Palaute"
-              >
-                Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea
-                miten parantaisit sovellusta? Ota yhteyttä!
-
-                <div slot="footer-left"></div>
-                <div slot="footer-right">
-                  <svg-icon path="assets/image/icons.svg#email"></svg-icon>
-                  palaute@saaennuste.fi
-                </div>
-              </footer-section>
-
-              <footer-section
-                class="section section--cookies"
-                header="Kerätyt tiedot"
-              >
-                Parantaaksemme käyttökokemusta, käytämme
-                <a
-                  href="https://policies.google.com/technologies/partner-sites?hl=fi"
-                >
-                  Googlen analytiikkatyökalun</a
-                >
-                tarvitsemia evästeitä sivuston kävijämäärän ja käyttäytymisen
-                seuraamiseen
-                <div slot="footer-left"></div>
-                <div slot="footer-right">
-                  <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
-                </div>
-              </footer-section>
-
-              <footer-section class="section section--copyright">
-                <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
-                <div>Design / toteutus Jani Säntti</div>
-                <div>Säädata ja symbolit Ilmatieteen laitos</div>
-
-                <share-app></share-app>
-
-                <div class="locate-button-container">
-                  <geolocate-button
-                    ?loading="${this._loading}"
-                  ></geolocate-button>
-                </div>
-              </footer-section>
+              `}
+          <footer-section class="provider">
+            <div>
+              <p>
+                Sääennuste by Ilmatieteen laitos | avoin data
+              </p>
+              <img
+                class="logo"
+                alt="fmi logo"
+                src="./assets/image/FMI0DATA_small.png"
+              />
             </div>
-          `}`;
+            <div slot="footer-left"></div>
+            <div slot="footer-right">
+              <svg-icon
+                path="assets/image/icons.svg#longTimeWeather"
+              ></svg-icon>
+
+              <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
+                >10&nbsp;vrk&nbsp;sää</a
+              >
+            </div>
+          </footer-section>
+        </main>
+
+        <weather-station
+          class="section section--observations"
+          .observationData="${this._observationData}"
+          ?observationError="${this._observationError}"
+        >
+        </weather-station>
+
+        <external-links class="section section--links"></external-links>
+
+        <sunrise-sunset
+          class="section section--sun"
+          .coordinates="${this._coordinates}"
+        ></sunrise-sunset>
+
+        <public-holidays class="section section--calendar"></public-holidays>
+
+        <footer-section
+          class="section section--informationOnService"
+          header="Tietoja palvelusta"
+        >
+          <svg-icon
+            class="info-icon"
+            path="assets/image/icons.svg#info"
+          ></svg-icon>
+
+          Saaennuste.fi on nopein ja paras sääsovellus. Löydät Helsingin, Espoon
+          ja muiden kaupunkien lisäksi myös tarkan täsmäsään 2.5km alueelle.
+          Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen laitoksen
+          <a
+            href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
+          >
+            Harmonie-malliin</a
+          >.
+        </footer-section>
+
+        <footer-section class="section section--feedback" header="Palaute">
+          Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea miten
+          parantaisit sovellusta? Ota yhteyttä!
+
+          <div slot="footer-left"></div>
+          <div slot="footer-right">
+            <svg-icon path="assets/image/icons.svg#email"></svg-icon>
+            palaute@saaennuste.fi
+          </div>
+        </footer-section>
+
+        <footer-section
+          class="section section--cookies"
+          header="Kerätyt tiedot"
+        >
+          Parantaaksemme käyttökokemusta, käytämme
+          <a
+            href="https://policies.google.com/technologies/partner-sites?hl=fi"
+          >
+            Googlen analytiikkatyökalun</a
+          >
+          tarvitsemia evästeitä sivuston kävijämäärän ja käyttäytymisen
+          seuraamiseen
+          <div slot="footer-left"></div>
+          <div slot="footer-right">
+            <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
+          </div>
+        </footer-section>
+
+        <footer-section class="section section--copyright">
+          <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
+          <div>Design / toteutus Jani Säntti</div>
+          <div>Säädata ja symbolit Ilmatieteen laitos</div>
+
+          <share-app></share-app>
+
+          <div class="locate-button-container">
+            <geolocate-button ?loading="${this._loading}"></geolocate-button>
+          </div>
+        </footer-section>
+      </div>
+    `;
   }
 
   static get properties() {

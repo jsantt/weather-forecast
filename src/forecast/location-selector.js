@@ -122,7 +122,7 @@ class LocationSelector extends LitElement {
       }
 
       // combobox tells the city only, get city and coordinates from localstorage items and city list
-      let cityAndCoordinates = this._placeList().filter(
+      const cityAndCoordinates = this._placeList().filter(
         item => item.city === this.city
       );
 

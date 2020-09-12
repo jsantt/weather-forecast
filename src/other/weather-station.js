@@ -29,47 +29,11 @@ class WeatherStation extends LitElement {
       }
 
       weather-name-wawa {
+        align-self: center;
         font-style: italic;
         padding: 0 var(--space-l);
       }
 
-      h1,
-      h2,
-      h3 {
-        font-weight: var(--font-weight-normal);
-        margin: 0;
-
-        padding: 0;
-      }
-
-      h1 {
-        font-size: var(--font-size-m);
-        line-height: 1;
-      }
-
-      .beta {
-        font-size: var(--font-size-s);
-        font-style: italic;
-        vertical-align: super;
-      }
-
-      h2 {
-        font-size: var(--font-size-x);
-        line-height: 1.1;
-      }
-      h3 {
-        font-size: var(--font-size-s);
-        line-height: 1.5;
-      }
-
-      .label {
-        color: var(--color-white);
-
-        grid-column: 1 / span 2;
-        margin-left: auto;
-        padding-right: var(--space-l);
-        margin-bottom: var(--space-xl);
-      }
       svg-icon {
         height: 52px;
         width: 52px;
@@ -85,22 +49,29 @@ class WeatherStation extends LitElement {
         vertical-align: top;
       }
 
-      .degree {
+      /* expanded */
+      .hidden {
+        display: none;
+      }
+
+      aside {
+        border-left: 3px solid var(--color-blue-300);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+
+        padding: 0 0 0 var(--space-l);
+        margin: 0 0 var(--space-xl) var(--space-l);
+      }
+
+      .item {
+        line-height: 1;
+        margin: var(--space-m);
+      }
+
+      .value {
         font-size: var(--font-size-l);
-        vertical-align: super;
-      }
-
-      div[slot] {
-        text-transform: uppercase;
-      }
-
-      a:link {
-        color: var(--color-blue-500);
-      }
-
-      a:visited,
-      a:hover {
-        color: var(--color-blue-700);
+        font-weight: var(--font-weight-bold);
       }
     `;
   }
@@ -118,24 +89,29 @@ class WeatherStation extends LitElement {
           `
         : html`
             <div class="content">
-              ${this.observationData.map(station => {
-                return html` <section>
+              ${this.observationData.map((station, index) => {
+                return html` <section @click="${() =>
+                  this._toggleDetails(index)}">
                   <div class="place">
                     ${station.name}
                   </div>
                   <div class="temperature">
-                    ${station.temperature
-                      ? html`
-                          <div>
-                            ${station.temperature}<span class="celcius"
-                              >°C</span
-                            >
-                          </div>
-                        `
-                      : ``}
+                    ${
+                      station.temperature
+                        ? html`
+                            <div>
+                              ${station.temperature}<span class="celcius"
+                                >°C</span
+                              >
+                            </div>
+                          `
+                        : ``
+                    }
                   </div>
                   <svg-icon
-                    path="assets/image/weather-symbols.svg#weatherSymbol${station.weatherCode3}"
+                    path="assets/image/weather-symbols.svg#weatherSymbol${
+                      station.weatherCode3
+                    }"
                   ></svg-icon>
 
                   <weather-name-wawa
@@ -143,20 +119,133 @@ class WeatherStation extends LitElement {
                     .cloudiness="${station.cloudiness}"
                   >
                   </weather-name-wawa>
-                  ${station.wind
+                  ${
+                    station.wind
+                      ? html`
+                          <div class="item">
+                            <wind-icon
+                              .degrees="${station.windDirection}"
+                              .windSpeed="${station.wind}"
+                              .windGustSpeed="${station.windGust}"
+                            >
+                            </wind-icon>
+                          </div>
+                        `
+                      : ``
+                  }
+                </section>
+                <aside class="${
+                  station.detailsVisible === false ? 'hidden' : ''
+                }">${console.log(station.detailsVisible)}
+                ${
+                  station.cloudiness
                     ? html`
                         <div class="item">
-                          <wind-icon
-                            .degrees="${station.windDirection}"
-                            .windSpeed="${station.wind}"
-                            .windGustSpeed="${station.windGust}"
-                          >
-                          </wind-icon>
+                          <div class="value">
+                            ${station.cloudiness} / 8
+                          </div>
+                          <div class="explanation">pilvisyys</div>
                         </div>
                       `
-                    : ``}
-                </section>`;
+                    : ``
+                }
+                ${
+                  station.rainExplanation
+                    ? html`
+                        <div class="item">
+                          <div class="value">
+                            ${station.rainExplanation} mm/h
+                          </div>
+                          <div class="explanation">sateen rankkuus</div>
+                          <div></div>
+                        </div>
+                      `
+                    : ``
+                }
+              ${
+                station.rain
+                  ? html`
+                      <div>
+                        <div class="value">${station.rain} mm</div>
+                        <div class="explanation">
+                          sadetta / edeltävä tunti
+                        </div>
+                      </div>
+                    `
+                  : ``
+              }
+             
+              ${
+                station.humidity
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${station.humidity} %
+                        </div>
+                        <div class="explanation">ilmankosteus</div>
+                      </div>
+                    `
+                  : ``
+              }
+              ${
+                station.pressure
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${station.pressure} hPa
+                        </div>
+                        <div class="explanation">ilmanpaine</div>
+                      </div>
+                    `
+                  : ``
+              }
+              ${
+                station.visibility
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${station.visibility} m
+                        </div>
+                        <div class="explanation">näkyvyys</div>
+                      </div>
+                    `
+                  : ``
+              }
+              ${
+                station.dewPoint
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${station.dewPoint} °C
+                        </div>
+                        <div class="explanation">kastepiste</div>
+                      </div>
+                    `
+                  : ``
+              }
+       
+              ${
+                WeatherStation._snow(station.snow)
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${station.snow} cm
+                        </div>
+                        <div class="explanation">Lumen syvyys</div>
+                      </div>
+                    `
+                  : ``
+              }
+              </aside>
+            </div>
+                
+                
+                `;
               })}
+            </div>
+            <div slot="footer-left"></div>
+            <div slot="footer-right">
+              asemilta saatavat tiedot vaihtelevat
             </div>
           `}
     </footer-section>`;
@@ -171,6 +260,19 @@ class WeatherStation extends LitElement {
         type: Boolean,
       },
     };
+  }
+
+  _toggleDetails(index) {
+    const observationDataCopy = [...this.observationData];
+    observationDataCopy.forEach((item, i) => {
+      if (index !== i) {
+        item.detailsVisible = false;
+      }
+    });
+
+    observationDataCopy[index].detailsVisible = !observationDataCopy[index]
+      .detailsVisible;
+    this.observationData = observationDataCopy;
   }
 
   static _formatTime(time) {

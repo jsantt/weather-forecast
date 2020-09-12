@@ -157,7 +157,7 @@ class TemperatureLine extends LitElement {
     let points = '';
     const baseY = this._maxYCoordinate(this._lineVariance, this._bottomMargin);
 
-    for (let i = 0; i < data.length; i = i + 1) {
+    for (let i = 0; i < data.length; i += 1) {
       if (!Number.isNaN(data[i].temperature)) {
         points = `${points}${TemperatureLine._xCoordinate(i)},
                     ${TemperatureLine._yCoordinate(

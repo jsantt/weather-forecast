@@ -318,6 +318,7 @@ class ComboBox extends LitElement {
   _openCombobox() {
     this._open = true;
   }
+
   _closeCombobox() {
     this._open = false;
     if (this._combobox.value === '') {
