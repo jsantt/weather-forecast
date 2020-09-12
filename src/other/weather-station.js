@@ -168,7 +168,7 @@ class WeatherStation extends LitElement {
                       <div>
                         <div class="value">${station.rain} mm</div>
                         <div class="explanation">
-                          sadetta / edeltävä tunti
+                          sadetta / edeltävä h
                         </div>
                       </div>
                     `
