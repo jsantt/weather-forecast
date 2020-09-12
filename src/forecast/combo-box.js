@@ -327,8 +327,12 @@ class ComboBox extends LitElement {
   }
 
   _onItemClick(event) {
-    const clickedValue = event.target.querySelector('input').value;
-    this._dispatch('combo-box.new-value', clickedValue);
+    let clickedElement = event.target.querySelector('input');
+    if (clickedElement === null) {
+      clickedElement = event.target.parentElement.querySelector('input');
+    }
+
+    this._dispatch('combo-box.new-value', clickedElement.value);
 
     this._closeCombobox();
   }
