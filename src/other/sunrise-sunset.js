@@ -160,7 +160,7 @@ class SunriseSunset extends LitElement {
 
   static get properties() {
     return {
-      coordinates: { type: String },
+      location: { type: Object },
       _sunrise: { type: String },
       _sunset: { type: String },
       _solarNoon: { type: String },
@@ -169,17 +169,17 @@ class SunriseSunset extends LitElement {
   }
 
   updated() {
-    if (this.coordinates !== undefined) {
+    if (this.location !== undefined) {
       this._updateSunsetSunrise();
     }
   }
 
   _updateSunsetSunrise() {
-    const coordinatesArray = this.coordinates.split(',');
-    const latitude = coordinatesArray[0];
-    const longitude = coordinatesArray[1];
-
-    const times = SunCalc.getTimes(new Date(), latitude, longitude);
+    const times = SunCalc.getTimes(
+      new Date(),
+      this.location.lat,
+      this.location.lon
+    );
     if (Number.isNaN(times.sunrise.getMinutes())) {
       this._sunrise = 'ei tänään';
     } else {

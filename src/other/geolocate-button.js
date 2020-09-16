@@ -102,11 +102,12 @@ class GeolocateButton extends LitElement {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          const coordinates = `${position.coords.latitude},${position.coords.longitude}`;
-
           this._dispatchEvent(
             'location-selector.location-changed',
-            GeolocateButton._formPlaceObject(coordinates)
+            GeolocateButton._formPlaceObject(
+              position.coords.latitude,
+              position.coords.longitude
+            )
           );
         },
         () => {
@@ -131,8 +132,9 @@ class GeolocateButton extends LitElement {
     this.dispatchEvent(event);
   }
 
-  static _formPlaceObject(coordinates) {
-    return { city: undefined, coordinates };
+  static _formPlaceObject(lat, lon) {
+    const coordinates = `${lat},${lon}`;
+    return { city: undefined, coordinates, lat, lon };
   }
 }
 

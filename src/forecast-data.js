@@ -32,7 +32,7 @@ class ForecastData extends LitElement {
 
   static get properties() {
     return {
-      weatherLocation: {
+      location: {
         type: Object,
         reflect: true,
       },
@@ -41,10 +41,7 @@ class ForecastData extends LitElement {
 
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
-      if (
-        propName === 'weatherLocation' &&
-        this.weatherLocation !== undefined
-      ) {
+      if (propName === 'location' && this.location !== undefined) {
         this._newLocation();
       }
     });
@@ -56,7 +53,7 @@ class ForecastData extends LitElement {
   _newLocation() {
     this._dispatch('forecast-data.fetching');
 
-    const params = this._getHarmonieParams(this.weatherLocation);
+    const params = this._getHarmonieParams(this.location);
 
     const queryParams = Object.keys(params)
       .map(key => `${key}=${params[key]}`)
@@ -71,7 +68,7 @@ class ForecastData extends LitElement {
         this._sendNotification(
           this._parseLocationGeoid(data),
           parseLocationName(data),
-          this.weatherLocation.coordinates,
+          this.location.coordinates,
           parseRegion(data)
         );
 

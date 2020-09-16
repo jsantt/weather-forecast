@@ -201,8 +201,7 @@ class WeatherApp extends LitElement {
       <!-- Observation / weather station data -->
       <observation-data .place="${this._forecastPlace}"> </observation-data>
 
-      <forecast-data .weatherLocation="${this._weatherLocation}">
-      </forecast-data>
+      <forecast-data .location="${this._location}"> </forecast-data>
 
       <div class="container" ?hidden="${this._firstLoading}">
         <add-to-homescreen class="section section--install"></add-to-homescreen>
@@ -268,6 +267,7 @@ class WeatherApp extends LitElement {
 
         <weather-station
           class="section section--observations"
+          .location="${this._location}"
           .observationData="${this._observationData}"
           ?observationError="${this._observationError}"
         >
@@ -277,7 +277,7 @@ class WeatherApp extends LitElement {
 
         <sunrise-sunset
           class="section section--sun"
-          .coordinates="${this._coordinates}"
+          .location="${this._location}"
         ></sunrise-sunset>
 
         <public-holidays class="section section--calendar"></public-holidays>
@@ -347,9 +347,6 @@ class WeatherApp extends LitElement {
 
   static get properties() {
     return {
-      _coordinates: {
-        type: Object,
-      },
       _currentFeelsLike: {
         type: Number,
       },
@@ -398,8 +395,8 @@ class WeatherApp extends LitElement {
       _observationError: {
         type: Boolean,
       },
-      _weatherLocation: {
-        type: String,
+      _location: {
+        type: Object,
       },
     };
   }
@@ -415,8 +412,7 @@ class WeatherApp extends LitElement {
 
     // user changes location
     this.addEventListener('location-selector.location-changed', event => {
-      this._weatherLocation = event.detail;
-      this._coordinates = this._weatherLocation.coordinates;
+      this._location = { ...event.detail };
     });
 
     // forecast data

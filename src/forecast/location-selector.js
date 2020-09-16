@@ -122,15 +122,26 @@ class LocationSelector extends LitElement {
       }
 
       // combobox tells the city only, get city and coordinates from localstorage items and city list
-      const cityAndCoordinates = this._placeList().filter(
+      const cityAndCoordinates = this._placeList().find(
         item => item.city === this.city
       );
 
+      const latLon = LocationSelector._splitCoordinates(
+        cityAndCoordinates.coordinates
+      );
+      cityAndCoordinates.lat = latLon.lat;
+      cityAndCoordinates.lon = latLon.lon;
+
       this._dispatchEvent(
         'location-selector.location-changed',
-        cityAndCoordinates[0]
+        cityAndCoordinates
       );
     });
+  }
+
+  static _splitCoordinates(coordinateString) {
+    const latLon = coordinateString.split(',');
+    return { lat: latLon[0], lon: latLon[1] };
   }
 
   firstUpdated() {
@@ -166,6 +177,10 @@ class LocationSelector extends LitElement {
       currentPlace = this._defaultPlace;
       LocationSelector._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
+    const latLon = LocationSelector._splitCoordinates(currentPlace.coordinates);
+    currentPlace.lat = latLon.lat;
+    currentPlace.lon = latLon.lon;
+
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 

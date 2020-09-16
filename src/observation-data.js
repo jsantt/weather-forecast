@@ -311,7 +311,7 @@ class ObservationData extends LitElement {
     const filteredObservations = this._removeWithoutTemperature(combined);
     const finalObservations = this._removeDuplicates(filteredObservations);
 
-    return finalObservations;
+    return finalObservations.reverse();
   }
 
   _roundDownToFullMinutes(minutes) {

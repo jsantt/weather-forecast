@@ -2,7 +2,9 @@ import { css, html, LitElement } from 'lit-element';
 import '../common/error-notification.js';
 import '../common/svg-icon.js';
 import '../forecast/weather-name-wawa.js';
+
 import './footer-section.js';
+import './station-map.js';
 
 class WeatherStation extends LitElement {
   static get is() {
@@ -17,14 +19,18 @@ class WeatherStation extends LitElement {
         display: block;
       }
 
-      section {
+      station-map {
+        margin: 0 -1rem var(--space-l) -1rem;
+      }
+
+      .station {
         display: grid;
         grid-template-columns: 5rem 3rem 1fr 2rem;
         grid-template-rows: auto;
         margin-bottom: var(--space-m);
       }
 
-      .place {
+      .name {
         grid-column: span 4;
       }
 
@@ -49,7 +55,8 @@ class WeatherStation extends LitElement {
         vertical-align: top;
       }
 
-      /* expanded */
+      /* Accordion (observation details) styles */
+
       .hidden {
         display: none;
       }
@@ -77,7 +84,7 @@ class WeatherStation extends LitElement {
   }
 
   render() {
-    return html` <footer-section header="Lähimmät havaintoasemat">
+    return html` <footer-section header="Lähimmät sääasemat">
       ${this.observationData === undefined ||
       this.observationData[0] === undefined ||
       this.observationError
@@ -88,12 +95,16 @@ class WeatherStation extends LitElement {
             </error-notification>
           `
         : html`
-            <div class="content">
+            <station-map
+              .location="${this.location}"
+              .observationData=${this.observationData}
+            ></station-map>
+            <section class="stations">
               ${this.observationData.map((station, index) => {
-                return html` <section @click="${() =>
+                return html` <div class="station" @click="${() =>
                   this._toggleDetails(index)}">
-                  <div class="place">
-                    ${station.name}
+                  <div class="name">
+                    ${station.name} ${station.latLon}
                   </div>
                   <div class="temperature">
                     ${
@@ -133,7 +144,7 @@ class WeatherStation extends LitElement {
                         `
                       : ``
                   }
-                </section>
+                </div>
                 <aside class="${
                   station.detailsVisible === false ? 'hidden' : ''
                 }">${console.log(station.detailsVisible)}
@@ -242,7 +253,7 @@ class WeatherStation extends LitElement {
                 
                 `;
               })}
-            </div>
+            </section>
             <div slot="footer-left"></div>
             <div slot="footer-right">
               asemilta saatavat tiedot vaihtelevat
@@ -253,6 +264,9 @@ class WeatherStation extends LitElement {
 
   static get properties() {
     return {
+      location: {
+        type: Object,
+      },
       observationData: {
         type: Array,
       },

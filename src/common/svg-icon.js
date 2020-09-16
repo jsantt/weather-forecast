@@ -48,7 +48,7 @@ class SvgIcon extends LitElement {
   updated() {
     this.shadowRoot
       .querySelector('use')
-      .setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.path);
+      .setAttributeNS('http://www.w3.org/1999/xlink', 'href', this.path);
   }
 }
 
