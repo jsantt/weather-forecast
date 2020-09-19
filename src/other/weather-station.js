@@ -1,4 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
+import { distance } from '../common/distance.js';
+
 import '../common/error-notification.js';
 import '../common/svg-icon.js';
 import '../forecast/weather-name-wawa.js';
@@ -34,6 +36,11 @@ class WeatherStation extends LitElement {
         grid-column: span 4;
       }
 
+      .distance {
+        float: right;
+        color: var(--color-gray-600);
+      }
+
       weather-name-wawa {
         align-self: center;
         font-style: italic;
@@ -58,7 +65,9 @@ class WeatherStation extends LitElement {
       /* Accordion (observation details) styles */
 
       .hidden {
-        display: none;
+        visibility: hidden;
+        margin: 0;
+        max-height: 0;
       }
 
       aside {
@@ -69,6 +78,10 @@ class WeatherStation extends LitElement {
 
         padding: 0 0 0 var(--space-l);
         margin: 0 0 var(--space-xl) var(--space-l);
+
+        max-height: 20rem;
+        transition: max-height 0.3s ease-out;
+        will-change: max-height;
       }
 
       .item {
@@ -104,7 +117,11 @@ class WeatherStation extends LitElement {
                 return html` <div class="station" @click="${() =>
                   this._toggleDetails(index)}">
                   <div class="name">
-                    ${station.name} ${station.latLon}
+                    ${station.name} 
+                <span class="distance">${this._distance(
+                  station.lat,
+                  station.lon
+                )} km</span>
                   </div>
                   <div class="temperature">
                     ${
@@ -215,7 +232,7 @@ class WeatherStation extends LitElement {
                   ? html`
                       <div class="item">
                         <div class="value">
-                          ${station.visibility} m
+                          ${station.visibility} km
                         </div>
                         <div class="explanation">näkyvyys</div>
                       </div>
@@ -276,6 +293,10 @@ class WeatherStation extends LitElement {
     };
   }
 
+  _distance(lat, lon) {
+    return Math.round(distance(lat, lon, this.location.lat, this.location.lon));
+  }
+
   _toggleDetails(index) {
     const observationDataCopy = [...this.observationData];
     observationDataCopy.forEach((item, i) => {
@@ -304,31 +325,6 @@ class WeatherStation extends LitElement {
 
   static _snow(centimeters) {
     return centimeters > -1;
-  }
-
-  /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates */
-
-  static _distance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // km
-    const dLat = WeatherStation._toRadian(lat2 - lat1);
-    const dLon = WeatherStation._toRadian(lon2 - lon1);
-    const latitude1 = WeatherStation._toRadian(lat1);
-    const latitude2 = WeatherStation._toRadian(lat2);
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.sin(dLon / 2) *
-        Math.sin(dLon / 2) *
-        Math.cos(latitude1) *
-        Math.cos(latitude2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const d = R * c;
-    return d;
-  }
-
-  // Converts numeric degrees to radians
-  static _toRadian(degrees) {
-    return (degrees * Math.PI) / 180;
   }
 }
 

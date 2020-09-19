@@ -64,7 +64,7 @@ class ObservationData extends LitElement {
       storedquery_id: 'fmi::observations::weather::multipointcoverage', // multipointcoverage',
       geoid,
       meters: 'ws_10min,t2m',
-      maxlocations: 5,
+      maxlocations: 4,
       starttime: this._roundDownToFullMinutes(-12), // get the latest data only
       endtime: this._roundDownToFullMinutes(0), // get the latest data only
     };
@@ -187,8 +187,8 @@ class ObservationData extends LitElement {
       result[i].position = position;
 
       const positionArray = position.split(' ');
-      result[i].latitude = positionArray[0];
-      result[i].longitude = positionArray[1];
+      result[i].lat = parseFloat(positionArray[0]);
+      result[i].lon = parseFloat(positionArray[1]);
       result[i].latLon = `${positionArray[0]} ${positionArray[1]}`;
     }
 
@@ -228,8 +228,10 @@ class ObservationData extends LitElement {
       const singleValues = positionRow.trim().split(' ');
 
       stationPositions.push({
-        latitude: singleValues[0],
-        longitude: singleValues[1],
+        lat: parseFloat(singleValues[0]),
+        latForMap: parseFloat(singleValues[0]),
+        lon: parseFloat(singleValues[1]),
+        lonForMap: parseFloat(singleValues[1]),
         latLon: `${singleValues[0]} ${singleValues[1]}`,
         timestamp: singleValues[3],
       });
@@ -260,8 +262,8 @@ class ObservationData extends LitElement {
         rain: window.parseFloat(singleValues[6]), // r_1h
         rainExplanation: window.parseFloat(singleValues[7]), // ri_10min
         snow: window.parseFloat(singleValues[8]), // snow_aws
-        pressure: window.parseFloat(singleValues[9]), // p_sea
-        visibility: window.parseFloat(singleValues[10]), // vis
+        pressure: Math.round(window.parseFloat(singleValues[9])), // p_sea
+        visibility: Math.round(window.parseFloat(singleValues[10]) / 1000), // vis
         cloudiness: window.parseFloat(singleValues[11]), // n_man
         wawaCode: window.parseFloat(singleValues[12]), // wawa
         detailsVisible: false, // toggle visibility in UI
@@ -287,6 +289,10 @@ class ObservationData extends LitElement {
   _removeDuplicates(observations) {
     return observations.filter((observation, index) => {
       const next = observations[index + 1];
+      // hack to remove harmaja for now
+      // if (observation.latLon === '60.10512 24.97539') {
+      //  return false;
+      // }
 
       return next === undefined || observation.latLon !== next.latLon;
     });

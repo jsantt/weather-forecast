@@ -97,7 +97,7 @@ class WeatherApp extends LitElement {
             '........ ........   install'
             'forecast forecast  sun'
             'forecast forecast  observations'
-            'forecast forecast  feedback'
+            'forecast forecast  observations'
             'calendar calendar  info'
             'calendar calendar  links'
             'calendar calendar  cookies'
@@ -299,9 +299,14 @@ class WeatherApp extends LitElement {
           >
             Harmonie-malliin</a
           >.
+          <div slot="footer-left"></div>
+          <div slot="footer-right">
+            <svg-icon path="assets/image/icons.svg#email"></svg-icon>
+            palaute@saaennuste.fi
+          </div>
         </footer-section>
 
-        <footer-section class="section section--feedback" header="Palaute">
+        <!--footer-section class="section section--feedback" header="Palaute">
           Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea miten
           parantaisit sovellusta? Ota yhteyttä!
 
@@ -310,7 +315,7 @@ class WeatherApp extends LitElement {
             <svg-icon path="assets/image/icons.svg#email"></svg-icon>
             palaute@saaennuste.fi
           </div>
-        </footer-section>
+        </footer-section-->
 
         <footer-section
           class="section section--cookies"
