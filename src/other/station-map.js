@@ -15,8 +15,14 @@ class StationMap extends LitElement {
 
       .svg-text {
         fill: var(--color-gray-900);
-        font-size: 0.05px;
+        font-size: 0.07px;
         font-weight: var(--font-weight-bold);
+      }
+
+      .celcius {
+        dominant-baseline: ideographic;
+        font-size: 0.05px;
+        opacity: 0.5;
       }
     `;
   }
@@ -132,19 +138,19 @@ class StationMap extends LitElement {
             fill="#fff"
           />
            <use
-              x="${observation.lonForMap - 0.05}"
+              x="${observation.lonForMap - 0.075}"
               y="${-1 * observation.latForMap - 0.01}"
-              width="0.1"
-              height="0.1"
+              width="0.15"
+              height="0.15"
               href="assets/image/weather-symbols.svg#weatherSymbol${
                 observation.weatherCode3
               }"
             ></use><text class="svg-text" text-anchor="middle" x="${
               observation.lonForMap
             }"
-              y="${-1 * observation.latForMap}">${
+              y="${-1 * observation.latForMap}">${Math.round(
             observation.temperature
-          }°C</text>
+          )}<tspan class="celcius">°C</tspan></text>
           
 
             `;

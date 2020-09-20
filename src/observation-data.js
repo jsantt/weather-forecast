@@ -3,6 +3,7 @@ import { LitElement } from 'lit-element';
 import { raiseEvent } from './common/xml-parser.js';
 
 import { wawaToSymbol3 } from './common/wawa-converter.js';
+import { distance } from './common/distance.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because
@@ -18,6 +19,7 @@ class ObservationData extends LitElement {
       // location object, e.g {geoid: "7521614", name: "Kattilalaakso"}
       place: {
         type: Object,
+        reflect: true,
       },
     };
   }
@@ -315,9 +317,20 @@ class ObservationData extends LitElement {
     });
 
     const filteredObservations = this._removeWithoutTemperature(combined);
-    const finalObservations = this._removeDuplicates(filteredObservations);
+    let finalObservations = this._removeDuplicates(filteredObservations);
 
-    return finalObservations.reverse();
+    finalObservations.map(item => {
+      item.distance = Math.round(
+        distance(item.lat, item.lon, this.place.lat, this.place.lon)
+      );
+    });
+
+    return finalObservations.sort((item, next) => {
+      if (item.distance < next.distance) {
+        return -1;
+      }
+      return 1;
+    });
   }
 
   _roundDownToFullMinutes(minutes) {

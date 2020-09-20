@@ -69,6 +69,8 @@ class ForecastData extends LitElement {
           this._parseLocationGeoid(data),
           parseLocationName(data),
           this.location.coordinates,
+          this.location.lat,
+          this.location.lon,
           parseRegion(data)
         );
 
@@ -309,12 +311,14 @@ class ForecastData extends LitElement {
     return location;
   }
 
-  _sendNotification(geoid, name, coordinates, region) {
+  _sendNotification(geoid, name, coordinates, lat, lon, region) {
     const details = {
       location: {
         geoid,
         name,
         coordinates,
+        lat,
+        lon,
         region,
       },
     };

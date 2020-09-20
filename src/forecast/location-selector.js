@@ -178,8 +178,8 @@ class LocationSelector extends LitElement {
       LocationSelector._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
     const latLon = LocationSelector._splitCoordinates(currentPlace.coordinates);
-    currentPlace.lat = latLon.lat;
-    currentPlace.lon = latLon.lon;
+    currentPlace.lat = parseFloat(latLon.lat);
+    currentPlace.lon = parseFloat(latLon.lon);
 
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }

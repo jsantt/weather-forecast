@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit-element';
-import { distance } from '../common/distance.js';
 
 import '../common/error-notification.js';
 import '../common/svg-icon.js';
@@ -118,10 +117,7 @@ class WeatherStation extends LitElement {
                   this._toggleDetails(index)}">
                   <div class="name">
                     ${station.name} 
-                <span class="distance">${this._distance(
-                  station.lat,
-                  station.lon
-                )} km</span>
+                <span class="distance">${station.distance} km</span>
                   </div>
                   <div class="temperature">
                     ${
@@ -291,10 +287,6 @@ class WeatherStation extends LitElement {
         type: Boolean,
       },
     };
-  }
-
-  _distance(lat, lon) {
-    return Math.round(distance(lat, lon, this.location.lat, this.location.lon));
   }
 
   _toggleDetails(index) {
