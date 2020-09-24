@@ -107,10 +107,6 @@ class WeatherStation extends LitElement {
             </error-notification>
           `
         : html`
-            <station-map
-              .location="${this.location}"
-              .observationData=${this.observationData}
-            ></station-map>
             <section class="stations">
               ${this.observationData.map((station, index) => {
                 return html` <div class="station" @click="${() =>

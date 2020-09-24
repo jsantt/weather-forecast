@@ -15,6 +15,7 @@ import './other/geolocate-button.js';
 import './other/sunrise-sunset.js';
 import './other/public-holidays.js';
 
+import './other/bottom-bar.js';
 import './other/external-links.js';
 import './other/footer-section.js';
 import './other/share-app.js';
@@ -218,16 +219,10 @@ class WeatherApp extends LitElement {
               `
             : html`
                 <forecast-header
-                  .feelsLike="${this._currentFeelsLike}"
                   ?loading="${this._loading}"
+                  .location="${this._location}"
                   .place="${this._forecastPlace}"
-                  ?showFeelsLike="${this._showFeelsLike}"
-                  ?showWind="${this._showWind}"
-                  .symbol="${this._currentSymbol}"
-                  .temperature="${this._currentTemperature}"
-                  .wind="${this._currentWind}"
-                  .windDirection="${this._currentWindDirection}"
-                  .windGust="${this._currentWindGust}"
+                  .observationData="${this._observationData}"
                 >
                 </forecast-header>
 
@@ -263,6 +258,10 @@ class WeatherApp extends LitElement {
               >
             </div>
           </footer-section>
+          <bottom-bar
+            ?showFeelsLike="${this._showFeelsLike}"
+            ?showWind="${this._showWind}"
+          ></bottom-bar>
         </main>
 
         <weather-station

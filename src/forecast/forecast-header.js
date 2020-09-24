@@ -5,6 +5,7 @@ import './time-now.js';
 import './weather-symbol-name.js';
 import '../common/wind-icon.js';
 import '../common/svg-icon.js';
+import '../other/station-map.js';
 
 class ForecastHeader extends LitElement {
   static get is() {
@@ -15,18 +16,24 @@ class ForecastHeader extends LitElement {
     return css`
       :host {
         display: block;
-        background-color: var(--color-primary);
-        background: var(--background-header);
-
         padding-bottom: var(--header-background-expand);
       }
 
-      :host([showFeelsLike]) .feelsLike {
-        background-color: #f5f5f529;
+      header {
+        background: var(--color-blue-600);
+        margin-bottom: calc(-1 * var(--header-background-expand));
+        padding-top: var(--space-m);
+        padding-bottom: var(--header-background-expand);
       }
 
-      :host([showWind]) .wind {
-        background-color: #f5f5f529;
+      h2 {
+        margin: -2rem 0 0 0;
+        text-align: center;
+      }
+
+      station-map {
+        width: 60%;
+        margin: 0 auto;
       }
 
       .visually-hidden {
@@ -38,232 +45,39 @@ class ForecastHeader extends LitElement {
         width: 1px !important;
         overflow: hidden;
       }
-
-      .header {
-        display: grid;
-        grid-template-columns: 3.5rem 1fr 1fr 3.5rem;
-        grid-template-rows: 1rem 8.5rem 1rem 1rem;
-        grid-template-areas:
-          'place place place place'
-          'left temp  icon  aside'
-          'left text  text  aside'
-          '.... .... .... ....';
-        align-items: center;
-      }
-
-      .left {
-        grid-area: left;
-        height: 100%;
-      }
-
-      svg-icon {
-        width: 100px;
-        height: 100px;
-        grid-area: icon;
-        margin: -1rem 0 -1.5rem 0;
-      }
-
-      .place {
-        margin-top: 0.2rem;
-        text-align: center;
-      }
-
-      h2 {
-        grid-area: place;
-      }
-
-      aside {
-        grid-area: aside;
-        margin-top: 2rem;
-        height: 100%;
-        opacity: 0.8;
-      }
-
-      .aside-item {
-        font-size: var(--font-size-s);
-        text-align: center;
-      }
-
-      .aside-icon:hover {
-        transform: scale(1.1);
-      }
-
-      .feelsLike {
-        border-top-left-radius: var(--border-radius);
-        padding-top: var(--space-s);
-      }
-
-      .wind {
-        border-bottom-left-radius: var(--border-radius);
-        padding-top: var(--space-m);
-      }
-
-      .item-text--feelsLike {
-        margin-top: -0.3rem;
-      }
-
-      .item-text--wind {
-        margin-top: -0.75rem;
-        padding-right: 0.2rem;
-      }
-
-      .temperature {
-        grid-area: temp;
-        font-size: var(--font-size-xxxxl);
-        line-height: 1.15;
-        margin: 0 0 0 auto;
-      }
-
-      .degree {
-        font-size: var(--font-size-l);
-        vertical-align: top;
-      }
-
-      #wind {
-        padding-left: 0.25rem;
-      }
-
-      weather-symbol-name {
-        grid-area: text;
-        margin-top: -1rem;
-        text-align: center;
-      }
     `;
   }
 
   render() {
     return html`
       <header>
-        <div class="header">
-          <h2 class="visually-hidden">sää nyt</h2>
-          <section class="left"></section>
-          <div class="circle"></div>
-          <h2 class="place">
-            <location-selector
-              .loading="${this.loading}"
-              .place="${this.place}"
-            >
-            </location-selector>
-          </h2>
+        <div class="circle"></div>
+        <h2>
+          <span class="visually-hidden">Sää nyt paikassa</span>
+          <location-selector .loading="${this.loading}" .place="${this.place}">
+          </location-selector>
+        </h2>
 
-          <div class="temperature">
-            ${ForecastHeader._round(this.temperature)}
-            <span class="degree">°C</span>
-          </div>
+        <station-map
+          .location="${this.location}"
+          .observationData=${this.observationData}
+        ></station-map>
 
-          <svg-icon
-            path="assets/image/weather-symbols.svg#weatherSymbol${this.symbol}"
-          >
-          </svg-icon>
-
-          <weather-symbol-name .symbolId="${this.symbol}">
+        <!--weather-symbol-name .symbolId="${this.symbol}">
           </weather-symbol-name>
-
-          <aside>
-            <div
-              id="feelsLike"
-              @click="${this._toggleFeelsLike}"
-              class="feelsLike aside-item"
-            >
-              <feels-like-icon
-                .temperature="${this.feelsLike}"
-              ></feels-like-icon>
-              <div class="item-text item-text--feelsLike">tuntuu</div>
-            </div>
-
-            <div id="wind" class="wind aside-item" @click="${this._toggleWind}">
-              <wind-icon
-                .degrees="${this.windDirection}"
-                large
-                whiteGust
-                .windSpeed="${this.wind}"
-                .windGustSpeed="${this.windGust}"
-              >
-              </wind-icon>
-              <div class="item-text item-text--wind">tuuli</div>
-            </div>
-          </aside>
         </div>
-        <time-now .updateTime="${this.loading}"></time-now>
+        <time-now .updateTime="${this.loading}"></time-now-->
       </header>
     `;
   }
 
   static get properties() {
     return {
-      feelsLike: { type: Number, reflect: true },
       loading: { type: Boolean, reflect: true },
+      location: { type: Object, reflect: true },
       place: { type: Object, reflect: true },
-
-      showFeelsLike: {
-        type: Boolean,
-        reflect: true,
-      },
-      showWind: {
-        type: Boolean,
-        reflect: true,
-      },
-
-      symbol: { type: Number, reflect: true },
-      temperature: { type: Number, reflect: true },
-
-      wind: { type: Number, reflect: true },
-      windDirection: { type: Number, reflect: true },
-      windGust: { type: Number, reflect: true },
+      observationData: { type: Object },
     };
-  }
-
-  _toggleFeelsLike() {
-    const toggleFeelsLike = new CustomEvent(
-      'forecast-header.toggle-feels-like',
-      {
-        bubbles: true,
-        composed: true,
-      }
-    );
-    this.dispatchEvent(toggleFeelsLike);
-
-    // this._deselectWind();
-  }
-
-  _toggleWind() {
-    const toggleWind = new CustomEvent('forecast-header.toggle-wind', {
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(toggleWind);
-
-    // this._deselectFeelsLike();
-  }
-
-  _deselectWind() {
-    const windSelected = this.shadowRoot
-      .querySelector('#wind')
-      .classList.contains('selected');
-
-    if (windSelected) {
-      this.shadowRoot.querySelector('#wind').classList.remove('selected');
-      const toggleWind = new CustomEvent('forecast-header.toggle-wind', {
-        bubbles: true,
-        composed: true,
-      });
-      this.dispatchEvent(toggleWind);
-    }
-  }
-
-  _deselectFeelsLike() {
-    const feelsSelected = this.shadowRoot
-      .querySelector('#feelsLike')
-      .classList.contains('selected');
-
-    if (feelsSelected) {
-      this.shadowRoot.querySelector('#feelsLike').classList.remove('selected');
-      const toggleFeelsLike = new CustomEvent(
-        'forecast-header.toggle-feels-like',
-        { bubbles: true, composed: true }
-      );
-      this.dispatchEvent(toggleFeelsLike);
-    }
   }
 
   static _round(value) {

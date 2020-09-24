@@ -10,18 +10,17 @@ class StationMap extends LitElement {
     return css`
       :host {
         display: block;
-        background: var(--background-header);
       }
 
       .svg-text {
         fill: var(--color-gray-900);
-        font-size: 0.07px;
+        font-size: 0.1px;
         font-weight: var(--font-weight-bold);
       }
 
       .celcius {
         dominant-baseline: ideographic;
-        font-size: 0.05px;
+        font-size: 0.07px;
         opacity: 0.5;
       }
     `;
@@ -51,12 +50,12 @@ class StationMap extends LitElement {
     const lat = Number.parseFloat(coordinates.lat);
     const lon = Number.parseFloat(coordinates.lon);
 
-    return `${lon - radius} -${lat + radius} 1 1`;
+    return `${lon - radius} -${lat + 0.5} 1 1`;
   }
 
   static _adjustCoordinates(observations) {
-    const stationRadius = 0.04;
-    const extendLength = 0.03;
+    const stationRadius = 0.07;
+    const extendLength = 0.05;
 
     observations.map((o1, index) => {
       observations.map(o2 => {
@@ -100,32 +99,31 @@ class StationMap extends LitElement {
       <svg viewBox="${StationMap._viewBox(coordinates)}">
         
         <g>
-          <circle
-            cx="${coordinates.lon}"
-            cy="${-1 * coordinates.lat}"
-            r="0.01"
-            stroke-width="0"
-            fill="#fff"
-          />
+          <line 
+            x1="${coordinates.lon}" 
+            y1="${-1 * coordinates.lat - 0.48}"
+            x2="${coordinates.lon}" 
+            y2="${-1 * coordinates.lat - 0.05}" 
+            stroke-width="0.01" 
+            stroke="var(--color-gray-400)" 
+            stroke-dasharray="0.01" />
 
           <circle
             cx="${coordinates.lon}"
             cy="${-1 * coordinates.lat}"
             r="0.02"
-            stroke-width="0.005"
-            fill="none"
-            stroke="#fff"
+            stroke-width="0"
+            fill="var(--color-gray-400)"
           />
 
-          <!--circle
+          <circle
             cx="${coordinates.lon}"
             cy="${-1 * coordinates.lat}"
-            r="0.35"
-            stroke-width="0.005"
-            stroke="#fff"
-            fill="#fff"
-            fill-opacity="0.1"
-          /-->
+            r="0.04"
+            stroke-width="0.007"
+            fill="none"
+            stroke="var(--color-gray-400)"
+          />
         </g>
 
         ${observations.map(observation => {
@@ -133,15 +131,15 @@ class StationMap extends LitElement {
           <circle
             cx="${observation.lon}"
             cy="${-1 * observation.lat}"
-            r="0.08"
+            r="0.1"
             opacity="0.1"
             fill="#fff"
           />
            <use
               x="${observation.lonForMap - 0.075}"
               y="${-1 * observation.latForMap - 0.01}"
-              width="0.15"
-              height="0.15"
+              width="0.2"
+              height="0.2"
               href="assets/image/weather-symbols.svg#weatherSymbol${
                 observation.weatherCode3
               }"
