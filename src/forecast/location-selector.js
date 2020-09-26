@@ -129,8 +129,8 @@ class LocationSelector extends LitElement {
       const latLon = LocationSelector._splitCoordinates(
         cityAndCoordinates.coordinates
       );
-      cityAndCoordinates.lat = latLon.lat;
-      cityAndCoordinates.lon = latLon.lon;
+      cityAndCoordinates.lat = parseFloat(latLon.lat);
+      cityAndCoordinates.lon = parseFloat(latLon.lon);
 
       this._dispatchEvent(
         'location-selector.location-changed',

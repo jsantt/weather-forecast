@@ -21,18 +21,24 @@ class ForecastHeader extends LitElement {
 
       header {
         background: var(--color-blue-600);
-        margin-bottom: calc(-1 * var(--header-background-expand));
-        padding-top: var(--space-m);
+        margin-bottom: calc(-1 * (var(--header-background-expand) + 0.25rem));
         padding-bottom: var(--header-background-expand);
+
+        /* anchor for h2 */
+        position: relative;
       }
 
       h2 {
-        margin: -2rem 0 0 0;
+        margin: 0;
         text-align: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -1rem;
       }
 
       station-map {
-        width: 60%;
+        width: 100%;
         margin: 0 auto;
       }
 

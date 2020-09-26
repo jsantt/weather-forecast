@@ -66,7 +66,7 @@ class ObservationData extends LitElement {
       storedquery_id: 'fmi::observations::weather::multipointcoverage', // multipointcoverage',
       geoid,
       meters: 'ws_10min,t2m',
-      maxlocations: 4,
+      maxlocations: 10,
       starttime: this._roundDownToFullMinutes(-12), // get the latest data only
       endtime: this._roundDownToFullMinutes(0), // get the latest data only
     };
@@ -292,9 +292,9 @@ class ObservationData extends LitElement {
     return observations.filter((observation, index) => {
       const next = observations[index + 1];
       // hack to remove harmaja for now
-      // if (observation.latLon === '60.10512 24.97539') {
-      //  return false;
-      // }
+      if (observation.latLon === '60.10512 24.97539') {
+        return false;
+      }
 
       return next === undefined || observation.latLon !== next.latLon;
     });
