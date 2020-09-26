@@ -16,6 +16,8 @@ class StationMap extends LitElement {
         fill: var(--color-gray-300);
         font-size: 0.1px;
         font-weight: var(--font-weight-bold);
+
+        text-rendering: optimizeLegibility;
       }
 
       .celcius {

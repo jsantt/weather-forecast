@@ -11,7 +11,6 @@ import './forecast/weather-days.js';
 import './forecast-data.js';
 
 import './other/add-to-homescreen.js';
-import './other/geolocate-button.js';
 import './other/sunrise-sunset.js';
 import './other/public-holidays.js';
 
@@ -340,10 +339,6 @@ class WeatherApp extends LitElement {
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
 
           <share-app></share-app>
-
-          <div class="locate-button-container">
-            <geolocate-button ?loading="${this._loading}"></geolocate-button>
-          </div>
         </footer-section>
       </div>
     `;

@@ -1,5 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
+import '../other/geolocate-button.js';
+
 class BottomBar extends LitElement {
   static get is() {
     return 'bottom-bar';
@@ -42,6 +44,19 @@ class BottomBar extends LitElement {
       :host([showWind]) .wind {
         background: var(--color-yellow-300);
       }
+
+      @media only screen and (min-height: 800px) {
+        button {
+          padding-top: var(--space-s);
+          padding-bottom: var(--space-s);
+        }
+      }
+
+      geolocate-button {
+        position: absolute;
+        bottom: 0.8rem;
+        left: calc(50% - 2.5rem);
+      }
     `;
   }
 
@@ -65,7 +80,10 @@ class BottomBar extends LitElement {
       </div>
       </button>
       <div>
-        
+    
+    <geolocate-button ?loading="${this._loading}"></geolocate-button>
+          
+
     </div>
       <button @click="${this._toggleWind}" class="wind">
         <svg

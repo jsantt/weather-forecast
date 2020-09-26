@@ -17,11 +17,6 @@ class GeolocateButton extends LitElement {
 
         touch-action: none;
         user-select: none;
-
-        position: fixed;
-
-        top: calc(100vh - 5rem);
-        z-index: var(--z-index-floating-1);
       }
       :host(:hover) {
         cursor: pointer;
