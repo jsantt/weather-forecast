@@ -94,7 +94,7 @@ class WeatherApp extends LitElement {
           grid-auto-rows: minmax(10px, auto);
 
           grid-template-areas:
-            '........ ........   install'
+            'install   install   install'
             'forecast forecast  sun'
             'forecast forecast  observations'
             'forecast forecast  observations'

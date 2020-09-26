@@ -15,9 +15,9 @@ class AddToHomescreen extends LitElement {
 
       button {
         box-sizing: border-box;
-        background-color: white;
+        background-color: var(--color-blue-600);
         border-style: none;
-        color: var(--color-black);
+        color: var(--color-white);
 
         display: flex;
         align-items: center;
@@ -43,8 +43,8 @@ class AddToHomescreen extends LitElement {
       }
 
       .notification {
-        background-color: var(--color-white);
-        color: var(--color-black);
+        background: var(--color-blue-600);
+        color: var(--color-white);
         margin-top: -0.5rem;
         padding: 0 var(--space-l) var(--space-l) var(--space-l);
       }
@@ -55,17 +55,14 @@ class AddToHomescreen extends LitElement {
         padding: 0;
       }
 
-      .sun {
-        padding: 0 var(--space-l) 0 0;
+      .install {
+        padding: 0 var(--space-m) 0 0;
       }
 
-      .sun--hidden {
-        visibility: hidden;
-      }
-
-      .share {
-        fill: black;
-        stroke: black;
+      .share,
+      .install {
+        fill: white;
+        stroke: white;
         width: 24px;
         height: 24px;
       }
@@ -79,8 +76,8 @@ class AddToHomescreen extends LitElement {
             <section id="install-prompt">
               <button @click="${this._install}">
                 <svg-icon
-                  class="sun"
-                  path="assets/image/weather-symbols.svg#weatherSymbol1"
+                  class="install"
+                  path="assets/image/icons.svg#install"
                 ></svg-icon>
                 <div>
                   ASENNA SOVELLUS
@@ -122,7 +119,7 @@ class AddToHomescreen extends LitElement {
   constructor() {
     super();
 
-    this.forceShow = false;
+    this.forceShow = true;
     this._floating = true;
     this._installButtonVisible = this._showInstallButton();
 
