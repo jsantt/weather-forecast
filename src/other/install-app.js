@@ -163,8 +163,7 @@ class InstallApp extends LitElement {
     }
 
     return (
-      AddToHomescreen._isPortableApple() === true &&
-      AddToHomescreen._isSafari() === true
+      InstallApp._isPortableApple() === true && InstallApp._isSafari() === true
     );
   }
 
