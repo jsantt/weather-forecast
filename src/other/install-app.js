@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit-element';
 
 import '../common/svg-icon.js';
 
-class AddToHomescreen extends LitElement {
+class InstallApp extends LitElement {
   static get is() {
-    return 'add-to-homescreen';
+    return 'install-app';
   }
 
   static get styles() {
@@ -15,9 +15,9 @@ class AddToHomescreen extends LitElement {
 
       button {
         box-sizing: border-box;
-        background-color: var(--color-blue-600);
+        background-color: transparent;
         border-style: none;
-        color: var(--color-white);
+        color: var(--color-blue-800);
 
         display: flex;
         align-items: center;
@@ -25,7 +25,7 @@ class AddToHomescreen extends LitElement {
         font: inherit;
         font-weight: var(--font-weight-boldest);
 
-        padding: var(--space-l);
+        padding: 0 var(--space-l) 1.5rem var(--space-l);
         text-align: center;
         text-transform: uppercase;
         outline: none;
@@ -43,10 +43,9 @@ class AddToHomescreen extends LitElement {
       }
 
       .notification {
-        background: var(--color-blue-600);
-        color: var(--color-white);
-        margin-top: -0.5rem;
-        padding: 0 var(--space-l) var(--space-l) var(--space-l);
+        color: var(--color-blue-800);
+        margin-top: -1.25rem;
+        padding: 0 var(--space-l) 1.5rem var(--space-l);
       }
 
       ol {
@@ -61,8 +60,8 @@ class AddToHomescreen extends LitElement {
 
       .share,
       .install {
-        fill: white;
-        stroke: white;
+        fill: var(--color-blue-700);
+        stroke: var(--color-blue-700);
         width: 24px;
         height: 24px;
       }
@@ -119,7 +118,7 @@ class AddToHomescreen extends LitElement {
   constructor() {
     super();
 
-    this.forceShow = true;
+    this.forceShow = false;
     this._floating = true;
     this._installButtonVisible = this._showInstallButton();
 
@@ -184,4 +183,4 @@ class AddToHomescreen extends LitElement {
   }
 }
 
-window.customElements.define(AddToHomescreen.is, AddToHomescreen);
+window.customElements.define(InstallApp.is, InstallApp);

@@ -10,7 +10,7 @@ import './forecast/forecast-header.js';
 import './forecast/weather-days.js';
 import './forecast-data.js';
 
-import './other/add-to-homescreen.js';
+import './other/install-app.js';
 import './other/sunrise-sunset.js';
 import './other/public-holidays.js';
 
@@ -113,6 +113,7 @@ class WeatherApp extends LitElement {
         .section--install {
           grid-area: install;
           padding-bottom: 0;
+          margin-bottom: -1rem;
         }
 
         .section--forecast {
@@ -204,7 +205,7 @@ class WeatherApp extends LitElement {
       <forecast-data .location="${this._location}"> </forecast-data>
 
       <div class="container" ?hidden="${this._firstLoading}">
-        <add-to-homescreen class="section section--install"></add-to-homescreen>
+        <install-app class="section section--install"></install-app>
         <main class="section section--forecast">
           <slot id="place"></slot>
 
