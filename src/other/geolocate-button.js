@@ -17,11 +17,6 @@ class GeolocateButton extends LitElement {
 
         touch-action: none;
         user-select: none;
-
-        position: fixed;
-
-        top: calc(100vh - 5rem);
-        z-index: var(--z-index-floating-1);
       }
       :host(:hover) {
         cursor: pointer;
@@ -36,7 +31,7 @@ class GeolocateButton extends LitElement {
 
       .locate-text {
         color: var(--color-blue-700);
-        font-size: var(--font-size-s);
+        /*font-size: var(--font-size-s);*/
         font-weight: var(--font-weight-boldest);
         margin-top: -2rem;
         z-index: var(--z-index-1);

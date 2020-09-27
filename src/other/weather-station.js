@@ -7,6 +7,8 @@ import '../forecast/weather-name-wawa.js';
 import './footer-section.js';
 import './station-map.js';
 
+const STATION_MAX_AMOUNT = 5;
+
 class WeatherStation extends LitElement {
   static get is() {
     return 'weather-station';
@@ -107,12 +109,11 @@ class WeatherStation extends LitElement {
             </error-notification>
           `
         : html`
-            <station-map
-              .location="${this.location}"
-              .observationData=${this.observationData}
-            ></station-map>
             <section class="stations">
               ${this.observationData.map((station, index) => {
+                if (index >= STATION_MAX_AMOUNT) {
+                  return '';
+                }
                 return html` <div class="station" @click="${() =>
                   this._toggleDetails(index)}">
                   <div class="name">
@@ -160,7 +161,7 @@ class WeatherStation extends LitElement {
                 </div>
                 <aside class="${
                   station.detailsVisible === false ? 'hidden' : ''
-                }">${console.log(station.detailsVisible)}
+                }">
                 ${
                   station.cloudiness
                     ? html`

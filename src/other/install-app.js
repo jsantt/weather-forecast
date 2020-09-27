@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit-element';
 
 import '../common/svg-icon.js';
 
-class AddToHomescreen extends LitElement {
+class InstallApp extends LitElement {
   static get is() {
-    return 'add-to-homescreen';
+    return 'install-app';
   }
 
   static get styles() {
@@ -15,9 +15,9 @@ class AddToHomescreen extends LitElement {
 
       button {
         box-sizing: border-box;
-        background-color: white;
+        background-color: transparent;
         border-style: none;
-        color: var(--color-black);
+        color: var(--color-blue-800);
 
         display: flex;
         align-items: center;
@@ -25,7 +25,7 @@ class AddToHomescreen extends LitElement {
         font: inherit;
         font-weight: var(--font-weight-boldest);
 
-        padding: var(--space-l);
+        padding: 0 var(--space-l) 1.5rem var(--space-l);
         text-align: center;
         text-transform: uppercase;
         outline: none;
@@ -43,10 +43,9 @@ class AddToHomescreen extends LitElement {
       }
 
       .notification {
-        background-color: var(--color-white);
-        color: var(--color-black);
-        margin-top: -0.5rem;
-        padding: 0 var(--space-l) var(--space-l) var(--space-l);
+        color: var(--color-blue-800);
+        margin-top: -1.25rem;
+        padding: 0 var(--space-l) 1.5rem var(--space-l);
       }
 
       ol {
@@ -55,17 +54,14 @@ class AddToHomescreen extends LitElement {
         padding: 0;
       }
 
-      .sun {
-        padding: 0 var(--space-l) 0 0;
+      .install {
+        padding: 0 var(--space-m) 0 0;
       }
 
-      .sun--hidden {
-        visibility: hidden;
-      }
-
-      .share {
-        fill: black;
-        stroke: black;
+      .share,
+      .install {
+        fill: var(--color-blue-700);
+        stroke: var(--color-blue-700);
         width: 24px;
         height: 24px;
       }
@@ -79,8 +75,8 @@ class AddToHomescreen extends LitElement {
             <section id="install-prompt">
               <button @click="${this._install}">
                 <svg-icon
-                  class="sun"
-                  path="assets/image/weather-symbols.svg#weatherSymbol1"
+                  class="install"
+                  path="assets/image/icons.svg#install"
                 ></svg-icon>
                 <div>
                   ASENNA SOVELLUS
@@ -187,4 +183,4 @@ class AddToHomescreen extends LitElement {
   }
 }
 
-window.customElements.define(AddToHomescreen.is, AddToHomescreen);
+window.customElements.define(InstallApp.is, InstallApp);

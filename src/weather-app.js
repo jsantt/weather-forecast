@@ -10,11 +10,11 @@ import './forecast/forecast-header.js';
 import './forecast/weather-days.js';
 import './forecast-data.js';
 
-import './other/add-to-homescreen.js';
-import './other/geolocate-button.js';
+import './other/install-app.js';
 import './other/sunrise-sunset.js';
 import './other/public-holidays.js';
 
+import './other/bottom-bar.js';
 import './other/external-links.js';
 import './other/footer-section.js';
 import './other/share-app.js';
@@ -94,7 +94,7 @@ class WeatherApp extends LitElement {
           grid-auto-rows: minmax(10px, auto);
 
           grid-template-areas:
-            '........ ........   install'
+            'install   install   install'
             'forecast forecast  sun'
             'forecast forecast  observations'
             'forecast forecast  observations'
@@ -113,6 +113,7 @@ class WeatherApp extends LitElement {
         .section--install {
           grid-area: install;
           padding-bottom: 0;
+          margin-bottom: -1rem;
         }
 
         .section--forecast {
@@ -204,7 +205,7 @@ class WeatherApp extends LitElement {
       <forecast-data .location="${this._location}"> </forecast-data>
 
       <div class="container" ?hidden="${this._firstLoading}">
-        <add-to-homescreen class="section section--install"></add-to-homescreen>
+        <install-app class="section section--install"></install-app>
         <main class="section section--forecast">
           <slot id="place"></slot>
 
@@ -218,16 +219,10 @@ class WeatherApp extends LitElement {
               `
             : html`
                 <forecast-header
-                  .feelsLike="${this._currentFeelsLike}"
                   ?loading="${this._loading}"
+                  .location="${this._location}"
                   .place="${this._forecastPlace}"
-                  ?showFeelsLike="${this._showFeelsLike}"
-                  ?showWind="${this._showWind}"
-                  .symbol="${this._currentSymbol}"
-                  .temperature="${this._currentTemperature}"
-                  .wind="${this._currentWind}"
-                  .windDirection="${this._currentWindDirection}"
-                  .windGust="${this._currentWindGust}"
+                  .observationData="${this._observationData}"
                 >
                 </forecast-header>
 
@@ -263,6 +258,10 @@ class WeatherApp extends LitElement {
               >
             </div>
           </footer-section>
+          <bottom-bar
+            ?showFeelsLike="${this._showFeelsLike}"
+            ?showWind="${this._showWind}"
+          ></bottom-bar>
         </main>
 
         <weather-station
@@ -341,10 +340,6 @@ class WeatherApp extends LitElement {
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
 
           <share-app></share-app>
-
-          <div class="locate-button-container">
-            <geolocate-button ?loading="${this._loading}"></geolocate-button>
-          </div>
         </footer-section>
       </div>
     `;

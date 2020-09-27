@@ -62,6 +62,10 @@
         />
       </symbol>
 
+      <symbol viewBox="0 0 24 24" id="install">
+        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+      </symbol>
+
       <symbol viewBox="0 0 24 24" id="longTimeWeather">
         <path d="M0 0h24v24H0V0z" fill="none" />
         <path
@@ -85,9 +89,9 @@
       </symbol>
 
         <symbol viewBox="0 0 100 100" id="iosShare">
-          <polyline class="arrow" stroke-width="3" points="40,12 50,2 60,12" fill="none"></polyline>
-          <line class="arrow-line" stroke-width="3" x1="50" y1="2" x2="50" y2="45"></line>
-          <polyline class="rectangle" stroke-width="3" points="45,20 27,20 27,70 73,70 73,20 55,20" fill="none"></polyline> 
+          <polyline class="arrow" stroke-width="5" points="40,12 50,2 60,12" fill="none"  stroke-linejoin="round"></polyline>
+          <line class="arrow-line" stroke-width="5" x1="50" y1="2" x2="50" y2="45"  stroke-linejoin="round"></line>
+          <polyline class="rectangle" stroke-width="5" points="45,20 27,20 27,70 73,70 73,20 55,20" fill="none"  stroke-linejoin="round"></polyline> 
       </symbol>
 
       <symbol viewBox="0 0 24 24" id="magnifier">  
