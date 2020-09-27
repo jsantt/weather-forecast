@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit-element';
 
 import './feels-like-icon.js';
 import './time-now.js';
+import './weather-name-wawa.js';
 import './weather-symbol-name.js';
 import '../common/wind-icon.js';
 import '../common/svg-icon.js';
@@ -51,6 +52,18 @@ class ForecastHeader extends LitElement {
         width: 1px !important;
         overflow: hidden;
       }
+
+      .selected-station {
+        padding: 0 var(--space-l);
+        text-align: right;
+        position: absolute;
+
+        right: 0;
+        bottom: 4rem;
+      }
+      weather-name-wawa {
+        display: block;
+      }
     `;
   }
 
@@ -68,11 +81,21 @@ class ForecastHeader extends LitElement {
           .location="${this.location}"
           .observationData=${this.observationData}
         ></station-map>
+        ${this.observationData !== undefined
+          ? html` <div class="selected-station">
+              ${this.observationData[0].distance} km
+              <div class="selected">${this.observationData[0].name}</div>
 
-        <!--weather-symbol-name .symbolId="${this.symbol}">
-          </weather-symbol-name>
-        </div>
-        <time-now .updateTime="${this.loading}"></time-now-->
+              <!--wind-icon
+                .degrees="${this.observationData[0].windDirection}"
+                .windSpeed="${this.observationData[0].wind}"
+                .windGustSpeed="${this.observationData[0].windGust}"
+              >
+              </wind-icon-->
+            </div>`
+          : ''}
+
+        <!--time-now .updateTime="${this.loading}"></time-now-->
       </header>
     `;
   }

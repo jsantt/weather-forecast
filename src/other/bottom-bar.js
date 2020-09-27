@@ -35,7 +35,7 @@ class BottomBar extends LitElement {
         fill: var(--color-blue-700);
         text-align: center;
         margin: 0 auto;
-        padding: 0 2rem;
+        padding: var(--space-s) var(--space-xl);
 
         width: 100%;
       }
@@ -43,13 +43,6 @@ class BottomBar extends LitElement {
       :host([showFeelsLike]) .feelsLike,
       :host([showWind]) .wind {
         background: var(--color-yellow-300);
-      }
-
-      @media only screen and (min-height: 800px) {
-        button {
-          padding-top: var(--space-s);
-          padding-bottom: var(--space-s);
-        }
       }
 
       geolocate-button {
@@ -129,8 +122,6 @@ class BottomBar extends LitElement {
       }
     );
     this.dispatchEvent(toggleFeelsLike);
-
-    // this._deselectWind();
   }
 
   _toggleWind() {

@@ -12,12 +12,19 @@ class StationMap extends LitElement {
         display: block;
       }
 
+      .nearest-circle {
+        opacity: 1;
+      }
+
       .svg-text {
         fill: var(--color-gray-300);
-        font-size: 0.1px;
-        font-weight: var(--font-weight-bold);
+        font-size: 0.11px;
 
         text-rendering: optimizeLegibility;
+      }
+
+      .nearest-svg-text {
+        fill: var(--color-blue-800);
       }
 
       .celcius {
@@ -97,6 +104,10 @@ class StationMap extends LitElement {
   }
 
   _createMap(coordinates, observations) {
+    if (observations === undefined) {
+      return;
+    }
+
     StationMap._adjustCoordinates(coordinates, observations);
 
     return svg`
@@ -110,21 +121,22 @@ class StationMap extends LitElement {
             cy="${-1 * coordinates.lat}"
             r="0.03"
             stroke-width="0"
-            fill="var(--color-red-300)"
+            fill="var(--color-gray-500)"
           />
 
           <circle
             cx="${coordinates.lon}"
             cy="${-1 * coordinates.lat}"
             r="0.06"
-            stroke="var(--color-red-300)"
+            stroke="var(--color-gray-500)"
             stroke-width="0.007"
             fill="none"
           />
         </g>
-        ${observations.map(observation => {
+        ${observations.map((observation, index) => {
           return svg`
             <circle
+              class="${index === 0 ? 'nearest-circle' : ''}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
               r="0.12"
@@ -133,12 +145,12 @@ class StationMap extends LitElement {
               stroke="var(--color-gray-300)"
               stroke-width="0.010"
             />
-          </g>
+            }
             `;
         })}
         
 
-        ${observations.map(observation => {
+        ${observations.map((observation, index) => {
           return svg`
           <!-- moved line -->
           <!-- g opacity="0.5">
@@ -161,7 +173,6 @@ class StationMap extends LitElement {
             
           </g>
 
-          
            <use
               x="${observation.lonForMap - 0.14}"
               y="${-1 * observation.latForMap - 0.07}"
@@ -171,9 +182,9 @@ class StationMap extends LitElement {
                 observation.weatherCode3
               }"
             ></use>
-              <text  class="svg-text" text-anchor="right" x="${
-                observation.lonForMap - 0.02
-              }"
+              <text  class="svg-text ${
+                index === 0 ? 'nearest-svg-text' : ''
+              }" text-anchor="right" x="${observation.lonForMap - 0.02}"
               y="${-1 * observation.latForMap}">${Math.round(
             observation.temperature
           )}<tspan class="celcius">°C</tspan></text>
