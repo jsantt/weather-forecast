@@ -53,6 +53,9 @@ class ForecastHeader extends LitElement {
       }
 
       .selected {
+        background: var(--color-blue-600);
+        border-radius: var(--border-radius);
+
         display: grid;
         grid-template-columns: 1fr auto;
         grid-template-rows: 1fr 1fr;
@@ -63,9 +66,10 @@ class ForecastHeader extends LitElement {
 
         line-height: 1;
         text-align: right;
+        padding: var(--space-s);
 
         position: absolute;
-        right: var(--space-l);
+        right: var(--space-m);
         bottom: 4rem;
       }
 

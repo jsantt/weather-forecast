@@ -9,6 +9,10 @@
  * @param {Number} wind - metres per second
  */
 function feelsLike(temperature, wind) {
+  if (Number.isNaN(temperature) || Number.isNaN(wind)) {
+    return undefined;
+  }
+
   const result =
     13.12 +
     0.6215 * temperature -

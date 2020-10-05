@@ -23,7 +23,7 @@ class WeatherDay extends LitElement {
       :host {
         --grid-last-column: 25;
 
-        --color-dayHeader: var(--color-secondary);
+        --color-dayHeader: var(--color-blue-650);
         --color-dayHeader-delimiter: var(--color-gray-300);
 
         --color-dayHeader-font: var(--color-white);

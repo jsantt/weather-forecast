@@ -48,7 +48,7 @@ class ComboBox extends LitElement {
       }
 
       .refresh {
-        fill: var(--color-blue-700);
+        fill: var(--color-blue-650);
         position: absolute;
         right: 2px;
         top: 1px;
@@ -90,11 +90,10 @@ class ComboBox extends LitElement {
       }
 
       input[type='text'] {
-        background-color: rgba(245, 245, 245, 0.93);
-
-        background: var(--color-gray-400);
+        background: var(--color-white);
         border: none;
         border-radius: var(--border-radius);
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 4px;
 
         color: var(--color-blue-800);
         font-size: var(--font-size-l);
@@ -135,7 +134,7 @@ class ComboBox extends LitElement {
       /* when navigating through the items using the arrow keys: */
       li[aria-selected='true'],
       li:hover {
-        background: var(--color-blue-800);
+        background: var(--color-blue-650);
         color: var(-color-gray-300);
       }
 
@@ -146,7 +145,7 @@ class ComboBox extends LitElement {
       }
 
       strong {
-        color: var(--color-blue-800);
+        color: var(--color-blue-650);
       }
     `;
   }

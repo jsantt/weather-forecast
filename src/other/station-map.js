@@ -23,10 +23,10 @@ class StationMap extends LitElement {
 
       .selected-station circle {
         opacity: 1;
+        fill: var(--color-blue-650);
       }
 
       .selected-station .svg-text {
-        fill: var(--color-blue-800);
       }
 
       use,
@@ -73,14 +73,14 @@ class StationMap extends LitElement {
             cy="${-1 * coordinates.lat}"
             r="0.03"
             stroke-width="0"
-            fill="var(--color-gray-500)"
+            fill="var(--color-gray-300)"
           />
 
           <circle
             cx="${coordinates.lon}"
             cy="${-1 * coordinates.lat}"
             r="0.06"
-            stroke="var(--color-gray-500)"
+            stroke="var(--color-gray-300)"
             stroke-width="0.007"
             fill="none"
           />
@@ -93,7 +93,7 @@ class StationMap extends LitElement {
               @click="${this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
-              r="0.12"
+              r="${index === 0 ? 0.15 : 0.12}"
               fill="var(--color-gray-300)"
               opacity="0.1"
               stroke="var(--color-gray-300)"
@@ -110,14 +110,19 @@ class StationMap extends LitElement {
                 observation.weatherCode3
               }"
             ></use>
+            ${
+              showFeelsLike === true && observation.feelsLike === undefined
+                ? ''
+                : svg`
               <text  class="svg-text" text-anchor="right" x="${
                 observation.lonForMap - 0.02
               }"
               y="${-1 * observation.latForMap}">${
-            showFeelsLike === true
-              ? svg`${observation.feelsLike}`
-              : svg`${Math.round(observation.temperature)}`
-          }°<tspan class="celcius"></tspan></text>
+                    showFeelsLike === true
+                      ? svg`${observation.feelsLike}`
+                      : svg`${Math.round(observation.temperature)}`
+                  }<tspan class="celcius">°</tspan></text>`
+            }
           </g>
             `;
         })}
