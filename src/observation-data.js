@@ -35,7 +35,7 @@ class ObservationData extends LitElement {
   }
 
   _newPlace() {
-    if (this.place == undefined) {
+    if (this.place === undefined) {
       return;
     }
 
@@ -58,6 +58,7 @@ class ObservationData extends LitElement {
         raiseEvent(this, 'observation-data.fetch-error', {
           text: 'Havaintoja ei saatavilla',
         });
+        // eslint-disable-next-line no-console
         console.log(`error ${rejected.stack}`);
       });
   }
@@ -177,7 +178,7 @@ class ObservationData extends LitElement {
    *
    */
 
-  _parseStations(xmlDocResponse) {
+  static _parseStations(xmlDocResponse) {
     const stations = xmlDocResponse.querySelectorAll('Point');
 
     const result = [];
@@ -220,7 +221,7 @@ class ObservationData extends LitElement {
    *
    * @param {XMLDocument} xmlDocResponse
    */
-  _parsePositions(xmlDocResponse) {
+  static _parsePositions(xmlDocResponse) {
     const positions = xmlDocResponse
       .querySelector('positions')
       .innerHTML.trim();
@@ -228,7 +229,7 @@ class ObservationData extends LitElement {
 
     const stationPositions = [];
 
-    positionRows.map(positionRow => {
+    positionRows.forEach(positionRow => {
       const singleValues = positionRow.trim().split(' ');
 
       stationPositions.push({
@@ -244,7 +245,7 @@ class ObservationData extends LitElement {
     return stationPositions;
   }
 
-  _parseObservations(xmlDocResponse) {
+  static _parseObservations(xmlDocResponse) {
     const observations = xmlDocResponse
       .querySelector('doubleOrNilReasonTupleList')
       .innerHTML.trim();
@@ -285,13 +286,13 @@ class ObservationData extends LitElement {
     return formattedObservations;
   }
 
-  _removeWithoutTemperature(observations) {
+  static _removeWithoutTemperature(observations) {
     return observations.filter(observation =>
       Number.isFinite(observation.temperature)
     );
   }
 
-  _removeDuplicates(observations) {
+  static _removeDuplicates(observations) {
     return observations.filter((observation, index) => {
       const next = observations[index + 1];
       // hack to remove harmaja for now
@@ -304,9 +305,9 @@ class ObservationData extends LitElement {
   }
 
   _formatObservations(rawResponse) {
-    const positions = this._parsePositions(rawResponse);
-    const stations = this._parseStations(rawResponse);
-    const observations = this._parseObservations(rawResponse);
+    const positions = ObservationData._parsePositions(rawResponse);
+    const stations = ObservationData._parseStations(rawResponse);
+    const observations = ObservationData._parseObservations(rawResponse);
 
     const positionAndName = positions.map(position => {
       const correctStation = stations.find(
@@ -319,10 +320,14 @@ class ObservationData extends LitElement {
       return { ...item, ...observations[index] };
     });
 
-    const filteredObservations = this._removeWithoutTemperature(combined);
-    const finalObservations = this._removeDuplicates(filteredObservations);
+    const filteredObservations = ObservationData._removeWithoutTemperature(
+      combined
+    );
+    const finalObservations = ObservationData._removeDuplicates(
+      filteredObservations
+    );
 
-    finalObservations.map(item => {
+    finalObservations.forEach(item => {
       item.distance = Math.round(
         distance(item.lat, item.lon, this.place.lat, this.place.lon)
       );

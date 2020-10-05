@@ -170,8 +170,8 @@ class StationMap extends LitElement {
     const stationRadius = 0.125; // exact radius is 0.125
     const extendLength = 0.01;
 
-    observations.map((o1, index) => {
-      observations.map(o2 => {
+    observations.forEach((o1, index) => {
+      observations.forEach(o2 => {
         while (
           o1.latForMap !== o2.latForMap &&
           o1.lonForMap !== o2.latForMap &&

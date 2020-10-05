@@ -37,7 +37,7 @@ function _windClassification(windSpeed) {
 
 function _max(forecastData, property) {
   if (forecastData === undefined || forecastData.length < 1) {
-    return;
+    return undefined;
   }
 
   let maxWind = 0;
@@ -46,6 +46,7 @@ function _max(forecastData, property) {
 
   upcomingHours.map(item => {
     maxWind = item[property] > maxWind ? item[property] : maxWind;
+    return undefined;
   });
 
   return maxWind;
@@ -58,6 +59,7 @@ function _windDescription(maxWind) {
     if (item.min <= maxWind && maxWind < item.max) {
       windDescription = item.description;
     }
+    return undefined;
   });
 
   return windDescription;

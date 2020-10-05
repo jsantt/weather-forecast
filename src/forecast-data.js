@@ -56,7 +56,7 @@ class ForecastData extends LitElement {
   _newLocation() {
     this._dispatch('forecast-data.fetching');
 
-    const params = this._getHarmonieParams(this.location);
+    const params = ForecastData._getHarmonieParams(this.location);
 
     const queryParams = Object.keys(params)
       .map(key => `${key}=${params[key]}`)
@@ -69,7 +69,7 @@ class ForecastData extends LitElement {
       .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then(data => {
         this._sendNotification(
-          this._parseLocationGeoid(data),
+          ForecastData._parseLocationGeoid(data),
           parseLocationName(data),
           this.location.coordinates,
           this.location.lat,
@@ -77,14 +77,14 @@ class ForecastData extends LitElement {
           parseRegion(data)
         );
 
-        const filteredResponse = this._filterResponse(data);
-        const json = this._toJson(filteredResponse);
+        const filteredResponse = ForecastData._filterResponse(data);
+        const json = ForecastData._toJson(filteredResponse);
 
         // enrich data here to keep logic inside components simple
-        const hourAdded = this._addFullHour(json);
-        const pastMarked = this._markPastItems(hourAdded);
-        const rainTypeAdded = this._addRainType(pastMarked);
-        const forecastData = this._addSymbolAggregate(rainTypeAdded);
+        const hourAdded = ForecastData._addFullHour(json);
+        const pastMarked = ForecastData._markPastItems(hourAdded);
+        const rainTypeAdded = ForecastData._addRainType(pastMarked);
+        const forecastData = ForecastData._addSymbolAggregate(rainTypeAdded);
 
         this._dispatch('forecast-data.new-data', forecastData);
       })
@@ -102,8 +102,8 @@ class ForecastData extends LitElement {
       });
   }
 
-  _getHarmonieParams(location) {
-    const params = this._commonParams(location);
+  static _getHarmonieParams(location) {
+    const params = ForecastData._commonParams(location);
 
     params.storedquery_id =
       'fmi::forecast::harmonie::surface::point::timevaluepair';
@@ -113,11 +113,11 @@ class ForecastData extends LitElement {
     return params;
   }
 
-  _commonParams(location) {
+  static _commonParams(location) {
     const params = {
       request: 'getFeature',
-      starttime: this._todayFirstHour(),
-      endtime: this._tomorrowLastHour(),
+      starttime: ForecastData._todayFirstHour(),
+      endtime: ForecastData._tomorrowLastHour(),
     };
     if (location.coordinates) {
       params.latlon = location.coordinates;
@@ -157,7 +157,7 @@ class ForecastData extends LitElement {
    *    {hour:2, ...}
    * ]
    */
-  _filterResponse(response) {
+  static _filterResponse(response) {
     const timeSeries = response.getElementsByTagName(
       'wml2:MeasurementTimeseries'
     );
@@ -203,10 +203,10 @@ class ForecastData extends LitElement {
     return harmonieResponse;
   }
 
-  _toJson(data) {
+  static _toJson(data) {
     const weatherJson = [];
 
-    for (let i = 0; i < data.temperature.length; i++) {
+    for (let i = 0; i < data.temperature.length; i += 1) {
       const temperatureValue = getValue(data.temperature[i]);
       const windValue = getValue(data.wind[i]);
 
@@ -226,35 +226,24 @@ class ForecastData extends LitElement {
     return weatherJson;
   }
 
-  _enrichData(combinedData) {
-    // enrich data here to simplify logic inside components
+  static _addFullHour(combinedData) {
+    combinedData.forEach(element => {
+      element.hour = ForecastData._toHour(element.time);
+    });
+
+    return combinedData;
+  }
+
+  static _markPastItems(combinedData) {
     const now = new Date();
     combinedData.forEach(element => {
-      element.hour = this._toHour(element.time);
-      element.past = this._isPast(now, element.time);
+      element.past = ForecastData._isPast(now, element.time);
     });
 
     return combinedData;
   }
 
-  _addFullHour(combinedData) {
-    combinedData.forEach(element => {
-      element.hour = this._toHour(element.time);
-    });
-
-    return combinedData;
-  }
-
-  _markPastItems(combinedData) {
-    const now = new Date();
-    combinedData.forEach(element => {
-      element.past = this._isPast(now, element.time);
-    });
-
-    return combinedData;
-  }
-
-  _addRainType(data) {
+  static _addRainType(data) {
     data.forEach(item => {
       item.rainType = rainType(item.symbol);
     });
@@ -262,7 +251,7 @@ class ForecastData extends LitElement {
     return data;
   }
 
-  _addSymbolAggregate(forecastData) {
+  static _addSymbolAggregate(forecastData) {
     let previousItem;
     let currentItem;
 
@@ -287,7 +276,7 @@ class ForecastData extends LitElement {
     return forecastData;
   }
 
-  _isPast(now, dateTime) {
+  static _isPast(now, dateTime) {
     const comparable = new Date(dateTime);
 
     return now > comparable;
@@ -295,7 +284,7 @@ class ForecastData extends LitElement {
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 
   <gml:identifier codeSpace="http://xml.fmi.fi/namespace/stationcode/geoid">7521689</gml:identifier> */
-  _parseLocationGeoid(response) {
+  static _parseLocationGeoid(response) {
     const locations = response.getElementsByTagName('gml:identifier');
     const locationRow = getByAttributeValue(
       locations,
@@ -323,14 +312,14 @@ class ForecastData extends LitElement {
     raiseEvent(this, 'forecast-data.new-place', details.location);
   }
 
-  _todayFirstHour() {
+  static _todayFirstHour() {
     const firstHour = new Date();
     firstHour.setHours(1, 0, 0, 0);
 
     return firstHour.toISOString();
   }
 
-  _toHour(time) {
+  static _toHour(time) {
     if (typeof time === 'number') {
       return time;
     }
@@ -341,7 +330,7 @@ class ForecastData extends LitElement {
     return hour === 0 ? 24 : dateObject.getHours();
   }
 
-  _tomorrowLastHour() {
+  static _tomorrowLastHour() {
     const now = new Date();
 
     const tomorrow = new Date();

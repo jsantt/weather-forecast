@@ -175,7 +175,7 @@ class SunriseSunset extends LitElement {
   }
 
   _updateSunsetSunrise() {
-    const times = SunCalc.getTimes(
+    const times = window.SunCalc.getTimes(
       new Date(),
       this.location.lat,
       this.location.lon
