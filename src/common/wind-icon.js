@@ -9,8 +9,8 @@ class WindIcon extends LitElement {
       }
 
       .windIcon--large {
-        height: 42px;
-        width: 42px;
+        height: 36px;
+        width: 36px;
         transition: all 0.2s ease-in-out;
       }
 
@@ -26,7 +26,7 @@ class WindIcon extends LitElement {
       }
 
       .windGustSpeed--white {
-        fill: var(--color-white);
+        fill: var(--color-gray-300);
       }
 
       .windIcon_arrow {
@@ -59,7 +59,7 @@ class WindIcon extends LitElement {
           points="36,29 50,10 64,29"
         ></polyline>
         <circle
-          class="windIcon_circle warning--color${this.color}"
+          class="windIcon_circle"
           stroke-width="4"
           cx="50"
           cy="60"
@@ -74,8 +74,7 @@ class WindIcon extends LitElement {
         x="96"
         y="38"
         stroke="0"
-        class="windGustSpeed warning--color${this.color} ${this.whiteGust ===
-        true
+        class="windGustSpeed ${this.whiteGust === true
           ? 'windGustSpeed--white'
           : ''}"
       >

@@ -374,8 +374,7 @@ class WeatherDay extends LitElement {
             <div class="hourlySymbols">
               <weather-symbol-small
                 class="tinySymbol"
-                .rain="${entry.rain}"
-                .symbolId="${entry.symbol}"
+                .rainType="${entry.rainType}"
               >
               </weather-symbol-small>
             </div>

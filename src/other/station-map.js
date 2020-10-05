@@ -1,6 +1,8 @@
 import { css, html, LitElement, svg } from 'lit-element';
 import { checkCollision, extendVector } from './vector-math.js';
 
+import '../common/wind-icon.js';
+
 class StationMap extends LitElement {
   static get is() {
     return 'station-map';
@@ -12,10 +14,6 @@ class StationMap extends LitElement {
         display: block;
       }
 
-      .nearest-circle {
-        opacity: 1;
-      }
-
       .svg-text {
         fill: var(--color-gray-300);
         font-size: 0.11px;
@@ -23,8 +21,17 @@ class StationMap extends LitElement {
         text-rendering: optimizeLegibility;
       }
 
-      .nearest-svg-text {
+      .selected-station circle {
+        opacity: 1;
+      }
+
+      .selected-station .svg-text {
         fill: var(--color-blue-800);
+      }
+
+      use,
+      .svg-text {
+        pointer-events: none;
       }
 
       .celcius {
@@ -36,7 +43,86 @@ class StationMap extends LitElement {
   }
 
   render() {
-    return html`${this._createMap(this.location, this.observationData)} `;
+    return html`
+      ${this._createMap(
+        this.location,
+        this.observationData,
+        this.showFeelsLike
+      )}
+    `;
+  }
+
+  _createMap(coordinates, observations, showFeelsLike) {
+    if (observations === undefined) {
+      return;
+    }
+
+    this._observationData = observations;
+
+    StationMap._adjustCoordinates(coordinates, this._observationData);
+
+    return svg`
+      <svg viewBox="${StationMap._viewBox(coordinates)}">
+        <!-- paint in "z-index" order, because
+              svg does not have z-index -->
+        
+        <!-- center cirle -->
+        <g>
+          <circle
+            cx="${coordinates.lon}"
+            cy="${-1 * coordinates.lat}"
+            r="0.03"
+            stroke-width="0"
+            fill="var(--color-gray-500)"
+          />
+
+          <circle
+            cx="${coordinates.lon}"
+            cy="${-1 * coordinates.lat}"
+            r="0.06"
+            stroke="var(--color-gray-500)"
+            stroke-width="0.007"
+            fill="none"
+          />
+        </g>      
+
+        ${this._observationData.map((observation, index) => {
+          return svg`
+            <g class="${index === 0 ? 'selected-station' : ''}">
+            <circle
+              @click="${this._stationClicked(index)}"
+              cx="${observation.lonForMap}"
+              cy="${-1 * observation.latForMap}"
+              r="0.12"
+              fill="var(--color-gray-300)"
+              opacity="0.1"
+              stroke="var(--color-gray-300)"
+              stroke-width="0.010"
+             
+            />
+          
+           <use
+              x="${observation.lonForMap - 0.14}"
+              y="${-1 * observation.latForMap - 0.07}"
+              width="0.2"
+              height="0.2"
+              href="assets/image/weather-symbols.svg#weatherSymbol${
+                observation.weatherCode3
+              }"
+            ></use>
+              <text  class="svg-text" text-anchor="right" x="${
+                observation.lonForMap - 0.02
+              }"
+              y="${-1 * observation.latForMap}">${
+            showFeelsLike === true
+              ? svg`${observation.feelsLike}`
+              : svg`${Math.round(observation.temperature)}`
+          }°<tspan class="celcius"></tspan></text>
+          </g>
+            `;
+        })}
+      </svg>
+    `;
   }
 
   static get properties() {
@@ -45,6 +131,18 @@ class StationMap extends LitElement {
         type: Object,
       },
       observationData: {
+        type: Array,
+      },
+      showFeelsLike: {
+        type: Boolean,
+        reflect: true,
+      },
+      showWind: {
+        type: Boolean,
+        reflect: true,
+      },
+      // local version with selected station
+      _observationData: {
         type: Array,
       },
     };
@@ -68,7 +166,7 @@ class StationMap extends LitElement {
 
   static _adjustCoordinates(coordinates, observations) {
     const stationRadius = 0.125; // exact radius is 0.125
-    const extendLength = 0.001;
+    const extendLength = 0.01;
 
     observations.map((o1, index) => {
       observations.map(o2 => {
@@ -103,96 +201,14 @@ class StationMap extends LitElement {
     });
   }
 
-  _createMap(coordinates, observations) {
-    if (observations === undefined) {
-      return;
-    }
-
-    StationMap._adjustCoordinates(coordinates, observations);
-
-    return svg`
-      <svg viewBox="${StationMap._viewBox(coordinates)}">
-        <!-- paint in "z-index" order, because
-              svg does not have z-index -->
-              <!-- center cirle -->
-        <g>
-          <circle
-            cx="${coordinates.lon}"
-            cy="${-1 * coordinates.lat}"
-            r="0.03"
-            stroke-width="0"
-            fill="var(--color-gray-500)"
-          />
-
-          <circle
-            cx="${coordinates.lon}"
-            cy="${-1 * coordinates.lat}"
-            r="0.06"
-            stroke="var(--color-gray-500)"
-            stroke-width="0.007"
-            fill="none"
-          />
-        </g>
-        ${observations.map((observation, index) => {
-          return svg`
-            <circle
-              class="${index === 0 ? 'nearest-circle' : ''}"
-              cx="${observation.lonForMap}"
-              cy="${-1 * observation.latForMap}"
-              r="0.12"
-              fill="var(--color-gray-300)"
-              opacity="0.1"
-              stroke="var(--color-gray-300)"
-              stroke-width="0.010"
-            />
-            }
-            `;
-        })}
-        
-
-        ${observations.map((observation, index) => {
-          return svg`
-          <!-- moved line -->
-          <!-- g opacity="0.5">
-            <line 
-              x1="${observation.lon}" 
-              y1="${-1 * observation.lat}"
-              x2="${observation.lonForMap}" 
-              y2="${-1 * observation.latForMap}" 
-              stroke-width="0.005" 
-              stroke-dasharray="0.01" 
-              stroke="var(--color-gray-300)"/>
-
-            <circle
-              cx="${observation.lon}"
-              cy="${-1 * observation.lat}"
-              r="0.01"
-            stroke-width="0"
-            fill="var(--color-gray-300)"
-            /-->
-            
-          </g>
-
-           <use
-              x="${observation.lonForMap - 0.14}"
-              y="${-1 * observation.latForMap - 0.07}"
-              width="0.2"
-              height="0.2"
-              href="assets/image/weather-symbols.svg#weatherSymbol${
-                observation.weatherCode3
-              }"
-            ></use>
-              <text  class="svg-text ${
-                index === 0 ? 'nearest-svg-text' : ''
-              }" text-anchor="right" x="${observation.lonForMap - 0.02}"
-              y="${-1 * observation.latForMap}">${Math.round(
-            observation.temperature
-          )}<tspan class="celcius">°C</tspan></text>
-          
-            `;
-        })}
-      </svg>
-    `;
+  _stationClicked(index) {
+    this._observationData = this._observationData.map(observation => {
+      const obs = { ...observation };
+      obs.selectedStation = false;
+      return obs;
+    });
+    this._observationData[index].selectedStation = true;
+    this.requestUpdate();
   }
 }
 

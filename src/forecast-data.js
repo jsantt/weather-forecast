@@ -11,6 +11,9 @@ import {
   parseRegion,
 } from './common/xml-parser.js';
 
+import { feelsLike } from './helper-functions/feels-like.js';
+import { rainType } from './helper-functions/rain-type.js';
+
 /**
  *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.
  *
@@ -80,7 +83,8 @@ class ForecastData extends LitElement {
         // enrich data here to keep logic inside components simple
         const hourAdded = this._addFullHour(json);
         const pastMarked = this._markPastItems(hourAdded);
-        const forecastData = this._addSymbolAggregate(pastMarked);
+        const rainTypeAdded = this._addRainType(pastMarked);
+        const forecastData = this._addSymbolAggregate(rainTypeAdded);
 
         this._dispatch('forecast-data.new-data', forecastData);
       })
@@ -88,6 +92,7 @@ class ForecastData extends LitElement {
         raiseEvent(this, 'forecast-data.fetch-error', {
           text: 'Virhe haettaessa ennustetietoja',
         });
+        // eslint-disable-next-line no-console
         console.log(`error ${rejected.stack}`);
       })
       .then(() => {
@@ -206,7 +211,7 @@ class ForecastData extends LitElement {
       const windValue = getValue(data.wind[i]);
 
       weatherJson.push({
-        feelsLike: this._feelsLike(temperatureValue, windValue),
+        feelsLike: feelsLike(temperatureValue, windValue),
         humidity: getValue(data.humidity[i]),
         rain: getValue(data.rain[i]),
         symbol: getValue(data.symbol[i]),
@@ -249,6 +254,14 @@ class ForecastData extends LitElement {
     return combinedData;
   }
 
+  _addRainType(data) {
+    data.forEach(item => {
+      item.rainType = rainType(item.symbol);
+    });
+
+    return data;
+  }
+
   _addSymbolAggregate(forecastData) {
     let previousItem;
     let currentItem;
@@ -278,22 +291,6 @@ class ForecastData extends LitElement {
     const comparable = new Date(dateTime);
 
     return now > comparable;
-  }
-
-  /**
-   * Calculates "feels like" estimate based on wind and temperature.
-   * Formula by Ilmatieteen laitos: https://fi.wikipedia.org/wiki/Pakkasen_purevuus
-   *
-   * @param {*} temperature in celcius
-   * @param {*} wind metres per second
-   */
-  _feelsLike(temperature, wind) {
-    const feelsLike =
-      13.12 +
-      0.6215 * temperature -
-      13.956 * Math.pow(wind, 0.16) +
-      0.4867 * temperature * Math.pow(wind, 0.16);
-    return Math.round(feelsLike);
   }
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../other/geolocate-button.js';
+import './geolocate-button.js';
 
 class BottomBar extends LitElement {
   static get is() {
@@ -100,7 +100,7 @@ class BottomBar extends LitElement {
     `;
   }
 
-  properties() {
+  static get properties() {
     return {
       showFeelsLike: {
         type: Boolean,

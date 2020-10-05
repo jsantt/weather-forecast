@@ -5,6 +5,8 @@ import { raiseEvent } from './common/xml-parser.js';
 import { wawaToSymbol3 } from './common/wawa-converter.js';
 import { distance } from './common/distance.js';
 
+import { feelsLike } from './helper-functions/feels-like.js';
+
 /**
  * Observations are fetched from the nearest observation station using area name, because
  * there is no support for coordinates. New data is available every 10 minutes
@@ -66,7 +68,7 @@ class ObservationData extends LitElement {
       storedquery_id: 'fmi::observations::weather::multipointcoverage', // multipointcoverage',
       geoid,
       meters: 'ws_10min,t2m',
-      maxlocations: 10,
+      maxlocations: 20,
       starttime: this._roundDownToFullMinutes(-12), // get the latest data only
       endtime: this._roundDownToFullMinutes(0), // get the latest data only
     };
@@ -275,6 +277,7 @@ class ObservationData extends LitElement {
         station.wawaCode,
         station.cloudiness
       );
+      station.feelsLike = feelsLike(station.temperature, station.wind);
 
       formattedObservations.push(station);
     });

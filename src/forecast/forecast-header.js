@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
 import './feels-like-icon.js';
-import './time-now.js';
 import './weather-name-wawa.js';
 import './weather-symbol-name.js';
 import '../common/wind-icon.js';
@@ -53,13 +52,33 @@ class ForecastHeader extends LitElement {
         overflow: hidden;
       }
 
-      .selected-station {
-        padding: 0 var(--space-l);
-        text-align: right;
-        position: absolute;
+      .selected {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 1fr 1fr;
 
-        right: 0;
+        grid-template-areas:
+          'distance wind'
+          'name     wind';
+
+        line-height: 1;
+        text-align: right;
+
+        position: absolute;
+        right: var(--space-l);
         bottom: 4rem;
+      }
+
+      .selected-distance {
+        grid-area: distance;
+      }
+
+      .selected-name {
+        grid-area: name;
+      }
+      wind-icon {
+        grid-area: wind;
+        padding-left: var(--space-m);
       }
       weather-name-wawa {
         display: block;
@@ -80,22 +99,31 @@ class ForecastHeader extends LitElement {
         <station-map
           .location="${this.location}"
           .observationData=${this.observationData}
+          ?showFeelsLike="${this.showFeelsLike}"
+          ?showWind="${this.showWind}"
         ></station-map>
         ${this.observationData !== undefined
-          ? html` <div class="selected-station">
-              ${this.observationData[0].distance} km
-              <div class="selected">${this.observationData[0].name}</div>
+          ? html` <div class="selected">
+              <div class="selected-distance">
+                ${this.observationData[0].distance} km
+              </div>
+              <div class="selected-name">${this.observationData[0].name}</div>
 
-              <!--wind-icon
-                .degrees="${this.observationData[0].windDirection}"
-                .windSpeed="${this.observationData[0].wind}"
-                .windGustSpeed="${this.observationData[0].windGust}"
-              >
-              </wind-icon-->
+              ${
+                this.showWind === true
+                  ? html` <wind-icon
+                      .degrees="${this.observationData[0].windDirection}"
+                      large
+                      whiteGust
+                      .windSpeed="${this.observationData[0].wind}"
+                      .windGustSpeed="${this.observationData[0].windGust}"
+                    >
+                    </wind-icon>`
+                  : ''
+              }
+              </div>
             </div>`
           : ''}
-
-        <!--time-now .updateTime="${this.loading}"></time-now-->
       </header>
     `;
   }
@@ -106,6 +134,8 @@ class ForecastHeader extends LitElement {
       location: { type: Object, reflect: true },
       place: { type: Object, reflect: true },
       observationData: { type: Object },
+      showFeelsLike: { type: Boolean, reflect: true },
+      showWind: { type: Boolean, reflect: true },
     };
   }
 

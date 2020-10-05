@@ -223,6 +223,8 @@ class WeatherApp extends LitElement {
                   .location="${this._location}"
                   .place="${this._forecastPlace}"
                   .observationData="${this._observationData}"
+                  ?showFeelsLike="${this._showFeelsLike}"
+                  ?showWind="${this._showWind}"
                 >
                 </forecast-header>
 
