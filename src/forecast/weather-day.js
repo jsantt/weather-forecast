@@ -254,7 +254,7 @@ class WeatherDay extends LitElement {
 
             <span class="wind-warning">
               <wind-speed 
-                .windRating="${this._windRating(this.dayData)}" 
+                .windRating="${WeatherDay._windRating(this.dayData)}" 
                 .windDescription="${WeatherDay._windDescription(this.dayData)}"
                 @click="${() => this._toggleWind()}">
               </wind-speed>
@@ -284,7 +284,7 @@ class WeatherDay extends LitElement {
         ${this.dayData.map((entry, index) => {
           return html`
             <!-- EMPTY COLUMN -->
-            ${this._isFirst(index) === true
+            ${index === 1
               ? html`
                   <div class="symbol--empty"></div>
                   <div class="temperature--empty"></div>
@@ -293,10 +293,10 @@ class WeatherDay extends LitElement {
               : ''}
 
             <div class="hour ${entry.past === true ? 'hour--past' : ''}">
-              ${this._isThird(index) === true ? html`${entry.hour}` : ''}
+              ${WeatherDay._isThird(index) === true ? html`${entry.hour}` : ''}
             </div>
 
-            ${this._isThird(index) === false
+            ${WeatherDay._isThird(index) === false
               ? ''
               : html`
                   <div class="symbol ${entry.past === true ? 'past-hour' : ''}">
@@ -310,7 +310,7 @@ class WeatherDay extends LitElement {
                       ? 'past-hour'
                       : ''}"
                   >
-                    ${this._notNaN(entry.temperature) === true
+                    ${Number.isFinite(entry.temperature) === true
                       ? html`${this.showFeelsLike === true
                             ? entry.feelsLike
                             : WeatherDay._round(entry.temperature)}<span
@@ -406,13 +406,6 @@ class WeatherDay extends LitElement {
     return dayNames[number - 1];
   }
 
-  _getClasses(showBoth, baseClasses, pastClass) {
-    const classes = showBoth
-      ? baseClasses.concat(' ').concat(pastClass)
-      : baseClasses;
-    return classes;
-  }
-
   static _weekday(number) {
     const day = new Date();
     day.setDate(day.getDate() + (number - 1));
@@ -423,7 +416,7 @@ class WeatherDay extends LitElement {
     return windWarning(dayData).description;
   }
 
-  _windRating(dayData) {
+  static _windRating(dayData) {
     if (dayData === undefined || dayData.length < 1) {
       return '';
     }
@@ -446,16 +439,8 @@ class WeatherDay extends LitElement {
     return result;
   }
 
-  _isFirst(index) {
-    return index === 1;
-  }
-
-  _isThird(index) {
+  static _isThird(index) {
     return (index + 1) % 3 === 0;
-  }
-
-  _notNaN(item) {
-    return !Number.isNaN(item);
   }
 
   _toggleWind() {

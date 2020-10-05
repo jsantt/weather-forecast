@@ -26,9 +26,6 @@ class StationMap extends LitElement {
         fill: var(--color-blue-650);
       }
 
-      .selected-station .svg-text {
-      }
-
       use,
       .svg-text {
         pointer-events: none;

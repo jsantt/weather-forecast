@@ -1,6 +1,6 @@
-function getByAttributeValue(collection, attribute, value) {
+function getByAttributeValue(collection, attribute, attrValue) {
   for (const item of collection) {
-    if (item.getAttribute(attribute) === value) {
+    if (item.getAttribute(attribute) === attrValue) {
       return item;
     }
   }
@@ -61,9 +61,9 @@ function parseRegion(response) {
  */
 function parseLatLon(response) {
   const latLon = response.getElementsByTagName('gml:pos')[0];
-  const value = latLon.innerHTML;
+  const latLonValue = latLon.innerHTML;
 
-  return value;
+  return latLonValue;
 }
 
 function raiseEvent(context, name, payload) {

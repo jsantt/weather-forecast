@@ -100,7 +100,7 @@ class TemperatureLine extends LitElement {
       TemperatureLine._getLastTemperatureIndex(dayData)
     );
 
-    const line = this._temperatureLine(coordinates, firstX, lastX);
+    const line = TemperatureLine._temperatureLine(coordinates, firstX, lastX);
     svg.appendChild(line);
 
     this._$('.chart').appendChild(svg);
@@ -119,7 +119,7 @@ class TemperatureLine extends LitElement {
     return svg;
   }
 
-  _temperatureLine(coordinates, firstX, lastX) {
+  static _temperatureLine(coordinates, firstX, lastX) {
     const line = document.createElementNS(
       'http://www.w3.org/2000/svg',
       'polyline'

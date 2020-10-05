@@ -56,7 +56,7 @@ class LocationSelector extends LitElement {
   render() {
     return html` <combo-box
       .currentValue="${this.city}"
-      .items="${this._placeList()}"
+      .items="${LocationSelector._placeList()}"
       key="city"
       ?loading=${this.loading}
     ></combo-box>`;
@@ -122,7 +122,7 @@ class LocationSelector extends LitElement {
       }
 
       // combobox tells the city only, get city and coordinates from localstorage items and city list
-      const cityAndCoordinates = this._placeList().find(
+      const cityAndCoordinates = LocationSelector._placeList().find(
         item => item.city === this.city
       );
 
@@ -165,7 +165,7 @@ class LocationSelector extends LitElement {
     const url = this.place.name;
 
     LocationSelector._changeUrl('place', url);
-    this._store('place', this.place.name, this.place.coordinates);
+    LocationSelector._store('place', this.place.name, this.place.coordinates);
   }
 
   _notifyPreviousPlace() {
@@ -184,7 +184,7 @@ class LocationSelector extends LitElement {
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 
-  _placeList() {
+  static _placeList() {
     let allLocations;
 
     const previousLocations = LocationSelector._getFromLocalStorage('place');
@@ -204,7 +204,7 @@ class LocationSelector extends LitElement {
   }
 
   static _changeUrl(paramName, paramValue) {
-    history.replaceState(null, null, `?${paramName}=${paramValue}`);
+    window.history.replaceState(null, null, `?${paramName}=${paramValue}`);
   }
 
   _dispatchEvent(name, payload) {
@@ -220,7 +220,7 @@ class LocationSelector extends LitElement {
     return { city, coordinates };
   }
 
-  _store(key, city, coordinates) {
+  static _store(key, city, coordinates) {
     const newPlace = [LocationSelector._formPlaceObject(city, coordinates)];
     const previousPlaces = LocationSelector._getFromLocalStorage('place');
 

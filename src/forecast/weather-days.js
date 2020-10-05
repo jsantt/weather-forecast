@@ -30,7 +30,7 @@ class WeatherDays extends LitElement {
       <h3 class="visually-hidden">sää tänään</h3>
       <weather-day
         class="weatherGrid"
-        .dayNumber="${1}"
+        dayNumber="1"
         .minTemperature="${this._minTemperature}"
         .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
@@ -40,7 +40,7 @@ class WeatherDays extends LitElement {
       <h3 class="visually-hidden">sää huomenna</h3>
       <weather-day
         class="weatherGrid"
-        .dayNumber="${2}"
+        dayNumber="2"
         .minTemperature="${this._minTemperature}"
         .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
@@ -50,7 +50,7 @@ class WeatherDays extends LitElement {
       <h3 class="visually-hidden">sää ylihuomenna</h3>
       <weather-day
         class="weatherGrid"
-        .dayNumber="${3}"
+        dayNumber="3"
         .minTemperature="${this._minTemperature}"
         .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
@@ -104,30 +104,30 @@ class WeatherDays extends LitElement {
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'forecastData' && this.forecastData !== undefined) {
-        this._todayData = this._sliceToday(this.forecastData);
-        this._day2Data = this._sliceDay2(this.forecastData);
-        this._day3Data = this._sliceDay3(this.forecastData);
-        this._minTemperature = this._minTemp(this.forecastData);
+        this._todayData = WeatherDays._sliceToday(this.forecastData);
+        this._day2Data = WeatherDays._sliceDay2(this.forecastData);
+        this._day3Data = WeatherDays._sliceDay3(this.forecastData);
+        this._minTemperature = WeatherDays._minTemp(this.forecastData);
       }
     });
   }
 
   // for computed properties
 
-  _sliceToday(data) {
+  static _sliceToday(data) {
     return data.slice(0, 24);
   }
 
-  _sliceDay2(data) {
+  static _sliceDay2(data) {
     return data.slice(24, 48);
   }
 
-  _sliceDay3(data) {
+  static _sliceDay3(data) {
     return data.slice(48, 72);
   }
 
-  _minTemp(data) {
-    const min = data.reduce(function (previous, current) {
+  static _minTemp(data) {
+    const min = data.reduce((previous, current) => {
       const currentTemp = Number.isNaN(current.temperature)
         ? Number.MAX_VALUE
         : current.temperature;

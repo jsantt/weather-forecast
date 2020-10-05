@@ -197,7 +197,7 @@ class ComboBox extends LitElement {
                       @click="${this._onItemClick}"
                     >
                       ${this._highlightMatch(item.city)}
-                      <input type="hidden" value="${item.city}" />
+                      <input type="hidden" .value="${item.city}" />
                     </li>`;
                   })}
                 </ul>
@@ -355,11 +355,11 @@ class ComboBox extends LitElement {
         break;
 
       case 38 /* arrow UP */:
-        this._focusIndex--;
+        this._focusIndex -= 1;
         this._setFocus(this._focusIndex);
         break;
 
-      case 13:
+      case 13: {
         /* If the ENTER key is pressed, prevent the form from being submitted, */
         event.preventDefault();
 
@@ -372,8 +372,10 @@ class ComboBox extends LitElement {
         }
 
         break;
+      }
       case 27:
         this._closeCombobox();
+        break;
       default:
     }
   }
