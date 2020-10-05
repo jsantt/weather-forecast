@@ -140,7 +140,6 @@ class WeatherDay extends LitElement {
         height: 0;
       }
 
-      .feelsLike_header,
       .wind_header {
         background-color: var(--color-toggle-background);
 
@@ -154,38 +153,26 @@ class WeatherDay extends LitElement {
         text-align: right;
       }
 
-      .feelsLike,
-      .feelsLike--empty {
+      .wind,
+      .wind--empty {
         grid-row: 7;
       }
 
-      .feelsLike_header {
+      .wind_header {
         grid-row: 8;
       }
 
-      .wind,
-      .wind--empty {
-        grid-row: 9;
-      }
-
-      .wind_header {
-        grid-row: 10;
-      }
-
       .temperature--empty,
-      .feelsLike--empty,
       .wind--empty {
         grid-column: span 1;
       }
 
-      .wind--empty,
-      .feelsLike--empty {
+      .wind--empty {
         background-color: var(--color-toggle-background);
         margin-top: var(--space-m);
       }
 
-      .wind,
-      .feelsLike {
+      .wind {
         background-color: var(--color-toggle-background);
         color: var(--color-black);
         grid-column: span 3;
@@ -204,16 +191,12 @@ class WeatherDay extends LitElement {
       }
 
       .wind,
-      .feelsLike,
       .wind--empty,
-      .feelsLike--empty,
-      .wind_header,
-      .feelsLike_header {
+      .wind_header {
         z-index: var(--z-index-2);
       }
 
-      .wind--hidden,
-      .feelsLike--hidden {
+      .wind--hidden {
         max-height: 0;
         padding: 0;
       }
@@ -239,10 +222,6 @@ class WeatherDay extends LitElement {
         grid-column: span 25;
         grid-row: 12;
         padding-top: 1.55rem;
-      }
-
-      .feelsLikeValue {
-        font-size: 16px;
       }
 
       .hourlySymbols {
@@ -301,11 +280,6 @@ class WeatherDay extends LitElement {
         }
         
 
-        ${
-          this.showFeelsLike === true
-            ? html`<div class="feelsLike_header">tuntuu kuin</div>`
-            : ''
-        }
 
         ${this.dayData.map((entry, index) => {
           return html`
@@ -314,7 +288,6 @@ class WeatherDay extends LitElement {
               ? html`
                   <div class="symbol--empty"></div>
                   <div class="temperature--empty"></div>
-                  <div class="feelsLike--empty"></div>
                   <div class="wind--empty"></div>
                 `
               : ''}
@@ -325,9 +298,8 @@ class WeatherDay extends LitElement {
 
             ${this._isThird(index) === false
               ? ''
-              : html` <div
-                    class="symbol ${entry.past === true ? 'past-hour' : ''}"
-                  >
+              : html`
+                  <div class="symbol ${entry.past === true ? 'past-hour' : ''}">
                     <svg-icon
                       path="${`assets/image/weather-symbols.svg#weatherSymbol${entry.symbol}`}"
                     ></svg-icon>
@@ -339,7 +311,9 @@ class WeatherDay extends LitElement {
                       : ''}"
                   >
                     ${this._notNaN(entry.temperature) === true
-                      ? html`${WeatherDay._round(entry.temperature)}<span
+                      ? html`${this.showFeelsLike === true
+                            ? entry.feelsLike
+                            : WeatherDay._round(entry.temperature)}<span
                             class="degree"
                             >°</span
                           >`
@@ -357,20 +331,7 @@ class WeatherDay extends LitElement {
                     >
                     </wind-icon>
                   </div>
-
-                  <div
-                    class="feelsLike ${this.showFeelsLike !== true
-                      ? 'feelsLike--hidden'
-                      : ''}"
-                  >
-                    <div
-                      class="symbol ${entry.past === true ? 'past-hour' : ''}"
-                    >
-                      ${this._notNaN(entry.feelsLike) == true
-                        ? html`${entry.feelsLike}<span class="degree">°</span>`
-                        : ''}
-                    </div>
-                  </div>`}
+                `}
             <div class="hourlySymbols">
               <weather-symbol-small
                 class="tinySymbol"

@@ -125,7 +125,10 @@ class WeatherStation extends LitElement {
                       station.temperature
                         ? html`
                             <div>
-                              ${station.temperature}<span class="celcius"
+                              ${this.showFeelsLike === true
+                                ? station.feelsLike
+                                : Math.round(station.temperature)}<span
+                                class="celcius"
                                 >°C</span
                               >
                             </div>
@@ -287,6 +290,8 @@ class WeatherStation extends LitElement {
       observationError: {
         type: Boolean,
       },
+      showFeelsLike: { type: Boolean, reflect: true },
+      showWind: { type: Boolean, reflect: true },
     };
   }
 

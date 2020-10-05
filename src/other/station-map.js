@@ -36,7 +36,7 @@ class StationMap extends LitElement {
 
       .celcius {
         dominant-baseline: ideographic;
-        font-size: 0.07px;
+        font-size: 0.08px;
         fill: var(--color-gray-700);
       }
     `;
@@ -93,7 +93,7 @@ class StationMap extends LitElement {
               @click="${this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
-              r="${index === 0 ? 0.15 : 0.12}"
+              r="${index === 0 ? 0.14 : 0.12}"
               fill="var(--color-gray-300)"
               opacity="0.1"
               stroke="var(--color-gray-300)"

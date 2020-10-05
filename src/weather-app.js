@@ -271,6 +271,8 @@ class WeatherApp extends LitElement {
           .location="${this._location}"
           .observationData="${this._observationData}"
           ?observationError="${this._observationError}"
+          ?showFeelsLike="${this._showFeelsLike}"
+          ?showWind="${this._showWind}"
         >
         </weather-station>
 

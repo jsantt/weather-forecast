@@ -320,7 +320,7 @@ class ObservationData extends LitElement {
     });
 
     const filteredObservations = this._removeWithoutTemperature(combined);
-    let finalObservations = this._removeDuplicates(filteredObservations);
+    const finalObservations = this._removeDuplicates(filteredObservations);
 
     finalObservations.map(item => {
       item.distance = Math.round(
