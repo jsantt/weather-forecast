@@ -11,7 +11,7 @@ import {
   parseRegion,
 } from './common/xml-parser.js';
 
-import { feelsLike } from './helper-functions/feels-like.js';
+import { feelsLike, feelsLike2 } from './helper-functions/feels-like.js';
 import { rainType } from './helper-functions/rain-type.js';
 
 /**
@@ -209,10 +209,12 @@ class ForecastData extends LitElement {
     for (let i = 0; i < data.temperature.length; i += 1) {
       const temperatureValue = getValue(data.temperature[i]);
       const windValue = getValue(data.wind[i]);
+      const humidityValue = getValue(data.humidity[i]);
 
       weatherJson.push({
         feelsLike: feelsLike(temperatureValue, windValue),
-        humidity: getValue(data.humidity[i]),
+        feelsLike2: feelsLike2(temperatureValue, windValue, humidityValue),
+        humidity: humidityValue,
         rain: getValue(data.rain[i]),
         symbol: getValue(data.symbol[i]),
         time: getTime(data.temperature[i]),

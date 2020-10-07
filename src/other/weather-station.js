@@ -7,7 +7,7 @@ import '../forecast/weather-name-wawa.js';
 import './footer-section.js';
 import './station-map.js';
 
-const STATION_MAX_AMOUNT = 5;
+const STATION_MAX_AMOUNT = 7;
 
 class WeatherStation extends LitElement {
   static get is() {
@@ -126,7 +126,7 @@ class WeatherStation extends LitElement {
                         ? html`
                             <div>
                               ${this.showFeelsLike === true
-                                ? station.feelsLike
+                                ? station.feelsLike2 || '-'
                                 : Math.round(station.temperature)}<span
                                 class="celcius"
                                 >°C</span
@@ -273,7 +273,8 @@ class WeatherStation extends LitElement {
             </section>
             <div slot="footer-left"></div>
             <div slot="footer-right">
-              asemilta saatavat tiedot vaihtelevat
+              Asemilta saatavat tiedot vaihtelevat ja ne päivittyvät 10 minuutin
+              välein
             </div>
           `}
     </footer-section>`;

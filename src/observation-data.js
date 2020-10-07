@@ -5,7 +5,7 @@ import { raiseEvent } from './common/xml-parser.js';
 import { wawaToSymbol3 } from './common/wawa-converter.js';
 import { distance } from './common/distance.js';
 
-import { feelsLike } from './helper-functions/feels-like.js';
+import { feelsLike, feelsLike2 } from './helper-functions/feels-like.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because
@@ -70,8 +70,8 @@ class ObservationData extends LitElement {
       geoid,
       meters: 'ws_10min,t2m',
       maxlocations: 20,
-      starttime: this._roundDownToFullMinutes(-12), // get the latest data only
-      endtime: this._roundDownToFullMinutes(0), // get the latest data only
+      starttime: ObservationData._roundDownToFullMinutes(-12), // get the latest data only
+      endtime: ObservationData._roundDownToFullMinutes(0), // get the latest data only
     };
 
     return params;
@@ -279,6 +279,11 @@ class ObservationData extends LitElement {
         station.cloudiness
       );
       station.feelsLike = feelsLike(station.temperature, station.wind);
+      station.feelsLike2 = feelsLike2(
+        station.temperature,
+        station.wind,
+        station.humidity
+      );
 
       formattedObservations.push(station);
     });
@@ -341,7 +346,7 @@ class ObservationData extends LitElement {
     });
   }
 
-  _roundDownToFullMinutes(minutes) {
+  static _roundDownToFullMinutes(minutes) {
     const timeNow = new Date();
 
     timeNow.setMinutes(timeNow.getMinutes() + minutes);
