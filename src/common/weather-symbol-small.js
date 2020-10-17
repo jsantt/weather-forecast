@@ -25,7 +25,7 @@ class WeatherSymbolSmall extends LitElement {
   }
 
   render() {
-    if (this.rainType === undefined || this.rainType === 'rain') {
+    if (this.rainType === undefined || this.rainType !== 'thunder') {
       return html``;
     }
 
