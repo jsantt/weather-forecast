@@ -8,12 +8,15 @@ class FooterSection extends LitElement {
   static get styles() {
     return css`
       :host {
+        background: var(--color-white);
         color: var(--color-blue-800);
 
         display: flex;
         flex-direction: column;
+        height: 100%;
 
         padding: var(--space-m) 0;
+        padding-bottom: var(--space-m);
       }
 
       h3 {

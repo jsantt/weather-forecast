@@ -54,6 +54,7 @@ class ForecastHeader extends LitElement {
 
       .selected {
         backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
 
         display: grid;
         grid-template-columns: 1fr auto;
