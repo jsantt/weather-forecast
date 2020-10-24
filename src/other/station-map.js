@@ -91,8 +91,7 @@ class StationMap extends LitElement {
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
               r="${index === 0 ? 0.14 : 0.12}"
-              fill="var(--color-gray-300)"
-              opacity="0.1"
+              opacity="0.08"
               stroke="var(--color-gray-300)"
               stroke-width="0.010"
              

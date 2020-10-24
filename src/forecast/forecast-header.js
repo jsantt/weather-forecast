@@ -53,8 +53,7 @@ class ForecastHeader extends LitElement {
       }
 
       .selected {
-        background: var(--color-blue-600);
-        border-radius: var(--border-radius);
+        backdrop-filter: blur(2px);
 
         display: grid;
         grid-template-columns: 1fr auto;
@@ -64,13 +63,12 @@ class ForecastHeader extends LitElement {
           'distance wind'
           'name     wind';
 
-        line-height: 1;
-        text-align: right;
-        padding: var(--space-s);
-
+        line-height: var(--line-height-dense);
         position: absolute;
         right: var(--space-m);
         bottom: 4rem;
+
+        text-align: right;
       }
 
       .selected-distance {
@@ -80,6 +78,7 @@ class ForecastHeader extends LitElement {
       .selected-name {
         grid-area: name;
       }
+
       wind-icon {
         grid-area: wind;
         padding-left: var(--space-m);
@@ -109,9 +108,14 @@ class ForecastHeader extends LitElement {
         ${this.observationData !== undefined
           ? html` <div class="selected">
               <div class="selected-distance">
-                ${this.observationData[0].distance} km
+                <span class="selected-text">${
+                  this.observationData[0].distance
+                } km</span>
               </div>
-              <div class="selected-name">${this.observationData[0].name}</div>
+              <div class="selected-name">
+              <span class="selected-text">${
+                this.observationData[0].name
+              }</span></div>
 
               ${
                 this.showWind === true
