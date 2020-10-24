@@ -48,7 +48,6 @@ class WeatherApp extends LitElement {
       }
 
       .container {
-        max-width: 49.5rem;
         margin: 0 auto 5rem auto;
         /* padding to fix a bug. 1px padding corrects space color */
         padding-top: 1.25rem;
@@ -81,7 +80,7 @@ class WeatherApp extends LitElement {
 
       @media only screen and (min-width: 33rem) {
         .section {
-          max-width: 30rem;
+          max-width: 35rem;
           margin-left: auto;
           margin-right: auto;
         }
