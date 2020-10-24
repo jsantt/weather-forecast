@@ -1,8 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './feels-like-icon.js';
-import './weather-name-wawa.js';
-import './weather-symbol-name.js';
 import '../common/wind-icon.js';
 import '../common/svg-icon.js';
 import '../other/station-map.js';
@@ -83,9 +80,6 @@ class ForecastHeader extends LitElement {
       wind-icon {
         grid-area: wind;
         padding-left: var(--space-m);
-      }
-      weather-name-wawa {
-        display: block;
       }
     `;
   }
