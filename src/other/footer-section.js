@@ -13,7 +13,7 @@ class FooterSection extends LitElement {
 
         display: flex;
         flex-direction: column;
-        height: 100%;
+        height: calc(100% - 1rem);
 
         padding: var(--space-m) 0;
         padding-bottom: var(--space-m);

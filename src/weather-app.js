@@ -180,6 +180,7 @@ class WeatherApp extends LitElement {
       }
 
       .section--copyright {
+        background: transparent;
         text-align: center;
       }
 
