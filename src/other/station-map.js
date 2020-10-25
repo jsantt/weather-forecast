@@ -51,7 +51,7 @@ class StationMap extends LitElement {
 
   _createMap(coordinates, observations, showFeelsLike) {
     if (observations === undefined) {
-      return;
+      return '';
     }
 
     this._observationData = observations;
@@ -185,7 +185,9 @@ class StationMap extends LitElement {
             stationRadius
           ) === true
         ) {
+          // eslint-disable-next-line no-param-reassign
           o1.collisionId = index;
+          // eslint-disable-next-line no-param-reassign
           o2.collisionId = index;
 
           const extendedLine = extendVector(
@@ -195,7 +197,9 @@ class StationMap extends LitElement {
             o2.latForMap,
             extendLength
           );
+          // eslint-disable-next-line no-param-reassign
           o2.lonForMap = extendedLine.x2Ext;
+          // eslint-disable-next-line no-param-reassign
           o2.latForMap = extendedLine.y2Ext;
         }
       });

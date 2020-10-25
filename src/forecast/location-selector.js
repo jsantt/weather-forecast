@@ -170,8 +170,10 @@ class LocationSelector extends LitElement {
 
   _notifyPreviousPlace() {
     const storedPlaces = LocationSelector._getFromLocalStorage('place');
+
     let currentPlace;
     if (storedPlaces) {
+      // eslint-disable-next-line prefer-destructuring
       currentPlace = storedPlaces[0];
     } else {
       currentPlace = this._defaultPlace;

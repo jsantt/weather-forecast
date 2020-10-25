@@ -39,7 +39,7 @@ class ObservationData extends LitElement {
       return;
     }
 
-    const params = this._getParams(this.place.geoid);
+    const params = ObservationData._getParams(this.place.geoid);
     const queryParams = Object.keys(params)
       .map(key => `${key}=${params[key]}`)
       .join('&');
@@ -63,7 +63,7 @@ class ObservationData extends LitElement {
       });
   }
 
-  _getParams(geoid) {
+  static _getParams(geoid) {
     const params = {
       request: 'getFeature',
       storedquery_id: 'fmi::observations::weather::multipointcoverage', // multipointcoverage',
@@ -328,14 +328,16 @@ class ObservationData extends LitElement {
     const filteredObservations = ObservationData._removeWithoutTemperature(
       combined
     );
-    const finalObservations = ObservationData._removeDuplicates(
+    const temperatureRemoved = ObservationData._removeDuplicates(
       filteredObservations
     );
 
-    finalObservations.forEach(item => {
-      item.distance = Math.round(
-        distance(item.lat, item.lon, this.place.lat, this.place.lon)
+    const finalObservations = temperatureRemoved.map(item => {
+      const copy = { ...item };
+      copy.distance = Math.round(
+        distance(copy.lat, copy.lon, this.place.lat, this.place.lon)
       );
+      return copy;
     });
 
     return finalObservations.sort((item, next) => {

@@ -297,15 +297,17 @@ class WeatherStation extends LitElement {
   }
 
   _toggleDetails(index) {
-    const observationDataCopy = [...this.observationData];
-    observationDataCopy.forEach((item, i) => {
+    const observationDataCopy = this.observationData.map((item, i) => {
+      const itemCopy = item;
       if (index !== i) {
-        item.detailsVisible = false;
+        itemCopy.detailsVisible = false;
       }
+      return itemCopy;
     });
 
     observationDataCopy[index].detailsVisible = !observationDataCopy[index]
       .detailsVisible;
+
     this.observationData = observationDataCopy;
   }
 

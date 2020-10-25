@@ -229,28 +229,34 @@ class ForecastData extends LitElement {
   }
 
   static _addFullHour(combinedData) {
-    combinedData.forEach(element => {
-      element.hour = ForecastData._toHour(element.time);
+    const combined = combinedData.map(element => {
+      const copy = { ...element };
+      copy.hour = ForecastData._toHour(copy.time);
+      return copy;
     });
 
-    return combinedData;
+    return combined;
   }
 
   static _markPastItems(combinedData) {
     const now = new Date();
-    combinedData.forEach(element => {
-      element.past = ForecastData._isPast(now, element.time);
+    const result = combinedData.map(element => {
+      const copy = { ...element };
+      copy.past = ForecastData._isPast(now, copy.time);
+      return copy;
     });
 
-    return combinedData;
+    return result;
   }
 
   static _addRainType(data) {
-    data.forEach(item => {
-      item.rainType = rainType(item.symbol);
+    const result = data.map(item => {
+      const copy = { ...item };
+      copy.rainType = rainType(copy.symbol);
+      return copy;
     });
 
-    return data;
+    return result;
   }
 
   static _addSymbolAggregate(forecastData) {
