@@ -332,7 +332,7 @@ class ObservationData extends LitElement {
       filteredObservations
     );
 
-    const finalObservations = temperatureRemoved.map(item => {
+    const observations9 = temperatureRemoved.map(item => {
       const copy = { ...item };
       copy.distance = Math.round(
         distance(copy.lat, copy.lon, this.place.lat, this.place.lon)
@@ -340,12 +340,15 @@ class ObservationData extends LitElement {
       return copy;
     });
 
-    return finalObservations.sort((item, next) => {
+    const observations10 = observations9.sort((item, next) => {
       if (item.distance < next.distance) {
         return -1;
       }
       return 1;
     });
+
+    observations10[0].selectedStation = true;
+    return observations10;
   }
 
   static _roundDownToFullMinutes(minutes) {

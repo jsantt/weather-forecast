@@ -85,12 +85,14 @@ class StationMap extends LitElement {
 
         ${this._observationData.map((observation, index) => {
           return svg`
-            <g class="${index === 0 ? 'selected-station' : ''}">
+            <g class="${
+              observation.selectedStation === true ? 'selected-station' : ''
+            }">
             <circle
-              @click="${this._stationClicked(index)}"
+              @click="${() => this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
-              r="${index === 0 ? 0.14 : 0.12}"
+              r="${observation.selectedStation ? 0.14 : 0.12}"
               opacity="0.08"
               stroke="var(--color-gray-300)"
               stroke-width="0.010"
@@ -207,13 +209,16 @@ class StationMap extends LitElement {
   }
 
   _stationClicked(index) {
-    this._observationData = this._observationData.map(observation => {
-      const obs = { ...observation };
-      obs.selectedStation = false;
-      return obs;
+    this._dispatch('station-map.selected', index);
+  }
+
+  _dispatch(eventName, message) {
+    const event = new CustomEvent(eventName, {
+      detail: message,
+      bubbles: true,
+      composed: true,
     });
-    this._observationData[index].selectedStation = true;
-    this.requestUpdate();
+    this.dispatchEvent(event);
   }
 }
 

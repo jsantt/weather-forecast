@@ -93,7 +93,7 @@ class WeatherApp extends LitElement {
 
           /* golden ratio */
           grid-template-columns: 500fr 500fr 618fr;
-          grid-auto-rows: minmax(10px, auto);
+          grid-auto-rows: minmax(0px, auto);
 
           grid-template-areas:
             'install   install  install'
@@ -212,37 +212,35 @@ class WeatherApp extends LitElement {
         <main class="section section--forecast">
           <slot id="place"></slot>
 
-          ${
-            this._forecastError === true
-              ? html`
-                  <error-notification
-                    errorText="Säätietojen haku epäonnistui"
-                    id="errorNotification"
-                  >
-                  </error-notification>
-                `
-              : html`
-                  <forecast-header
-                    ?loading="${this._loading}"
-                    .location="${this._location}"
-                    .place="${this._forecastPlace}"
-                    .observationData="${this._observationData}"
-                    ?showFeelsLike="${this._showFeelsLike}"
-                    ?showWind="${this._showWind}"
-                  >
-                  </forecast-header>
+          ${this._forecastError === true
+            ? html`
+                <error-notification
+                  errorText="Säätietojen haku epäonnistui"
+                  id="errorNotification"
+                >
+                </error-notification>
+              `
+            : html`
+                <forecast-header
+                  ?loading="${this._loading}"
+                  .location="${this._location}"
+                  .place="${this._forecastPlace}"
+                  .observationData="${this._observationData}"
+                  ?showFeelsLike="${this._showFeelsLike}"
+                  ?showWind="${this._showWind}"
+                >
+                </forecast-header>
 
-                  <!-- today, tomorrow and a day after tomorrow -->
-                  <slot id="header"></slot>
+                <!-- today, tomorrow and a day after tomorrow -->
+                <slot id="header"></slot>
 
-                  <weather-days
-                    .forecastData="${this._forecastData}"
-                    ?showFeelsLike="${this._showFeelsLike}"
-                    ?showWind="${this._showWind}"
-                  >
-                  </weather-days>
-                `
-          }
+                <weather-days
+                  .forecastData="${this._forecastData}"
+                  ?showFeelsLike="${this._showFeelsLike}"
+                  ?showWind="${this._showWind}"
+                >
+                </weather-days>
+              `}
           <footer-section class="provider">
             <div>
               <p>
@@ -299,20 +297,29 @@ class WeatherApp extends LitElement {
             path="assets/image/icons.svg#info"
           ></svg-icon>
 
-          <p></p>Saaennuste.fi on nopein ja paras sääsovellus. Näet yhdellä vilkaisulla
-          sekä tämän hetkisen sään kaikilta lähistön havaintoasemilta että lähipäivien
-          tuntikohtaisen ennustuksen. Ilman turhaa scrollailua myös kännykän näytöltä.
-          
-          Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen laitoksen
-          <a
-            href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
-          >
-            Harmonie-malliin</a
-          >.</p>
-          <p>Havaintoasemat ovat "kartalla" oikeilla paikoillaan siten, että päällekkäin meneviä 
-          asemia on siirretty mahdollisimman vähän.</p>
-          <p>"Tuntuu kuin" lasketaan Ilmatieteen laitoksen kaavalla, joka ottaa huomioon tuulen nopeuden ja ilman kosteuden</p>
-          
+          <p>
+            Saaennuste.fi on nopein ja paras sääsovellus. Näet yhdellä
+            vilkaisulla sekä tämän hetkisen sään kaikilta lähistön
+            havaintoasemilta että lähipäivien tuntikohtaisen ennustuksen.
+          </p>
+
+          <p>
+            Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen laitoksen
+            <a
+              href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
+            >
+              Harmonie-malliin</a
+            >.
+          </p>
+          <p>
+            Havaintoasemat ovat "kartalla" oikeilla paikoillaan siten, että
+            päällekkäin meneviä asemia on siirretty mahdollisimman vähän.
+          </p>
+          <p>
+            "Tuntuu kuin" lasketaan Ilmatieteen laitoksen kaavalla, joka ottaa
+            huomioon tuulen nopeuden ja ilman kosteuden
+          </p>
+
           <div slot="footer-left"></div>
           <div slot="footer-right">
             <svg-icon path="assets/image/icons.svg#email"></svg-icon>
@@ -472,6 +479,10 @@ class WeatherApp extends LitElement {
     this.addEventListener('forecast-header.toggle-feels-like', () => {
       this._showFeelsLike = !this._showFeelsLike;
     });
+
+    this.addEventListener('station-map.selected', e =>
+      this._stationSelected(e)
+    );
   }
 
   connectedCallback() {
@@ -494,6 +505,24 @@ class WeatherApp extends LitElement {
     this._currentWind = weatherNowData.wind;
     this._currentWindDirection = weatherNowData.windDirection;
     this._currentWindGust = weatherNowData.windGust;
+  }
+
+  /**
+   * Mark selected station for observation data
+   * @param {Object} event
+   * @param {Number} event.detail selected station index
+   *
+   */
+  _stationSelected(event) {
+    const observationsCopy = this._observationData.map(observation => {
+      const obs = { ...observation };
+      obs.selectedStation = false;
+      return obs;
+    });
+
+    observationsCopy[event.detail].selectedStation = true;
+
+    this._observationData = observationsCopy;
   }
 
   static _getWeatherNow(data) {

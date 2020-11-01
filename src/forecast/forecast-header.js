@@ -100,26 +100,26 @@ class ForecastHeader extends LitElement {
           ?showFeelsLike="${this.showFeelsLike}"
           ?showWind="${this.showWind}"
         ></station-map>
-        ${this.observationData !== undefined
-          ? html` <div class="selected">
+        ${this._selectedStation !== undefined
+          ? html`<div class="selected">
               <div class="selected-distance">
                 <span class="selected-text">${
-                  this.observationData[0].distance
+                  this._selectedStation.distance
                 } km</span>
               </div>
               <div class="selected-name">
               <span class="selected-text">${
-                this.observationData[0].name
+                this._selectedStation.name
               }</span></div>
 
               ${
                 this.showWind === true
                   ? html` <wind-icon
-                      .degrees="${this.observationData[0].windDirection}"
+                      .degrees="${this._selectedStation.windDirection}"
                       large
                       whiteGust
-                      .windSpeed="${this.observationData[0].wind}"
-                      .windGustSpeed="${this.observationData[0].windGust}"
+                      .windSpeed="${this._selectedStation.wind}"
+                      .windGustSpeed="${this._selectedStation.windGust}"
                     >
                     </wind-icon>`
                   : ''
@@ -139,7 +139,22 @@ class ForecastHeader extends LitElement {
       observationData: { type: Object },
       showFeelsLike: { type: Boolean, reflect: true },
       showWind: { type: Boolean, reflect: true },
+      _selectedStation: { type: Object },
     };
+  }
+
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (
+        propName === 'observationData' &&
+        this.observationData !== undefined
+      ) {
+        // eslint-disable-next-line prefer-destructuring
+        this._selectedStation = this.observationData.filter(item => {
+          return item.selectedStation === true;
+        })[0];
+      }
+    });
   }
 
   static _round(value) {

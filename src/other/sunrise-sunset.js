@@ -13,6 +13,7 @@ class SunriseSunset extends LitElement {
     return css`
       :host {
         display: block;
+        font-size: var(--font-size-m);
       }
 
       .sun {
@@ -38,12 +39,9 @@ class SunriseSunset extends LitElement {
         width: 24px;
         fill: var(--color-blue-700);
       }
-      .sunrise-svg {
-        width: 40px;
-        height: 27px;
-      }
 
-      .sunrise-svg {
+      .sunrise-svg,
+      .sunset-svg {
         width: 39px;
         height: 27px;
       }
@@ -65,16 +63,16 @@ class SunriseSunset extends LitElement {
           <div>
             <svg-icon
               class="sunset-svg"
-              width="39"
-              height="27"
               path="assets/image/icons.svg#sunset"
             ></svg-icon>
             ${this._sunset}
           </div>
         </div>
 
-        ${this._solarNoon} aurinko korkeimmillaan<br />
-        ${this._darkestNight} pimeintä (aurinko matalimmillaan)<br />
+        <div class="text">
+          ${this._solarNoon} aurinko korkeimmillaan<br />
+          ${this._darkestNight} pimeintä (aurinko matalimmillaan)<br />
+        </div>
 
         <div slot="footer-left"></div>
         <div slot="footer-right">
