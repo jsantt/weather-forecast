@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 
+import '../weather-section.js';
 import '../common/error-notification.js';
 import '../common/svg-icon.js';
 import '../forecast/weather-name-wawa.js';
 
-import './weather-section.js';
 import './station-map.js';
 
 const STATION_MAX_AMOUNT = 7;

@@ -82,9 +82,6 @@ class TemperatureLine extends LitElement {
     };
   }
 
-  /**
-   * Chart containing rain bars, temperature line, past time shadow and present time triangle
-   */
   _createChart(dayData) {
     if (dayData === undefined) {
       return;

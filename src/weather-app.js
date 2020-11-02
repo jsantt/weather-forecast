@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit-element';
 
 // no lazy loading at the moment, consider taking into use
 import './common/lazy-resources.js';
+import './weather-section.js';
 
 import './forecast/location-selector.js';
 
@@ -16,7 +17,6 @@ import './other/public-holidays.js';
 
 import './other/bottom-bar.js';
 import './other/external-links.js';
-import './other/weather-section.js';
 import './other/share-app.js';
 
 class WeatherApp extends LitElement {

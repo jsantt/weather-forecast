@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './weather-section.js';
+import '../weather-section.js';
 
 class ExternalLinks extends LitElement {
   static get is() {

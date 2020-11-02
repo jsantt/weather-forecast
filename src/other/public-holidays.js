@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
 import '../common/svg-icon.js';
-import './weather-section.js';
+import '../weather-section.js';
 
 class PublicHolidays extends LitElement {
   static get is() {
