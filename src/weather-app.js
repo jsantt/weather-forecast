@@ -47,17 +47,7 @@ class WeatherApp extends LitElement {
         margin-bottom: var(--space-m);
       }
 
-      .container {
-        margin: 0 auto 5rem auto;
-        /* padding to fix a bug. 1px padding corrects space color */
-        padding-top: 1.25rem;
-      }
-
-      .section {
-        margin: var(--space-m);
-      }
-
-      .provider {
+      .by {
         font-weight: var(--font-weight-bold);
         border-radius: 0;
         text-align: center;
@@ -69,31 +59,43 @@ class WeatherApp extends LitElement {
       .section--feedback,
       .section--cookies,
       .section--observations {
-        background-color: var(--color-white);
         color: var(--color-blue-700);
       }
 
-      .section--forecast,
-      .section--links {
-        background: var(--color-gray-300);
+      .container {
+        display: grid;
+        justify-items: stretch;
+        align-items: stretch;
+
+        grid-gap: var(--space-m);
+        grid-template-columns: auto;
+        grid-template-areas:
+          'install'
+          'forecast'
+          'sun'
+          'observations'
+          'calendar'
+          'info'
+          'links'
+          'cookies'
+          'copy';
+
+        margin: 0 var(--space-m);
       }
 
-      @media only screen and (min-width: 33rem) {
-        .section {
-          max-width: 35rem;
-          margin-left: auto;
-          margin-right: auto;
+      @media only screen and (min-width: 24rem) and (max-width: 48rem) {
+        .container {
+          grid-gap: var(--space-l);
+          margin: 0 var(--space-l);
         }
       }
 
       @media only screen and (min-width: 48rem) {
         .container {
-          display: grid;
-          grid-gap: var(--space-l);
-
           /* golden ratio */
           grid-template-columns: 500fr 500fr 618fr;
           grid-auto-rows: minmax(0px, auto);
+          grid-gap: var(--space-l);
 
           grid-template-areas:
             'install   install  install'
@@ -105,54 +107,59 @@ class WeatherApp extends LitElement {
             'calendar calendar  cookies'
             'copy     copy      copy';
 
+          margin: 0 var(--space-l);
           padding-top: 1rem;
         }
-        .section {
-          margin: 0;
-          max-width: none;
-        }
+      }
 
-        .section--install {
-          grid-area: install;
-          padding-bottom: 0;
-          margin-bottom: -1rem;
-        }
+      .section {
+        background: var(--color-white);
+        margin: 0;
+        max-width: none;
+      }
 
-        .section--forecast {
-          grid-area: forecast;
-        }
+      .section--install {
+        background: transparent;
 
-        .section--observations {
-          grid-area: observations;
-        }
+        grid-area: install;
+        padding-bottom: 0;
+        margin-bottom: -1rem;
+      }
 
-        .section--links {
-          grid-area: links;
-        }
+      .section--forecast {
+        grid-area: forecast;
+      }
 
-        .section--sun {
-          grid-area: sun;
-        }
+      .section--observations {
+        grid-area: observations;
+      }
 
-        .section--calendar {
-          grid-area: calendar;
-        }
+      .section--links {
+        grid-area: links;
+      }
 
-        .section--informationOnService {
-          grid-area: info;
-        }
+      .section--sun {
+        grid-area: sun;
+      }
 
-        .section--copyright {
-          grid-area: copy;
-        }
+      .section--calendar {
+        grid-area: calendar;
+      }
 
-        .section--feedback {
-          grid-area: feedback;
-        }
+      .section--informationOnService {
+        grid-area: info;
+      }
 
-        .section--cookies {
-          grid-area: cookies;
-        }
+      .section--copyright {
+        grid-area: copy;
+      }
+
+      .section--feedback {
+        grid-area: feedback;
+      }
+
+      .section--cookies {
+        grid-area: cookies;
       }
 
       a:link {
@@ -181,6 +188,7 @@ class WeatherApp extends LitElement {
       .section--copyright {
         background: transparent;
         text-align: center;
+        margin-bottom: var(--space-xl);
       }
 
       .locate-button-container {
@@ -209,7 +217,7 @@ class WeatherApp extends LitElement {
 
       <div class="container" ?hidden="${this._firstLoading}">
         <install-app class="section section--install"></install-app>
-        <main class="section section--forecast">
+        <footer-section style="--padding:0" class="section section--forecast">
           <slot id="place"></slot>
 
           ${this._forecastError === true
@@ -241,33 +249,30 @@ class WeatherApp extends LitElement {
                 >
                 </weather-days>
               `}
-          <footer-section class="provider">
-            <div>
-              <p>
-                Sääennuste by Ilmatieteen laitos | avoin data
-              </p>
-              <img
-                class="logo"
-                alt="fmi logo"
-                src="./assets/image/FMI0DATA_small.png"
-              />
-            </div>
-            <div slot="footer-left"></div>
-            <div slot="footer-right">
-              <svg-icon
-                path="assets/image/icons.svg#longTimeWeather"
-              ></svg-icon>
-
-              <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
-                >10&nbsp;vrk&nbsp;sää</a
-              >
-            </div>
-          </footer-section>
           <bottom-bar
             ?showFeelsLike="${this._showFeelsLike}"
             ?showWind="${this._showWind}"
           ></bottom-bar>
-        </main>
+
+          <div class="by">
+            <p>
+              Sääennuste by Ilmatieteen laitos | avoin data
+            </p>
+            <img
+              class="logo"
+              alt="fmi logo"
+              src="./assets/image/FMI0DATA_small.png"
+            />
+          </div>
+          <div slot="footer-left"></div>
+          <div slot="footer-right">
+            <svg-icon path="assets/image/icons.svg#longTimeWeather"></svg-icon>
+
+            <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
+              >10&nbsp;vrk&nbsp;sää</a
+            >
+          </div>
+        </footer-section>
 
         <weather-station
           class="section section--observations"

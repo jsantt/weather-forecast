@@ -71,10 +71,12 @@ class ForecastHeader extends LitElement {
 
       .selected-distance {
         grid-area: distance;
+        color: var(--color-white);
       }
 
       .selected-name {
         grid-area: name;
+        color: var(--color-white);
       }
 
       wind-icon {

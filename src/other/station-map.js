@@ -1,6 +1,7 @@
 import { css, html, LitElement, svg } from 'lit-element';
 import { checkCollision, extendVector } from './vector-math.js';
 
+import '../common/error-notification.js';
 import '../common/wind-icon.js';
 
 class StationMap extends LitElement {
@@ -36,6 +37,11 @@ class StationMap extends LitElement {
         font-size: 0.08px;
         fill: var(--color-gray-700);
       }
+
+      error-notification {
+        padding: var(--space-l) 0 var(--space-xl) 0;
+        --color: var(--color-white);
+      }
     `;
   }
 
@@ -51,7 +57,10 @@ class StationMap extends LitElement {
 
   _createMap(coordinates, observations, showFeelsLike) {
     if (observations === undefined) {
-      return '';
+      return html`<error-notification
+        errorText="Sääasemille ei valitettavasti saatu yhteyttä"
+      >
+      </error-notification>`;
     }
 
     this._observationData = observations;

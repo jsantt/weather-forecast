@@ -10,21 +10,24 @@ class ErrorNotification extends LitElement {
   static get styles() {
     return css`
       :host {
-        color: var(--color-black);
+        color: var(--color, var(--color-black));
         text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 5rem var(--space-l) 7rem var(--space-l);
+      }
+
+      section {
+        margin: var(--space-xl) 0;
+      }
+
+      a {
+        color: var(--color, var(--color-black));
       }
 
       svg-icon {
         height: 124px;
         width: 124px;
-      }
-
-      div {
-        padding: var(--space-m);
       }
     `;
   }

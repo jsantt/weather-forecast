@@ -8,15 +8,11 @@ class FooterSection extends LitElement {
   static get styles() {
     return css`
       :host {
-        background: var(--color-white);
         color: var(--color-blue-800);
 
         display: flex;
         flex-direction: column;
-        height: calc(100% - 1rem);
-
-        padding: var(--space-m) 0;
-        padding-bottom: var(--space-m);
+        height: 100%;
       }
 
       h3 {
@@ -25,21 +21,20 @@ class FooterSection extends LitElement {
         font-weight: var(--font-weight-bold);
 
         margin: 0;
-        padding: var(--space-m) var(--space-l) var(--space-m) var(--space-l);
+        padding: var(--space-l);
         text-transform: uppercase;
         font-weight: var(--font-weight-boldest);
       }
 
       section {
-        background-color: var(--background-color-main);
-        padding: var(--space-m) var(--space-l);
+        padding: var(--padding, var(--space-l));
       }
 
       footer {
         display: flex;
         margin-top: auto;
         justify-content: space-between;
-        padding: var(--space-m) var(--space-l);
+        padding: var(--space-l);
       }
     `;
   }

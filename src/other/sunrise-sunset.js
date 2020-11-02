@@ -13,7 +13,6 @@ class SunriseSunset extends LitElement {
     return css`
       :host {
         display: block;
-        font-size: var(--font-size-m);
       }
 
       .sun {
@@ -44,6 +43,10 @@ class SunriseSunset extends LitElement {
       .sunset-svg {
         width: 39px;
         height: 27px;
+      }
+
+      .text {
+        font-size: var(--font-size-m);
       }
     `;
   }

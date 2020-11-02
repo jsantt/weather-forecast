@@ -11,13 +11,21 @@ class InstallApp extends LitElement {
     return css`
       :host {
         display: block;
+        --color: var(--color-gray-600);
+      }
+      :host([_iosInstructionsVisible]) {
+        --color: var(--color-gray-800);
+      }
+
+      section {
+        padding: var(--space-l) 0 var(--space-m);
       }
 
       button {
         box-sizing: border-box;
         background-color: transparent;
         border-style: none;
-        color: var(--color-blue-800);
+        color: var(--color);
 
         display: flex;
         align-items: center;
@@ -43,7 +51,7 @@ class InstallApp extends LitElement {
       }
 
       .notification {
-        color: var(--color-blue-800);
+        color: var(--color);
         margin-top: -1.25rem;
         padding: 0 var(--space-l) 1.5rem var(--space-l);
       }
@@ -60,8 +68,8 @@ class InstallApp extends LitElement {
 
       .share,
       .install {
-        fill: var(--color-blue-700);
-        stroke: var(--color-blue-700);
+        fill: var(--color);
+        stroke: var(--color);
         width: 24px;
         height: 24px;
       }
@@ -111,7 +119,7 @@ class InstallApp extends LitElement {
       forceShow: { type: Boolean },
       _deferredPrompt: { type: Object },
       _installButtonVisible: { type: Boolean },
-      _iosInstructionsVisible: { type: Boolean },
+      _iosInstructionsVisible: { type: Boolean, reflect: true },
     };
   }
 
