@@ -1,11 +1,10 @@
 import { LitElement } from 'lit-element';
 
-import { raiseEvent } from './common/xml-parser.js';
+import { distance } from './data-helpers/distance.js';
+import { feelsLike, feelsLike2 } from './data-helpers/feels-like.js';
 
-import { wawaToSymbol3 } from './common/wawa-converter.js';
-import { distance } from './common/distance.js';
-
-import { feelsLike, feelsLike2 } from './helper-functions/feels-like.js';
+import { wawaToSymbol3 } from './data-helpers/wawa-converter.js';
+import { raiseEvent } from './data-helpers/xml-parser.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because

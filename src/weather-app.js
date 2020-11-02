@@ -4,8 +4,8 @@ import './forecast-data.js';
 import './observation-data.js';
 import './weather-section.js';
 
-import './common/error-notification.js';
-import './common/weather-analytics.js';
+import './common-components/error-notification.js';
+import './common-components/weather-analytics.js';
 
 import './sections/install-app.js';
 import './sections/forecast-header/forecast-header.js';

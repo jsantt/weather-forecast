@@ -9,10 +9,10 @@ import {
   raiseEvent,
   value,
   parseRegion,
-} from './common/xml-parser.js';
+} from './data-helpers/xml-parser.js';
 
-import { feelsLike, feelsLike2 } from './helper-functions/feels-like.js';
-import { rainType } from './helper-functions/rain-type.js';
+import { feelsLike, feelsLike2 } from './data-helpers/feels-like.js';
+import { rainType } from './data-helpers/rain-type.js';
 
 /**
  *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.

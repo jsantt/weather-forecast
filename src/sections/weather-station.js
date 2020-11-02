@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit-element';
 
 import '../weather-section.js';
-import '../common/error-notification.js';
-import '../common/svg-icon.js';
-import '../common/weather-name-wawa.js';
+import '../common-components/error-notification.js';
+import '../common-components/svg-icon.js';
+import '../common-components/weather-name-wawa.js';
 
 const STATION_MAX_AMOUNT = 7;
 

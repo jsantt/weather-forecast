@@ -1,8 +1,8 @@
 import { css, html, LitElement, svg } from 'lit-element';
 import { checkCollision, extendVector } from './vector-math.js';
 
-import '../../common/error-notification.js';
-import '../../common/wind-icon.js';
+import '../../common-components/error-notification.js';
+import '../../common-components/wind-icon.js';
 
 class StationMap extends LitElement {
   static get is() {

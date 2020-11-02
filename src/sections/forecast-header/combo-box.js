@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../../common/svg-icon.js';
+import '../../common-components/svg-icon.js';
 
 class ComboBox extends LitElement {
   static get is() {

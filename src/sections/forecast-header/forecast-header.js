@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../../common/svg-icon.js';
-import '../../common/wind-icon.js';
+import '../../common-components/svg-icon.js';
+import '../../common-components/wind-icon.js';
 
 import './location-selector.js';
 import './station-map.js';
