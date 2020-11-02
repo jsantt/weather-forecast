@@ -1,23 +1,26 @@
 import { css, html, LitElement } from 'lit-element';
 
-// no lazy loading at the moment, consider taking into use
-import './common/lazy-resources.js';
+import './forecast-data.js';
+import './observation-data.js';
+
+import './common/weather-analytics.js';
 import './weather-section.js';
 
 import './forecast/location-selector.js';
 
 import './common/error-notification.js';
-import './forecast/forecast-header.js';
-import './forecast/weather-days.js';
-import './forecast-data.js';
 
-import './other/install-app.js';
-import './other/sunrise-sunset.js';
-import './other/public-holidays.js';
+import './sections/install-app.js';
 
-import './other/bottom-bar.js';
-import './other/external-links.js';
-import './other/share-app.js';
+import './sections/forecast-header.js';
+import './sections/bottom-bar.js';
+import './sections/external-links.js';
+import './sections/public-holidays.js';
+import './sections/sunrise-sunset.js';
+import './sections/weather-days.js';
+import './sections/weather-station.js';
+
+import './sections/share-app.js';
 
 class WeatherApp extends LitElement {
   static get is() {

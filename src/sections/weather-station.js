@@ -5,8 +5,6 @@ import '../common/error-notification.js';
 import '../common/svg-icon.js';
 import '../forecast/weather-name-wawa.js';
 
-import './station-map.js';
-
 const STATION_MAX_AMOUNT = 7;
 
 class WeatherStation extends LitElement {
@@ -20,10 +18,6 @@ class WeatherStation extends LitElement {
         color: var(--color-blue-800);
 
         display: block;
-      }
-
-      station-map {
-        margin: 0 -1rem var(--space-l) -1rem;
       }
 
       .station {

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './geolocate-button.js';
+import '../other/geolocate-button.js';
 
 class BottomBar extends LitElement {
   static get is() {
