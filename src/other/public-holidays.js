@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
 import '../common/svg-icon.js';
-import './footer-section.js';
+import './weather-section.js';
 
 class PublicHolidays extends LitElement {
   static get is() {
@@ -43,7 +43,7 @@ class PublicHolidays extends LitElement {
 
   render() {
     return html`
-      <footer-section header="Juhlapäivät 2020">
+      <weather-section header="Juhlapäivät 2020">
         ${this._holidays.map(
           item =>
             html`
@@ -87,7 +87,7 @@ class PublicHolidays extends LitElement {
           <svg-icon path="assets/image/icons.svg#calendar"></svg-icon>
           <a href="https://www.paivyri.fi/">kalenteri</a>
         </div>
-      </footer-section>
+      </weather-section>
     `;
   }
 

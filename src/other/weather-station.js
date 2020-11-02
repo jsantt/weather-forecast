@@ -4,7 +4,7 @@ import '../common/error-notification.js';
 import '../common/svg-icon.js';
 import '../forecast/weather-name-wawa.js';
 
-import './footer-section.js';
+import './weather-section.js';
 import './station-map.js';
 
 const STATION_MAX_AMOUNT = 7;
@@ -98,7 +98,7 @@ class WeatherStation extends LitElement {
   }
 
   render() {
-    return html` <footer-section header="Lähimmät sääasemat">
+    return html` <weather-section header="Lähimmät sääasemat">
       ${this.observationData === undefined ||
       this.observationData[0] === undefined ||
       this.observationError
@@ -277,7 +277,7 @@ class WeatherStation extends LitElement {
               välein
             </div>
           `}
-    </footer-section>`;
+    </weather-section>`;
   }
 
   static get properties() {

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './footer-section.js';
+import './weather-section.js';
 
 class ExternalLinks extends LitElement {
   static get is() {
@@ -34,7 +34,7 @@ class ExternalLinks extends LitElement {
 
   render() {
     return html`
-      <footer-section header="Katso myös">
+      <weather-section header="Katso myös">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ class ExternalLinks extends LitElement {
           </svg>
           <a href="https://www.norkko.fi/">Siitepölytiedote</a>
         </div>
-      </footer-section>
+      </weather-section>
     `;
   }
 }

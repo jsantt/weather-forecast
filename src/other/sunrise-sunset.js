@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
 import '../common/svg-icon.js';
-import './footer-section.js';
+import './weather-section.js';
 import 'suncalc';
 
 class SunriseSunset extends LitElement {
@@ -53,7 +53,7 @@ class SunriseSunset extends LitElement {
 
   render() {
     return html`
-      <footer-section header="Aurinko">
+      <weather-section header="Aurinko">
         <div class="sun">
           <div class="sunrise">
             <svg-icon
@@ -87,7 +87,7 @@ class SunriseSunset extends LitElement {
             UV-indeksi
           </a>
         </div>
-      </footer-section>
+      </weather-section>
     `;
   }
 

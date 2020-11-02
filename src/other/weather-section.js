@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit-element';
 
-class FooterSection extends LitElement {
+class WeatherSection extends LitElement {
   static get is() {
-    return 'footer-section';
+    return 'weather-section';
   }
 
   static get styles() {
@@ -64,4 +64,4 @@ class FooterSection extends LitElement {
   }
 }
 
-window.customElements.define(FooterSection.is, FooterSection);
+window.customElements.define(WeatherSection.is, WeatherSection);

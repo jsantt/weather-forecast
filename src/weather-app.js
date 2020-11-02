@@ -16,7 +16,7 @@ import './other/public-holidays.js';
 
 import './other/bottom-bar.js';
 import './other/external-links.js';
-import './other/footer-section.js';
+import './other/weather-section.js';
 import './other/share-app.js';
 
 class WeatherApp extends LitElement {
@@ -217,7 +217,7 @@ class WeatherApp extends LitElement {
 
       <div class="container" ?hidden="${this._firstLoading}">
         <install-app class="section section--install"></install-app>
-        <footer-section style="--padding:0" class="section section--forecast">
+        <weather-section style="--padding:0" class="section section--forecast">
           <slot id="place"></slot>
 
           ${this._forecastError === true
@@ -272,7 +272,7 @@ class WeatherApp extends LitElement {
               >10&nbsp;vrk&nbsp;sää</a
             >
           </div>
-        </footer-section>
+        </weather-section>
 
         <weather-station
           class="section section--observations"
@@ -293,7 +293,7 @@ class WeatherApp extends LitElement {
 
         <public-holidays class="section section--calendar"></public-holidays>
 
-        <footer-section
+        <weather-section
           class="section section--informationOnService"
           header="Tietoja palvelusta"
         >
@@ -330,9 +330,9 @@ class WeatherApp extends LitElement {
             <svg-icon path="assets/image/icons.svg#email"></svg-icon>
             palaute@saaennuste.fi
           </div>
-        </footer-section>
+        </weather-section>
 
-        <!--footer-section class="section section--feedback" header="Palaute">
+        <!--weather-section class="section section--feedback" header="Palaute">
           Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea miten
           parantaisit sovellusta? Ota yhteyttä!
 
@@ -341,9 +341,9 @@ class WeatherApp extends LitElement {
             <svg-icon path="assets/image/icons.svg#email"></svg-icon>
             palaute@saaennuste.fi
           </div>
-        </footer-section-->
+        </weather-section-->
 
-        <footer-section
+        <weather-section
           class="section section--cookies"
           header="Kerätyt tiedot"
         >
@@ -359,15 +359,15 @@ class WeatherApp extends LitElement {
           <div slot="footer-right">
             <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
           </div>
-        </footer-section>
+        </weather-section>
 
-        <footer-section class="section section--copyright">
+        <weather-section class="section section--copyright">
           <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
           <div>Design / toteutus Jani Säntti</div>
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
 
           <share-app></share-app>
-        </footer-section>
+        </weather-section>
       </div>
     `;
   }
