@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../forecast/weather-day.js';
+import './weather-day.js';
 
 class WeatherDays extends LitElement {
   static get is() {

@@ -2,22 +2,18 @@ import { css, html, LitElement } from 'lit-element';
 
 import './forecast-data.js';
 import './observation-data.js';
-
-import './common/weather-analytics.js';
 import './weather-section.js';
 
-import './forecast/location-selector.js';
-
 import './common/error-notification.js';
+import './common/weather-analytics.js';
 
 import './sections/install-app.js';
-
-import './sections/forecast-header.js';
-import './sections/bottom-bar.js';
+import './sections/forecast-header/forecast-header.js';
+import './sections/bottom-bar/bottom-bar.js';
 import './sections/external-links.js';
 import './sections/public-holidays.js';
 import './sections/sunrise-sunset.js';
-import './sections/weather-days.js';
+import './sections/weather-days/weather-days.js';
 import './sections/weather-station.js';
 
 import './sections/share-app.js';
@@ -491,14 +487,6 @@ class WeatherApp extends LitElement {
     this.addEventListener('station-map.selected', e =>
       this._stationSelected(e)
     );
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    /* if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js', { scope: '/' });
-    } */
   }
 
   _fetchDone() {

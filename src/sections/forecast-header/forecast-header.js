@@ -1,8 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../common/wind-icon.js';
-import '../common/svg-icon.js';
-import '../other/station-map.js';
+import '../../common/svg-icon.js';
+import '../../common/wind-icon.js';
+
+import './location-selector.js';
+import './station-map.js';
 
 class ForecastHeader extends LitElement {
   static get is() {
