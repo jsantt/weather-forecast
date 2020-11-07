@@ -60,8 +60,8 @@ class ForecastHeader extends LitElement {
         grid-template-rows: 1fr 1fr;
 
         grid-template-areas:
-          'distance wind'
-          'name     wind';
+          'distance     wind'
+          'name         wind';
 
         line-height: var(--line-height-dense);
         position: absolute;
@@ -73,12 +73,14 @@ class ForecastHeader extends LitElement {
 
       .selected-distance {
         grid-area: distance;
-        color: var(--color-white);
+        color: var(--color-blue-900);
+        font-weight: var(--font-weight-bold);
       }
 
       .selected-name {
         grid-area: name;
         color: var(--color-white);
+        font-size: var(--font-size-m);
       }
 
       wind-icon {
@@ -105,17 +107,20 @@ class ForecastHeader extends LitElement {
           ?showWind="${this.showWind}"
         ></station-map>
         ${this._selectedStation !== undefined
-          ? html`<div class="selected">
+          ? html`
+            <div class="selected">
               <div class="selected-distance">
-                <span class="selected-text">${
-                  this._selectedStation.distance
-                } km</span>
+                <span class="selected-text">
+                    Klo ${ForecastHeader._time(this._selectedStation.timestamp)}
+                    | ${this._selectedStation.distance} km
+                  </span>
+                
               </div>
               <div class="selected-name">
-              <span class="selected-text">${
-                this._selectedStation.name
-              }</span></div>
-
+              <span class="selected-text">
+              ${this._selectedStation.name}</span>
+              </div>
+             
               ${
                 this.showWind === true
                   ? html` <wind-icon
@@ -167,6 +172,14 @@ class ForecastHeader extends LitElement {
     }
 
     return Math.round(value);
+  }
+
+  static _time(dateTime) {
+    const minutes = dateTime.getMinutes();
+
+    const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${dateTime.getHours()}.${fullMinutes}`;
   }
 }
 

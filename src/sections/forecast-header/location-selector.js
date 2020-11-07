@@ -174,7 +174,7 @@ class LocationSelector extends LitElement {
     let currentPlace;
     if (storedPlaces) {
       // eslint-disable-next-line prefer-destructuring
-      currentPlace = storedPlaces[0];
+      currentPlace = LocationSelector._placeList()[0];
     } else {
       currentPlace = this._defaultPlace;
       LocationSelector._storeIntoLocalStorage('place', TOP_10_CITIES);
@@ -187,12 +187,15 @@ class LocationSelector extends LitElement {
   }
 
   static _placeList() {
-    let allLocations;
-
     const previousLocations = LocationSelector._getFromLocalStorage('place');
-    if (previousLocations !== null) {
-      allLocations = previousLocations.concat(CITIES);
+    if (previousLocations === null) {
+      return CITIES;
     }
+
+    const filterBadOnes = previousLocations.filter(item => {
+      return item.city !== undefined && item.coordinates !== undefined;
+    });
+    const allLocations = filterBadOnes.concat(CITIES);
 
     return allLocations;
   }

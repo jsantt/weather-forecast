@@ -237,7 +237,7 @@ class ObservationData extends LitElement {
         lon: parseFloat(singleValues[1]),
         lonForMap: parseFloat(singleValues[1]),
         latLon: `${singleValues[0]} ${singleValues[1]}`,
-        timestamp: singleValues[3],
+        timestamp: new Date(singleValues[3] * 1000),
       });
     });
 
