@@ -92,7 +92,7 @@ class ComboBox extends LitElement {
       input[type='text'] {
         background: var(--color-white);
         border: none;
-        border-radius: 2px;
+        border-radius: 30px;
 
         box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 4px;
 
@@ -110,17 +110,21 @@ class ComboBox extends LitElement {
         -webkit-user-select: none;*/
       }
 
-      input[type='text']:focus {
-        border: 2px solid #d6dde554;
+      :host([_open]) input[type='text'] {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
         padding-left: 2rem;
         padding-right: 2rem;
-        outline: none;
-
         transition: padding 0.5s ease;
       }
 
+      input[type='text']:focus {
+        border: 2px solid #d6dde554;
+        outline: none;
+      }
+
       #combobox-list {
-        background: var(--color-gray-300);
+        background: var(--color-white);
 
         color: var(--color-gray-600);
         position: absolute;
