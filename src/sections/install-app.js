@@ -17,10 +17,6 @@ class InstallApp extends LitElement {
         --color: var(--color-gray-800);
       }
 
-      section {
-        padding: var(--space-l) 0 var(--space-m);
-      }
-
       button {
         box-sizing: border-box;
         background-color: transparent;
@@ -33,7 +29,7 @@ class InstallApp extends LitElement {
         font: inherit;
         font-weight: var(--font-weight-boldest);
 
-        padding: 0 var(--space-l) 1.5rem var(--space-l);
+        padding: var(--space-xl) var(--space-xl) 0.75rem var(--space-xl);
         text-align: center;
         text-transform: uppercase;
         outline: none;
@@ -52,13 +48,11 @@ class InstallApp extends LitElement {
 
       .notification {
         color: var(--color);
-        margin-top: -1.25rem;
-        padding: 0 var(--space-l) 1.5rem var(--space-l);
       }
 
       ol {
         line-height: 1.7;
-        margin: 0 0 0 2rem;
+        margin: var(--space-s) 0 var(--space-m) 3rem;
         padding: 0;
       }
 
@@ -95,7 +89,7 @@ class InstallApp extends LitElement {
                 ? html`
               <div class="notification">
 
-              <ol class="text">
+              <ol>
                 <li>Napauta sivun alalaidasta
                   <svg-icon
                   class="share"

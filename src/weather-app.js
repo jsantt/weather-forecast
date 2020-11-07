@@ -13,6 +13,7 @@ import './sections/bottom-bar/bottom-bar.js';
 import './sections/external-links.js';
 import './sections/public-holidays.js';
 import './sections/sunrise-sunset.js';
+import './sections/symbol-list.js';
 import './sections/weather-days/weather-days.js';
 import './sections/weather-station.js';
 
@@ -66,10 +67,9 @@ class WeatherApp extends LitElement {
         justify-items: stretch;
         align-items: stretch;
 
-        grid-gap: var(--space-m);
+        grid-gap: var(--space-s);
         grid-template-columns: auto;
         grid-template-areas:
-          'install'
           'forecast'
           'sun'
           'observations'
@@ -77,37 +77,35 @@ class WeatherApp extends LitElement {
           'info'
           'links'
           'cookies'
+          'symbols'
           'copy';
 
-        margin: 0 var(--space-m);
+        padding-top: var(--space-l);
       }
 
-      @media only screen and (min-width: 24rem) and (max-width: 48rem) {
+      @media only screen and (min-width: 430px) {
         .container {
           grid-gap: var(--space-l);
-          margin: 0 var(--space-l);
         }
       }
 
-      @media only screen and (min-width: 48rem) {
+      @media only screen and (min-width: 768px) {
         .container {
           /* golden ratio */
           grid-template-columns: 500fr 500fr 618fr;
           grid-auto-rows: minmax(0px, auto);
-          grid-gap: var(--space-l);
 
           grid-template-areas:
-            'install   install  install'
             'forecast forecast  sun'
             'forecast forecast  observations'
             'forecast forecast  observations'
             'calendar calendar  info'
             'calendar calendar  links'
             'calendar calendar  cookies'
+            'symbols  symbols symbols'
             'copy     copy      copy';
 
-          margin: 0 var(--space-l);
-          padding-top: 1rem;
+          margin: 0 var(--space-l) var(--space-l) var(--space-l);
         }
       }
 
@@ -115,14 +113,6 @@ class WeatherApp extends LitElement {
         background: var(--color-white);
         margin: 0;
         max-width: none;
-      }
-
-      .section--install {
-        background: transparent;
-
-        grid-area: install;
-        padding-bottom: 0;
-        margin-bottom: -1rem;
       }
 
       .section--forecast {
@@ -159,6 +149,10 @@ class WeatherApp extends LitElement {
 
       .section--cookies {
         grid-area: cookies;
+      }
+
+      .section--symbols {
+        grid-area: symbols;
       }
 
       a:link {
@@ -202,6 +196,10 @@ class WeatherApp extends LitElement {
         width: 24px;
         fill: var(--color-blue-700);
       }
+
+      weather-section {
+        --padding: 0;
+      }
     `;
   }
 
@@ -214,9 +212,9 @@ class WeatherApp extends LitElement {
 
       <forecast-data .location="${this._location}"> </forecast-data>
 
+      <install-app></install-app>
       <div class="container" ?hidden="${this._firstLoading}">
-        <install-app class="section section--install"></install-app>
-        <weather-section style="--padding:0" class="section section--forecast">
+        <weather-section class="section section--forecast">
           <slot id="place"></slot>
 
           ${this._forecastError === true
@@ -367,6 +365,8 @@ class WeatherApp extends LitElement {
 
           <share-app></share-app>
         </weather-section>
+
+        <symbol-list class="section section--symbols"></symbol-list>
       </div>
     `;
   }
