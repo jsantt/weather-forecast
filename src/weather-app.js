@@ -79,13 +79,13 @@ class WeatherApp extends LitElement {
           'cookies'
           'symbols'
           'copy';
-
-        padding-top: var(--space-l);
       }
 
       @media only screen and (min-width: 430px) {
         .container {
           grid-gap: var(--space-l);
+          margin: 0 var(--space-l) var(--space-l) var(--space-l);
+          padding-top: var(--space-l);
         }
       }
 
@@ -104,13 +104,12 @@ class WeatherApp extends LitElement {
             'calendar calendar  cookies'
             'symbols  symbols symbols'
             'copy     copy      copy';
-
-          margin: 0 var(--space-l) var(--space-l) var(--space-l);
         }
       }
 
       .section {
         background: var(--color-white);
+        border-radius: 1px;
         margin: 0;
         max-width: none;
       }

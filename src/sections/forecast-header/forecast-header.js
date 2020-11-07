@@ -31,9 +31,9 @@ class ForecastHeader extends LitElement {
         margin: 0;
         text-align: center;
         position: absolute;
-        left: 0;
         right: 0;
-        top: -1rem;
+        left: 0;
+        top: var(--space-m);
       }
 
       station-map {

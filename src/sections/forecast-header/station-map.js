@@ -169,7 +169,7 @@ class StationMap extends LitElement {
    */
   static _viewBox(coordinates) {
     const width = 1.6;
-    const height = 1;
+    const height = 1.1;
 
     return `${coordinates.lon - width / 2} -${
       coordinates.lat + height / 2

@@ -29,7 +29,7 @@ class InstallApp extends LitElement {
         font: inherit;
         font-weight: var(--font-weight-boldest);
 
-        padding: var(--space-xl) var(--space-xl) 0.75rem var(--space-xl);
+        padding: var(--space-l);
         text-align: center;
         text-transform: uppercase;
         outline: none;
@@ -40,20 +40,24 @@ class InstallApp extends LitElement {
         -webkit-appearance: none;
       }
 
-      @media only screen and (min-width: 48rem) {
-        button {
-          margin-bottom: 0;
-        }
-      }
-
       .notification {
         color: var(--color);
       }
 
       ol {
         line-height: 1.7;
-        margin: var(--space-s) 0 var(--space-m) 3rem;
-        padding: 0;
+        margin: -0.5rem var(--space-l) var(--space-l) var(--space-l);
+        padding: 0 0 0 var(--space-xl);
+      }
+
+      @media only screen and (min-width: 430px) {
+        button {
+          padding-bottom: 0;
+        }
+        ol {
+          margin-top: var(--space-m);
+          margin-bottom: var(--space-m);
+        }
       }
 
       .install {
