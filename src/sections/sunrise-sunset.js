@@ -46,6 +46,7 @@ class SunriseSunset extends LitElement {
       }
 
       .text {
+        margin-top: 4rem;
         font-size: var(--font-size-m);
       }
     `;

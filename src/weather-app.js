@@ -116,6 +116,8 @@ class WeatherApp extends LitElement {
       }
 
       .section--forecast {
+        --padding: 0;
+
         grid-area: forecast;
       }
 
@@ -195,10 +197,6 @@ class WeatherApp extends LitElement {
         height: 24px;
         width: 24px;
         fill: var(--color-blue-700);
-      }
-
-      weather-section {
-        --padding: 0;
       }
     `;
   }
