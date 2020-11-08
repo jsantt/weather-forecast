@@ -74,13 +74,27 @@ class ForecastHeader extends LitElement {
       .selected-distance {
         grid-area: distance;
         color: var(--color-blue-900);
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-boldest);
+      }
+
+      .selected-distance svg-icon {
+        fill: var(--color-blue-800);
+        width: 14px;
+        height: 14px;
+        font-weight: var(--font-weight-boldest);
+        margin-right: 2px;
       }
 
       .selected-name {
         grid-area: name;
         color: var(--color-white);
         font-size: var(--font-size-m);
+      }
+
+      .selected-text {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
       }
 
       wind-icon {
@@ -111,14 +125,19 @@ class ForecastHeader extends LitElement {
             <div class="selected">
               <div class="selected-distance">
                 <span class="selected-text">
-                    Klo ${ForecastHeader._time(this._selectedStation.timestamp)}
-                    | ${this._selectedStation.distance} km
+                 
+                  <svg-icon class="time" path="assets/image/icons.svg#refresh"></svg-icon>  
+                  
+                    ${ForecastHeader._time(this._selectedStation.timestamp)}
+                      
                   </span>
                 
               </div>
               <div class="selected-name">
               <span class="selected-text">
-              ${this._selectedStation.name}</span>
+              ${this._selectedStation.name}
+                ${this._selectedStation.distance} km
+               </span>
               </div>
              
               ${
