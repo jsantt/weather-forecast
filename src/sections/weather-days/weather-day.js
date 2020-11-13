@@ -60,28 +60,42 @@ class WeatherDay extends LitElement {
 
       .day {
         background-color: var(--color-dayHeader);
-        border-top-left-radius: var(--border-radius);
-        border-top-right-radius: var(--border-radius);
-        color: var(--color-dayHeader-font);
-
-        font-size: var(--font-size-s);
-        grid-column: span 25;
-        grid-row: 1;
-
-        padding-left: var(--space-m);
-
-        padding-top: var(--space-s);
-        padding-bottom: var(--space-s);
+        color: var(--color-white);
+        padding: var(--space-s) 0;
+        
       }
 
       .day-name {
-        display: inline-block;
-        font-size: var(--font-size-s);
-        text-transform: uppercase;
+        border-top-left-radius: var(--border-radius);
+        grid-column: span 10;
         font-weight: var(--font-weight-normal);
-        padding: 0;
         margin: 0;
+        padding-left: var(--space-m);
+        text-transform: uppercase;
       }
+
+      .day-snow,
+      .day-rain,
+      .day-wind {
+        background-color: var(--color-dayHeader);
+        grid-column: span 5;
+        text-align: right;
+      }
+
+      .day-wind {
+        border-top-right-radius: var(--border-radius);
+        padding-right: var(--space-m);
+      }
+
+      @media only screen and (min-width: 400px) {
+        .day-name {
+          grid-column: span 13;
+        }
+        .day-snow,
+        .day-rain,
+        .day-wind {
+                grid-column: span 4;
+        }
 
       .symbol_svg {
         width: 32px;
@@ -206,18 +220,6 @@ class WeatherDay extends LitElement {
         fill: var(--color-blue-300);
       }
 
-      .wind-warning {
-        padding-left: 0.5rem;
-      }
-      .rain-amount {
-        float: right;
-        padding-right: 0.5rem;
-      }
-      rain-amount,
-      snow-amount {
-        padding-left: 0.5rem;
-      }
-
       .rainBars {
         grid-column: span 25;
         grid-row: 12;
@@ -239,132 +241,128 @@ class WeatherDay extends LitElement {
 
   render() {
     return html`
-     <wind-helper></wind-helper>
+      <wind-helper></wind-helper>
 
-      <div class="weatherDay"> 
+      <div class="weatherDay">
         <div class="weatherDay_grid">
-        
-          <div class="day">
-            <h3 class="day-name">
-              <span class="visually-hidden">SÄÄ</span> 
-              ${WeatherDay._day(this.dayNumber)} ${WeatherDay._weekday(
-      this.dayNumber
-    )}
-            </h3>
+          <h3 class="day day-name">
+            <span class="visually-hidden">SÄÄ</span>
+            ${WeatherDay._day(this.dayNumber)}
+            ${WeatherDay._weekday(this.dayNumber)}
+          </h3>
 
-            <span class="wind-warning">
-              <wind-speed 
-                .windRating="${WeatherDay._windRating(this.dayData)}" 
-                .windDescription="${WeatherDay._windDescription(this.dayData)}"
-                @click="${() => this._toggleWind()}">
-              </wind-speed>
-            </span>
-            <span class="rain-amount">
-              <snow-amount .snowAmount="${WeatherDay._snow(
-                this.dayData
-              )}"></snow-amount>
-              <rain-amount .rainAmount="${WeatherDay._rain(
-                this.dayData
-              )}"></rain-amount>
-            </span>
-          </span></span></div>
-        
-        <!-- headers here outside of repeat -->    
+          <snow-amount
+            class="day day-snow"
+            .snowAmount="${WeatherDay._snow(this.dayData)}"
+          ></snow-amount>
 
-        ${
-          this.showWind === true
+          <rain-amount
+            class="day day-rain"
+            .rainAmount="${WeatherDay._rain(this.dayData)}"
+          ></rain-amount>
+
+          <wind-speed
+            class="day day-wind"
+            .windRating="${WeatherDay._windRating(this.dayData)}"
+            .windDescription="${WeatherDay._windDescription(this.dayData)}"
+            @click="${() => this._toggleWind()}"
+          >
+            m/s
+          </wind-speed>
+
+          <!-- headers here outside of repeat -->
+
+          ${this.showWind === true
             ? html`<div class="wind_header">
                 keskituuli / tuuli puuskissa
               </div>`
-            : ''
-        }
-        
+            : ''}
+          ${this.dayData.map((entry, index) => {
+            return html`
+              <!-- EMPTY COLUMN -->
+              ${index === 1
+                ? html`
+                    <div class="symbol--empty"></div>
+                    <div class="temperature--empty"></div>
+                    <div class="wind--empty"></div>
+                  `
+                : ''}
 
+              <div class="hour ${entry.past === true ? 'hour--past' : ''}">
+                ${WeatherDay._isThird(index) === true
+                  ? html`${entry.hour}`
+                  : ''}
+              </div>
 
-        ${this.dayData.map((entry, index) => {
-          return html`
-            <!-- EMPTY COLUMN -->
-            ${index === 1
-              ? html`
-                  <div class="symbol--empty"></div>
-                  <div class="temperature--empty"></div>
-                  <div class="wind--empty"></div>
-                `
-              : ''}
-
-            <div class="hour ${entry.past === true ? 'hour--past' : ''}">
-              ${WeatherDay._isThird(index) === true ? html`${entry.hour}` : ''}
-            </div>
-
-            ${WeatherDay._isThird(index) === false
-              ? ''
-              : html`
-                  <div class="symbol ${entry.past === true ? 'past-hour' : ''}">
-                    <svg-icon
-                      path="${`assets/image/weather-symbols.svg#weatherSymbol${entry.symbol}`}"
-                    ></svg-icon>
-                  </div>
-
-                  <div
-                    class="temperature ${entry.past === true
-                      ? 'past-hour'
-                      : ''}"
-                  >
-                    ${Number.isFinite(entry.temperature) === true
-                      ? html`${this.showFeelsLike === true
-                            ? entry.feelsLike2
-                            : WeatherDay._round(entry.temperature)}<span
-                            class="degree"
-                            >°</span
-                          >`
-                      : ''}
-                  </div>
-
-                  <div
-                    class="wind ${this.showWind !== true ? 'wind--hidden' : ''}"
-                  >
-                    <wind-icon
+              ${WeatherDay._isThird(index) === false
+                ? ''
+                : html`
+                    <div
                       class="symbol ${entry.past === true ? 'past-hour' : ''}"
-                      .degrees="${entry.windDirection}"
-                      .windSpeed="${entry.wind}"
-                      .windGustSpeed="${entry.windGust}"
                     >
-                    </wind-icon>
-                  </div>
-                `}
-            <div class="hourlySymbols">
-              <weather-symbol-small
-                class="tinySymbol"
-                .rainType="${entry.rainType}"
-              >
-              </weather-symbol-small>
-            </div>
-          `;
-        })}
+                      <svg-icon
+                        path="${`assets/image/weather-symbols.svg#weatherSymbol${entry.symbol}`}"
+                      ></svg-icon>
+                    </div>
 
-        <div class="hour hour--empty">
+                    <div
+                      class="temperature ${entry.past === true
+                        ? 'past-hour'
+                        : ''}"
+                    >
+                      ${Number.isFinite(entry.temperature) === true
+                        ? html`${this.showFeelsLike === true
+                              ? entry.feelsLike2
+                              : WeatherDay._round(entry.temperature)}<span
+                              class="degree"
+                              >°</span
+                            >`
+                        : ''}
+                    </div>
+
+                    <div
+                      class="wind ${this.showWind !== true
+                        ? 'wind--hidden'
+                        : ''}"
+                    >
+                      <wind-icon
+                        class="symbol ${entry.past === true ? 'past-hour' : ''}"
+                        .degrees="${entry.windDirection}"
+                        .windSpeed="${entry.wind}"
+                        .windGustSpeed="${entry.windGust}"
+                      >
+                      </wind-icon>
+                    </div>
+                  `}
+              <div class="hourlySymbols">
+                <weather-symbol-small
+                  class="tinySymbol"
+                  .rainType="${entry.rainType}"
+                >
+                </weather-symbol-small>
+              </div>
+            `;
+          })}
+
+          <div class="hour hour--empty"></div>
+
+          <div class="temperature_line">
+            <temperature-line
+              .minTemperature="${this.minTemperature}"
+              .dayData="${this.dayData}"
+            >
+            </temperature-line>
+          </div>
+
+          <section class="rainBars">
+            <rain-bars
+              .minTemperature="${this.minTemperature}"
+              .dayData="${this.dayData}"
+            >
+            </rain-bars>
+          </section>
         </div>
-      
-        
-        <div class="temperature_line">
-            
-          <temperature-line 
-            .minTemperature="${this.minTemperature}" 
-            .dayData="${this.dayData}">
-          </temperature-line>
-    
-        </div>
-
-        <section class="rainBars">
-
-          <rain-bars
-            .minTemperature="${this.minTemperature}" 
-            .dayData="${this.dayData}">
-          </rain-bars>
-
-        </section>
       </div>
-    </div>
     `;
   }
 

@@ -21,8 +21,8 @@ class WindSpeed extends LitElement {
       ${WindSpeed._arrayForRepeater(this.windRating).map(() => {
         return html` <svg
           class="wind-icon"
-          width="14"
-          height="14"
+          width="12"
+          height="12"
           viewBox="0 0 512 512"
         >
           <g>
@@ -55,7 +55,7 @@ class WindSpeed extends LitElement {
           </g>
         </svg>`;
       })}
-      ${this.windDescription}
+      ${this.windDescription}<slot></slot>
     `;
   }
 

@@ -70,27 +70,7 @@ class StationMap extends LitElement {
     return svg`
       <svg viewBox="${StationMap._viewBox(coordinates)}">
         <!-- paint in "z-index" order, because
-              svg does not have z-index -->
-        
-        <!-- center cirle -->
-        <g>
-          <circle
-            cx="${coordinates.lon}"
-            cy="${-1 * coordinates.lat}"
-            r="0.03"
-            stroke-width="0"
-            fill="var(--color-gray-300)"
-          />
-
-          <circle
-            cx="${coordinates.lon}"
-            cy="${-1 * coordinates.lat}"
-            r="0.06"
-            stroke="var(--color-gray-300)"
-            stroke-width="0.007"
-            fill="none"
-          />
-        </g>      
+              svg does not have z-index --> 
 
         ${this._observationData.map((observation, index) => {
           return svg`
