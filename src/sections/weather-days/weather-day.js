@@ -62,7 +62,6 @@ class WeatherDay extends LitElement {
         background-color: var(--color-dayHeader);
         color: var(--color-white);
         padding: var(--space-s) 0;
-        
       }
 
       .day-name {
@@ -94,8 +93,9 @@ class WeatherDay extends LitElement {
         .day-snow,
         .day-rain,
         .day-wind {
-                grid-column: span 4;
+          grid-column: span 4;
         }
+      }
 
       .symbol_svg {
         width: 32px;
