@@ -109,9 +109,15 @@ class WeatherApp extends LitElement {
 
       .section {
         background: var(--color-white);
-        border-radius: 3px;
+        border-radius: none;
         margin: 0;
         max-width: none;
+      }
+
+      @media only screen and (min-width: 430px) {
+        .section {
+          border-radius: var(--border-radius);
+        }
       }
 
       .section--forecast {

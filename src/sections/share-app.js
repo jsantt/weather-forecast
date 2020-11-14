@@ -17,7 +17,7 @@ class ShareApp extends LitElement {
         all: unset;
         box-sizing: border-box;
         background-color: var(--color-blue-500);
-        border-radius: 4px;
+        border-radius: var(--border-radius);
         color: var(--color-white);
 
         display: flex;

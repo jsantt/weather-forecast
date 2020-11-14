@@ -106,15 +106,10 @@
               #20649bb4
             );
 
-          /*--background-footer: linear-gradient(
-            to right,
-            #20649b18,
-            #20649b04
-          );*/
           --background-footer: linear-gradient( to right, #20649b21, #20649b04 );
 
           --box-shadow:  0px -1px 4px 0px rgba(0, 0, 0, 0.3);
-          --border-radius: 0.25rem;
+          --border-radius: 3px;
           
           
 
@@ -194,7 +189,26 @@
           /* Use only for floating/fixed elements that must be in front of everything */
           --z-index-floating-1: 3;
           --z-index-floating-2: 4;
-          
+
+          /* BREAKPOINTS (copy from here, as CSS variables cannot be used in media queries) 
+            
+            Compact
+              - [0 - 429px]
+              - default (mobile first)
+              - no rounded corners in sections
+              - minimal space between sections
+
+            1 column layout
+              - [430px - 767px]
+              - bigger grid gap and space around sections
+              - round section corners
+              - @media only screen and (min-width: 430px)
+
+            2 column layout
+              - [768 - 9999px]
+              - no other changes then 2 columns
+              - @media only screen and (min-width: 768px)
+          */
 
           /* End of common CSS properties */ 
           box-sizing: border-box;

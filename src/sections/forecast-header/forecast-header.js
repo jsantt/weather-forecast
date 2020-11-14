@@ -20,12 +20,18 @@ class ForecastHeader extends LitElement {
 
       header {
         background: var(--color-blue-600);
-        border-radius: 3px;
         margin-bottom: calc(-1 * (var(--header-background-expand) + 0.25rem));
         padding-bottom: var(--header-background-expand);
 
         /* anchor for h2 */
         position: relative;
+      }
+
+      @media only screen and (min-width: 430px) {
+        header {
+          border-top-left-radius: var(--border-radius);
+          border-top-right-radius: var(--border-radius);
+        }
       }
 
       h2 {
