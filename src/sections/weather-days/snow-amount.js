@@ -11,7 +11,7 @@ class SnowAmount extends LitElement {
         color: var(--color-white);
       }
       svg {
-        fill: var(--color-blue-300);
+        fill: var(--color-lightblue-500);
       }
     `;
   }

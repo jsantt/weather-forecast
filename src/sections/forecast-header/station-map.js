@@ -85,7 +85,6 @@ class StationMap extends LitElement {
               opacity="0.08"
               stroke="var(--color-gray-300)"
               stroke-width="0.010"
-             
             />
           
            <use
@@ -149,7 +148,7 @@ class StationMap extends LitElement {
    */
   static _viewBox(coordinates) {
     const width = 1.6;
-    const height = 1.1;
+    const height = 1.3;
 
     return `${coordinates.lon - width / 2} -${
       coordinates.lat + height / 2

@@ -15,7 +15,7 @@ class RainBars extends LitElement {
       }
 
       .rainBar {
-        fill: var(--color-blue-300);
+        fill: var(--color-lightblue-500);
         animation: growRainBars 0.3s ease-out;
       }
 

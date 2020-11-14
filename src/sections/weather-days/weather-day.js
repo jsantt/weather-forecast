@@ -217,7 +217,7 @@ class WeatherDay extends LitElement {
 
       .wind-icon {
         vertical-align: sub;
-        fill: var(--color-blue-300);
+        fill: var(--color-lightblue-500);
       }
 
       .rainBars {

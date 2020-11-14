@@ -62,6 +62,7 @@ class ForecastHeader extends LitElement {
         backdrop-filter: blur(2px);
         -webkit-backdrop-filter: blur(2px);
 
+        color: var(--color-blue-100);
         display: grid;
         grid-template-columns: 1fr auto;
         grid-template-rows: 1fr 1fr;
@@ -80,12 +81,10 @@ class ForecastHeader extends LitElement {
 
       .selected-distance {
         grid-area: distance;
-        color: var(--color-blue-900);
-        font-weight: var(--font-weight-boldest);
       }
 
       .selected-distance svg-icon {
-        fill: var(--color-blue-800);
+        fill: var(--color-blue-100);
         width: 14px;
         height: 14px;
         font-weight: var(--font-weight-boldest);
@@ -94,7 +93,6 @@ class ForecastHeader extends LitElement {
 
       .selected-name {
         grid-area: name;
-        color: var(--color-white);
         font-size: var(--font-size-m);
       }
 

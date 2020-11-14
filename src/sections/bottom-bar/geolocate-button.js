@@ -8,8 +8,6 @@ class GeolocateButton extends LitElement {
   static get styles() {
     return css`
       :host {
-        --color-locate: var(--color-blue-300);
-
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -22,6 +20,7 @@ class GeolocateButton extends LitElement {
         cursor: pointer;
       }
       svg {
+        -webkit-filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
         filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
       }
 

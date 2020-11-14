@@ -66,7 +66,7 @@ class WeatherStation extends LitElement {
       }
 
       aside {
-        border-left: 3px solid var(--color-blue-300);
+        border-left: 3px solid var(--color-lightblue-500);
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto;
