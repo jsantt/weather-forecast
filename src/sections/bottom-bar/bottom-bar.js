@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './geolocate-button.js';
 import '../../common-components/svg-icon.js';
 
 class BottomBar extends LitElement {
@@ -14,6 +13,7 @@ class BottomBar extends LitElement {
         display: block;
         background: var(--color-white);
         border-top: 1px solid var(--color-gray-300);
+
         position: fixed;
         bottom: 0;
         left: 0;
@@ -37,6 +37,8 @@ class BottomBar extends LitElement {
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
+
+        font-size: var(--font-size-s);
 
         height: 100%;
         fill: var(--color-blue-700);
