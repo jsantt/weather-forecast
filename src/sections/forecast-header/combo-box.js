@@ -126,8 +126,11 @@ class ComboBox extends LitElement {
       #combobox-list {
         background: var(--color-white);
 
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
+
         color: var(--color-gray-600);
-        margin-top: -2px;
+        margin-top: -3px;
         position: absolute;
 
         z-index: var(--z-index-floating-2);

@@ -21,8 +21,9 @@ class PublicHolidays extends LitElement {
       }
       section {
         display: grid;
-        grid-template-columns: 5.6rem 2rem auto;
+        grid-template-columns: 5.7rem 2rem auto;
       }
+
       .today {
         background: var(--color-yellow-300);
         font-weight: var(--font-weight-bold);

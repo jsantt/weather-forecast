@@ -46,6 +46,9 @@ class WindIcon extends LitElement {
   }
 
   render() {
+    if (Number.isNaN(this.windSpeed)) {
+      return html``;
+    }
     return html`<svg
       id="windIcon"
       class="windIcon ${this.large === true ? 'windIcon--large' : ''}"

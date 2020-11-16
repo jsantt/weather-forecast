@@ -8,6 +8,9 @@ class GeolocateButton extends LitElement {
   static get styles() {
     return css`
       :host {
+        display: block;
+      }
+      /*:host {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -19,18 +22,10 @@ class GeolocateButton extends LitElement {
       :host(:hover) {
         cursor: pointer;
       }
-      svg {
-        -webkit-filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
-        filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
-      }
-
-      .locate-icon-shadow {
-        fill: var(--color-white);
-      }
-
+      */
+      /*
       .locate-text {
         color: var(--color-blue-700);
-        /*font-size: var(--font-size-s);*/
         font-weight: var(--font-weight-boldest);
         margin-top: -2rem;
         z-index: var(--z-index-1);
@@ -41,45 +36,12 @@ class GeolocateButton extends LitElement {
       }
       svg.loading {
         bottom: 4rem;
-      }
+      }*/
     `;
   }
 
   render() {
-    return html`
-      ${this.loading === true
-        ? ''
-        : html` <svg
-              tabindex="0"
-              @click="${this._geolocate}"
-              width="80"
-              height="80"
-              viewbox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g>
-                <title>paikanna</title>
-                <ellipse
-                  stroke="#f5f5f5"
-                  stroke-width="0"
-                  fill="#fff"
-                  cx="15.94793"
-                  cy="17.3763"
-                  id="svg_1"
-                  rx="15"
-                  ry="15"
-                />
-                <path
-                  class="locate-icon"
-                  stroke-width="0"
-                  stroke="#fff"
-                  fill="#ed332b"
-                  d="m16.18757,0.12498c-3.69724,0 -6.68752,2.99028 -6.68752,6.68752c0,5.01564 6.68752,12.41967 6.68752,12.41967s6.68752,-7.40403 6.68752,-12.41967c0,-3.69724 -2.99028,-6.68752 -6.68752,-6.68752zm0,9.07591c-1.3184,0 -2.38839,-1.07 -2.38839,-2.38839s1.07,-2.38839 2.38839,-2.38839s2.38839,1.07 2.38839,2.38839s-1.07,2.38839 -2.38839,2.38839z"
-                />
-              </g>
-            </svg>
-            <div class="locate-text">paikanna</div>`}
-    `;
+    return html` <slot></slot> `;
   }
 
   static get properties() {
