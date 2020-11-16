@@ -21,7 +21,7 @@ class PublicHolidays extends LitElement {
       }
       section {
         display: grid;
-        grid-template-columns: 5.7rem 2rem auto;
+        grid-template-columns: 5.9rem 2rem auto;
       }
 
       .today {
@@ -32,6 +32,7 @@ class PublicHolidays extends LitElement {
       .date {
         text-align: right;
         padding-right: 0.5rem;
+        white-space: no-wrap;
       }
 
       svg-icon {
