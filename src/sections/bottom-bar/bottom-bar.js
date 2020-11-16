@@ -10,6 +10,8 @@ class BottomBar extends LitElement {
   static get styles() {
     return css`
       :host {
+        --color: var(--color-blue-700);
+
         display: block;
         background: var(--color-white);
         border-top: 1px solid var(--color-gray-300);
@@ -31,17 +33,20 @@ class BottomBar extends LitElement {
       button {
         background: var(--color-white);
         border: none;
-        color: var(--color-blue-700);
+        color: var(--color);
 
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
 
+        fill: var(--color);
+        font-family: var(--font-family-primary);
         font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
 
         height: 100%;
-        fill: var(--color-blue-700);
+
         text-align: center;
         margin: 0 auto;
         padding: var(--space-s) var(--space-xl);
@@ -60,7 +65,6 @@ class BottomBar extends LitElement {
       }
 
       button:active {
-        font-weight: var(--font-weight-bold);
       }
 
       button:active .locate-icon {
@@ -70,7 +74,8 @@ class BottomBar extends LitElement {
 
       :host([showFeelsLike]) .feelsLike,
       :host([showWind]) .wind {
-        font-weight: var(--font-weight-bold);
+        color: var(--color-blue-700);
+        fill: var(--color-blue-700);
       }
 
       .locate {
@@ -88,7 +93,7 @@ class BottomBar extends LitElement {
       .small-icon {
         height: 20px;
         width: 20px;
-        padding: var(--space-s);
+        padding: var(--space-s) var(--space-s) 0 var(--space-s);
       }
     `;
   }
