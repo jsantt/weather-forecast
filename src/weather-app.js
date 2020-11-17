@@ -251,6 +251,7 @@ class WeatherApp extends LitElement {
                 </weather-days>
               `}
           <bottom-bar
+            ?largeMap="${this._largeMap}"
             ?showFeelsLike="${this._showFeelsLike}"
             ?showWind="${this._showWind}"
           ></bottom-bar>
