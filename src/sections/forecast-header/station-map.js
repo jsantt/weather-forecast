@@ -48,6 +48,7 @@ class StationMap extends LitElement {
   render() {
     return html`
       ${this._createMap(
+        this.largeMap,
         this.location,
         this.observationData,
         this.showFeelsLike
@@ -55,7 +56,7 @@ class StationMap extends LitElement {
     `;
   }
 
-  _createMap(coordinates, observations, showFeelsLike) {
+  _createMap(large, coordinates, observations, showFeelsLike) {
     if (observations === undefined) {
       return html`<error-notification
         errorText="Sääasemille ei valitettavasti saatu yhteyttä"
@@ -68,7 +69,7 @@ class StationMap extends LitElement {
     StationMap._adjustCoordinates(coordinates, this._observationData);
 
     return svg`
-      <svg viewBox="${StationMap._viewBox(coordinates)}">
+      <svg viewBox="${StationMap._viewBox(coordinates, large)}">
         <!-- paint in "z-index" order, because
               svg does not have z-index --> 
 
@@ -118,6 +119,9 @@ class StationMap extends LitElement {
 
   static get properties() {
     return {
+      largeMap: {
+        type: Boolean,
+      },
       location: {
         type: Object,
       },
@@ -146,9 +150,9 @@ class StationMap extends LitElement {
    * @param { Number } coordinates.lon
    *
    */
-  static _viewBox(coordinates) {
+  static _viewBox(coordinates, large) {
     const width = 1.6;
-    const height = 1.3;
+    const height = large === true ? 1.6 : 1.3;
 
     return `${coordinates.lon - width / 2} -${
       coordinates.lat + height / 2

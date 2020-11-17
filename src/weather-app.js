@@ -230,6 +230,7 @@ class WeatherApp extends LitElement {
               `
             : html`
                 <forecast-header
+                  ?largeMap="${this._largeMap}"
                   ?loading="${this._loading}"
                   .location="${this._location}"
                   .place="${this._forecastPlace}"
@@ -409,8 +410,14 @@ class WeatherApp extends LitElement {
       _forecastPlace: {
         type: Object,
       },
+      _largeMap: {
+        type: Boolean,
+      },
       _loading: {
         type: Boolean,
+      },
+      _location: {
+        type: Object,
       },
       _showFeelsLike: {
         type: Boolean,
@@ -423,9 +430,6 @@ class WeatherApp extends LitElement {
       },
       _observationError: {
         type: Boolean,
-      },
-      _location: {
-        type: Object,
       },
     };
   }
@@ -490,6 +494,10 @@ class WeatherApp extends LitElement {
     this.addEventListener('station-map.selected', e =>
       this._stationSelected(e)
     );
+
+    this.addEventListener('bottom-bar.toggleMapSize', () => {
+      this._toggleMapSize();
+    });
   }
 
   _fetchDone() {
@@ -522,6 +530,10 @@ class WeatherApp extends LitElement {
     observationsCopy[event.detail].selectedStation = true;
 
     this._observationData = observationsCopy;
+  }
+
+  _toggleMapSize() {
+    this._largeMap = !this._largeMap;
   }
 
   static _getWeatherNow(data) {

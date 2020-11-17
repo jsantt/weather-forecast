@@ -120,6 +120,7 @@ class ForecastHeader extends LitElement {
         </h2>
 
         <station-map
+          .largeMap="${this.largeMap}"
           .location="${this.location}"
           .observationData=${this.observationData}
           ?showFeelsLike="${this.showFeelsLike}"
@@ -166,6 +167,7 @@ class ForecastHeader extends LitElement {
 
   static get properties() {
     return {
+      largeMap: { type: Boolean, reflect: true },
       loading: { type: Boolean, reflect: true },
       location: { type: Object, reflect: true },
       place: { type: Object, reflect: true },
