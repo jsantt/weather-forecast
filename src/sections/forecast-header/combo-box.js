@@ -37,16 +37,6 @@ class ComboBox extends LitElement {
         width: 100%;
       }
 
-      .magnifier {
-        position: absolute;
-        left: 2px;
-        top: 2px;
-        vertical-align: center;
-        width: 36px;
-        height: 36px;
-        visibility: hidden;
-      }
-
       .refresh {
         fill: var(--color-blue-650);
         position: absolute;
@@ -63,7 +53,6 @@ class ComboBox extends LitElement {
       }
 
       :host([_loadingPlus]) input[type='text'],
-      :host([_loadingPlus]) .magnifier,
       :host([_loadingPlus]) .refresh {
         color: var(--color-gray-600);
         fill: var(--color-gray-600);
@@ -90,11 +79,10 @@ class ComboBox extends LitElement {
       }
 
       input[type='text'] {
-        background: var(--color-white);
+        background: var(--color-gray-300);
         border: none;
         border-radius: 30px;
-
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 4px;
+        box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
 
         color: var(--color-blue-800);
         font-size: var(--font-size-l);
@@ -108,6 +96,7 @@ class ComboBox extends LitElement {
         transition: padding 0.5s ease;
         /*user-select: none;
         -webkit-user-select: none;*/
+        -webkit-appearance: none;
       }
 
       :host([_open]) input[type='text'] {
@@ -124,7 +113,7 @@ class ComboBox extends LitElement {
       }
 
       #combobox-list {
-        background: var(--color-white);
+        background: var(--color-gray-300);
 
         border-bottom-left-radius: 24px;
         border-bottom-right-radius: 24px;
@@ -172,10 +161,6 @@ class ComboBox extends LitElement {
           aria-haspopup="true"
           aria-expanded="${this._open === true ? 'true' : 'false'}"
         >
-          <svg-icon
-            class="magnifier"
-            path="assets/image/icons.svg#magnifier"
-          ></svg-icon>
           <input
             id="comboInput"
             type="text"

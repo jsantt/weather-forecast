@@ -136,6 +136,11 @@ class WeatherApp extends LitElement {
 
       .section--sun {
         grid-area: sun;
+
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='-16 14 37 37' preserveAspectRatio='slice none'%3E%3Cpolygon fill='%23fff2cc' points='18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237'%3E%3C/polygon%3E%3Ccircle fill='%23fff2cc' stroke='%23FFFFFF' stroke-width='1.3028' cx='18.499' cy='18.363' r='6.362'%3E%3C/circle%3E%3C/svg%3E");
+        background-position: right top;
+        background-repeat: no-repeat;
+        background-size: 495px auto;
       }
 
       .section--calendar {

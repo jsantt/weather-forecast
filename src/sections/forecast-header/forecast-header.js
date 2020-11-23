@@ -140,7 +140,7 @@ class ForecastHeader extends LitElement {
                 
               </div>
               <div class="selected-name">
-              <span class="selected-text">
+              <span class="selected-text">      
               ${this._selectedStation.name}
                 ${this._selectedStation.distance} km
                </span>

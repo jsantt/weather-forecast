@@ -88,6 +88,11 @@ class BottomBar extends LitElement {
         top: -16px;
 
         filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
+        transition: all 0.3s cubic-bezier(0.36, 1.01, 0.32, 1.27);
+      }
+
+      :host([_locating]) .locate-icon {
+        top: -50px;
       }
 
       .small-icon {
@@ -196,6 +201,10 @@ class BottomBar extends LitElement {
       _error: {
         type: String,
       },
+      _locating: {
+        type: Boolean,
+        reflect: true,
+      },
     };
   }
 
@@ -236,6 +245,11 @@ class BottomBar extends LitElement {
   }
 
   _geolocate() {
+    this._locating = true;
+    setTimeout(() => {
+      this._locating = false;
+    }, 300);
+
     this._cleanError();
     this._dispatchEvent('location-selector.locate-started');
 

@@ -15,6 +15,11 @@ class SunriseSunset extends LitElement {
         display: block;
       }
 
+      .arrow-svg {
+        fill: var(--color-gray-600);
+        height: 36px;
+      }
+
       .sun {
         display: flex;
         margin-bottom: 1rem;
@@ -39,14 +44,42 @@ class SunriseSunset extends LitElement {
         fill: var(--color-blue-700);
       }
 
-      .sunrise-svg,
-      .sunset-svg {
-        width: 39px;
-        height: 27px;
+      .text {
+        margin-top: var(--space-l);
       }
 
-      .text {
-        margin-top: 4rem;
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+
+        grid-template-areas:
+          'sunrise-header   sunset-header'
+          'sunrise-value    sunset-value';
+
+        margin-bottom: var(--space-m);
+      }
+
+      .sunrise-header {
+        grid-area: sunrise-header;
+      }
+
+      .sunset-header {
+        grid-area: sunset-header;
+      }
+
+      .sunrise-value {
+        grid-area: sunrise-value;
+      }
+
+      .sunset-value {
+        grid-area: sunset-value;
+      }
+
+      .sunrise-value,
+      .sunset-value {
+        font-size: var(--font-size-xxl);
+        font-weight: var(--font-weight-bold);
       }
     `;
   }
@@ -54,27 +87,28 @@ class SunriseSunset extends LitElement {
   render() {
     return html`
       <weather-section header="Aurinko">
-        <div class="sun">
-          <div class="sunrise">
-            <svg-icon
-              class="sunrise-svg"
-              path="assets/image/icons.svg#sunrise"
-            ></svg-icon>
-            ${this._sunrise}
+        <div class="grid">
+          <div class="sunrise">Aurinko nousee</div>
+          <div class="sunrise-value">
+            <!--svg-icon
+              class="arrow-svg"
+              path="assets/image/icons.svg#arrow-up"
+            ></svg-icon
+  -->${this._sunrise}
           </div>
 
-          <div>
-            <svg-icon
-              class="sunset-svg"
-              path="assets/image/icons.svg#sunset"
-            ></svg-icon>
-            ${this._sunset}
+          <div class="sunset">Aurinko laskee</div>
+          <div class="sunset-value">
+            <!--svg-icon
+              class="arrow-svg"
+              path="assets/image/icons.svg#arrow-down"
+            ></svg-icon
+  -->${this._sunset}
           </div>
         </div>
-
         <div class="text">
           ${this._solarNoon} aurinko korkeimmillaan<br />
-          ${this._darkestNight} pimeintä (aurinko matalimmillaan)<br />
+          ${this._darkestNight} aurinko matalimmillaan (pimeintä)<br />
         </div>
 
         <div slot="footer-left"></div>
