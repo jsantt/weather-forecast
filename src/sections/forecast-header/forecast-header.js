@@ -5,6 +5,7 @@ import '../../common-components/wind-icon.js';
 
 import './location-selector.js';
 import './station-map.js';
+import './station-details.js';
 
 class ForecastHeader extends LitElement {
   static get is() {
@@ -20,7 +21,7 @@ class ForecastHeader extends LitElement {
 
       header {
         background: var(--color-blue-600);
-        margin-bottom: calc(-1 * (var(--header-background-expand) + 0.25rem));
+        margin-bottom: calc(-1 * (var(--header-background-expand)));
         padding-bottom: var(--header-background-expand);
 
         /* anchor for h2 */
@@ -64,31 +65,18 @@ class ForecastHeader extends LitElement {
 
         color: var(--color-blue-100);
         display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: 1fr 1fr;
+        grid-template-columns: auto 3rem 2rem;
+        grid-template-rows: auto;
+        align-items: center;
 
         grid-template-areas:
-          'distance     wind'
-          'name         wind';
+          'name    wind  expand'
+          'details details details';
 
         line-height: var(--line-height-dense);
-        position: absolute;
-        right: var(--space-m);
-        bottom: 4rem;
 
-        text-align: right;
-      }
-
-      .selected-distance {
-        grid-area: distance;
-      }
-
-      .selected-distance svg-icon {
-        fill: var(--color-blue-100);
-        width: 14px;
-        height: 14px;
-        font-weight: var(--font-weight-boldest);
-        margin-right: 2px;
+        text-align: left;
+        padding: var(--space-m) var(--space-l);
       }
 
       .selected-name {
@@ -98,13 +86,40 @@ class ForecastHeader extends LitElement {
 
       .selected-text {
         display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
+        justify-content: flex-start;
+      }
+
+      .selected-details {
+        grid-area: details;
+
+        max-height: 0;
+        transition: max-height 0.3s ease;
+        will-change: max-height;
+      }
+
+      :host([largeMap]) .selected-details {
+        margin-top: var(--space-m);
+        max-height: 10rem;
       }
 
       wind-icon {
         grid-area: wind;
         padding-left: var(--space-m);
+      }
+
+      .expand-icon {
+        grid-area: expand;
+        height: 16px;
+        width: 16px;
+
+        margin-left: auto;
+        padding: 0 var(--space-m);
+      }
+
+      weather-name-wawa {
+        font-size: var(--font-size-l);
+        font-weight: var(--font-weight-bold);
+        padding-bottom: 0.15rem;
       }
     `;
   }
@@ -128,23 +143,34 @@ class ForecastHeader extends LitElement {
         ></station-map>
         ${this._selectedStation !== undefined
           ? html`
-            <div class="selected">
-              <div class="selected-distance">
-                <span class="selected-text">
-                 
-                  <svg-icon class="time" path="assets/image/icons.svg#refresh"></svg-icon>  
-                  
-                    ${ForecastHeader._time(this._selectedStation.timestamp)}
-                      
-                  </span>
-                
-              </div>
-              <div class="selected-name">
-              <span class="selected-text">      
+            <div class="selected" @click="${this._expand}">
+            <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-${
+              this.largeMap ? 'up' : 'down'
+            }"></svg-icon>  
+            <div class="selected-name">
+              <weather-name-wawa
+                .wawaId="${this._selectedStation.wawaCode}"
+                .cloudiness="${this._selectedStation.cloudiness}"
+              ></weather-name-wawa>
+              <span class="selected-text">
+              
               ${this._selectedStation.name}
                 ${this._selectedStation.distance} km
+
                </span>
-              </div>
+      
+               </div>
+               <div class="selected-details">
+
+              ${
+                this.largeMap
+                  ? html` <station-details
+                      .station="${this._selectedStation}"
+                    ></station-details>`
+                  : ''
+              }
+               </div>
+              
              
               ${
                 this.showWind === true
@@ -158,8 +184,12 @@ class ForecastHeader extends LitElement {
                     </wind-icon>`
                   : ''
               }
+                
+              
               </div>
-            </div>`
+            </div>
+            
+            `
           : ''}
       </header>
     `;
@@ -190,6 +220,10 @@ class ForecastHeader extends LitElement {
         })[0];
       }
     });
+  }
+
+  _expand() {
+    this.largeMap = !this.largeMap;
   }
 
   static _round(value) {

@@ -3,6 +3,10 @@ import { css, html, LitElement } from 'lit-element';
 class WindIcon extends LitElement {
   static get styles() {
     return css`
+      :host {
+        display: block;
+      }
+
       .windIcon {
         height: 30px;
         width: 30px;

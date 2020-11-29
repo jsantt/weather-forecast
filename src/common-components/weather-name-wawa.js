@@ -1,9 +1,17 @@
-import { html, LitElement } from 'lit-element';
+import { html, LitElement, css } from 'lit-element';
 
 /**
  * See wawa names: https://helda.helsinki.fi/bitstream/handle/10138/37284/PRO_GRADU_BOOK_HERMAN.pdf?sequence=2
  */
 class WeatherNameWawa extends LitElement {
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+      }
+    `;
+  }
+
   static get is() {
     return 'weather-name-wawa';
   }

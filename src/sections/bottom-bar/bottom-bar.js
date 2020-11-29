@@ -16,6 +16,7 @@ class BottomBar extends LitElement {
         background: var(--color-gray-300);
 
         border-top: 1px solid var(--color-gray-300);
+        box-shadow: var(--box-shadow);
 
         position: fixed;
         bottom: 0;
