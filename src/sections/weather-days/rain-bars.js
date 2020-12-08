@@ -114,9 +114,6 @@ class RainBars extends LitElement {
         );
 
         bar.setAttribute('class', 'rainBar');
-
-        const opacity = data[i].past ? '0.3' : '1';
-        bar.setAttribute('fill-opacity', opacity);
         bar.setAttribute('width', '9');
 
         const rectHeight = RainBars._rectHeight(data[i].rain, data[i].rainType);

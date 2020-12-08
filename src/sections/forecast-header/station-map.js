@@ -13,11 +13,12 @@ class StationMap extends LitElement {
     return css`
       :host {
         display: block;
+        padding-top: 2rem;
       }
 
       .svg-text {
         fill: var(--color-gray-300);
-        font-size: 0.11px;
+        font-size: 0.15px;
 
         text-rendering: optimizeLegibility;
       }
@@ -51,13 +52,14 @@ class StationMap extends LitElement {
         this.largeMap,
         this.location,
         this.observationData,
+        this.observationError,
         this.showFeelsLike
       )}
     `;
   }
 
-  _createMap(large, coordinates, observations, showFeelsLike) {
-    if (observations === undefined) {
+  _createMap(large, coordinates, observations, error, showFeelsLike) {
+    if (error === true) {
       return html`<error-notification
         errorText="Sääasemille ei valitettavasti saatu yhteyttä"
       >
@@ -82,31 +84,33 @@ class StationMap extends LitElement {
               @click="${() => this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
-              r="${observation.selectedStation ? 0.14 : 0.12}"
+              r="${observation.selectedStation ? 0.18 : 0.16}"
               opacity="0.08"
               stroke="var(--color-gray-300)"
-              stroke-width="0.010"
+              stroke-width="0.013"
             />
           
            <use
               x="${observation.lonForMap - 0.14}"
-              y="${-1 * observation.latForMap - 0.07}"
-              width="0.2"
-              height="0.2"
+              y="${-1 * observation.latForMap - 0.09}"
+              width="0.25"
+              height="0.25"
               href="assets/image/weather-symbols.svg#weatherSymbol${
                 observation.weatherCode3
               }"
             ></use>
             ${
-              showFeelsLike === true && observation.feelsLike === undefined
+              showFeelsLike === true &&
+              (observation.feelsLike2 === undefined ||
+                Number.isNaN(observation.feelsLike2))
                 ? ''
                 : svg`
-              <text  class="svg-text" text-anchor="right" x="${
-                observation.lonForMap - 0.02
-              }"
-              y="${-1 * observation.latForMap}">${
+                  <text  class="svg-text" text-anchor="end" x="${
+                    observation.lonForMap + 0.1
+                  }"
+                  y="${-1 * observation.latForMap - 0.02}">${
                     showFeelsLike === true
-                      ? svg`${observation.feelsLike}`
+                      ? svg`${observation.feelsLike2}`
                       : svg`${Math.round(observation.temperature)}`
                   }<tspan class="celcius">°</tspan></text>`
             }
@@ -127,6 +131,9 @@ class StationMap extends LitElement {
       },
       observationData: {
         type: Array,
+      },
+      observationError: {
+        type: Boolean,
       },
       showFeelsLike: {
         type: Boolean,
@@ -151,53 +158,61 @@ class StationMap extends LitElement {
    *
    */
   static _viewBox(coordinates, large) {
-    const width = 1.6;
-    const height = large === true ? 1.6 : 1.2;
+    const width = 2;
+    const height = large === true ? 1.6 : 1.6;
 
     return `${coordinates.lon - width / 2} -${
       coordinates.lat + height / 2
     } ${width} ${height}`;
   }
 
+  /**
+   * Adjusting coordinates iteratively. Places the stations on the map starting from
+   * the nearest. If the placed stations collides with the previous stations, move
+   * it by extendLength until it fits
+   */
   static _adjustCoordinates(coordinates, observations) {
-    const stationRadius = 0.125; // exact radius is 0.125
-    const extendLength = 0.01;
+    const stationRadius = 0.165;
+    const extendLength = 0.01; // how much station is moved per cycle
 
-    observations.forEach((o1, index) => {
-      observations.forEach(o2 => {
-        while (
-          o1.latForMap !== o2.latForMap &&
-          o1.lonForMap !== o2.latForMap &&
-          o1.collision !== true &&
-          o2.collision !== true &&
-          checkCollision(
-            o1.lonForMap,
-            o1.latForMap,
-            stationRadius,
-            o2.lonForMap,
-            o2.latForMap,
-            stationRadius
-          ) === true
-        ) {
-          // eslint-disable-next-line no-param-reassign
-          o1.collisionId = index;
-          // eslint-disable-next-line no-param-reassign
-          o2.collisionId = index;
+    // for some reason, algorithm performs better when applied 3 times in a row :)
+    for (let i = 0; i <= 2; i += 1) {
+      observations.forEach((o1, index) => {
+        observations.forEach(o2 => {
+          while (
+            o1.latForMap !== o2.latForMap &&
+            o1.lonForMap !== o2.latForMap &&
+            o1.collision !== true &&
+            o2.collision !== true &&
+            checkCollision(
+              o1.lonForMap,
+              o1.latForMap,
+              stationRadius,
+              o2.lonForMap,
+              o2.latForMap,
+              stationRadius
+            ) === true
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            o1.collisionId = index;
+            // eslint-disable-next-line no-param-reassign
+            o2.collisionId = index;
 
-          const extendedLine = extendVector(
-            o1.lonForMap,
-            o1.latForMap,
-            o2.lonForMap,
-            o2.latForMap,
-            extendLength
-          );
-          // eslint-disable-next-line no-param-reassign
-          o2.lonForMap = extendedLine.x2Ext;
-          // eslint-disable-next-line no-param-reassign
-          o2.latForMap = extendedLine.y2Ext;
-        }
+            const extendedLine = extendVector(
+              o1.lonForMap,
+              o1.latForMap,
+              o2.lonForMap,
+              o2.latForMap,
+              extendLength
+            );
+            // eslint-disable-next-line no-param-reassign
+            o2.lonForMap = extendedLine.x2Ext;
+            // eslint-disable-next-line no-param-reassign
+            o2.latForMap = extendedLine.y2Ext;
+          }
+        });
       });
-    });
+    }
   }
 
   _stationClicked(index) {

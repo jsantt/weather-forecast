@@ -118,14 +118,6 @@ class WeatherDay extends LitElement {
         grid-column: span 1;
       }
 
-      .hour--past {
-        color: var(--color-gray--light);
-      }
-
-      .past-hour {
-        opacity: 0.1;
-      }
-
       .symbol,
       .symbol--empty {
         grid-column: span 3;
@@ -288,7 +280,7 @@ class WeatherDay extends LitElement {
                   `
                 : ''}
 
-              <div class="hour ${entry.past === true ? 'hour--past' : ''}">
+              <div class="hour">
                 ${WeatherDay._isThird(index) === true
                   ? html`${entry.hour}`
                   : ''}
@@ -297,19 +289,13 @@ class WeatherDay extends LitElement {
               ${WeatherDay._isThird(index) === false
                 ? ''
                 : html`
-                    <div
-                      class="symbol ${entry.past === true ? 'past-hour' : ''}"
-                    >
+                    <div class="symbol">
                       <svg-icon
                         path="${`assets/image/weather-symbols.svg#weatherSymbol${entry.symbol}`}"
                       ></svg-icon>
                     </div>
 
-                    <div
-                      class="temperature ${entry.past === true
-                        ? 'past-hour'
-                        : ''}"
-                    >
+                    <div class="temperature">
                       ${Number.isFinite(entry.temperature) === true
                         ? html`${this.showFeelsLike === true
                               ? entry.feelsLike2
@@ -326,7 +312,7 @@ class WeatherDay extends LitElement {
                         : ''}"
                     >
                       <wind-icon
-                        class="symbol ${entry.past === true ? 'past-hour' : ''}"
+                        class="symbol"
                         .degrees="${entry.windDirection}"
                         .windSpeed="${entry.wind}"
                         .windGustSpeed="${entry.windGust}"

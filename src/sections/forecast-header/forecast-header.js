@@ -14,6 +14,10 @@ class ForecastHeader extends LitElement {
 
   static get styles() {
     return css`
+      * {
+        box-sizing: border-box;
+      }
+
       :host {
         display: block;
         padding-bottom: var(--header-background-expand);
@@ -76,7 +80,7 @@ class ForecastHeader extends LitElement {
         line-height: var(--line-height-dense);
 
         text-align: left;
-        padding: var(--space-m) var(--space-l);
+        padding: 0 var(--space-l);
       }
 
       .selected-name {
@@ -91,15 +95,20 @@ class ForecastHeader extends LitElement {
 
       .selected-details {
         grid-area: details;
-
+        margin: 0 -0.5rem;
         max-height: 0;
-        transition: max-height 0.3s ease;
+
+        overflow: hidden;
+        padding-top: var(--space-m);
+
+        transition: max-height 0.3s ease, padding 0.3s ease;
         will-change: max-height;
       }
 
       :host([largeMap]) .selected-details {
-        margin-top: var(--space-m);
-        max-height: 10rem;
+        max-height: 14rem;
+
+        padding-bottom: var(--space-m);
       }
 
       wind-icon {
@@ -113,13 +122,22 @@ class ForecastHeader extends LitElement {
         width: 16px;
 
         margin-left: auto;
-        padding: 0 var(--space-m);
+        transition: transform 0.3s ease;
+      }
+
+      :host([largeMap]) .expand-icon {
+        transform: scaleY(-1);
       }
 
       weather-name-wawa {
         font-size: var(--font-size-l);
         font-weight: var(--font-weight-bold);
         padding-bottom: 0.15rem;
+      }
+
+      station-details {
+        background: var(--color-blue-700);
+        color: var(--color-white);
       }
     `;
   }
@@ -138,40 +156,34 @@ class ForecastHeader extends LitElement {
           .largeMap="${this.largeMap}"
           .location="${this.location}"
           .observationData=${this.observationData}
+          ?observationError=${this.observationError}
           ?showFeelsLike="${this.showFeelsLike}"
           ?showWind="${this.showWind}"
         ></station-map>
         ${this._selectedStation !== undefined
           ? html`
             <div class="selected" @click="${this._expand}">
-            <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-${
-              this.largeMap ? 'up' : 'down'
-            }"></svg-icon>  
+            <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
             <div class="selected-name">
-              <weather-name-wawa
-                .wawaId="${this._selectedStation.wawaCode}"
-                .cloudiness="${this._selectedStation.cloudiness}"
-              ></weather-name-wawa>
+              
               <span class="selected-text">
               
               ${this._selectedStation.name}
                 ${this._selectedStation.distance} km
 
                </span>
-      
+               <weather-name-wawa
+                .wawaId="${this._selectedStation.wawaCode}"
+                .cloudiness="${this._selectedStation.cloudiness}"
+              ></weather-name-wawa>      
                </div>
                <div class="selected-details">
 
-              ${
-                this.largeMap
-                  ? html` <station-details
+                <station-details
                       .station="${this._selectedStation}"
-                    ></station-details>`
-                  : ''
-              }
+                    ></station-details>
+                
                </div>
-              
-             
               ${
                 this.showWind === true
                   ? html` <wind-icon
@@ -183,12 +195,9 @@ class ForecastHeader extends LitElement {
                     >
                     </wind-icon>`
                   : ''
-              }
-                
-              
+              }              
               </div>
             </div>
-            
             `
           : ''}
       </header>
@@ -202,6 +211,7 @@ class ForecastHeader extends LitElement {
       location: { type: Object, reflect: true },
       place: { type: Object, reflect: true },
       observationData: { type: Object },
+      observationError: { type: Boolean, reflect: true },
       showFeelsLike: { type: Boolean, reflect: true },
       showWind: { type: Boolean, reflect: true },
       _selectedStation: { type: Object },
@@ -232,14 +242,6 @@ class ForecastHeader extends LitElement {
     }
 
     return Math.round(value);
-  }
-
-  static _time(dateTime) {
-    const minutes = dateTime.getMinutes();
-
-    const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-    return `${dateTime.getHours()}.${fullMinutes}`;
   }
 }
 

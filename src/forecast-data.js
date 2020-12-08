@@ -82,8 +82,7 @@ class ForecastData extends LitElement {
 
         // enrich data here to keep logic inside components simple
         const hourAdded = ForecastData._addFullHour(json);
-        const pastMarked = ForecastData._markPastItems(hourAdded);
-        const rainTypeAdded = ForecastData._addRainType(pastMarked);
+        const rainTypeAdded = ForecastData._addRainType(hourAdded);
         const forecastData = ForecastData._addSymbolAggregate(rainTypeAdded);
 
         this._dispatch('forecast-data.new-data', forecastData);
@@ -238,17 +237,6 @@ class ForecastData extends LitElement {
     return combined;
   }
 
-  static _markPastItems(combinedData) {
-    const now = new Date();
-    const result = combinedData.map(element => {
-      const copy = { ...element };
-      copy.past = ForecastData._isPast(now, copy.time);
-      return copy;
-    });
-
-    return result;
-  }
-
   static _addRainType(data) {
     const result = data.map(item => {
       const copy = { ...item };
@@ -282,12 +270,6 @@ class ForecastData extends LitElement {
       }
     });
     return forecastData;
-  }
-
-  static _isPast(now, dateTime) {
-    const comparable = new Date(dateTime);
-
-    return now > comparable;
   }
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 

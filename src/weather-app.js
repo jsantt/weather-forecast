@@ -44,7 +44,7 @@ class WeatherApp extends LitElement {
         margin: 0;
       }
       p + p {
-        margin-bottom: var(--space-m);
+        margin-top: var(--space-m);
       }
 
       .by {
@@ -72,7 +72,6 @@ class WeatherApp extends LitElement {
         grid-template-areas:
           'forecast'
           'sun'
-          'observations'
           'calendar'
           'info'
           'links'
@@ -97,12 +96,13 @@ class WeatherApp extends LitElement {
 
           grid-template-areas:
             'forecast forecast  sun'
-            'forecast forecast  observations'
-            'forecast forecast  observations'
-            'calendar calendar  info'
-            'calendar calendar  links'
-            'calendar calendar  cookies'
-            'symbols  symbols symbols'
+            'forecast forecast  info'
+            'forecast forecast  info'
+            'forecast forecast  symbols'
+            'forecast    forecast     symbols'
+            'calendar calendar  symbols'
+            'calendar  calendar symbols'
+            'cookies  links     symbols'
             'copy     copy      copy';
         }
       }
@@ -240,6 +240,7 @@ class WeatherApp extends LitElement {
                   .location="${this._location}"
                   .place="${this._forecastPlace}"
                   .observationData="${this._observationData}"
+                  ?observationError="${this._observationError}"
                   ?showFeelsLike="${this._showFeelsLike}"
                   ?showWind="${this._showWind}"
                 >
@@ -281,16 +282,6 @@ class WeatherApp extends LitElement {
           </div>
         </weather-section>
 
-        <weather-station
-          class="section section--observations"
-          .location="${this._location}"
-          .observationData="${this._observationData}"
-          ?observationError="${this._observationError}"
-          ?showFeelsLike="${this._showFeelsLike}"
-          ?showWind="${this._showWind}"
-        >
-        </weather-station>
-
         <external-links class="section section--links"></external-links>
 
         <sunrise-sunset
@@ -310,13 +301,12 @@ class WeatherApp extends LitElement {
           ></svg-icon>
 
           <p>
-            Saaennuste.fi on nopein ja paras sääsovellus. Näet yhdellä
-            vilkaisulla sekä tämän hetkisen sään kaikilta lähistön
-            havaintoasemilta että lähipäivien tuntikohtaisen ennustuksen.
-          </p>
-
-          <p>
-            Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen laitoksen
+            Saaennuste.fi sovelluksesta näet reaaliaikaisen sään kaikilta
+            lähistön sääasemilta ja havaitset esim. lähestyvän sateen ja sen
+            muodon. Lähipäivien tuntikohtainen ennuste mahtuu yhdelle kännykän
+            näytölliselle, joten saat sekä yleiskuvan että tarkan ennusteen
+            nopeiten. Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen
+            laitoksen
             <a
               href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
             >
@@ -328,8 +318,9 @@ class WeatherApp extends LitElement {
             päällekkäin meneviä asemia on siirretty mahdollisimman vähän.
           </p>
           <p>
-            "Tuntuu kuin" lasketaan Ilmatieteen laitoksen kaavalla, joka ottaa
-            huomioon tuulen nopeuden ja ilman kosteuden
+            <i>Tuntuu kuin</i> lasketaan Ilmatieteen laitoksen kaavalla. Se
+            näytetään havaintoasemilta, joista tuulen nopeus ja ilman kosteus
+            ovat saatavilla.
           </p>
 
           <div slot="footer-left"></div>
@@ -361,7 +352,7 @@ class WeatherApp extends LitElement {
             Googlen analytiikkatyökalun</a
           >
           tarvitsemia evästeitä sivuston kävijämäärän ja käyttäytymisen
-          seuraamiseen
+          seuraamiseen.
           <div slot="footer-left"></div>
           <div slot="footer-right">
             <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
@@ -383,26 +374,8 @@ class WeatherApp extends LitElement {
 
   static get properties() {
     return {
-      _currentFeelsLike: {
-        type: Number,
-      },
       _currentPlace: {
         type: Object,
-      },
-      _currentSymbol: {
-        type: Number,
-      },
-      _currentTemperature: {
-        type: Number,
-      },
-      _currentWind: {
-        type: Number,
-      },
-      _currentWindDirection: {
-        type: Number,
-      },
-      _currentWindGust: {
-        type: Number,
       },
       _firstLoading: {
         type: Boolean,
@@ -508,16 +481,6 @@ class WeatherApp extends LitElement {
 
   _fetchDone() {
     this._firstLoading = false;
-
-    const weatherNowData = WeatherApp._getWeatherNow(this._forecastData);
-
-    this._currentFeelsLike = weatherNowData.feelsLike;
-    this._currentSymbol = weatherNowData.symbol;
-    this._currentTemperature = weatherNowData.temperature;
-
-    this._currentWind = weatherNowData.wind;
-    this._currentWindDirection = weatherNowData.windDirection;
-    this._currentWindGust = weatherNowData.windGust;
   }
 
   /**

@@ -20,7 +20,7 @@ function windWarning(forecastData) {
   const windRating = _windClassification(maxWind);
 
   const maxTextual = `${Math.round(maxWind)}`;
-  // return { rating: windRating, description: windDescription };
+
   return { rating: windRating, description: maxTextual };
 }
 
@@ -43,28 +43,12 @@ function _max(forecastData, property) {
 
   let maxWind = 0;
 
-  const upcomingHours = forecastData.filter(item => !item.past);
-
-  upcomingHours.map(item => {
+  forecastData.map(item => {
     maxWind = item[property] > maxWind ? item[property] : maxWind;
     return undefined;
   });
 
   return maxWind;
 }
-
-/* function _windDescription(maxWind) {
-  let windDescription;
-
-  _WIND_TABLE.map(item => {
-    if (item.min <= maxWind && maxWind < item.max) {
-      windDescription = item.description;
-    }
-    return undefined;
-  });
-
-  return windDescription;
-}
-*/
 
 export { windWarning };

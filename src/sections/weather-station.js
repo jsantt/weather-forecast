@@ -66,27 +66,13 @@ class WeatherStation extends LitElement {
       }
 
       aside {
-        border-left: 3px solid var(--color-lightblue-500);
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-
-        padding: 0 0 0 var(--space-l);
-        margin: 0 0 var(--space-xl) var(--space-l);
-
         max-height: 20rem;
         transition: max-height 0.3s ease-out;
         will-change: max-height;
       }
 
-      .item {
-        line-height: 1;
-        margin: var(--space-m);
-      }
-
-      .value {
-        font-size: var(--font-size-l);
-        font-weight: var(--font-weight-bold);
+      station-details {
+        --label-color: var(--color-blue-800);
       }
     `;
   }
@@ -159,105 +145,9 @@ class WeatherStation extends LitElement {
                 <aside class="${
                   station.detailsVisible === false ? 'hidden' : ''
                 }">
-                ${
-                  station.cloudiness
-                    ? html`
-                        <div class="item">
-                          <div class="value">
-                            ${station.cloudiness} / 8
-                          </div>
-                          <div class="explanation">pilvisyys</div>
-                        </div>
-                      `
-                    : ``
-                }
-                ${
-                  station.rainExplanation
-                    ? html`
-                        <div class="item">
-                          <div class="value">
-                            ${station.rainExplanation} mm/h
-                          </div>
-                          <div class="explanation">sateen rankkuus</div>
-                          <div></div>
-                        </div>
-                      `
-                    : ``
-                }
-              ${
-                station.rain
-                  ? html`
-                      <div>
-                        <div class="value">${station.rain} mm</div>
-                        <div class="explanation">
-                          sadetta / edeltävä h
-                        </div>
-                      </div>
-                    `
-                  : ``
-              }
-             
-              ${
-                station.humidity
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${station.humidity} %
-                        </div>
-                        <div class="explanation">ilmankosteus</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                station.pressure
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${station.pressure} hPa
-                        </div>
-                        <div class="explanation">ilmanpaine</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                station.visibility
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${station.visibility} km
-                        </div>
-                        <div class="explanation">näkyvyys</div>
-                      </div>
-                    `
-                  : ``
-              }
-              ${
-                station.dewPoint
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${station.dewPoint} °C
-                        </div>
-                        <div class="explanation">kastepiste</div>
-                      </div>
-                    `
-                  : ``
-              }
-       
-              ${
-                WeatherStation._snow(station.snow)
-                  ? html`
-                      <div class="item">
-                        <div class="value">
-                          ${station.snow} cm
-                        </div>
-                        <div class="explanation">Lumen syvyys</div>
-                      </div>
-                    `
-                  : ``
-              }
+                <station-details
+                      .station="${station}"
+                    ></station-details>
               </aside>
             </div>
                 

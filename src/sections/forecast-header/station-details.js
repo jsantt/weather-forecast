@@ -8,10 +8,9 @@ class StationDetails extends LitElement {
   static get styles() {
     return css`
       :host {
-        background: var(--color-blue-700);
         border-radius: var(--border-radius);
-        border: 2px solid var(--color-white);
-        color: var(--color-white);
+        border: 2px solid var(--color-gray-300);
+
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: auto;
@@ -34,10 +33,21 @@ class StationDetails extends LitElement {
         font-weight: var(--font-weight-bold);
       }
 
+      .explanation {
+        color: var(--label-color, var(--color-gray-500));
+      }
+
       weather-name-wawa {
         grid-column: span 3;
         text-align: left;
         margin-bottom: var(--space-s);
+      }
+
+      .updated-time {
+        color: var(--label-color, var(--color-gray-500));
+        grid-column: 1 / -1;
+        text-align: right;
+        padding-top: var(--space-m);
       }
     `;
   }
@@ -84,6 +94,26 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
+      ${this.station.visibility
+        ? html`
+            <div class="item">
+              <div class="value">
+                ${this.station.visibility} km
+              </div>
+              <div class="explanation">näkyvyys</div>
+            </div>
+          `
+        : ``}
+      ${StationDetails._snow(this.station.snow)
+        ? html`
+            <div class="item">
+              <div class="value">
+                ${this.station.snow} cm
+              </div>
+              <div class="explanation">lumen syvyys</div>
+            </div>
+          `
+        : ``}
       ${this.station.rainExplanation
         ? html`
             <div class="item">
@@ -105,26 +135,10 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${this.station.visibility
-        ? html`
-            <div class="item">
-              <div class="value">
-                ${this.station.visibility} km
-              </div>
-              <div class="explanation">näkyvyys</div>
-            </div>
-          `
-        : ``}
-      ${StationDetails._snow(this.station.snow)
-        ? html`
-            <div class="item">
-              <div class="value">
-                ${this.station.snow} cm
-              </div>
-              <div class="explanation">Lumen syvyys</div>
-            </div>
-          `
-        : ``}
+
+      <div class="item updated-time">
+        päivitetty klo ${StationDetails._time(this.station.timestamp)}
+      </div>
     `;
   }
 
@@ -142,6 +156,14 @@ class StationDetails extends LitElement {
 
   static _snow(centimeters) {
     return centimeters > -1;
+  }
+
+  static _time(dateTime) {
+    const minutes = dateTime.getMinutes();
+
+    const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${dateTime.getHours()}.${fullMinutes}`;
   }
 }
 
