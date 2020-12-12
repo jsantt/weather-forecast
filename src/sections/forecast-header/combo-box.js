@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
+import '../../common-components/smooth-expand.js';
 import '../../common-components/svg-icon.js';
 
 class ComboBox extends LitElement {
@@ -89,22 +90,23 @@ class ComboBox extends LitElement {
         font-family: var(--font-family-primary);
         font-weight: var(--font-weight-bold);
 
+        margin: 0;
         min-width: 15rem;
         padding: 0.425rem var(--space-l);
         text-align: center;
 
-        transition: padding 0.5s ease;
+        transition: padding var(--transition-time),
+          border-radius 0.15s ease var(--transition-time);
         /*user-select: none;
         -webkit-user-select: none;*/
         -webkit-appearance: none;
       }
 
       :host([_open]) input[type='text'] {
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
+        border-radius: var(--border-radius);
         padding-left: 2rem;
         padding-right: 2rem;
-        transition: padding 0.5s ease;
+        transition: padding var(--transition-time);
       }
 
       input[type='text']:focus {
@@ -112,13 +114,9 @@ class ComboBox extends LitElement {
         outline: none;
       }
 
-      #combobox-list {
-        background: var(--color-gray-300);
+      smooth-expand {
+        --transition: max-height var(--transition-time);
 
-        border-bottom-left-radius: 24px;
-        border-bottom-right-radius: 24px;
-
-        color: var(--color-gray-600);
         margin-top: -3px;
         position: absolute;
 
@@ -127,6 +125,10 @@ class ComboBox extends LitElement {
         top: 100%;
         left: 0;
         right: 0;
+
+        background: var(--color-gray-300);
+
+        color: var(--color-gray-600);
       }
 
       /* when navigating through the items using the arrow keys: */
@@ -177,26 +179,21 @@ class ComboBox extends LitElement {
               ? 'assets/image/icons.svg#close'
               : 'assets/image/icons.svg#refresh'}"
           ></svg-icon>
-          ${this._open === true
-            ? html`
-                <ul
-                  @mouseover="${this._clearSelected}"
-                  id="combobox-list"
-                  aria-labelledBy="label"
-                  role="listbox"
-                >
-                  ${this._filteredItems.map(item => {
-                    return html` <li
-                      tabindex="-1"
-                      @click="${this._onItemClick}"
-                    >
-                      ${this._highlightMatch(item.city)}
-                      <input type="hidden" .value="${item.city}" />
-                    </li>`;
-                  })}
-                </ul>
-              `
-            : ''}
+          <smooth-expand ?expanded="${this._open}">
+            <ul
+              @mouseover="${this._clearSelected}"
+              id="combobox-list"
+              aria-labelledBy="label"
+              role="listbox"
+            >
+              ${this._filteredItems.map(item => {
+                return html` <li tabindex="-1" @click="${this._onItemClick}">
+                  ${this._highlightMatch(item.city)}
+                  <input type="hidden" .value="${item.city}" />
+                </li>`;
+              })}
+            </ul>
+          </smooth-expand>
         </div>
       </form>
     `;

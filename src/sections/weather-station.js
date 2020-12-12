@@ -67,7 +67,7 @@ class WeatherStation extends LitElement {
 
       aside {
         max-height: 20rem;
-        transition: max-height 0.3s ease-out;
+        transition: max-height var(--transition-time) ease-out;
         will-change: max-height;
       }
 

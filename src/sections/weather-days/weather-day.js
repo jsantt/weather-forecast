@@ -10,6 +10,7 @@ import './temperature-line.js';
 import './rain-bars.js';
 import './wind-speed.js';
 
+import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 
@@ -147,8 +148,6 @@ class WeatherDay extends LitElement {
       }
 
       .wind_header {
-        background-color: var(--color-toggle-background);
-
         color: var(--color-black);
         font-size: var(--font-size-xs);
 
@@ -174,26 +173,15 @@ class WeatherDay extends LitElement {
       }
 
       .wind--empty {
-        background-color: var(--color-toggle-background);
         margin-top: var(--space-m);
       }
 
       .wind {
-        background-color: var(--color-toggle-background);
         color: var(--color-black);
         grid-column: span 3;
         font-size: var(--font-size-m);
 
         text-align: center;
-        margin-top: var(--space-m);
-
-        padding-top: var(--space-m);
-
-        max-height: 5rem;
-        transition: max-height 0.15s ease-out;
-        overflow: hidden;
-
-        will-change: max-height;
       }
 
       .wind,
@@ -202,14 +190,8 @@ class WeatherDay extends LitElement {
         z-index: var(--z-index-2);
       }
 
-      .wind--hidden {
-        max-height: 0;
-        padding: 0;
-      }
-
-      .wind-icon {
-        vertical-align: sub;
-        fill: var(--color-lightblue-500);
+      wind-icon {
+        margin-top: var(--space-m);
       }
 
       .rainBars {
@@ -264,11 +246,12 @@ class WeatherDay extends LitElement {
 
           <!-- headers here outside of repeat -->
 
-          ${this.showWind === true
-            ? html`<div class="wind_header">
-                keskituuli / tuuli puuskissa
-              </div>`
-            : ''}
+          <smooth-expand
+            class="wind_header"
+            ?expanded="${this.showWind === true}"
+          >
+            keskituuli / tuuli puuskissa
+          </smooth-expand>
           ${this.dayData.map((entry, index) => {
             return html`
               <!-- EMPTY COLUMN -->
@@ -306,11 +289,7 @@ class WeatherDay extends LitElement {
                         : ''}
                     </div>
 
-                    <div
-                      class="wind ${this.showWind !== true
-                        ? 'wind--hidden'
-                        : ''}"
-                    >
+                    <smooth-expand class="wind" ?expanded="${this.showWind}">
                       <wind-icon
                         class="symbol"
                         .degrees="${entry.windDirection}"
@@ -318,7 +297,7 @@ class WeatherDay extends LitElement {
                         .windGustSpeed="${entry.windGust}"
                       >
                       </wind-icon>
-                    </div>
+                    </smooth-expand>
                   `}
               <div class="hourlySymbols">
                 <weather-symbol-small

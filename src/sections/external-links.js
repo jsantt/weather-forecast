@@ -11,7 +11,6 @@ class ExternalLinks extends LitElement {
     return css`
       :host {
         display: block;
-        font-size: var(--font-size-m);
       }
       div + div {
         margin-top: var(--space-m);

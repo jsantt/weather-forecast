@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
+import '../../common-components/smooth-expand.js';
 import '../../common-components/svg-icon.js';
 import '../../common-components/wind-icon.js';
 
@@ -96,18 +97,12 @@ class ForecastHeader extends LitElement {
       .selected-details {
         grid-area: details;
         margin: 0 -0.5rem;
-        max-height: 0;
-
-        overflow: hidden;
         padding-top: var(--space-m);
 
-        transition: max-height 0.3s ease, padding 0.3s ease;
-        will-change: max-height;
+        transition: padding var(--transition-time);
       }
 
       :host([largeMap]) .selected-details {
-        max-height: 14rem;
-
         padding-bottom: var(--space-m);
       }
 
@@ -122,7 +117,7 @@ class ForecastHeader extends LitElement {
         width: 16px;
 
         margin-left: auto;
-        transition: transform 0.3s ease;
+        transition: transform var(--transition-time) ease;
       }
 
       :host([largeMap]) .expand-icon {
@@ -178,10 +173,12 @@ class ForecastHeader extends LitElement {
               ></weather-name-wawa>      
                </div>
                <div class="selected-details">
-
-                <station-details
+                <smooth-expand ?expanded="${this.largeMap}">
+                  <station-details
                       .station="${this._selectedStation}"
                     ></station-details>
+                </smooth-expand>
+
                 
                </div>
               ${

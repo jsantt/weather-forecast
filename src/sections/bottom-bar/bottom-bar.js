@@ -89,11 +89,12 @@ class BottomBar extends LitElement {
         top: -16px;
 
         filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
-        transition: all 0.3s cubic-bezier(0.36, 1.01, 0.32, 1.27);
+        transition: all var(--transition-time) var(--transition-cubic-bezier);
       }
 
       :host([_locating]) .locate-icon {
-        top: -50px;
+        top: -100px;
+        transform: scale(2);
       }
 
       .small-icon {

@@ -47,6 +47,10 @@ class StationMap extends LitElement {
   }
 
   render() {
+    if (this.observationData === undefined && this.observationError !== true) {
+      return html``;
+    }
+
     return html`
       ${this._createMap(
         this.largeMap,
@@ -148,6 +152,11 @@ class StationMap extends LitElement {
         type: Array,
       },
     };
+  }
+
+  constructor() {
+    super();
+    this.observationData = [];
   }
 
   /**
