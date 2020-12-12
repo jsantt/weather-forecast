@@ -148,6 +148,7 @@ class WeatherDay extends LitElement {
       }
 
       .wind_header {
+        background: var(--color-dayHeader-delimiter);
         color: var(--color-black);
         font-size: var(--font-size-xs);
 
@@ -160,20 +161,16 @@ class WeatherDay extends LitElement {
 
       .wind,
       .wind--empty {
-        grid-row: 7;
+        grid-row: 98;
       }
 
       .wind_header {
-        grid-row: 8;
+        grid-row: 100;
       }
 
       .temperature--empty,
       .wind--empty {
         grid-column: span 1;
-      }
-
-      .wind--empty {
-        margin-top: var(--space-m);
       }
 
       .wind {
@@ -186,12 +183,15 @@ class WeatherDay extends LitElement {
 
       .wind,
       .wind--empty,
-      .wind_header {
+      .wind_header,
+      smooth-expand {
+        background: var(--color-dayHeader-delimiter);
         z-index: var(--z-index-2);
       }
 
       wind-icon {
         margin-top: var(--space-m);
+        min-height: 37px;
       }
 
       .rainBars {
