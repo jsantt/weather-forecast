@@ -413,10 +413,6 @@ class WeatherDay extends LitElement {
     });
     this.dispatchEvent(toggleWind);
   }
-
-  get _windHelper() {
-    return this.shadowRoot.querySelector('wind-helper');
-  }
 }
 
 window.customElements.define(WeatherDay.is, WeatherDay);
