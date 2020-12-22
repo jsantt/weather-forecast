@@ -1,25 +1,7 @@
 /**
- * Calculates "feels like" estimate based on wind and temperature.
- * Formula by Ilmatieteen laitos: https://fi.wikipedia.org/wiki/Pakkasen_purevuus
- *
- * TODO: check formula from: https://tietopyynto.fi/tietopyynto/ilmatieteen-laitoksen-kayttama-tuntuu-kuin-laskentakaava/
- * of assets/feels_like-1.pdf
- *
- * @param {Number} temperature - in celcius
- * @param {Number} wind - metres per second
+ * Feels like calculation. See
+ * https://tietopyynto.fi/tietopyynto/ilmatieteen-laitoksen-kayttama-tuntuu-kuin-laskentakaava/
  */
-function feelsLike(temperature, wind) {
-  if (Number.isNaN(temperature) || Number.isNaN(wind)) {
-    return undefined;
-  }
-
-  const result =
-    13.12 +
-    0.6215 * temperature -
-    13.956 * wind ** 0.16 +
-    0.4867 * temperature * wind ** 0.16;
-  return Math.round(result);
-}
 
 /**
  * Calculate feels like value
@@ -120,4 +102,4 @@ function radiationCorrection(feels, wind, radiation) {
   return feels + (0.7 * absorption * radiation) / (wind + 10) - 0.25;
 }
 
-export { feelsLike, feelsLike2 };
+export { feelsLike2 };
