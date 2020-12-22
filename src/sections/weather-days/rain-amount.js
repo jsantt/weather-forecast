@@ -8,7 +8,7 @@ class RainAmount extends LitElement {
   static get styles() {
     return css`
       svg {
-        fill: #74ccf4;
+        fill: var(--color-lightblue-500);
       }
     `;
   }

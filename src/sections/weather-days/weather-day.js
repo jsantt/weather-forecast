@@ -166,6 +166,7 @@ class WeatherDay extends LitElement {
 
       .wind_header {
         grid-row: 100;
+        padding-right: var(--space-m);
       }
 
       .temperature--empty,
@@ -194,20 +195,24 @@ class WeatherDay extends LitElement {
         min-height: 37px;
       }
 
-      .rainBars {
+      .rain-bars {
         grid-column: span 25;
         grid-row: 12;
         padding-top: 1.55rem;
       }
 
-      .hourlySymbols {
+      .hourly-symbols {
         grid-row: 13;
         margin-top: -1.5rem;
 
         z-index: var(--z-index-1);
       }
 
-      .tinySymbol {
+      .feels-like {
+        font-style: italic;
+      }
+
+      .tiny-symbol {
         position: absolute;
       }
     `;
@@ -281,11 +286,13 @@ class WeatherDay extends LitElement {
                     <div class="temperature">
                       ${Number.isFinite(entry.temperature) === true
                         ? html`${this.showFeelsLike === true
-                              ? entry.feelsLike
-                              : WeatherDay._round(entry.temperature)}<span
-                              class="degree"
-                              >°</span
-                            >`
+                            ? html`<span class="feels-like"
+                                >${entry.feelsLike}°</span
+                              >`
+                            : html`${WeatherDay._round(entry.temperature)}<span
+                                  class="celcius"
+                                  >°</span
+                                >`} `
                         : ''}
                     </div>
 
@@ -299,9 +306,9 @@ class WeatherDay extends LitElement {
                       </wind-icon>
                     </smooth-expand>
                   `}
-              <div class="hourlySymbols">
+              <div class="hourly-symbols">
                 <weather-symbol-small
-                  class="tinySymbol"
+                  class="tiny-symbol"
                   .rainType="${entry.rainType}"
                 >
                 </weather-symbol-small>
@@ -319,7 +326,7 @@ class WeatherDay extends LitElement {
             </temperature-line>
           </div>
 
-          <section class="rainBars">
+          <section class="rain-bars">
             <rain-bars
               .minTemperature="${this.minTemperature}"
               .dayData="${this.dayData}"
