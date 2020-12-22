@@ -105,8 +105,8 @@ class StationMap extends LitElement {
             ></use>
             ${
               showFeelsLike === true &&
-              (observation.feelsLike2 === undefined ||
-                Number.isNaN(observation.feelsLike2))
+              (observation.feelsLike === undefined ||
+                Number.isNaN(observation.feelsLike))
                 ? ''
                 : svg`
                   <text  class="svg-text" text-anchor="end" x="${
@@ -114,7 +114,7 @@ class StationMap extends LitElement {
                   }"
                   y="${-1 * observation.latForMap - 0.02}">${
                     showFeelsLike === true
-                      ? svg`${observation.feelsLike2}`
+                      ? svg`${observation.feelsLike}`
                       : svg`${Math.round(observation.temperature)}`
                   }<tspan class="celcius">°</tspan></text>`
             }

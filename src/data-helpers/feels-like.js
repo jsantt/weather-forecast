@@ -10,7 +10,7 @@
  * @param {Number} humidity
  * @param {Number} [radiation]
  */
-function feelsLike2(temperature, wind, humidity, radiation) {
+function feelsLike(temperature, wind, humidity, radiation) {
   if (
     temperature === undefined ||
     wind === undefined ||
@@ -102,4 +102,4 @@ function radiationCorrection(feels, wind, radiation) {
   return feels + (0.7 * absorption * radiation) / (wind + 10) - 0.25;
 }
 
-export { feelsLike2 };
+export { feelsLike };

@@ -281,7 +281,7 @@ class WeatherDay extends LitElement {
                     <div class="temperature">
                       ${Number.isFinite(entry.temperature) === true
                         ? html`${this.showFeelsLike === true
-                              ? entry.feelsLike2
+                              ? entry.feelsLike
                               : WeatherDay._round(entry.temperature)}<span
                               class="degree"
                               >°</span

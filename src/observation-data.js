@@ -1,7 +1,7 @@
 import { LitElement } from 'lit-element';
 
 import { distance } from './data-helpers/distance.js';
-import { feelsLike2 } from './data-helpers/feels-like.js';
+import { feelsLike } from './data-helpers/feels-like.js';
 
 import { wawaToSymbol3 } from './data-helpers/wawa-converter.js';
 import { raiseEvent } from './data-helpers/xml-parser.js';
@@ -278,7 +278,7 @@ class ObservationData extends LitElement {
         station.cloudiness
       );
 
-      station.feelsLike2 = feelsLike2(
+      station.feelsLike = feelsLike(
         station.temperature,
         station.wind,
         station.humidity

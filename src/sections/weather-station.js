@@ -106,7 +106,7 @@ class WeatherStation extends LitElement {
                         ? html`
                             <div>
                               ${this.showFeelsLike === true
-                                ? station.feelsLike2 || '-'
+                                ? station.feelsLike || '-'
                                 : Math.round(station.temperature)}<span
                                 class="celcius"
                                 >°C</span
