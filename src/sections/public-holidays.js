@@ -190,7 +190,7 @@ class PublicHolidays extends LitElement {
         flag: true,
         static: true,
       },
-      { d: '2020-12-25', n: 'Jouluaatto', static: true },
+      { d: '2020-12-24', n: 'Jouluaatto', static: true },
       { d: '2020-12-25', n: 'Joulupäivä', free: true, static: true },
       { d: '2020-12-26', n: 'Tapaninpäivä', free: true, static: true },
     ];

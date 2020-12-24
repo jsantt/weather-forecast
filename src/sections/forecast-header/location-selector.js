@@ -117,7 +117,7 @@ class LocationSelector extends LitElement {
 
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
-      if (propName === 'place') {
+      if (propName === 'place' && this.place != null && this.place.length > 0) {
         this._newPlace();
       }
     });
