@@ -11,6 +11,7 @@ import './sections/install-app.js';
 import './sections/forecast-header/forecast-header.js';
 import './sections/bottom-bar/bottom-bar.js';
 import './sections/external-links.js';
+import './sections/holiday-calendar.js';
 import './sections/public-holidays.js';
 import './sections/sunrise-sunset.js';
 import './sections/symbol-list.js';
@@ -145,6 +146,7 @@ class WeatherApp extends LitElement {
 
       .section--calendar {
         grid-area: calendar;
+        background: var(--color-gray-400);
       }
 
       .section--informationOnService {
@@ -289,7 +291,8 @@ class WeatherApp extends LitElement {
           .location="${this._location}"
         ></sunrise-sunset>
 
-        <public-holidays class="section section--calendar"></public-holidays>
+        <!--public-holidays class="section section--calendar"></public-holidays-->
+        <holiday-calendar class="section section--calendar"></holiday-calendar>
 
         <weather-section
           class="section section--informationOnService"
