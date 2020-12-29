@@ -29,14 +29,15 @@ class HolidayCalendar extends LitElement {
         grid-gap: 8px;
         align-items: start;
 
-        max-width: 300px;
+        margin-top: calc(-1 * var(--space-xl));
       }
 
       .month {
         grid-column: span 7;
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
-        margin-top: var(--space-l);
+        margin-top: var(--space-xl);
+        text-transform: uppercase;
       }
 
       .weekday {
@@ -54,6 +55,10 @@ class HolidayCalendar extends LitElement {
         text-align: center;
       }
 
+      .day.holiday {
+        margin-bottom: 16px;
+      }
+
       .date {
         font-weight: var(--font-weight-bold);
         padding: var(--space-s) 0;
@@ -61,32 +66,42 @@ class HolidayCalendar extends LitElement {
 
       .holiday .date {
         font-weight: var(--font-weight-bold);
-        border: 1px solid var(--color-blue-800);
-        border-radius: 50%;
+        text-decoration: underline;
       }
 
       .today {
         background: var(--color-yellow-300);
         font-weight: var(--font-weight-bold);
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border: 2px solid var(--color-blue-800);
+        margin: -2px;
       }
 
       .past {
         background: none;
       }
 
+      .flag {
+        height: 14px;
+        position: absolute;
+        left: -14px;
+        top: 16px;
+      }
+
+      .weekend {
+        color: var(--color-red-300);
+      }
+
       .holiday {
         position: relative;
-        margin-bottom: 5px;
       }
 
       .holiday-text {
-        background: var(--color-white);
         font-size: var(--font-size-xs);
         position: absolute;
-        padding: 0 3px;
-        border-radius: var(--border-radius);
-        left: 0px;
-        top: -4px;
+        left: 3px;
+        top: -2px;
 
         white-space: nowrap;
       }
@@ -100,34 +115,51 @@ class HolidayCalendar extends LitElement {
 
   render() {
     return html`
-      <weather-section header="Kalenteri">
+      <weather-section>
         <section>
           ${this._days.map(month => {
-            return html` <div class="month">${month.monthName}</div>
+            return html` <div class="month">
+                ${month.monthName}
+              </div>
               ${month.days.map(day => {
                 if (day === undefined) {
                   return html`<div></div>`;
                 }
                 return html`<div
-                  class="day ${day.today ? 'today' : ''} ${day.holiday
-                    ? 'holiday'
-                    : ''} ${day.past ? 'past' : ''}"
+                  class="day ${day.today ? 'today' : ''} ${
+                  day.holiday ? 'holiday' : ''
+                } ${day.past ? 'past' : ''}"
                 >
                   <div class="weekday">
                     ${day.past ? '' : day.weekdayName}
                   </div>
-                  <div class="date">${day.day}</div>
-                  ${day.holiday !== undefined
-                    ? html`<div class="holiday">
-                        <div
-                          class="holiday-text ${day.weekdayName === 'su'
-                            ? 'sunday'
-                            : ''}"
-                        >
-                          ${day.holiday.n}
-                        </div>
-                      </div>`
-                    : ''}
+
+                  <div class="date ${day.weekend ? 'weekend' : ''}">
+                    ${
+                      day.holiday !== undefined && day.holiday.flag
+                        ? html` <svg-icon
+                            class="flag"
+                            path="assets/image/icons.svg#flag"
+                          ></svg-icon>`
+                        : ''
+                    }${day.day}
+                      </div>
+                    ${
+                      day.holiday !== undefined
+                        ? html`<div class="holiday">
+                            <div
+                              class="holiday-text ${day.weekdayName === 'su'
+                                ? 'sunday'
+                                : ''} ${day.weekdayName === 'la'
+                                ? 'saturday'
+                                : ''}"
+                            >
+                              ${day.holiday.n}
+                            </div>
+                          </div>`
+                        : ''
+                    }
+                  </div>
                 </div>`;
               })}`;
           })}
@@ -144,10 +176,10 @@ class HolidayCalendar extends LitElement {
 
     const now = new Date();
 
-    const months1 = [];
+    const months = [];
     if (now.getDate() < 8) {
       const previousMonth = HolidayCalendar._getFirstDayOfMonth(now, -1);
-      months1.push({
+      months.push({
         monthName: HolidayCalendar._getMonthName(previousMonth),
         days: HolidayCalendar._dateRange(
           previousMonth,
@@ -157,7 +189,7 @@ class HolidayCalendar extends LitElement {
     }
 
     const currentMonth = HolidayCalendar._getFirstDayOfMonth(now);
-    months1.push({
+    months.push({
       monthName: HolidayCalendar._getMonthName(currentMonth),
       days: HolidayCalendar._dateRange(
         currentMonth,
@@ -167,7 +199,7 @@ class HolidayCalendar extends LitElement {
 
     if (now.getDate() >= 8) {
       const nextMonth = HolidayCalendar._getFirstDayOfMonth(now, 1);
-      months1.push({
+      months.push({
         monthName: HolidayCalendar._getMonthName(nextMonth),
         days: HolidayCalendar._dateRange(
           nextMonth,
@@ -176,7 +208,7 @@ class HolidayCalendar extends LitElement {
       });
     }
 
-    this._days = months1;
+    this._days = months;
   }
 
   static _dateRange(start, end) {
@@ -201,6 +233,7 @@ class HolidayCalendar extends LitElement {
         today: HolidayCalendar._isToday(currentDate),
         weekday: currentDate.getDay(),
         weekdayName: HolidayCalendar._getWeekdayName(currentDate),
+        weekend: currentDate.getDay() === 0 || currentDate.getDay() === 6,
         weekNumber: HolidayCalendar._getWeekNumber(currentDate),
       });
 
@@ -223,7 +256,12 @@ class HolidayCalendar extends LitElement {
   }
 
   static _getMonthName(date) {
-    return date.toLocaleString('fi-FI', { month: 'long' });
+    let year = '';
+    if (date.getMonth() === 0 || date.getMonth() === 11) {
+      year = `${date.getFullYear()} `;
+    }
+
+    return `${date.toLocaleString('fi-FI', { month: 'long' })} ${year}`;
   }
 
   static _isPast(date) {
@@ -342,8 +380,21 @@ class HolidayCalendar extends LitElement {
       { d: '2020-12-24', n: 'Jouluaatto', static: true },
       { d: '2020-12-25', n: 'Joulupäivä', free: true, static: true },
       { d: '2020-12-26', n: 'Tapaninpäivä', free: true, static: true },
+
       { d: '2021-01-01', n: 'Uudenvuodenpäivä', free: true, static: true },
       { d: '2021-01-06', n: 'Loppiainen', free: true, static: true },
+      { d: '2021-02-05', n: 'J.L.Runebergin päivä', flag: true, static: true },
+
+      { d: '2021-02-14', n: 'Laskiaisunnuntai' },
+      { d: '2021-02-16', n: 'Laskiaistiistai' },
+
+      { d: '2021-02-28', n: 'Kalevalan päivä', flag: true, static: true },
+      {
+        d: '2021-03-19',
+        n: 'Minna Canthin ja tasa-arvon päivä',
+        flag: true,
+        static: true,
+      },
     ];
   }
 }
