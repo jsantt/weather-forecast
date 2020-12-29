@@ -98,11 +98,12 @@ class HolidayCalendar extends LitElement {
       }
 
       .holiday-text {
+        background: var(--color-gray-400);
         font-size: var(--font-size-xs);
         position: absolute;
-        left: 3px;
-        top: -2px;
-
+        left: -3px;
+        top: 0;
+        padding-left: 3px;
         white-space: nowrap;
       }
 
