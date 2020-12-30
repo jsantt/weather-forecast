@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map';
 
 import '../common-components/svg-icon.js';
 import '../weather-section.js';
@@ -82,6 +83,10 @@ class HolidayCalendar extends LitElement {
         background: none;
       }
 
+      .past .weekday {
+        display: none;
+      }
+
       .flag {
         height: 14px;
         position: absolute;
@@ -89,7 +94,7 @@ class HolidayCalendar extends LitElement {
         top: 16px;
       }
 
-      .weekend {
+      .weekend .date {
         color: var(--color-red-300);
       }
 
@@ -107,7 +112,7 @@ class HolidayCalendar extends LitElement {
         white-space: nowrap;
       }
 
-      .sunday {
+      .sunday .holiday-text {
         right: 0px;
         left: initial;
       }
@@ -127,15 +132,20 @@ class HolidayCalendar extends LitElement {
                   return html`<div></div>`;
                 }
                 return html`<div
-                  class="day ${day.today ? 'today' : ''} ${
-                  day.holiday ? 'holiday' : ''
-                } ${day.past ? 'past' : ''}"
+                  class="day ${classMap({
+                    today: day.today,
+                    holiday: day.holiday,
+                    past: day.past,
+                    weekend: day.weekend,
+                    sunday: day.weekdayName,
+                  })}"
+
                 >
                   <div class="weekday">
-                    ${day.past ? '' : day.weekdayName}
+                    ${day.weekdayName}
                   </div>
 
-                  <div class="date ${day.weekend ? 'weekend' : ''}">
+                  <div class="date">
                     ${
                       day.holiday !== undefined && day.holiday.flag
                         ? html` <svg-icon
@@ -148,13 +158,7 @@ class HolidayCalendar extends LitElement {
                     ${
                       day.holiday !== undefined
                         ? html`<div class="holiday">
-                            <div
-                              class="holiday-text ${day.weekdayName === 'su'
-                                ? 'sunday'
-                                : ''} ${day.weekdayName === 'la'
-                                ? 'saturday'
-                                : ''}"
-                            >
+                            <div class="holiday-text">
                               ${day.holiday.n}
                             </div>
                           </div>`

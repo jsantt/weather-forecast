@@ -70,8 +70,8 @@
   "author": "weather-forecast",
   "license": "MIT",
   "dependencies": {
-    "lit-element": "2.3.1",
-    "lit-html": "^1.3.0",
-    "suncalc": "^1.8.0"
+    "lit-element": "2.4.0",
+    "lit-html": "1.3.0",
+    "suncalc": "1.8.0"
   }
 }
