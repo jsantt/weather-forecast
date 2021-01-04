@@ -11,33 +11,42 @@ class HolidayCalendar extends LitElement {
 
   static get properties() {
     return {
-      _days: { type: Array },
+      _months: { type: Array },
     };
   }
 
   static get styles() {
     return css`
+      * {
+        box-sizing: border-box;
+      }
+
       :host {
         display: block;
 
         --day-border-radius: 8px;
       }
 
-      section {
+      button {
+        all: unset;
+        padding: var(--space-s) 0;
+      }
+
+      .expandable {
+        align-items: start;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
         grid-template-rows: auto;
         grid-gap: 8px;
-        align-items: start;
 
-        margin-top: calc(-1 * var(--space-xl));
+        padding: var(--space-m) var(--space-m) var(--space-l) var(--space-l);
       }
 
       .month {
-        grid-column: span 7;
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-s);
         font-weight: var(--font-weight-bold);
-        margin-top: var(--space-xl);
+        margin-top: var(--space-s);
+        margin-bottom: var(--space-s);
         text-transform: uppercase;
       }
 
@@ -52,7 +61,6 @@ class HolidayCalendar extends LitElement {
       .day {
         background: var(--color-white);
         border-radius: var(--day-border-radius);
-
         text-align: center;
       }
 
@@ -116,6 +124,16 @@ class HolidayCalendar extends LitElement {
         right: 0px;
         left: initial;
       }
+
+      .week-number,
+      .week-number .weekday {
+        background: none !important;
+      }
+
+      .week-number .date {
+        color: var(--color-gray-600);
+        font-size: var(--font-size-xs);
+      }
     `;
   }
 
@@ -123,28 +141,40 @@ class HolidayCalendar extends LitElement {
     return html`
       <weather-section>
         <section>
-          ${this._days.map(month => {
-            return html` <div class="month">
+          ${this._months.map((month, index) => {
+            return html` <button
+                @click="${() => this._toggleExpand(index)}"
+                oma="true"
+                class="month"
+              >
                 ${month.monthName}
-              </div>
-              ${month.days.map(day => {
-                if (day === undefined) {
-                  return html`<div></div>`;
-                }
-                return html`<div
-                  class="day ${classMap({
-                    today: day.today,
-                    holiday: day.holiday,
-                    past: day.past,
-                    weekend: day.weekend,
-                    sunday: day.weekdayName,
-                  })}"
+              </button>
+              <smooth-expand ?expanded="${month.expanded}">
+                <div class="expandable">
+                  <!-- MONTHS -->
+                  ${month.days.map(day => {
+                    if (day === undefined) {
+                      // empty days to keep mondays to be leftmost
+                      return html`<div></div>`;
+                    }
 
-                >
+                    // DAYS
+                    return html`              
+                  <div
+                    class="day ${classMap({
+                      today: day.today,
+                      holiday: day.holiday,
+                      past: day.past,
+                      weekend: day.weekend,
+                      sunday: day.weekdayName === 'su',
+                    })}"
+                  >
+                  <!-- WEEKDAY -->
                   <div class="weekday">
                     ${day.weekdayName}
                   </div>
 
+                  <!-- DATE -->
                   <div class="date">
                     ${
                       day.holiday !== undefined && day.holiday.flag
@@ -157,16 +187,32 @@ class HolidayCalendar extends LitElement {
                       </div>
                     ${
                       day.holiday !== undefined
-                        ? html`<div class="holiday">
-                            <div class="holiday-text">
-                              ${day.holiday.n}
-                            </div>
-                          </div>`
+                        ? html`<!-- POSSIBLE HOLIDAY TEXT-->
+                            <div class="holiday">
+                              <div class="holiday-text">
+                                ${day.holiday.n}
+                              </div>
+                            </div>`
                         : ''
                     }
                   </div>
-                </div>`;
-              })}`;
+                  ${
+                    day.weekdayName === 'su'
+                      ? html`<div
+                          class="day week-number ${classMap({
+                            past: day.past,
+                          })}"
+                        >
+                          <div class="weekday">&nbsp;</div>
+                          <div class="date">vk ${day.weekNumber}</div>
+                        </div>`
+                      : ''
+                  } 
+                </div>
+                `;
+                  })}
+                </div>
+              </smooth-expand>`;
           })}
         </section>
 
@@ -182,18 +228,19 @@ class HolidayCalendar extends LitElement {
     const now = new Date();
 
     const months = [];
-    if (now.getDate() < 8) {
-      const previousMonth = HolidayCalendar._getFirstDayOfMonth(now, -1);
+
+    for (let i = -1; i < 11; i += 1) {
+      const previousMonth = HolidayCalendar._getFirstDayOfMonth(now, i);
       months.push({
         monthName: HolidayCalendar._getMonthName(previousMonth),
         days: HolidayCalendar._dateRange(
           previousMonth,
           HolidayCalendar._getLastDayOfMonth(previousMonth)
         ),
+        expanded: i >= 0 && i <= 1,
       });
     }
-
-    const currentMonth = HolidayCalendar._getFirstDayOfMonth(now);
+    /* const currentMonth = HolidayCalendar._getFirstDayOfMonth(now);
     months.push({
       monthName: HolidayCalendar._getMonthName(currentMonth),
       days: HolidayCalendar._dateRange(
@@ -202,22 +249,26 @@ class HolidayCalendar extends LitElement {
       ),
     });
 
-    if (now.getDate() >= 8) {
-      const nextMonth = HolidayCalendar._getFirstDayOfMonth(now, 1);
-      months.push({
-        monthName: HolidayCalendar._getMonthName(nextMonth),
-        days: HolidayCalendar._dateRange(
-          nextMonth,
-          HolidayCalendar._getLastDayOfMonth(nextMonth)
-        ),
-      });
-    }
+    const nextMonth = HolidayCalendar._getFirstDayOfMonth(now, 1);
+    months.push({
+      monthName: HolidayCalendar._getMonthName(nextMonth),
+      days: HolidayCalendar._dateRange(
+        nextMonth,
+        HolidayCalendar._getLastDayOfMonth(nextMonth)
+      ),
+    }); */
 
-    this._days = months;
+    this._months = months;
+  }
+
+  _toggleExpand(index) {
+    const months = [...this._months];
+    months[index].expanded = !months[index].expanded;
+
+    this._months = months;
   }
 
   static _dateRange(start, end) {
-    console.log(start, end);
     const dateArray = [];
     const currentDate = new Date(start.getTime());
 
@@ -289,7 +340,13 @@ class HolidayCalendar extends LitElement {
   }
 
   static _getHoliday(date) {
-    return HolidayCalendar._publicHolidays().find(holiday => {
+    const holidays = [
+      ...HolidayCalendar._publicHolidays(),
+      ...HolidayCalendar._staticHolidays('2020'),
+      ...HolidayCalendar._staticHolidays('2021'),
+    ];
+
+    return holidays.find(holiday => {
       const hol = new Date(holiday.d);
       return HolidayCalendar._sameDay(date, hol);
     });
@@ -307,99 +364,111 @@ class HolidayCalendar extends LitElement {
     return 1 + Math.ceil((firstThursday - tdt) / 604800000);
   }
 
+  static _staticHolidays(year) {
+    return [
+      { d: `${year}-01-01`, n: 'Uudenvuodenpäivä', free: true, static: true },
+      { d: `${year}-01-06`, n: 'Loppiainen', free: true, static: true },
+      {
+        d: `${year}-02-05`,
+        n: 'J.L.Runebergin päivä',
+        flag: true,
+      },
+      {
+        d: `${year}-02-14`,
+        n: 'Ystävänpäivä',
+      },
+      { d: `${year}-02-28`, n: 'Kalevalan päivä', flag: true, static: true },
+      {
+        d: `${year}-03-08`,
+        n: 'Naistenpäivä',
+      },
+      {
+        d: `${year}-03-19`,
+        n: 'Minna Canthin ja tasa-arvon päivä',
+        flag: true,
+      },
+      {
+        d: `${year}-04-27`,
+        n: 'Kansallinen veteraanipäivä',
+        flag: true,
+      },
+      { d: `${year}-05-01`, n: 'Vappu', free: true, flag: true, static: true },
+      { d: `${year}-05-09`, n: 'Eurooppa-päivä', flag: true, static: true },
+      {
+        d: `${year}-05-12`,
+        n: 'J.V. Snellmanin ja suomalaisuuden päivä',
+        flag: true,
+      },
+      {
+        d: `${year}-06-04`,
+        n: 'Puolustusvoimain lippujuhlan päivä',
+        flag: true,
+      },
+      { d: `${year}-07-06`, n: 'Eino Leinon päivä', flag: true, static: true },
+      {
+        d: `${year}-10-10`,
+        n: 'Aleksis Kiven päivä',
+        flag: true,
+      },
+      {
+        d: `${year}-10-24`,
+        n: 'yhdistyneiden kansakuntien päivä',
+        flag: true,
+      },
+      {
+        d: `${year}-11-06`,
+        n: 'Ruotsalaisuuden päivä',
+        flag: true,
+      },
+      {
+        d: `${year}-12-06`,
+        n: 'Itsenäisyyspäivä',
+        free: true,
+        flag: true,
+      },
+      {
+        d: `${year}-12-08`,
+        n: 'Jean Sibeliuksen päivä',
+        flag: true,
+      },
+      { d: `${year}-12-24`, n: 'Jouluaatto' },
+    ];
+  }
+
   /**
    * free=vapaapäivä, f=liputuspäivä, static=always the same date
    */
   static _publicHolidays() {
     return [
-      { d: '2020-01-01', n: 'Uudenvuodenpäivä', free: true, static: true },
-      { d: '2020-01-06', n: 'Loppiainen', free: true, static: true },
-      { d: '2020-02-05', n: 'J.L.Runebergin päivä', flag: true, static: true },
-
-      { d: '2020-02-28', n: 'Kalevalan päivä', flag: true, static: true },
-      {
-        d: '2020-03-19',
-        n: 'Minna Canthin ja tasa-arvon päivä',
-        flag: true,
-        static: true,
-      },
       { d: '2020-04-12', n: 'Pääsiäissunnuntai', free: true },
-
       { d: '2020-04-13', n: 'Toinen pääsiäispäivä', free: true },
-      {
-        d: '2020-04-27',
-        n: 'Kansallinen veteraanipäivä',
-        flag: true,
-        static: true,
-      },
-      { d: '2020-05-01', n: 'Vappu', free: true, flag: true, static: true },
-
-      { d: '2020-05-09', n: 'Eurooppa-päivä', flag: true, static: true },
       { d: '2020-05-10', n: 'Äitienpäivä', flag: true },
-      {
-        d: '2020-05-12',
-        n: 'J.V. Snellmanin ja suomalaisuuden päivä',
-        flag: true,
-        static: true,
-      },
-
       { d: '2020-05-17', n: 'Kaatuneiden muistopäivä', flag: true },
       { d: '2020-05-21', n: 'Helatorstai', free: true },
-      {
-        d: '2020-06-04',
-        n: 'Puolustusvoimain lippujuhlan päivä',
-        flag: true,
-        static: true,
-      },
-
       { d: '2020-05-31', n: 'Helluntai', free: true },
       { d: '2020-06-19', n: 'Juhannusaatto' },
       { d: '2020-06-20', n: 'Juhannus', free: true, flag: true },
-      { d: '2020-07-06', n: 'Eino Leinon päivä', flag: true, static: true },
-
-      { d: '2020-10-10', n: 'Aleksis Kiven päivä', flag: true, static: true },
-      {
-        d: '2020-10-24',
-        n: 'yhdistyneiden kansakuntien päivä',
-        flag: true,
-        static: true,
-      },
       { d: '2020-10-31', n: 'Pyhäinpäivä', free: true },
-
-      { d: '2020-11-06', n: 'Ruotsalaisuuden päivä', flag: true, static: true },
       { d: '2020-11-08', n: 'Isänpäivä', flag: true },
-      {
-        d: '2020-12-06',
-        n: 'Itsenäisyyspäivä',
-        free: true,
-        flag: true,
-        static: true,
-      },
-
-      {
-        d: '2020-12-08',
-        n: 'Jean Sibeliuksen päivä',
-        flag: true,
-        static: true,
-      },
-      { d: '2020-12-24', n: 'Jouluaatto', static: true },
-      { d: '2020-12-25', n: 'Joulupäivä', free: true, static: true },
-      { d: '2020-12-26', n: 'Tapaninpäivä', free: true, static: true },
-
-      { d: '2021-01-01', n: 'Uudenvuodenpäivä', free: true, static: true },
-      { d: '2021-01-06', n: 'Loppiainen', free: true, static: true },
-      { d: '2021-02-05', n: 'J.L.Runebergin päivä', flag: true, static: true },
 
       { d: '2021-02-14', n: 'Laskiaisunnuntai' },
       { d: '2021-02-16', n: 'Laskiaistiistai' },
 
-      { d: '2021-02-28', n: 'Kalevalan päivä', flag: true, static: true },
-      {
-        d: '2021-03-19',
-        n: 'Minna Canthin ja tasa-arvon päivä',
-        flag: true,
-        static: true,
-      },
+      { d: '2021-03-02', n: 'Pitkäperjantai' },
+      { d: '2021-03-04', n: 'Pääsiäissunnuntai', free: true },
+      { d: '2021-03-05', n: 'Toinen pääsiäispäivä', free: true },
+
+      { d: '2021-05-09', n: 'Äitienpäivä', flag: true },
+      { d: '2021-05-13', n: 'Helatorstai', free: true },
+      { d: '2021-05-16', n: 'Kaatuneiden muistopäivä', flag: true },
+
+      { d: '2021-05-23', n: 'Helluntai', free: true },
+
+      { d: '2021-06-25', n: 'Juhannusaatto' },
+      { d: '2021-06-26', n: 'Juhannus', free: true, flag: true },
+
+      { d: '2021-11-06', n: 'Pyhäinpäivä', free: true, flag: true },
+      { d: '2021-11-14', n: 'Isänpäivä', flag: true },
     ];
   }
 }
