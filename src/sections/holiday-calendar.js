@@ -12,6 +12,7 @@ class HolidayCalendar extends LitElement {
   static get properties() {
     return {
       _months: { type: Array },
+      _debug: { type: String },
     };
   }
 
@@ -51,11 +52,10 @@ class HolidayCalendar extends LitElement {
       }
 
       .weekday {
-        background: var(--color-gray-300);
+        /*background: var(--color-gray-300);*/
 
         font-size: var(--font-size-xs);
-        text-transform: uppercase;
-        margin-bottom: -1px;
+        padding-top: var(--space-s);
       }
 
       .day {
@@ -70,7 +70,7 @@ class HolidayCalendar extends LitElement {
 
       .date {
         font-weight: var(--font-weight-bold);
-        padding: var(--space-s) 0;
+        padding-bottom: var(--space-s);
       }
 
       .holiday .date {
@@ -81,9 +81,7 @@ class HolidayCalendar extends LitElement {
       .today {
         background: var(--color-yellow-300);
         font-weight: var(--font-weight-bold);
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-        border: 2px solid var(--color-blue-800);
+        border: 2px solid var(--color-blue-600);
         margin: -2px;
       }
 
@@ -99,10 +97,12 @@ class HolidayCalendar extends LitElement {
         height: 14px;
         position: absolute;
         left: -14px;
-        top: 16px;
+        top: 14px;
       }
 
-      .weekend .date {
+      .sunday .date,
+      .free .date,
+      .red {
         color: var(--color-red-300);
       }
 
@@ -120,6 +120,18 @@ class HolidayCalendar extends LitElement {
         white-space: nowrap;
       }
 
+      .day:hover {
+        background: var(--color-gray-300);
+      }
+
+      .holiday-text:hover {
+        background: var(--color-gray-300);
+        border-radius: var(--border-radius);
+        padding: var(--space-s);
+        margin: calc(-1 * var(--space-s));
+        z-index: 2;
+      }
+
       .sunday .holiday-text {
         right: 0px;
         left: initial;
@@ -132,6 +144,13 @@ class HolidayCalendar extends LitElement {
 
       .week-number .date {
         color: var(--color-gray-600);
+        font-size: var(--font-size-s);
+      }
+      .week-number .weekday {
+        color: var(--color-gray-600);
+      }
+
+      .week-text {
         font-size: var(--font-size-xs);
       }
     `;
@@ -162,6 +181,7 @@ class HolidayCalendar extends LitElement {
                     return html`              
                   <div
                     class="day ${classMap({
+                      free: day.holiday !== undefined && day.holiday.free,
                       today: day.today,
                       holiday: day.holiday,
                       past: day.past,
@@ -204,7 +224,9 @@ class HolidayCalendar extends LitElement {
                           })}"
                         >
                           <div class="weekday">&nbsp;</div>
-                          <div class="date">vk ${day.weekNumber}</div>
+                          <div class="date">
+                            <span class="week-text">vk</span> ${day.weekNumber}
+                          </div>
                         </div>`
                       : ''
                   } 
@@ -214,16 +236,22 @@ class HolidayCalendar extends LitElement {
                 </div>
               </smooth-expand>`;
           })}
+          ${this._debug}
         </section>
 
         <div slot="footer-left"></div>
-        <div slot="footer-right"></div>
+        <div slot="footer-right">
+          Pyhät ja muut vapaapäivät ovat merkitty
+          <span class="red">punaisella</span>
+        </div>
       </weather-section>
     `;
   }
 
   constructor() {
     super();
+
+    this._debug = 'test';
 
     const now = new Date();
 
@@ -233,30 +261,13 @@ class HolidayCalendar extends LitElement {
       const previousMonth = HolidayCalendar._getFirstDayOfMonth(now, i);
       months.push({
         monthName: HolidayCalendar._getMonthName(previousMonth),
-        days: HolidayCalendar._dateRange(
+        days: this._dateRange(
           previousMonth,
           HolidayCalendar._getLastDayOfMonth(previousMonth)
         ),
         expanded: i >= 0 && i <= 1,
       });
     }
-    /* const currentMonth = HolidayCalendar._getFirstDayOfMonth(now);
-    months.push({
-      monthName: HolidayCalendar._getMonthName(currentMonth),
-      days: HolidayCalendar._dateRange(
-        currentMonth,
-        HolidayCalendar._getLastDayOfMonth(currentMonth)
-      ),
-    });
-
-    const nextMonth = HolidayCalendar._getFirstDayOfMonth(now, 1);
-    months.push({
-      monthName: HolidayCalendar._getMonthName(nextMonth),
-      days: HolidayCalendar._dateRange(
-        nextMonth,
-        HolidayCalendar._getLastDayOfMonth(nextMonth)
-      ),
-    }); */
 
     this._months = months;
   }
@@ -268,7 +279,7 @@ class HolidayCalendar extends LitElement {
     this._months = months;
   }
 
-  static _dateRange(start, end) {
+  _dateRange(start, end) {
     const dateArray = [];
     const currentDate = new Date(start.getTime());
 
@@ -279,6 +290,8 @@ class HolidayCalendar extends LitElement {
     for (let i = 0; i < daysFromMonday; i += 1) {
       dateArray.push(undefined);
     }
+
+    this._debug = `${start}, end: ${end}`;
 
     while (currentDate.getTime() <= end.getTime()) {
       dateArray.push({
@@ -299,7 +312,7 @@ class HolidayCalendar extends LitElement {
     return dateArray;
   }
 
-  static _getFirstDayOfMonth(date, addMonths = 0) {
+  static _getFirstDayOfMonth(date, addMonths) {
     return new Date(date.getFullYear(), date.getMonth() + addMonths);
   }
 
