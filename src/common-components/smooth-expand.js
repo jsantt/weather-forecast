@@ -33,15 +33,9 @@ class SmoothExpand extends LitElement {
     return html`<slot></slot>`;
   }
 
-  constructor() {
-    super();
-    this.ready = true;
-  }
-
   static get properties() {
     return {
       expanded: { type: Boolean, reflect: true },
-      ready: { type: Boolean, reflect: true },
     };
   }
 
@@ -51,10 +45,6 @@ class SmoothExpand extends LitElement {
     } else {
       this._setMaxHeight(0);
     }
-    this.ready = false;
-    setTimeout(() => {
-      this.ready = true;
-    }, 300);
   }
 
   _setMaxHeight(maxHeight) {

@@ -12,7 +12,6 @@ class HolidayCalendar extends LitElement {
   static get properties() {
     return {
       _months: { type: Array },
-      _debug: { type: String },
     };
   }
 
@@ -236,7 +235,6 @@ class HolidayCalendar extends LitElement {
                 </div>
               </smooth-expand>`;
           })}
-          ${this._debug}
         </section>
 
         <div slot="footer-left"></div>
@@ -251,8 +249,6 @@ class HolidayCalendar extends LitElement {
   constructor() {
     super();
 
-    this._debug = 'test';
-
     const now = new Date();
 
     const months = [];
@@ -261,7 +257,7 @@ class HolidayCalendar extends LitElement {
       const previousMonth = HolidayCalendar._getFirstDayOfMonth(now, i);
       months.push({
         monthName: HolidayCalendar._getMonthName(previousMonth),
-        days: this._dateRange(
+        days: HolidayCalendar._dateRange(
           previousMonth,
           HolidayCalendar._getLastDayOfMonth(previousMonth)
         ),
@@ -279,7 +275,7 @@ class HolidayCalendar extends LitElement {
     this._months = months;
   }
 
-  _dateRange(start, end) {
+  static _dateRange(start, end) {
     const dateArray = [];
     const currentDate = new Date(start.getTime());
 
@@ -290,8 +286,6 @@ class HolidayCalendar extends LitElement {
     for (let i = 0; i < daysFromMonday; i += 1) {
       dateArray.push(undefined);
     }
-
-    this._debug = `${start}, end: ${end}`;
 
     while (currentDate.getTime() <= end.getTime()) {
       dateArray.push({
