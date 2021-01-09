@@ -41,7 +41,7 @@ class SmoothExpand extends LitElement {
 
   updated() {
     if (this.expanded === true) {
-      this._setMaxHeight(this._getHiddenHeight());
+      this._setMaxHeight(this._getHiddenHeight() + 12);
     } else {
       this._setMaxHeight(0);
     }
@@ -52,7 +52,14 @@ class SmoothExpand extends LitElement {
   }
 
   _getHiddenHeight() {
-    return this.scrollHeight;
+    const innerElement = this.querySelector('*');
+    if (innerElement === null) {
+      throw new Error(
+        '<smooth-expand> has to contain at least one HTML element, such as a <div>'
+      );
+    }
+
+    return innerElement.offsetHeight;
   }
 }
 

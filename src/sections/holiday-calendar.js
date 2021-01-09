@@ -96,13 +96,14 @@ class HolidayCalendar extends LitElement {
         height: 14px;
         position: absolute;
         left: -14px;
-        top: 14px;
+        top: 18px;
       }
 
       .sunday .date,
       .free .date,
       .red {
         color: var(--color-red-300);
+        text-decoration: underline;
       }
 
       .holiday {
@@ -239,7 +240,7 @@ class HolidayCalendar extends LitElement {
 
         <div slot="footer-left"></div>
         <div slot="footer-right">
-          Pyhät ja muut vapaapäivät ovat merkitty
+          Vakiintuneet vapaapäivät ovat merkitty
           <span class="red">punaisella</span>
         </div>
       </weather-section>
@@ -373,8 +374,8 @@ class HolidayCalendar extends LitElement {
 
   static _staticHolidays(year) {
     return [
-      { d: `${year}-01-01`, n: 'Uudenvuodenpäivä', free: true, static: true },
-      { d: `${year}-01-06`, n: 'Loppiainen', free: true, static: true },
+      { d: `${year}-01-01`, n: 'Uudenvuodenpäivä', free: true },
+      { d: `${year}-01-06`, n: 'Loppiainen', free: true },
       {
         d: `${year}-02-05`,
         n: 'J.L.Runebergin päivä',
@@ -384,7 +385,7 @@ class HolidayCalendar extends LitElement {
         d: `${year}-02-14`,
         n: 'Ystävänpäivä',
       },
-      { d: `${year}-02-28`, n: 'Kalevalan päivä', flag: true, static: true },
+      { d: `${year}-02-28`, n: 'Kalevalan päivä', flag: true },
       {
         d: `${year}-03-08`,
         n: 'Naistenpäivä',
@@ -395,12 +396,17 @@ class HolidayCalendar extends LitElement {
         flag: true,
       },
       {
+        d: `${year}-04-09`,
+        n: 'Mikael Agrikolan päivä, suomen kielen päivä',
+        flag: true,
+      },
+      {
         d: `${year}-04-27`,
         n: 'Kansallinen veteraanipäivä',
         flag: true,
       },
-      { d: `${year}-05-01`, n: 'Vappu', free: true, flag: true, static: true },
-      { d: `${year}-05-09`, n: 'Eurooppa-päivä', flag: true, static: true },
+      { d: `${year}-05-01`, n: 'Vappu', free: true, flag: true },
+      { d: `${year}-05-09`, n: 'Eurooppa-päivä', flag: true },
       {
         d: `${year}-05-12`,
         n: 'J.V. Snellmanin ja suomalaisuuden päivä',
@@ -411,7 +417,7 @@ class HolidayCalendar extends LitElement {
         n: 'Puolustusvoimain lippujuhlan päivä',
         flag: true,
       },
-      { d: `${year}-07-06`, n: 'Eino Leinon päivä', flag: true, static: true },
+      { d: `${year}-07-06`, n: 'Eino Leinon päivä', flag: true },
       {
         d: `${year}-10-10`,
         n: 'Aleksis Kiven päivä',
@@ -419,12 +425,17 @@ class HolidayCalendar extends LitElement {
       },
       {
         d: `${year}-10-24`,
-        n: 'yhdistyneiden kansakuntien päivä',
+        n: 'YK:n päivä',
         flag: true,
       },
       {
         d: `${year}-11-06`,
         n: 'Ruotsalaisuuden päivä',
+        flag: true,
+      },
+      {
+        d: `${year}-11-20`,
+        n: 'Lapsen oikeuksien päivä',
         flag: true,
       },
       {
@@ -438,7 +449,10 @@ class HolidayCalendar extends LitElement {
         n: 'Jean Sibeliuksen päivä',
         flag: true,
       },
-      { d: `${year}-12-24`, n: 'Jouluaatto' },
+      { d: `${year}-12-24`, n: 'Jouluaatto', free: true },
+      { d: `${year}-12-25`, n: 'Joulupäivä', free: true },
+      { d: `${year}-12-26`, n: 'Tapaninpäivä', free: true },
+      { d: `${year}-12-31`, n: 'Uudenvuodenaatto', free: true },
     ];
   }
 
@@ -453,7 +467,7 @@ class HolidayCalendar extends LitElement {
       { d: '2020-05-17', n: 'Kaatuneiden muistopäivä', flag: true },
       { d: '2020-05-21', n: 'Helatorstai', free: true },
       { d: '2020-05-31', n: 'Helluntai', free: true },
-      { d: '2020-06-19', n: 'Juhannusaatto' },
+      { d: '2020-06-19', n: 'Juhannusaatto', free: true },
       { d: '2020-06-20', n: 'Juhannus', free: true, flag: true },
       { d: '2020-10-31', n: 'Pyhäinpäivä', free: true },
       { d: '2020-11-08', n: 'Isänpäivä', flag: true },
@@ -461,9 +475,9 @@ class HolidayCalendar extends LitElement {
       { d: '2021-02-14', n: 'Laskiaisunnuntai' },
       { d: '2021-02-16', n: 'Laskiaistiistai' },
 
-      { d: '2021-03-02', n: 'Pitkäperjantai' },
-      { d: '2021-03-04', n: 'Pääsiäissunnuntai', free: true },
-      { d: '2021-03-05', n: 'Toinen pääsiäispäivä', free: true },
+      { d: '2021-04-02', n: 'Pitkäperjantai', free: true },
+      { d: '2021-04-04', n: 'Pääsiäissunnuntai', free: true },
+      { d: '2021-04-05', n: 'Toinen pääsiäispäivä', free: true },
 
       { d: '2021-05-09', n: 'Äitienpäivä', flag: true },
       { d: '2021-05-13', n: 'Helatorstai', free: true },
@@ -471,7 +485,7 @@ class HolidayCalendar extends LitElement {
 
       { d: '2021-05-23', n: 'Helluntai', free: true },
 
-      { d: '2021-06-25', n: 'Juhannusaatto' },
+      { d: '2021-06-25', n: 'Juhannusaatto', free: true },
       { d: '2021-06-26', n: 'Juhannus', free: true, flag: true },
 
       { d: '2021-11-06', n: 'Pyhäinpäivä', free: true, flag: true },

@@ -17,19 +17,41 @@ class SymbolList extends LitElement {
         display: block;
         color: var(--color-blue-800);
       }
+
+      section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+        grid-gap: var(--space-l);
+        padding: 0 var(--space-l);
+      }
+
+      svg-icon {
+        display: block;
+        margin-left: -0.45rem;
+      }
+
+      wind-icon {
+        display: block;
+      }
     `;
   }
 
   render() {
     return html`<weather-section header="Käytetyt symbolit">
-      ${Object.entries(symbolName).map(([key, value]) => {
-        return html` <svg-icon
-            path="${`assets/image/weather-symbols.svg#weatherSymbol${key}`}"
-          ></svg-icon
-          >${value}<br />`;
-      })}
-      <wind-icon degrees="0" windSpeed="5" windGustSpeed="9"> </wind-icon
-      >Pohjoistuuli 5 m/s, puuskissa 9 m/s
+      <section>
+        ${Object.entries(symbolName).map(([key, value]) => {
+          return html`<div>
+            <svg-icon
+              path="${`assets/image/weather-symbols.svg#weatherSymbol${key}`}"
+            ></svg-icon
+            >${value}
+          </div>`;
+        })}
+        <div>
+          <wind-icon degrees="0" windSpeed="5" windGustSpeed="9"> </wind-icon
+          >Pohjoistuuli 5 m/s, puuskissa 9 m/s
+        </div>
+      </section>
     </weather-section>`;
   }
 }

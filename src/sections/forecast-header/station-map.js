@@ -13,6 +13,8 @@ class StationMap extends LitElement {
     return css`
       :host {
         display: block;
+
+        min-height: 275px;
         padding-top: 2rem;
       }
 
