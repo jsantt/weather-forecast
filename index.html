@@ -212,11 +212,17 @@
               - bigger grid gap and space around sections
               - round section corners
               - @media only screen and (min-width: 430px)
+              - extra left/right margins between 600px and 767px
 
             2 column layout
-              - [768 - 9999px]
-              - no other changes then 2 columns
-              - @media only screen and (min-width: 768px)
+              - [768 - 1099px]
+              - no other changes than 2 columns
+              - @media only screen and (min-width: 700px)
+              - extra left/right margins when over 900px and approaching 1099px
+
+            3 column layout
+              - [1100px - 9999px]
+              - @media only screen and (min-width: 11000px)
           */
 
           /* End of common CSS properties */ 
@@ -227,8 +233,9 @@
           font-size: 16px;
           
           margin: 0 auto;
-          max-width: 1500px;
           padding: 0;
+
+          max-width: 1300px;
         }
 
         weather-app {

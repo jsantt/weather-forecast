@@ -89,35 +89,49 @@ class WeatherApp extends LitElement {
         }
       }
 
+      @media only screen and (min-width: 600px) and (max-width: 767px) {
+        .container {
+          margin-left: 4rem;
+          margin-right: 4rem;
+        }
+      }
+
       @media only screen and (min-width: 768px) {
         .container {
           /* golden ratio */
-          grid-template-columns: 500fr 500fr 618fr;
+          grid-template-columns: 500fr 500fr 680fr;
           grid-auto-rows: minmax(0px, auto);
 
           grid-template-areas:
             'forecast forecast  sun'
             'forecast forecast  calendar'
             'forecast forecast  calendar'
-            'info     links     calendar'
-            'info     cookies   calendar'
+            'info     info      calendar'
+            'cookies  links     calendar'
             'symbols  symbols   symbols'
             'copy     copy      copy';
+        }
+      }
+
+      @media only screen and (min-width: 900px) and (max-width: 1099px) {
+        .container {
+          margin-left: 4rem;
+          margin-right: 4rem;
         }
       }
 
       @media only screen and (min-width: 1100px) {
         .container {
           /* golden ratio */
-          grid-template-columns: 500fr 500fr 618fr 618fr;
+          grid-template-columns: 500fr 500fr 680fr 680fr;
           grid-auto-rows: minmax(0px, auto);
 
           grid-template-areas:
             'forecast forecast  sun       symbols'
             'forecast forecast  calendar  symbols'
             'forecast forecast  calendar  symbols'
-            'info     links     calendar  symbols'
-            'info     cookies   calendar  symbols'
+            'info     info      calendar  symbols'
+            'cookies  links     calendar  symbols'
             'copy     copy      copy      copy';
         }
       }
