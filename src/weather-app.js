@@ -318,12 +318,20 @@ class WeatherApp extends LitElement {
           ></svg-icon>
 
           <p>
-            Saaennuste.fi sovelluksesta näet reaaliaikaisen sään kaikilta
-            lähistön sääasemilta ja havaitset esim. lähestyvän sateen ja sen
-            muodon. Lähipäivien tuntikohtainen ennuste mahtuu yhdelle kännykän
-            näytölliselle, joten saat sekä yleiskuvan että tarkan ennusteen
-            nopeiten. Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen
-            laitoksen
+            Useimmat sääsovellukset näyttävät vain yhden havaintoaseman
+            kerrallaan ja mobiililaitteella käytettävyys on heikkoa. Sääennuste
+            on yleensä joko muutamalle tunnille tarkasti tai monelle päivälle
+            hyvin epätarkasti. Lumisade ilmoitetaan vedeksi muutettuna
+            millimetreinä.
+          </p>
+          <p>
+            Saaennuste.fi sai alkunsa muiden sovellusten ongelmista.
+            Sovelluksessa näytetään kerralla kaikkien lähiasemien sää ja
+            tuntikohtaiset ennusteet jopa kolmelle seuraavalle päivälle. Siten
+            saat nopeiten vastauksen esim. kysymyksiin: Mitä puen päälle nyt?
+            Koska on lähipäivien paras sää mennä ulos ja tarvitsenko
+            sateenvarjoa töihin? Ennuste perustuu luotettavaan ja tarkkaan
+            Ilmatieteen laitoksen
             <a
               href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
             >
