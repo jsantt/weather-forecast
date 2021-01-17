@@ -52,8 +52,9 @@ class TemperatureLine extends LitElement {
     this._bottomMargin = 0;
   }
 
-  firstUpdated() {
+  updated() {
     setTimeout(() => {
+      this._removeChart();
       this._createChart(this.dayData);
     }, 600);
   }
@@ -80,6 +81,13 @@ class TemperatureLine extends LitElement {
         type: Number,
       },
     };
+  }
+
+  _removeChart() {
+    const chart = this.shadowRoot.querySelector('svg');
+    if (chart !== null) {
+      chart.parentElement.removeChild(chart);
+    }
   }
 
   _createChart(dayData) {
