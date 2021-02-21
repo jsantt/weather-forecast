@@ -9,7 +9,7 @@ import './common-components/weather-analytics.js';
 
 import './sections/install-app.js';
 import './sections/forecast-header/forecast-header.js';
-import './sections/bottom-bar/bottom-bar.js';
+import './sections/bottom-sheet/bottom-sheet.js';
 import './sections/external-links.js';
 import './sections/holiday-calendar.js';
 import './sections/public-holidays.js';
@@ -286,11 +286,11 @@ class WeatherApp extends LitElement {
                 >
                 </weather-days>
               `}
-          <bottom-bar
+          <bottom-sheet
             ?largeMap="${this._largeMap}"
             ?showFeelsLike="${this._showFeelsLike}"
             ?showWind="${this._showWind}"
-          ></bottom-bar>
+          ></bottom-sheet>
 
           <div class="by">
             <p>
@@ -513,7 +513,7 @@ class WeatherApp extends LitElement {
       this._stationSelected(e)
     );
 
-    this.addEventListener('bottom-bar.toggleMapSize', () => {
+    this.addEventListener('bottom-sheet.toggleMapSize', () => {
       this._toggleMapSize();
     });
   }
