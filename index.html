@@ -4,22 +4,23 @@
     <meta charset="utf-8">
     <base href="/">
     <meta name="keywords" content="sää, sääennuste, sääsovellus, nyt, täsmäsää, paras, Ilmatieteen laitos, helsinki, espoo, tampere, vantaa, oulu, turku">
-    <meta name="author" content="Jani Säntti">
+    <meta name="author" content="saaennuste.fi">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>Sääennuste - Ilmatieteen laitoksen data - Paras käytettävyys</title>
-    <meta name="description" content="Saaennuste.fi näyttää kerralla kaikkien lähiasemien sään ja
-    tuntikohtaiset ennusteet. Paras käytettävyys ja luotettava Ilmatieteen laitoksen ennuste.">
+    <meta name="description" content="Ilmatieteen laitoksen luotettava 3 vrk sääennuste
+    kännykälle optimoidussa muodossa! Näet kaikkien lähisääasemien tiedot kerralla.">
+
+
 
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="assets/manifest.json">
     <link rel="icon" type="image/png" href="assets/image/logo-32x32.png" sizes="32x32">  
     
-    <!--script defer src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script-->
     <script defer type="module" src="./src/weather-app.js"> </script>
       
     
-    <!-- Loading web fonts asynchronoysly, see-->
+    <!-- Load web fonts asynchronously -->
     <script>
 
       window.WebFontConfig = {
@@ -36,6 +37,8 @@
         })(document);
 
     </script>
+
+    <!--json-ld></json-ld-->
 
     <!-- set mock backend -->
     <!-- script src="node_modules/@polymer/sinonjs/sinon.js"></script>
@@ -226,6 +229,7 @@
           */
 
           /* End of common CSS properties */ 
+          background: var(--color-white);
           box-sizing: border-box;
           color: var(--color-white);
           font-family: var(--font-family);
@@ -236,6 +240,7 @@
           padding: 0;
 
           max-width: 1300px;
+          
         }
 
         weather-app {
@@ -327,18 +332,5 @@
       Please enable JavaScript to view this website!
     </noscript>
   </body>
-
-  <!-- script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
-  <script>
-  // Initialize Firebase
-  const config = {
-    apiKey: "AIzaSyB0X1pp_9a5h21K27BlTFyOs7LTdI0V0DU",
-    authDomain: "saa-appi.firebaseapp.com",
-    databaseURL: "https://saa-appi.firebaseio.com",
-    projectId: "saa-appi",
-    storageBucket: "saa-appi.appspot.com",
-  };
-  firebase.initializeApp(config);
-  </script -->
 
 </html>

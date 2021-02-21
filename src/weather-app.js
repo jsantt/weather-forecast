@@ -1,5 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
+import './sections/meta-info/json-ld.js';
+
 import './forecast-data.js';
 import './observation-data.js';
 import './weather-section.js';
@@ -170,11 +172,14 @@ class WeatherApp extends LitElement {
         background-position: right top;
         background-repeat: no-repeat;
         background-size: 495px auto;
+
+        border: 1px solid var(--color-gray-300);
       }
 
       .section--calendar {
         grid-area: calendar;
-        background: var(--color-gray-400);
+        background: var(--color-gray-300);
+        border: 1px solid var(--color-gray-400);
       }
 
       .section--informationOnService {

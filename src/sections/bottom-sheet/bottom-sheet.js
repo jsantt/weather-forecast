@@ -23,9 +23,6 @@ class BottomSheet extends LitElement {
         left: 0;
         right: 0;
 
-        /* prevent double tab zooming on bottom bar component*/
-        touch-action: manipulation;
-
         z-index: var(--z-index-floating-1);
       }
 
@@ -58,6 +55,10 @@ class BottomSheet extends LitElement {
         text-align: center;
         margin: 0 auto;
         padding: var(--space-s);
+
+        /* prevent double tab zooming on bottom bar component*/
+        touch-action: manipulation;
+
         width: 100%;
       }
 
