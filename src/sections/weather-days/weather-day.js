@@ -87,17 +87,6 @@ class WeatherDay extends LitElement {
         padding-right: var(--space-m);
       }
 
-      @media only screen and (min-width: 400px) {
-        .day-name {
-          grid-column: span 13;
-        }
-        .day-snow,
-        .day-rain,
-        .day-wind {
-          grid-column: span 4;
-        }
-      }
-
       .symbol_svg {
         width: 32px;
       }

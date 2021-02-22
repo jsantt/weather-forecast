@@ -111,6 +111,7 @@ class HolidayCalendar extends LitElement {
       }
 
       .holiday-text {
+        background: var(--color-white);
         font-size: var(--font-size-xs);
         position: absolute;
         left: -3px;
@@ -120,14 +121,17 @@ class HolidayCalendar extends LitElement {
       }
 
       .day:hover {
-        background: var(--color-gray-300);
+        background: var(--color-white);
       }
 
       .holiday-text:hover {
-        background: var(--color-gray-300);
+        background: var(--color-white);
         border-radius: var(--border-radius);
+        font-weight: 900;
         padding: var(--space-s);
         margin: calc(-1 * var(--space-s));
+
+        text-decoration: underline;
         z-index: 2;
       }
 

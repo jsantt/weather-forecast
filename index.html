@@ -39,6 +39,14 @@
     </script>
 
     <!--json-ld></json-ld-->
+    <script type="application/ld+json"> 
+      { "@context": "http://schema.org", 
+        "@type": "webSite", 
+        "name": "saaennuste.fi", 
+        "url": "https://saaennuste.fi", 
+        "sameAs": [ "https://www.facebook.com/saaennuste.fi" ] 
+      }
+    </script>
 
     <!-- set mock backend -->
     <!-- script src="node_modules/@polymer/sinonjs/sinon.js"></script>
@@ -318,6 +326,7 @@
       document.addEventListener('location-selector.location-changed', (event) => {
         document.querySelector("#place").innerHTML = event.detail.city;
       });
+      
       document.addEventListener('forecast-data.fetch-done', () =>
       {
         const loadingView = document.getElementById('loading-view');

@@ -167,8 +167,6 @@ class WeatherApp extends LitElement {
         background-position: right top;
         background-repeat: no-repeat;
         background-size: 495px auto;
-
-        border: 1px solid var(--color-gray-300);
       }
 
       .section--calendar {
@@ -502,6 +500,10 @@ class WeatherApp extends LitElement {
     });
 
     this.addEventListener('forecast-header.toggle-wind', () => {
+      this._showWind = !this._showWind;
+    });
+
+    this.addEventListener('bottom-sheet.toggle-wind', () => {
       this._showWind = !this._showWind;
     });
 

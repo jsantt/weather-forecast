@@ -221,14 +221,7 @@ class BottomSheet extends LitElement {
 
   _toggleFeelsLike() {
     this._cleanError();
-    const toggleFeelsLike = new CustomEvent(
-      'forecast-header.toggle-feels-like',
-      {
-        bubbles: true,
-        composed: true,
-      }
-    );
-    this.dispatchEvent(toggleFeelsLike);
+    this._dispatchEvent('forecast-header.toggle-feels-like');
   }
 
   _toggleMapSize() {
@@ -238,16 +231,12 @@ class BottomSheet extends LitElement {
       left: 0,
       behavior: 'smooth',
     });
-    this._dispatchEvent('bottom-bar.toggleMapSize');
+    this._dispatchEvent('bottom-sheet.toggleMapSize');
   }
 
   _toggleWind() {
     this._cleanError();
-    const toggleWind = new CustomEvent('forecast-header.toggle-wind', {
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(toggleWind);
+    this._dispatchEvent('forecast-header.toggle-wind');
   }
 
   _geolocate() {
