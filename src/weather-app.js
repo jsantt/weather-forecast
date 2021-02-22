@@ -31,6 +31,8 @@ class WeatherApp extends LitElement {
     return css`
       :host {
         --header-background-expand: 3.5rem;
+        --color-calendar: rgba(230, 230, 234, 0.4);
+        --color-symbols: var(--color-white);
 
         display: block;
       }
@@ -89,6 +91,10 @@ class WeatherApp extends LitElement {
           margin: 0 var(--space-l) var(--space-l) var(--space-l);
           padding-top: var(--space-l);
         }
+
+        .section {
+          border-radius: var(--border-radius);
+        }
       }
 
       @media only screen and (min-width: 550px) {
@@ -106,13 +112,6 @@ class WeatherApp extends LitElement {
         }
       }
 
-      /*@media only screen and (min-width: 750px) and (max-width: 1049px) {
-        .container {
-          margin-left: 4rem;
-          margin-right: 4rem;
-        }
-      }*/
-
       @media only screen and (min-width: 920px) {
         .container {
           grid-template-columns: minmax(300px, 350px) minmax(275px, 350px) minmax(
@@ -129,17 +128,18 @@ class WeatherApp extends LitElement {
             'copy     copy     copy   ';
         }
       }
+
+      @media only screen and (min-width: 1200px) {
+        .container {
+          margin-left: 4rem;
+        }
+      }
+
       .section {
         background: var(--color-white);
         border-radius: none;
         margin: 0;
         max-width: none;
-      }
-
-      @media only screen and (min-width: 430px) {
-        .section {
-          border-radius: var(--border-radius);
-        }
       }
 
       .section--forecast {
@@ -169,7 +169,7 @@ class WeatherApp extends LitElement {
 
       .section--calendar {
         grid-area: calendar;
-        background: rgba(255, 255, 255, 0.5);
+        background: var(--color-calendar);
       }
 
       .section--informationOnService {
@@ -189,7 +189,7 @@ class WeatherApp extends LitElement {
       }
 
       .section--symbols {
-        background: rgba(255, 255, 255, 0.5);
+        background: var(--color-symbols);
         grid-area: symbols;
       }
 
