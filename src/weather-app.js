@@ -133,6 +133,10 @@ class WeatherApp extends LitElement {
         .container {
           margin-left: 4rem;
         }
+
+        install-app {
+          margin-left: 3rem;
+        }
       }
 
       .section {
