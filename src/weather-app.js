@@ -91,53 +91,44 @@ class WeatherApp extends LitElement {
         }
       }
 
-      @media only screen and (min-width: 600px) and (max-width: 767px) {
+      @media only screen and (min-width: 550px) {
+        .container {
+          grid-template-columns: minmax(300px, 400px) auto;
+          grid-auto-rows: minmax(0px, auto);
+
+          grid-template-areas:
+            'forecast sun'
+            'forecast symbols'
+            'calendar symbols'
+            'info     links'
+            'info     cookies'
+            'copy     copy';
+        }
+      }
+
+      /*@media only screen and (min-width: 750px) and (max-width: 1049px) {
         .container {
           margin-left: 4rem;
           margin-right: 4rem;
         }
-      }
+      }*/
 
-      @media only screen and (min-width: 768px) {
+      @media only screen and (min-width: 920px) {
         .container {
-          /* golden ratio */
-          grid-template-columns: 500fr 500fr 680fr;
-          grid-auto-rows: minmax(0px, auto);
+          grid-template-columns: minmax(300px, 350px) minmax(275px, 350px) minmax(
+              275px,
+              350px
+            );
 
           grid-template-areas:
-            'forecast forecast  sun'
-            'forecast forecast  calendar'
-            'forecast forecast  calendar'
-            'info     info      calendar'
-            'cookies  links     calendar'
-            'symbols  symbols   symbols'
-            'copy     copy      copy';
+            'forecast sun      calendar'
+            'forecast symbols  calendar'
+            'forecast symbols  calendar'
+            'info     symbols  calendar'
+            'cookies  links    calendar'
+            'copy     copy     copy   ';
         }
       }
-
-      @media only screen and (min-width: 900px) and (max-width: 1099px) {
-        .container {
-          margin-left: 4rem;
-          margin-right: 4rem;
-        }
-      }
-
-      @media only screen and (min-width: 1100px) {
-        .container {
-          /* golden ratio */
-          grid-template-columns: 500fr 500fr 680fr 680fr;
-          grid-auto-rows: minmax(0px, auto);
-
-          grid-template-areas:
-            'forecast forecast  sun       symbols'
-            'forecast forecast  calendar  symbols'
-            'forecast forecast  calendar  symbols'
-            'info     info      calendar  symbols'
-            'cookies  links     calendar  symbols'
-            'copy     copy      copy      copy';
-        }
-      }
-
       .section {
         background: var(--color-white);
         border-radius: none;
@@ -178,8 +169,7 @@ class WeatherApp extends LitElement {
 
       .section--calendar {
         grid-area: calendar;
-        background: var(--color-gray-300);
-        border: 1px solid var(--color-gray-400);
+        background: rgba(255, 255, 255, 0.5);
       }
 
       .section--informationOnService {
@@ -199,6 +189,7 @@ class WeatherApp extends LitElement {
       }
 
       .section--symbols {
+        background: rgba(255, 255, 255, 0.5);
         grid-area: symbols;
       }
 
