@@ -37,7 +37,7 @@ class HolidayCalendar extends LitElement {
         display: grid;
         grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
         grid-template-rows: auto;
-        grid-gap: 8px;
+        grid-gap: var(--space-m);
 
         padding: var(--space-m) var(--space-m) var(--space-l) var(--space-l);
       }
@@ -63,10 +63,6 @@ class HolidayCalendar extends LitElement {
         text-align: center;
       }
 
-      .day.holiday {
-        margin-bottom: 16px;
-      }
-
       .date {
         font-weight: var(--font-weight-bold);
         padding-bottom: var(--space-s);
@@ -88,10 +84,6 @@ class HolidayCalendar extends LitElement {
         background: none;
       }
 
-      .past .weekday {
-        display: none;
-      }
-
       .flag {
         height: 14px;
         position: absolute;
@@ -111,14 +103,7 @@ class HolidayCalendar extends LitElement {
       }
 
       .holiday-text {
-        background-color: var(--color-gray-300);
         font-size: var(--font-size-xs);
-        position: absolute;
-        left: -3px;
-        top: 0;
-        padding-left: 3px;
-        padding-right: 3px;
-        white-space: nowrap;
       }
 
       .day:hover,
@@ -140,7 +125,7 @@ class HolidayCalendar extends LitElement {
 
       .week-number .date {
         color: var(--color-gray-600);
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-xs);
       }
       .week-number .weekday {
         color: var(--color-gray-600);
@@ -148,6 +133,41 @@ class HolidayCalendar extends LitElement {
 
       .week-text {
         font-size: var(--font-size-xs);
+      }
+
+      .holiday-row {
+        grid-column: 1 / 9;
+        font-size: var(--font-size-xs);
+        margin: -0.4rem 0;
+      }
+
+      .holiday-row-last {
+        margin-bottom: var(--space-s);
+      }
+
+      .holiday-row-2 {
+        grid-column: 2 / 9;
+      }
+
+      .holiday-row-3 {
+        grid-column: 3 / 9;
+      }
+
+      .holiday-row-4 {
+        grid-column: 4 / 9;
+      }
+
+      .holiday-row-5 {
+        grid-column: 5 / 9;
+      }
+
+      .holiday-row-6 {
+        grid-column: 6 / 9;
+      }
+
+      /* sunday, weekday = 0*/
+      .holiday-row-0 {
+        grid-column: 7 / 9;
       }
     `;
   }
@@ -201,32 +221,38 @@ class HolidayCalendar extends LitElement {
                         : ''
                     }${day.day}
                       </div>
-                    ${
-                      day.holiday !== undefined
-                        ? html`<!-- POSSIBLE HOLIDAY TEXT-->
-                            <div class="holiday">
-                              <div class="holiday-text">
-                                ${day.holiday.n}
-                              </div>
-                            </div>`
-                        : ''
-                    }
+                   
                   </div>
                   ${
                     day.weekdayName === 'su'
                       ? html`<div
-                          class="day week-number ${classMap({
-                            past: day.past,
-                          })}"
-                        >
-                          <div class="weekday">&nbsp;</div>
-                          <div class="date">
-                            <span class="week-text">vk</span> ${day.weekNumber}
+                            class="day week-number ${classMap({
+                              past: day.past,
+                            })}"
+                          >
+                            <div class="weekday">&nbsp;</div>
+                            <div class="date">
+                              <span class="week-text">vk</span>
+                              ${day.weekNumber}
+                            </div>
                           </div>
-                        </div>`
+
+                          ${day.weeksHolidays.map((holiday, index2) => {
+                            return html`<div
+                              class="holiday-row holiday-row-${holiday.weekday} ${day
+                                .weeksHolidays.length -
+                                1 ===
+                              index2
+                                ? 'holiday-row-last'
+                                : ''}"
+                            >
+                              ${holiday.label}
+                            </div>`;
+                          })} `
                       : ''
-                  } 
+                  }
                 </div>
+                
                 `;
                   })}
                 </div>
@@ -284,22 +310,35 @@ class HolidayCalendar extends LitElement {
       dateArray.push(undefined);
     }
 
+    let weeksHolidays = [];
+
     while (currentDate.getTime() <= end.getTime()) {
+      const weekday = currentDate.getDay();
+      const weekdayName = HolidayCalendar._getWeekdayName(currentDate);
+      const holiday = HolidayCalendar._getHoliday(currentDate);
+      if (holiday !== undefined) {
+        weeksHolidays.push({ label: holiday.n, weekday });
+      }
+
       dateArray.push({
         rawDate: new Date(currentDate),
         day: currentDate.getDate(),
-        holiday: HolidayCalendar._getHoliday(currentDate),
+        holiday,
         past: HolidayCalendar._isPast(currentDate),
         today: HolidayCalendar._isToday(currentDate),
-        weekday: currentDate.getDay(),
-        weekdayName: HolidayCalendar._getWeekdayName(currentDate),
+        weekday,
+        weekdayName,
         weekend: currentDate.getDay() === 0 || currentDate.getDay() === 6,
         weekNumber: HolidayCalendar._getWeekNumber(currentDate),
+        weeksHolidays,
       });
+
+      if (weekdayName === 'su') {
+        weeksHolidays = [];
+      }
 
       currentDate.setDate(currentDate.getDate() + 1);
     }
-
     return dateArray;
   }
 
@@ -471,6 +510,7 @@ class HolidayCalendar extends LitElement {
       { d: '2021-02-14', n: 'Laskiaisunnuntai' },
       { d: '2021-02-16', n: 'Laskiaistiistai' },
 
+      { d: '2021-03-28', n: 'Palmusunnuntai (virpominen)' },
       { d: '2021-04-02', n: 'Pitkäperjantai', free: true },
       { d: '2021-04-04', n: 'Pääsiäissunnuntai', free: true },
       { d: '2021-04-05', n: 'Toinen pääsiäispäivä', free: true },

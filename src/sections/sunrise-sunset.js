@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
+import '../common-components/smooth-expand.js';
 import '../common-components/svg-icon.js';
 import '../weather-section.js';
 import 'suncalc';
@@ -81,6 +82,10 @@ class SunriseSunset extends LitElement {
         font-size: var(--font-size-xxl);
         font-weight: var(--font-weight-bold);
       }
+
+      [slot='footer-right'] {
+        white-space: nowrap;
+      }
     `;
   }
 
@@ -90,37 +95,70 @@ class SunriseSunset extends LitElement {
         <div class="grid">
           <div class="sunrise">Aurinko nousee</div>
           <div class="sunrise-value">
-            <!--svg-icon
-              class="arrow-svg"
-              path="assets/image/icons.svg#arrow-up"
-            ></svg-icon
-  -->${this._sunrise}
+            ${this._sunrise}
           </div>
 
           <div class="sunset">Aurinko laskee</div>
           <div class="sunset-value">
-            <!--svg-icon
-              class="arrow-svg"
-              path="assets/image/icons.svg#arrow-down"
-            ></svg-icon
-  -->${this._sunset}
+            ${this._sunset}
           </div>
         </div>
         <div class="text">
           ${this._solarNoon} aurinko korkeimmillaan<br />
-          ${this._darkestNight} aurinko matalimmillaan (pimeintä)<br />
+          ${this._darkestNight} aurinko matalimmillaan<br />
         </div>
 
-        <div slot="footer-left"></div>
-        <div slot="footer-right">
-          <svg-icon
-            class="uv-index-svg"
-            path="assets/image/icons.svg#uvIndex"
-          ></svg-icon>
-          <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
-            UV-indeksi
+        <div slot="footer-left">
+          <a href="#" @click="${e => this._toggleDetails(e)}">
+            ${this._expanded ? 'näytä vähemmän' : 'näytä lisää'}
           </a>
+          <smooth-expand ?expanded="${this._expanded}">
+            <div>
+              <br />
+              <div>
+                ${this._nightEnd} yö loppuu
+              </div>
+              <div>
+                ${this._nauticalDawn} hämärä alkaa
+              </div>
+              <div>${this._sunrise} aurinko nousee</div>
+              <div>${this._goldenHourEnd} aamun kultainen hetki päättyy</div>
+              <br />
+
+              <div>${this._solarNoon} aurinko korkeimmillaan</div>
+              <br />
+              <div>
+                ${this._goldenHour} illan kultainen hetki alkaa
+              </div>
+              <div>
+                ${this._sunsetStart} auringon lasku alkaa
+              </div>
+              <div>${this._sunset} aurinko laskee</div>
+              <div>
+                ${this._dusk} hämärä alkaa
+              </div>
+              <div>
+                ${this._nauticalDusk} tähtitieteellinen hämärä alkaa
+              </div>
+              <div>
+                ${this._night} yö alkaa
+              </div>
+              <br />
+              <div>${this._darkestNight} aurinko matalimmillaan (pimeintä)</div>
+            </div>
+          </smooth-expand>
         </div>
+        ${this._expanded
+          ? ''
+          : html` <div slot="footer-right">
+              <svg-icon
+                class="uv-index-svg"
+                path="assets/image/icons.svg#uvIndex"
+              ></svg-icon>
+              <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
+                UV-indeksi
+              </a>
+            </div>`}
       </weather-section>
     `;
   }
@@ -128,10 +166,19 @@ class SunriseSunset extends LitElement {
   static get properties() {
     return {
       location: { type: Object },
+      _darkestNight: { type: String },
+      _dawn: { type: String },
+      _goldenHour: { type: String },
+      _goldenHourEnd: { type: String },
+      _expanded: { type: Boolean },
+      _nauticalDawn: { type: String },
+      _nauticalDusk: { type: String },
+      _night: { type: String },
+      _nightEnd: { type: String },
       _sunrise: { type: String },
       _sunset: { type: String },
+      _sunsetStart: { type: String },
       _solarNoon: { type: String },
-      _darkestNight: { type: String },
     };
   }
 
@@ -139,6 +186,11 @@ class SunriseSunset extends LitElement {
     if (this.location !== undefined) {
       this._updateSunsetSunrise();
     }
+  }
+
+  _toggleDetails(e) {
+    e.preventDefault();
+    this._expanded = !this._expanded;
   }
 
   _updateSunsetSunrise() {
@@ -161,6 +213,20 @@ class SunriseSunset extends LitElement {
 
     this._solarNoon = SunriseSunset._formatTime(times.solarNoon);
     this._darkestNight = SunriseSunset._formatTime(times.nadir);
+
+    this._goldenHour = SunriseSunset._formatTime(times.goldenHour);
+    this._goldenHourEnd = SunriseSunset._formatTime(times.goldenHourEnd);
+
+    this._solarNoon = SunriseSunset._formatTime(times.solarNoon);
+
+    this._sunsetStart = SunriseSunset._formatTime(times.sunsetStart);
+
+    this._dusk = SunriseSunset._formatTime(times.dusk);
+    this._night = SunriseSunset._formatTime(times.night);
+    this._nightEnd = SunriseSunset._formatTime(times.nightEnd);
+    this._nauticalDawn = SunriseSunset._formatTime(times.nauticalDawn);
+    this._nauticalDusk = SunriseSunset._formatTime(times.nauticalDusk);
+    this._dawn = SunriseSunset._formatTime(times.dawn);
   }
 
   static _formatTime(time) {
