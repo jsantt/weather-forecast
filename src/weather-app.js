@@ -120,11 +120,10 @@ class WeatherApp extends LitElement {
             );
 
           grid-template-areas:
-            'forecast sun      calendar'
-            'forecast symbols  calendar'
+            'forecast sun      links'
             'forecast symbols  calendar'
             'info     symbols  calendar'
-            'cookies  links    calendar'
+            'info     cookies  calendar'
             'copy     copy     copy   ';
         }
       }

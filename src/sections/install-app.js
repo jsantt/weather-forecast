@@ -183,7 +183,8 @@ class InstallApp extends LitElement {
       !/CriOS/.test(userAgent) &&
       !/FxiOS/.test(userAgent) &&
       !/OPiOS/.test(userAgent) &&
-      !/mercury/.test(userAgent)
+      !/mercury/.test(userAgent) &&
+      /safari/.test(userAgent)
     );
   }
 }
