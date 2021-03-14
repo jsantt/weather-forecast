@@ -124,7 +124,7 @@ class InstallApp extends LitElement {
   constructor() {
     super();
 
-    this.forceShow = false;
+    this.forceShow = true;
     this._floating = true;
     this._installButtonVisible = this._showInstallButton();
 

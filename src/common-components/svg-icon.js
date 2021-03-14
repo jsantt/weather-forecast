@@ -14,6 +14,15 @@ class SvgIcon extends LitElement {
 
         vertical-align: middle;
       }
+      :host([small]) {
+        height: 20px;
+        width: 20px;
+      }
+
+      :host([medium]) {
+        height: 32px;
+        width: 32px;
+      }
 
       svg {
         display: block;
@@ -40,6 +49,14 @@ class SvgIcon extends LitElement {
     return {
       path: {
         type: String,
+        reflect: true,
+      },
+      small: {
+        type: Boolean,
+        reflect: true,
+      },
+      medium: {
+        type: Boolean,
         reflect: true,
       },
     };

@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
+import './bottom-notification.js';
 import '../../common-components/svg-icon.js';
 
 class BottomSheet extends LitElement {
@@ -15,8 +16,14 @@ class BottomSheet extends LitElement {
         display: block;
         background: var(--color-gray-300);
 
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.75rem;
+
         border-top: 1px solid var(--color-gray-300);
         box-shadow: var(--box-shadow);
+
+        margin-left: var(--space-m);
+        margin-right: var(--space-m);
 
         position: fixed;
         bottom: 0;
@@ -84,13 +91,10 @@ class BottomSheet extends LitElement {
         margin-top: -3px;
       }
 
-      .locate {
-        position: relative;
-      }
-
       .locate-icon {
         position: absolute;
-        top: -16px;
+        bottom: 1.3rem;
+        left: 0;
 
         filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
         transition: all var(--transition-time) var(--transition-cubic-bezier);
@@ -110,45 +114,91 @@ class BottomSheet extends LitElement {
         width: 20px;
         padding: var(--space-s) var(--space-s) 0 var(--space-s);
       }
+
       .error {
         color: var(--color-blue-700);
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-boldest);
-        padding: var(--space-s);
+        padding: var(--space-m) var(--space-m) var(--space-l) var(--space-m);
         text-align: center;
+
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+      }
+
+      .position-anchor {
+        position: relative;
+      }
+
+      .notification {
+        background: var(--color-red-500);
+        border-radius: 50%;
+
+        display: none;
+
+        color: var(--color-white);
+        font-size: var(--font-size-xs);
+
+        width: 1rem;
+        height: 1rem;
+
+        padding-bottom: 1px;
+
+        position: absolute;
+        top: 0;
+        right: -0.35rem;
+      }
+
+      :host([_showMessageBadge]) .notification {
+        display: block;
       }
     `;
   }
 
   render() {
     return html`
+      <bottom-notification
+        .errorText=${this._error}
+        ?showInstall=${this._iosInstructionsVisible}
+      ></bottom-notification>
+
       <nav>
-        <button @click="${this._toggleMapSize}">
-          ${this.largeMap === true
-            ? html`
-                <svg
-                  class="small-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 448 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M4.686 427.314L104 328l-32.922-31.029C55.958 281.851 66.666 256 88.048 256h112C213.303 256 224 266.745 224 280v112c0 21.382-25.803 32.09-40.922 16.971L152 376l-99.314 99.314c-6.248 6.248-16.379 6.248-22.627 0L4.686 449.941c-6.248-6.248-6.248-16.379 0-22.627zM443.314 84.686L344 184l32.922 31.029c15.12 15.12 4.412 40.971-16.97 40.971h-112C234.697 256 224 245.255 224 232V120c0-21.382 25.803-32.09 40.922-16.971L296 136l99.314-99.314c6.248-6.248 16.379-6.248 22.627 0l25.373 25.373c6.248 6.248 6.248 16.379 0 22.627z"
-                  />
-                </svg>
-              `
-            : html` <svg
-                class="small-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 448 512"
-                id="expand"
-              >
-                <path
-                  d="M212.686 315.314L120 408l32.922 31.029c15.12 15.12 4.412 40.971-16.97 40.971h-112C10.697 480 0 469.255 0 456V344c0-21.382 25.803-32.09 40.922-16.971L72 360l92.686-92.686c6.248-6.248 16.379-6.248 22.627 0l25.373 25.373c6.249 6.248 6.249 16.378 0 22.627zm22.628-118.628L328 104l-32.922-31.029C279.958 57.851 290.666 32 312.048 32h112C437.303 32 448 42.745 448 56v112c0 21.382-25.803 32.09-40.922 16.971L376 152l-92.686 92.686c-6.248 6.248-16.379 6.248-22.627 0l-25.373-25.373c-6.249-6.248-6.249-16.378 0-22.627z"
-                />
-              </svg>`}
-          <div class="button-text">havainnot</div>
-        </button>
+        ${this._installButtonVisible === false
+          ? html` <button @click="${this._toggleMapSize}">
+              ${this.largeMap === true
+                ? html`
+                    <svg
+                      class="small-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 448 512"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M4.686 427.314L104 328l-32.922-31.029C55.958 281.851 66.666 256 88.048 256h112C213.303 256 224 266.745 224 280v112c0 21.382-25.803 32.09-40.922 16.971L152 376l-99.314 99.314c-6.248 6.248-16.379 6.248-22.627 0L4.686 449.941c-6.248-6.248-6.248-16.379 0-22.627zM443.314 84.686L344 184l32.922 31.029c15.12 15.12 4.412 40.971-16.97 40.971h-112C234.697 256 224 245.255 224 232V120c0-21.382 25.803-32.09 40.922-16.971L296 136l99.314-99.314c6.248-6.248 16.379-6.248 22.627 0l25.373 25.373c6.248 6.248 6.248 16.379 0 22.627z"
+                      />
+                    </svg>
+                  `
+                : html`
+                    <svg-icon
+                      class="small-icon"
+                      path="assets/image/icons.svg#expand"
+                    ></svg-icon>
+                  `}
+              <div class="button-text">havainnot</div>
+            </button>`
+          : html`
+              <button @click="${this._install}">
+                <div class="position-anchor">
+                  <svg-icon
+                    class="small-icon"
+                    path="assets/image/icons.svg#add"
+                  ></svg-icon>
+                  <div class="notification">1</div>
+                </div>
+
+                <div class="button-text">asenna</div>
+              </button>
+            `}
 
         <button @click="${this._toggleFeelsLike}" class="feelsLike">
           <svg-icon
@@ -159,11 +209,13 @@ class BottomSheet extends LitElement {
         </button>
 
         <button @click="${this._geolocate}">
-          <svg-icon
-            class="locate-icon"
-            path="assets/image/icons.svg#locate"
-          ></svg-icon>
-          <div class="button-text">paikanna</div>
+          <div class="position-anchor">
+            <svg-icon
+              class="locate-icon"
+              path="assets/image/icons.svg#locate"
+            ></svg-icon>
+            <div class="button-text">paikanna</div>
+          </div>
         </button>
 
         <button @click="${this._toggleWind}" class="wind">
@@ -183,11 +235,6 @@ class BottomSheet extends LitElement {
           <div class="button-text">sadetutka</div>
         </button>
       </nav>
-      ${this._error === undefined
-        ? ''
-        : html`<div class="error">
-            ${this._error}
-          </div>`}
     `;
   }
 
@@ -211,7 +258,103 @@ class BottomSheet extends LitElement {
         type: Boolean,
         reflect: true,
       },
+      forceShow: { type: Boolean, reflect: true },
+      _deferredPrompt: { type: Object },
+      _installButtonVisible: { type: Boolean, reflect: true },
+      _iosInstructionsVisible: {
+        type: Boolean,
+        reflect: true,
+      },
+      _showMessageBadge: { type: Boolean, reflect: true },
     };
+  }
+
+  constructor() {
+    super();
+
+    this.forceShow = false;
+    this._floating = true;
+
+    if (localStorage.getItem('installBadgeShown') === null) {
+      this._showMessageBadge = true;
+    } else {
+      this._showMessageBadge = false;
+    }
+
+    this._installButtonVisible = this._showInstallButton();
+
+    window.addEventListener('beforeinstallprompt', event => {
+      // prevent install prompt so it can be triggered later
+      event.preventDefault();
+      this._deferredPrompt = event;
+      this._installButtonVisible = true;
+    });
+
+    this.addEventListener('bottom-notification.closed', () => {
+      this._closeIosInstallInstructions();
+    });
+  }
+
+  _closeIosInstallInstructions() {
+    this._iosInstructionsVisible = false;
+    this._showMessageBadge = false;
+
+    localStorage.setItem('installBadgeShown', 'yes');
+  }
+
+  _install() {
+    if (this._showIosInstructions() === true) {
+      BottomSheet._scrollTop();
+      this._iosInstructionsVisible = true;
+    } else if (this._deferredPrompt != null) {
+      // Show the install prompt.
+      this._deferredPrompt.prompt();
+      // Log the result
+      this._deferredPrompt.userChoice.then(() => {
+        // Reset the deferred prompt variable, since
+        // prompt() can only be called once.
+        this._deferredPrompt = null;
+
+        // Hide the install button.
+        this._showInstallButton = false;
+      });
+    }
+  }
+
+  _showInstallButton() {
+    // if already installed
+    if (navigator.standalone) {
+      return false;
+    }
+
+    return this.forceShow === true || this._showIosInstructions();
+  }
+
+  _showIosInstructions() {
+    if (this.forceShow === true) {
+      return true;
+    }
+
+    return (
+      BottomSheet._isPortableApple() === true &&
+      BottomSheet._isSafari() === true
+    );
+  }
+
+  static _isPortableApple() {
+    return ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
+  }
+
+  static _isSafari() {
+    const { userAgent } = window.navigator;
+    return (
+      !/CriOS/.test(userAgent) &&
+      !/FxiOS/.test(userAgent) &&
+      !/OPiOS/.test(userAgent) &&
+      !/mercury/.test(userAgent) &&
+      userAgent.indexOf('FBAN') < 0 &&
+      userAgent.indexOf('FBAV') < 0
+    );
   }
 
   static _radar() {
@@ -226,11 +369,7 @@ class BottomSheet extends LitElement {
 
   _toggleMapSize() {
     this._cleanError();
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
+    BottomSheet._scrollTop();
     this._dispatchEvent('bottom-sheet.toggleMapSize');
   }
 
@@ -301,6 +440,14 @@ class BottomSheet extends LitElement {
   static _formPlaceObject(lat, lon) {
     const coordinates = `${lat},${lon}`;
     return { city: undefined, coordinates, lat, lon };
+  }
+
+  static _scrollTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   }
 }
 

@@ -49,7 +49,7 @@ export default merge(baseConfig, {
     copy({
       targets: [
         { src: './assets/robots.txt', dest: './dist/' },
-        { src: './assets/manifest.json', dest: './dist/' },
+        { src: './manifest.json', dest: './dist/' },
         { src: './assets/sitemap.xml', dest: './dist/' },
       ],
     }),

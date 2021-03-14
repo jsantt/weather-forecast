@@ -247,7 +247,7 @@ class WeatherApp extends LitElement {
 
       <forecast-data .location="${this._location}"> </forecast-data>
 
-      <install-app></install-app>
+      <!--install-app></install-app-->
       <div class="container" ?hidden="${this._firstLoading}">
         <weather-section class="section section--forecast">
           <slot id="place"></slot>

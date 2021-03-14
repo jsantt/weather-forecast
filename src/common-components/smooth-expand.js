@@ -30,7 +30,7 @@ class SmoothExpand extends LitElement {
   }
 
   render() {
-    return html`<slot></slot>`;
+    return html`<slot aria-hidden="${this.expanded === true}"></slot>`;
   }
 
   static get properties() {
