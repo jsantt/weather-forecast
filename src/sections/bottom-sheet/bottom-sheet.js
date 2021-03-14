@@ -112,7 +112,7 @@ class BottomSheet extends LitElement {
       }
       .error {
         color: var(--color-blue-700);
-        font-size: var(--font-size-l);
+        font-size: var(--font-size-m);
         font-weight: var(--font-weight-boldest);
         padding: var(--space-s);
         text-align: center;
@@ -263,7 +263,11 @@ class BottomSheet extends LitElement {
           this._dispatchEvent('location-selector.locate-error', {
             text: 'salli paikannus nähdäksesi paikkakuntasi sää',
           });
-          this._error = 'salli paikannus/sijainti selaimesi asetuksista';
+          if (BottomSheet._isWebView()) {
+            this._error = 'avaa ulkoisessa selaimessa salliaksesi paikannus';
+          } else {
+            this._error = 'salli paikannus/sijainti selaimesi asetuksista';
+          }
         }
       );
     } else {
@@ -272,6 +276,13 @@ class BottomSheet extends LitElement {
       });
       this._error = 'paikantaminen epäonnistui, yritä uudelleen';
     }
+  }
+
+  static _isWebView() {
+    return (
+      window.navigator.userAgent.indexOf('FBAN') > 0 ||
+      window.navigator.userAgent.indexOf('FBAV') > 0
+    );
   }
 
   _cleanError() {

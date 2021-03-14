@@ -184,7 +184,8 @@ class InstallApp extends LitElement {
       !/FxiOS/.test(userAgent) &&
       !/OPiOS/.test(userAgent) &&
       !/mercury/.test(userAgent) &&
-      /safari/.test(userAgent)
+      userAgent.indexOf('FBAN') < 0 &&
+      userAgent.indexOf('FBAV') < 0
     );
   }
 }
