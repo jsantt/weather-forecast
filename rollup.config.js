@@ -42,12 +42,16 @@ export default merge(baseConfig, {
   input: './index.html',
   plugins: [
     copy({
-      targets: [{ src: './assets/**/*', dest: './dist/' }],
+      targets: [{ src: './assets/image/**/*', dest: './dist/' }],
       // set flatten to false to preserve folder structure
       flatten: false,
     }),
     copy({
-      targets: [{ src: './robots.txt', dest: './dist/' }],
+      targets: [
+        { src: './assets/robots.txt', dest: './dist/' },
+        { src: './assets/manifest.json', dest: './dist/' },
+        { src: './assets/sitemap.xml', dest: './dist/' },
+      ],
     }),
     analyze({ onAnalysis, summaryOnly: false }),
   ],
