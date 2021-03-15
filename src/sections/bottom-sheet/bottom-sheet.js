@@ -316,7 +316,7 @@ class BottomSheet extends LitElement {
         this._deferredPrompt = null;
 
         // Hide the install button.
-        this._showInstallButton = false;
+        this._installButtonVisible = false;
       });
     }
   }
