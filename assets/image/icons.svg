@@ -10,6 +10,11 @@
       <path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path>
     </symbol>
 
+    
+    <symbol id="add-home" viewBox="0 0 448 512">
+      <path fill="currentColor" d="M352 240v32c0 6.6-5.4 12-12 12h-88v88c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-88h-88c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h88v-88c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v88h88c6.6 0 12 5.4 12 12zm96-160v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"></path>
+    </symbol>
+
     <symbol id="arrow-down" viewBox="0 0 256 512">
       <path d="M168 345.941V44c0-6.627-5.373-12-12-12h-56c-6.627 0-12 5.373-12 12v301.941H41.941c-21.382 0-32.09 25.851-16.971 40.971l86.059 86.059c9.373 9.373 24.569 9.373 33.941 0l86.059-86.059c15.119-15.119 4.411-40.971-16.971-40.971H168z"/>
     </symbol>
@@ -152,17 +157,17 @@
       />
     </symbol>
 
-    <symbol viewBox="0 0 100 100" id="iosShare">
+    <symbol viewBox="0 0 100 60" id="iosShare">
       <polyline
         class="arrow"
-        stroke-width="5"
+        stroke-width="6"
         points="40,12 50,2 60,12"
         fill="none"
         stroke-linejoin="round"
       ></polyline>
       <line
         class="arrow-line"
-        stroke-width="5"
+        stroke-width="6"
         x1="50"
         y1="2"
         x2="50"
@@ -171,7 +176,7 @@
       ></line>
       <polyline
         class="rectangle"
-        stroke-width="5"
+        stroke-width="6"
         points="45,20 27,20 27,70 73,70 73,20 55,20"
         fill="none"
         stroke-linejoin="round"

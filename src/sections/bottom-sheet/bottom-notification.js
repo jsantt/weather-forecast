@@ -19,18 +19,20 @@ class BottomNotification extends LitElement {
 
       section {
         color: var(--color-blue-700);
+        font-size: var(--font-size-s);
+
+        padding: var(--space-l) 0 var(--space-l) var(--space-l);
+      }
+
+      header {
+        margin-bottom: var(--space-l);
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-boldest);
-        padding: var(--space-l) var(--space-l) var(--space-l) var(--space-l);
-
-        border-top-left-radius: 0.75rem;
-        border-top-right-radius: 0.75rem;
       }
 
       .close {
         margin-left: auto;
-        padding-top: var(--space-m);
-        padding-right: var(--space-l);
+        padding: var(--space-l) var(--space-l) 0 var(--space-l);
       }
 
       svg-icon {
@@ -39,8 +41,8 @@ class BottomNotification extends LitElement {
       }
 
       ol {
-        line-height: 1.7;
-        margin: -0.5rem var(--space-l) var(--space-l) var(--space-l);
+        line-height: 2.1;
+        margin: 0 var(--space-l) var(--space-l) 0;
         padding: 0 0 0 var(--space-xl);
       }
 
@@ -64,17 +66,26 @@ class BottomNotification extends LitElement {
         <div class="content">
           <section aria-live="polite">
             ${this.showInstall === true
-              ? html` <ol>
-                  <li>
-                    Napauta sivun alalaidasta
-                    <svg-icon
-                      path="assets/image/icons.svg#iosShare"
-                      medium
-                    ></svg-icon>
-                  </li>
-                  <li>vieritä alaspäin</li>
-                  <li>valitse "lisää Koti-valikkoon"</li>
-                </ol>`
+              ? html` <header>
+                    Nopein tapa tarkistaa sää! Lisää sovellus kotivalikkoon
+                  </header>
+                  <ol>
+                    <li>
+                      Napauta sivun alalaidasta
+                      <svg-icon
+                        path="assets/image/icons.svg#iosShare"
+                        medium
+                      ></svg-icon>
+                    </li>
+                    <li>vieritä alaspäin</li>
+                    <li>
+                      valitse "lisää Koti-valikkoon"
+                      <svg-icon
+                        path="assets/image/icons.svg#add-home"
+                        small
+                      ></svg-icon>
+                    </li>
+                  </ol>`
               : ''}
             ${this.errorText === undefined
               ? html``

@@ -9,7 +9,6 @@ import './weather-section.js';
 import './common-components/error-notification.js';
 import './common-components/weather-analytics.js';
 
-import './sections/install-app.js';
 import './sections/forecast-header/forecast-header.js';
 import './sections/bottom-sheet/bottom-sheet.js';
 import './sections/external-links.js';
@@ -132,10 +131,6 @@ class WeatherApp extends LitElement {
         .container {
           margin-left: 4rem;
         }
-
-        install-app {
-          margin-left: 3rem;
-        }
       }
 
       .section {
@@ -247,7 +242,6 @@ class WeatherApp extends LitElement {
 
       <forecast-data .location="${this._location}"> </forecast-data>
 
-      <!--install-app></install-app-->
       <div class="container" ?hidden="${this._firstLoading}">
         <weather-section class="section section--forecast">
           <slot id="place"></slot>

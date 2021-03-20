@@ -1,5 +1,12 @@
 import { css, html, LitElement } from 'lit-element';
 
+import {
+  track,
+  INSTALL_CLICKED,
+  INSTALL_CANCELLED,
+  INSTALLED,
+  INSTALL_INSTRUCTIONS_CLOSED,
+} from '../../common-components/tracker.js';
 import './bottom-notification.js';
 import '../../common-components/svg-icon.js';
 
@@ -291,6 +298,7 @@ class BottomSheet extends LitElement {
     });
 
     this.addEventListener('bottom-notification.closed', () => {
+      track(INSTALL_INSTRUCTIONS_CLOSED);
       this._closeIosInstallInstructions();
     });
   }
@@ -303,6 +311,8 @@ class BottomSheet extends LitElement {
   }
 
   _install() {
+    track(INSTALL_CLICKED);
+
     if (this._showIosInstructions() === true) {
       BottomSheet._scrollTop();
       this._iosInstructionsVisible = true;
@@ -310,7 +320,13 @@ class BottomSheet extends LitElement {
       // Show the install prompt.
       this._deferredPrompt.prompt();
       // Log the result
-      this._deferredPrompt.userChoice.then(() => {
+      this._deferredPrompt.userChoice.then(choice => {
+        if (choice.outcome === 'dismissed') {
+          track(INSTALL_CANCELLED);
+        } else {
+          track(INSTALLED);
+        }
+
         // Reset the deferred prompt variable, since
         // prompt() can only be called once.
         this._deferredPrompt = null;
