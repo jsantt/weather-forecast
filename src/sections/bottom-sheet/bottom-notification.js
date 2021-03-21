@@ -13,21 +13,29 @@ class BottomNotification extends LitElement {
         display: block;
       }
 
+      :host([showInstall]) {
+        position: fixed;
+        top: 0px;
+        background: var(--color-gray-300);
+        left: 0px;
+        right: 0px;
+      }
+
       .content {
         display: flex;
       }
 
       section {
         color: var(--color-blue-700);
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-m);
 
         padding: var(--space-l) 0 var(--space-l) var(--space-l);
       }
 
       header {
         margin-bottom: var(--space-l);
-        font-size: var(--font-size-m);
-        font-weight: var(--font-weight-boldest);
+        font-size: var(--font-size-l);
+        font-weight: var(--font-weight-bold);
       }
 
       .close {
@@ -98,7 +106,7 @@ class BottomNotification extends LitElement {
             role="button"
             @click="${() => this._dispatchEvent('closed')}"
           >
-            <svg-icon path="assets/image/icons.svg#caret-down" small></svg-icon>
+            <svg-icon path="assets/image/icons.svg#close" small></svg-icon>
           </div>
         </div>
       </smooth-expand>

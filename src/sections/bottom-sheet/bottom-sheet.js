@@ -300,6 +300,7 @@ class BottomSheet extends LitElement {
     this.addEventListener('bottom-notification.closed', () => {
       track(INSTALL_INSTRUCTIONS_CLOSED);
       this._closeIosInstallInstructions();
+      this._cleanError();
     });
   }
 
