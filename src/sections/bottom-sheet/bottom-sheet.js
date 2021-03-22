@@ -1,12 +1,15 @@
 import { css, html, LitElement } from 'lit-element';
 
+import { isSafari, isPortableApple, isWebView } from './browser-detector.js';
+import { isState, setState, STATE } from '../../common-utils/state.js';
+
 import {
   track,
+  INTRO_DISMISSED,
   INSTALL_CLICKED,
   INSTALL_CANCELLED,
   INSTALLED,
-  INSTALL_INSTRUCTIONS_CLOSED,
-} from '../../common-components/tracker.js';
+} from '../../common-utils/tracker.js';
 import './bottom-notification.js';
 import '../../common-components/svg-icon.js';
 
@@ -139,9 +142,6 @@ class BottomSheet extends LitElement {
 
       .notification {
         background: var(--color-red-500);
-        border-radius: 50%;
-
-        display: none;
 
         color: var(--color-white);
         font-size: var(--font-size-xs);
@@ -155,19 +155,17 @@ class BottomSheet extends LitElement {
         top: 0;
         right: -0.35rem;
       }
-
-      :host([_showMessageBadge]) .notification {
-        display: block;
-      }
     `;
   }
 
   render() {
     return html`
       <bottom-notification
-        .errorText=${this._error}
-        ?showInstall=${this._iosInstructionsVisible}
-      ></bottom-notification>
+        .errorText=${this._notification}
+        ?showInstall=${this._installAdOpen}
+        ?ios="${this._ios}"
+      >
+      </bottom-notification>
 
       <nav>
         ${this._installButtonVisible === false
@@ -194,13 +192,15 @@ class BottomSheet extends LitElement {
               <div class="button-text">havainnot</div>
             </button>`
           : html`
-              <button @click="${this._install}">
+              <button @click="${this._showInstallAd}">
                 <div class="position-anchor">
                   <svg-icon
                     class="small-icon"
                     path="assets/image/icons.svg#add"
                   ></svg-icon>
-                  <div class="notification">1</div>
+                  ${this._installBadgeVisible === true
+                    ? html` <div class="notification">1</div>`
+                    : ''}
                 </div>
 
                 <div class="button-text">asenna</div>
@@ -265,31 +265,38 @@ class BottomSheet extends LitElement {
         type: Boolean,
         reflect: true,
       },
-      forceShow: { type: Boolean, reflect: true },
       _deferredPrompt: { type: Object },
       _installButtonVisible: { type: Boolean, reflect: true },
-      _iosInstructionsVisible: {
-        type: Boolean,
-        reflect: true,
-      },
-      _showMessageBadge: { type: Boolean, reflect: true },
+      _installBadgeVisible: { type: Boolean, reflect: true },
+      _installAdOpen: { type: Boolean, reflect: true },
+      _ios: { type: Boolean, reflect: true },
+      _notification: { type: String, reflect: true },
     };
   }
 
   constructor() {
     super();
 
-    this.forceShow = false;
-    this._floating = true;
+    this._forceShowIos = false;
+    this._forceShowOthers = true;
 
-    if (localStorage.getItem('installBadgeShown') === null) {
-      this._showMessageBadge = true;
-    } else {
-      this._showMessageBadge = false;
+    this._ios = (isPortableApple() && isSafari()) || this._forceShowIos;
+
+    if (isState(null)) {
+      setState(STATE.SHOW_INTRO);
     }
 
-    this._installButtonVisible = this._showInstallButton();
+    if (isState(STATE.SHOW_INTRO)) {
+      this._notification =
+        'Paikantamalla näet Ilmatieteen laitoksen ennusteen 1,5km tarkkuudella!';
+    }
 
+    this._installButtonVisible =
+      this._showIosInstructions() || this._forceShowOthers;
+
+    this._installBadgeVisible = isState(STATE.SHOW_INSTALL_BADGE);
+
+    // install button for Android, Edge and Chrome
     window.addEventListener('beforeinstallprompt', event => {
       // prevent install prompt so it can be triggered later
       event.preventDefault();
@@ -297,81 +304,88 @@ class BottomSheet extends LitElement {
       this._installButtonVisible = true;
     });
 
-    this.addEventListener('bottom-notification.closed', () => {
-      track(INSTALL_INSTRUCTIONS_CLOSED);
-      this._closeIosInstallInstructions();
-      this._cleanError();
+    this.addEventListener('bottom-notification.closed', e => {
+      if (e.detail.iosInstructions === true) {
+        this._installAdOpen = false;
+
+        setState(STATE.INSTALL_BADGE_DISMISSED);
+        this._installBadgeVisible = false;
+      } else {
+        this._dismissIntro();
+      }
+    });
+
+    this.addEventListener('install-button.click', () => {
+      this._installBadgeVisible();
     });
   }
 
-  _closeIosInstallInstructions() {
-    this._iosInstructionsVisible = false;
-    this._showMessageBadge = false;
+  _dismissIntro() {
+    this._notification = undefined;
+    track(INTRO_DISMISSED);
 
-    localStorage.setItem('installBadgeShown', 'yes');
-  }
+    if (!isState(STATE.SHOW_INTRO)) {
+      return;
+    }
 
-  _install() {
-    track(INSTALL_CLICKED);
-
-    if (this._showIosInstructions() === true) {
-      BottomSheet._scrollTop();
-      this._iosInstructionsVisible = true;
-    } else if (this._deferredPrompt != null) {
-      // Show the install prompt.
-      this._deferredPrompt.prompt();
-      // Log the result
-      this._deferredPrompt.userChoice.then(choice => {
-        if (choice.outcome === 'dismissed') {
-          track(INSTALL_CANCELLED);
-        } else {
-          track(INSTALLED);
-        }
-
-        // Reset the deferred prompt variable, since
-        // prompt() can only be called once.
-        this._deferredPrompt = null;
-
-        // Hide the install button.
-        this._installButtonVisible = false;
-      });
+    if (this._showIosInstructions() || this._deferredPrompt !== undefined) {
+      setState(STATE.SHOW_INSTALL_BADGE);
+      setTimeout(() => {
+        this._installBadgeVisible = true;
+      }, 10 * 1000);
+    } else {
+      setState(STATE.INSTALL_BADGE_DISMISSED);
     }
   }
 
-  _showInstallButton() {
+  _showInstallAd() {
+    track(INSTALL_CLICKED);
+
+    this._installAdOpen = true;
+
+    if (this._showIosInstructions() === true) {
+      BottomSheet._scrollTop();
+    }
+  }
+
+  _install() {
+    if (this._deferredPrompt === null) {
+      return;
+    }
+
+    // Show the install prompt.
+    this._deferredPrompt.prompt();
+
+    // Log the result
+    this._deferredPrompt.userChoice.then(choice => {
+      if (choice.outcome === 'dismissed') {
+        track(INSTALL_CANCELLED);
+      } else {
+        track(INSTALLED);
+      }
+
+      // Reset the deferred prompt variable, since
+      // prompt() can only be called once.
+      this._deferredPrompt = null;
+
+      // Hide the install button.
+      this._installButtonVisible = false;
+
+      setState(STATE.INSTALL_BADGE_DISMISSED);
+    });
+  }
+
+  _showIosInstructions() {
+    if (this._forceShowIos) {
+      return true;
+    }
+
     // if already installed
     if (navigator.standalone) {
       return false;
     }
 
-    return this.forceShow === true || this._showIosInstructions();
-  }
-
-  _showIosInstructions() {
-    if (this.forceShow === true) {
-      return true;
-    }
-
-    return (
-      BottomSheet._isPortableApple() === true &&
-      BottomSheet._isSafari() === true
-    );
-  }
-
-  static _isPortableApple() {
-    return ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
-  }
-
-  static _isSafari() {
-    const { userAgent } = window.navigator;
-    return (
-      !/CriOS/.test(userAgent) &&
-      !/FxiOS/.test(userAgent) &&
-      !/OPiOS/.test(userAgent) &&
-      !/mercury/.test(userAgent) &&
-      userAgent.indexOf('FBAN') < 0 &&
-      userAgent.indexOf('FBAV') < 0
-    );
+    return isPortableApple() === true && isSafari() === true;
   }
 
   static _radar() {
@@ -380,28 +394,26 @@ class BottomSheet extends LitElement {
   }
 
   _toggleFeelsLike() {
-    this._cleanError();
     this._dispatchEvent('forecast-header.toggle-feels-like');
   }
 
   _toggleMapSize() {
-    this._cleanError();
     BottomSheet._scrollTop();
     this._dispatchEvent('bottom-sheet.toggleMapSize');
   }
 
   _toggleWind() {
-    this._cleanError();
     this._dispatchEvent('forecast-header.toggle-wind');
   }
 
   _geolocate() {
+    this._dismissIntro();
+
     this._locating = true;
     setTimeout(() => {
       this._locating = false;
     }, 300);
 
-    this._cleanError();
     this._dispatchEvent('location-selector.locate-started');
 
     if (navigator.geolocation) {
@@ -419,10 +431,12 @@ class BottomSheet extends LitElement {
           this._dispatchEvent('location-selector.locate-error', {
             text: 'salli paikannus nähdäksesi paikkakuntasi sää',
           });
-          if (BottomSheet._isWebView()) {
-            this._error = 'avaa ulkoisessa selaimessa salliaksesi paikannus';
+          if (isWebView()) {
+            this._notification =
+              'avaa ulkoisessa selaimessa salliaksesi paikannus';
           } else {
-            this._error = 'salli paikannus/sijainti selaimesi asetuksista';
+            this._notification =
+              'salli paikannus/sijainti selaimesi asetuksista';
           }
         }
       );
@@ -430,19 +444,8 @@ class BottomSheet extends LitElement {
       this._dispatchEvent('location-selector.locate-error', {
         text: 'paikantaminen epäonnistui, yritä uudelleen',
       });
-      this._error = 'paikantaminen epäonnistui, yritä uudelleen';
+      this._notification = 'paikantaminen epäonnistui, yritä uudelleen';
     }
-  }
-
-  static _isWebView() {
-    return (
-      window.navigator.userAgent.indexOf('FBAN') > 0 ||
-      window.navigator.userAgent.indexOf('FBAV') > 0
-    );
-  }
-
-  _cleanError() {
-    this._error = undefined;
   }
 
   _dispatchEvent(name, payload) {

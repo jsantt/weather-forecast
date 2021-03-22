@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
+import './install-button.js';
 import '../../common-components/svg-icon.js';
 
 class BottomNotification extends LitElement {
@@ -33,7 +34,7 @@ class BottomNotification extends LitElement {
       }
 
       header {
-        margin-bottom: var(--space-l);
+        margin: 0;
         font-size: var(--font-size-l);
         font-weight: var(--font-weight-bold);
       }
@@ -63,6 +64,10 @@ class BottomNotification extends LitElement {
           margin-bottom: var(--space-m);
         }
       }
+
+      install-button {
+        padding: 0 var(--space-l) var(--space-l) var(--space-l);
+      }
     `;
   }
 
@@ -71,43 +76,53 @@ class BottomNotification extends LitElement {
       <smooth-expand
         ?expanded="${this.errorText !== undefined || this.showInstall}"
       >
-        <div class="content">
-          <section aria-live="polite">
-            ${this.showInstall === true
-              ? html` <header>
-                    Nopein tapa tarkistaa sää! Lisää sovellus kotivalikkoon
-                  </header>
-                  <ol>
-                    <li>
-                      Napauta sivun alalaidasta
-                      <svg-icon
-                        path="assets/image/icons.svg#iosShare"
-                        medium
-                      ></svg-icon>
-                    </li>
-                    <li>vieritä alaspäin</li>
-                    <li>
-                      valitse "lisää Koti-valikkoon"
-                      <svg-icon
-                        path="assets/image/icons.svg#add-home"
-                        small
-                      ></svg-icon>
-                    </li>
-                  </ol>`
-              : ''}
-            ${this.errorText === undefined
-              ? html``
-              : html`<div class="error">
-                  ${this.errorText}
-                </div>`}
-          </section>
-          <div
-            class="close"
-            role="button"
-            @click="${() => this._dispatchEvent('closed')}"
-          >
-            <svg-icon path="assets/image/icons.svg#close" small></svg-icon>
+        <div>
+          <div class="content">
+            <section aria-live="polite">
+              ${this.showInstall === true
+                ? html` <header>
+                      Nopein tapa tarkistaa Ilmatieteen laitoksen sää! Lisää
+                      sovellus kotivalikkoon
+                    </header>
+                    ${this.ios
+                      ? html` <ol>
+                          <li>
+                            Napauta sivun alalaidasta
+                            <svg-icon
+                              path="assets/image/icons.svg#iosShare"
+                              medium
+                            ></svg-icon>
+                          </li>
+                          <li>vieritä alaspäin</li>
+                          <li>
+                            valitse "lisää Koti-valikkoon"
+                            <svg-icon
+                              path="assets/image/icons.svg#add-home"
+                              small
+                            ></svg-icon>
+                          </li>
+                        </ol>`
+                      : ''}`
+                : ''}
+              ${this.errorText === undefined
+                ? html``
+                : html`<div class="error">
+                    ${this.errorText}
+                  </div>`}
+            </section>
+
+            <div
+              class="close"
+              role="button"
+              @click="${() =>
+                this._dispatchEvent('closed', {
+                  iosInstructions: this.showInstall,
+                })}"
+            >
+              <svg-icon path="assets/image/icons.svg#close" small></svg-icon>
+            </div>
           </div>
+          ${this.ios ? '' : html` <install-button> Asenna nyt</install-button>`}
         </div>
       </smooth-expand>
     `;
@@ -117,9 +132,15 @@ class BottomNotification extends LitElement {
     return {
       showInstall: {
         type: Boolean,
+        reflect: true,
       },
       errorText: {
         type: String,
+        reflect: true,
+      },
+      ios: {
+        type: Boolean,
+        reflect: true,
       },
     };
   }
