@@ -14,28 +14,43 @@ class BottomNotification extends LitElement {
         display: block;
       }
 
-      :host([showInstall]) {
+      :host([showInstall][ios]) .content {
         position: fixed;
-        top: 0px;
-        background: var(--color-gray-300);
-        left: 0px;
-        right: 0px;
+        top: 0;
+        bottom: auto;
+        border-radius: 0;
       }
 
       .content {
-        display: flex;
+        background: var(--color-white);
+        border: 1px solid var(--color-gray-300);
+
+        border-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+
+        display: grid;
+        grid-template-columns: auto auto;
+        max-width: 456px;
+        margin: 0 auto var(--space-l) auto;
+
+        position: absolute;
+        bottom: 45px;
+        left: 0px;
+        right: 0px;
+        box-shadow: var(--box-shadow);
       }
 
       section {
         color: var(--color-blue-700);
         font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
 
         padding: var(--space-l) 0 var(--space-l) var(--space-l);
       }
 
       header {
         margin: 0;
-        font-size: var(--font-size-l);
+        font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
       }
 
@@ -50,8 +65,9 @@ class BottomNotification extends LitElement {
       }
 
       ol {
-        line-height: 2.1;
-        margin: 0 var(--space-l) var(--space-l) 0;
+        font-weight: var(--font-weight-normal);
+        line-height: 1.8;
+        margin: var(--space-l) var(--space-l) var(--space-l) 0;
         padding: 0 0 0 var(--space-xl);
       }
 
@@ -66,6 +82,7 @@ class BottomNotification extends LitElement {
       }
 
       install-button {
+        grid-column: span 2;
         padding: 0 var(--space-l) var(--space-l) var(--space-l);
       }
     `;
@@ -73,11 +90,8 @@ class BottomNotification extends LitElement {
 
   render() {
     return html`
-      <smooth-expand
-        ?expanded="${this.errorText !== undefined || this.showInstall}"
-      >
-        <div>
-          <div class="content">
+      ${this.errorText !== undefined || this.showInstall
+        ? html`<div class="content">
             <section aria-live="polite">
               ${this.showInstall === true
                 ? html` <header>
@@ -121,10 +135,12 @@ class BottomNotification extends LitElement {
             >
               <svg-icon path="assets/image/icons.svg#close" small></svg-icon>
             </div>
-          </div>
-          ${this.ios ? '' : html` <install-button> Asenna nyt</install-button>`}
-        </div>
-      </smooth-expand>
+
+            ${!this.ios && this.showInstall
+              ? html` <install-button> Asenna nyt</install-button>`
+              : ''}
+          </div>`
+        : ''}
     `;
   }
 

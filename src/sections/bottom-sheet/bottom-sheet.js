@@ -26,11 +26,11 @@ class BottomSheet extends LitElement {
         display: block;
         background: var(--color-gray-300);
 
-        border-top-left-radius: 0.5rem;
+        border-top-left-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
 
         border-top: 1px solid var(--color-gray-300);
-        box-shadow: var(--box-shadow);
+        box-shadow: var(--box-shadow-upwards);
 
         margin-left: var(--space-m);
         margin-right: var(--space-m);
@@ -142,6 +142,7 @@ class BottomSheet extends LitElement {
 
       .notification {
         background: var(--color-red-500);
+        border-radius: 50%;
 
         color: var(--color-white);
         font-size: var(--font-size-xs);
@@ -278,7 +279,7 @@ class BottomSheet extends LitElement {
     super();
 
     this._forceShowIos = false;
-    this._forceShowOthers = true;
+    this._forceShowOthers = false;
 
     this._ios = (isPortableApple() && isSafari()) || this._forceShowIos;
 
@@ -307,6 +308,7 @@ class BottomSheet extends LitElement {
     this.addEventListener('bottom-notification.closed', e => {
       if (e.detail.iosInstructions === true) {
         this._installAdOpen = false;
+        this._installButtonVisible = false;
 
         setState(STATE.INSTALL_BADGE_DISMISSED);
         this._installBadgeVisible = false;
@@ -315,8 +317,8 @@ class BottomSheet extends LitElement {
       }
     });
 
-    this.addEventListener('install-button.click', () => {
-      this._installBadgeVisible();
+    this.addEventListener('install-button.clicked', () => {
+      this._install();
     });
   }
 
@@ -328,7 +330,7 @@ class BottomSheet extends LitElement {
       return;
     }
 
-    if (this._showIosInstructions() || this._deferredPrompt !== undefined) {
+    if (this._showIosInstructions() || this._deferredPrompt != null) {
       setState(STATE.SHOW_INSTALL_BADGE);
       setTimeout(() => {
         this._installBadgeVisible = true;
@@ -349,7 +351,7 @@ class BottomSheet extends LitElement {
   }
 
   _install() {
-    if (this._deferredPrompt === null) {
+    if (this._deferredPrompt == null) {
       return;
     }
 

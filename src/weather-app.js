@@ -20,11 +20,6 @@ import './sections/weather-days/weather-days.js';
 import './sections/weather-station.js';
 
 import './sections/share-app.js';
-import {
-  track,
-  INSTALLED_VERSION_VIEW,
-  WEB_VERSION_VIEW,
-} from './common-utils/tracker.js';
 
 class WeatherApp extends LitElement {
   static get is() {
@@ -514,9 +509,9 @@ class WeatherApp extends LitElement {
     );
 
     if (navigator.standalone) {
-      track(INSTALLED_VERSION_VIEW);
+      // track(INSTALLED_VERSION_VIEW);
     } else {
-      track(WEB_VERSION_VIEW);
+      // track(WEB_VERSION_VIEW);
     }
 
     this.addEventListener('bottom-sheet.toggleMapSize', () => {
