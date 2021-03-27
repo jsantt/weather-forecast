@@ -5,7 +5,6 @@ import { isState, setState, STATE } from '../../common-utils/state.js';
 
 import {
   track,
-  INTRO_DISMISSED,
   INSTALL_CLICKED,
   INSTALL_CANCELLED,
   INSTALLED,
@@ -278,24 +277,18 @@ class BottomSheet extends LitElement {
   constructor() {
     super();
 
-    this._forceShowIos = false;
+    this._forceShowIos = true;
     this._forceShowOthers = false;
 
     this._ios = (isPortableApple() && isSafari()) || this._forceShowIos;
 
     if (isState(null)) {
-      setState(STATE.SHOW_INTRO);
-    }
-
-    if (isState(STATE.SHOW_INTRO)) {
-      this._notification =
-        'Paikantamalla näet Ilmatieteen laitoksen ennusteen 1,5km tarkkuudella!';
+      // setState(STATE.SHOW_INSTALL_BADGE);
+      this._scheduleInstallBadge();
     }
 
     this._installButtonVisible =
       this._showIosInstructions() || this._forceShowOthers;
-
-    this._installBadgeVisible = isState(STATE.SHOW_INSTALL_BADGE);
 
     // install button for Android, Edge and Chrome
     window.addEventListener('beforeinstallprompt', event => {
@@ -308,12 +301,11 @@ class BottomSheet extends LitElement {
     this.addEventListener('bottom-notification.closed', e => {
       if (e.detail.iosInstructions === true) {
         this._installAdOpen = false;
-        this._installButtonVisible = false;
 
         setState(STATE.INSTALL_BADGE_DISMISSED);
         this._installBadgeVisible = false;
       } else {
-        this._dismissIntro();
+        this._scheduleInstallBadge();
       }
     });
 
@@ -322,14 +314,7 @@ class BottomSheet extends LitElement {
     });
   }
 
-  _dismissIntro() {
-    this._notification = undefined;
-    track(INTRO_DISMISSED);
-
-    if (!isState(STATE.SHOW_INTRO)) {
-      return;
-    }
-
+  _scheduleInstallBadge() {
     if (this._showIosInstructions() || this._deferredPrompt != null) {
       setState(STATE.SHOW_INSTALL_BADGE);
       setTimeout(() => {
@@ -409,8 +394,6 @@ class BottomSheet extends LitElement {
   }
 
   _geolocate() {
-    this._dismissIntro();
-
     this._locating = true;
     setTimeout(() => {
       this._locating = false;
