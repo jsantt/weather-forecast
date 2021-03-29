@@ -91,13 +91,6 @@ class HolidayCalendar extends LitElement {
         top: 18px;
       }
 
-      .sunday .date,
-      .free .date,
-      .red {
-        color: var(--color-red-300);
-        text-decoration: underline;
-      }
-
       .holiday {
         position: relative;
       }
@@ -121,11 +114,14 @@ class HolidayCalendar extends LitElement {
       .week-number,
       .week-number .weekday {
         background: none !important;
+
+        font-size: var(--font-size-xs);
       }
 
       .week-number .date {
-        color: var(--color-gray-600);
-        font-size: var(--font-size-xs);
+        color: var(--color-gray-500);
+        font-size: var(--font-size-s);
+        padding-left: var(--space-m);
       }
       .week-number .weekday {
         color: var(--color-gray-600);
@@ -133,6 +129,17 @@ class HolidayCalendar extends LitElement {
 
       .week-text {
         font-size: var(--font-size-xs);
+      }
+
+      .sunday .date,
+      .free .date,
+      .red {
+        color: var(--color-red-300);
+        text-decoration: underline;
+      }
+
+      .holiday-text-free {
+        color: var(--color-red-300);
       }
 
       .holiday-row {
@@ -230,16 +237,18 @@ class HolidayCalendar extends LitElement {
                               past: day.past,
                             })}"
                           >
-                            <div class="weekday">&nbsp;</div>
+                            <!--div class="weekday">&nbsp;</div-->
                             <div class="date">
                               <span class="week-text">vk</span>
-                              ${day.weekNumber}
+                              <div>${day.weekNumber}</div>
                             </div>
                           </div>
 
                           ${day.weeksHolidays.map((holiday, index2) => {
                             return html`<div
-                              class="holiday-row holiday-row-${holiday.weekday} ${day
+                              class="${holiday.free
+                                ? 'holiday-text-free'
+                                : ''} holiday-row holiday-row-${holiday.weekday} ${day
                                 .weeksHolidays.length -
                                 1 ===
                               index2
@@ -317,7 +326,7 @@ class HolidayCalendar extends LitElement {
       const weekdayName = HolidayCalendar._getWeekdayName(currentDate);
       const holiday = HolidayCalendar._getHoliday(currentDate);
       if (holiday !== undefined) {
-        weeksHolidays.push({ label: holiday.n, weekday });
+        weeksHolidays.push({ label: holiday.n, weekday, free: holiday.free });
       }
 
       dateArray.push({

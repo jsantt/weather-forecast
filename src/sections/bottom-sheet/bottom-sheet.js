@@ -277,7 +277,7 @@ class BottomSheet extends LitElement {
   constructor() {
     super();
 
-    this._forceShowIos = true;
+    this._forceShowIos = false;
     this._forceShowOthers = false;
 
     this._ios = (isPortableApple() && isSafari()) || this._forceShowIos;
