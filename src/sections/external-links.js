@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
 import '../weather-section.js';
+import '../common-components/svg-icon.js';
 
 class ExternalLinks extends LitElement {
   static get is() {
@@ -16,7 +17,8 @@ class ExternalLinks extends LitElement {
         margin-top: var(--space-m);
       }
 
-      svg {
+      svg,
+      svg-icon {
         fill: var(--color-blue-700);
       }
 
@@ -38,12 +40,12 @@ class ExternalLinks extends LitElement {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             enable-background="new 0 0 24 24"
-            height="24"
+            height="20"
             viewBox="0 0 24 24"
-            width="24"
+            width="20"
           >
             <g>
-              <rect fill="none" height="24" width="24" />
+              <rect fill="none" height="20" width="20" />
               <path
                 d="M13.28,8.5l0.76,0.58l0.92-0.23L13,14.8V8.29L13.28,8.5z M9.03,8.86L11,14.8V8.29L10.72,8.5L9.96,9.09 L9.03,8.86z"
                 opacity=".3"
@@ -61,9 +63,9 @@ class ExternalLinks extends LitElement {
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="24"
+            height="20"
             viewBox="0 0 24 24"
-            width="24"
+            width="20"
           >
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path d="M17 10h-4l3-8H7v11h3v9z" />
@@ -77,11 +79,11 @@ class ExternalLinks extends LitElement {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             enable-background="new 0 0 24 24"
-            height="24"
+            height="20"
             viewBox="0 0 24 24"
-            width="24"
+            width="20"
           >
-            <g><rect fill="none" height="24" width="24" /></g>
+            <g><rect fill="none" height="20" width="20" /></g>
             <g>
               <g>
                 <path
@@ -95,6 +97,16 @@ class ExternalLinks extends LitElement {
             </g>
           </svg>
           <a href="https://www.norkko.fi/">Siitepölytiedote</a>
+        </div>
+        <div>
+          <svg-icon
+            small
+            path="assets/image/icons.svg#longTimeWeather"
+          ></svg-icon>
+
+          <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
+            >10&nbsp;vrk&nbsp;sää</a
+          >
         </div>
       </weather-section>
     `;

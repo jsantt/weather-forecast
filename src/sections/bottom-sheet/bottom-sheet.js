@@ -305,6 +305,7 @@ class BottomSheet extends LitElement {
         setState(STATE.INSTALL_BADGE_DISMISSED);
         this._installBadgeVisible = false;
       } else {
+        this._notification = undefined;
         this._scheduleInstallBadge();
       }
     });
@@ -376,7 +377,6 @@ class BottomSheet extends LitElement {
   }
 
   static _radar() {
-    this._cleanError();
     document.location.href = 'https://sataako.fi';
   }
 
@@ -394,6 +394,7 @@ class BottomSheet extends LitElement {
   }
 
   _geolocate() {
+    this._notification = undefined;
     this._locating = true;
     setTimeout(() => {
       this._locating = false;
