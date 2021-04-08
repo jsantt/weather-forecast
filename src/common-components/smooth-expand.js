@@ -59,7 +59,7 @@ class SmoothExpand extends LitElement {
       );
     }
 
-    return innerElement.offsetHeight;
+    return innerElement.scrollHeight;
   }
 }
 
