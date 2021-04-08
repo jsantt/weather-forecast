@@ -135,7 +135,6 @@ class HolidayCalendar extends LitElement {
       .free .date,
       .red {
         color: var(--color-red-300);
-        text-decoration: underline;
       }
 
       .holiday-text-free {
