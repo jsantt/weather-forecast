@@ -13,13 +13,8 @@ class WindIcon extends LitElement {
       }
 
       .windIcon--large {
-        height: 36px;
-        width: 36px;
-        transition: all var(--transition-time) ease-in-out;
-      }
-
-      .windIcon--large:hover {
-        transform: scale(1.1);
+        height: 34px;
+        width: 34px;
       }
 
       .windSpeed,

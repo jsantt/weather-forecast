@@ -181,18 +181,15 @@ class ForecastHeader extends LitElement {
 
                 
                </div>
-              ${
-                this.showWind === true
-                  ? html` <wind-icon
-                      .degrees="${this._selectedStation.windDirection}"
-                      large
-                      whiteGust
-                      .windSpeed="${this._selectedStation.wind}"
-                      .windGustSpeed="${this._selectedStation.windGust}"
-                    >
-                    </wind-icon>`
-                  : ''
-              }              
+                <wind-icon
+                  .degrees="${this._selectedStation.windDirection}"
+                  large
+                  whiteGust
+                  .windSpeed="${this._selectedStation.wind}"
+                  .windGustSpeed="${this._selectedStation.windGust}"
+                >
+                </wind-icon>
+                      
               </div>
             </div>
             `
