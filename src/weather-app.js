@@ -375,14 +375,8 @@ class WeatherApp extends LitElement {
           class="section section--cookies"
           header="Kerätyt tiedot"
         >
-          Parantaaksemme käyttökokemusta, käytämme
-          <a
-            href="https://policies.google.com/technologies/partner-sites?hl=fi"
-          >
-            Googlen analytiikkatyökalun</a
-          >
-          tarvitsemia evästeitä sivuston kävijämäärän ja käyttäytymisen
-          seuraamiseen.
+          Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja esim. sovelluksen
+          asennuskerrat kerätään käyttäjää tunnistamatta.
           <div slot="footer-left"></div>
           <div slot="footer-right">
             <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>

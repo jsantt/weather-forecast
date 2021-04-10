@@ -1,3 +1,5 @@
+const trackOnLocalhost = false;
+
 const HIT_TYPE_EVENT = 'event';
 
 const GATEGORY_APP = 'app';
@@ -27,17 +29,21 @@ const INSTALLED = [GATEGORY_INSTALL, ACTION_CLICK, 'installed'];
 // public functions
 
 function track(event) {
-  if (window.location.href.indexOf('localhost') > -1) {
+  if (
+    trackOnLocalhost === false &&
+    window.location.href.indexOf('localhost') > -1
+  ) {
     // eslint-disable-next-line no-console
     console.dir(event);
-  } else {
-    window.ga('send', {
-      hitType: HIT_TYPE_EVENT,
-      eventCategory: event[0],
-      eventAction: event[1],
-      eventLabel: event[2],
-    });
+    return;
   }
+
+  window.galite('send', {
+    hitType: HIT_TYPE_EVENT,
+    eventCategory: event[0],
+    eventAction: event[1],
+    eventLabel: event[2],
+  });
 }
 
 export {
