@@ -120,9 +120,7 @@ class BottomNotification extends LitElement {
                 : ''}
               ${this.errorText === undefined
                 ? html``
-                : html`<div class="error">
-                    ${this.errorText}
-                  </div>`}
+                : html`<div class="error">${this.errorText}</div>`}
             </section>
 
             <div

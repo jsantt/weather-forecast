@@ -243,9 +243,7 @@ class WeatherDay extends LitElement {
           <smooth-expand
             class="wind_header"
             ?expanded="${this.showWind === true}"
-            ><div>
-              keskituuli / tuuli puuskissa
-            </div>
+            ><div>keskituuli / tuuli puuskissa</div>
           </smooth-expand>
           ${this.dayData.map((entry, index) => {
             return html`

@@ -55,9 +55,7 @@ class ExternalLinks extends LitElement {
               />
             </g>
           </svg>
-          <a href="https://www.sataako.fi">
-            sadetutka
-          </a>
+          <a href="https://www.sataako.fi"> sadetutka </a>
         </div>
 
         <div>

@@ -284,9 +284,7 @@ class WeatherApp extends LitElement {
           ></bottom-sheet>
 
           <div class="by">
-            <p>
-              Sääennuste by Ilmatieteen laitos | avoin data
-            </p>
+            <p>Sääennuste by Ilmatieteen laitos | avoin data</p>
             <img
               class="logo"
               alt="fmi logo"

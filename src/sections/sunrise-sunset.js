@@ -94,14 +94,10 @@ class SunriseSunset extends LitElement {
       <weather-section header="Aurinko">
         <div class="grid">
           <div class="sunrise">Aurinko nousee</div>
-          <div class="sunrise-value">
-            ${this._sunrise}
-          </div>
+          <div class="sunrise-value">${this._sunrise}</div>
 
           <div class="sunset">Aurinko laskee</div>
-          <div class="sunset-value">
-            ${this._sunset}
-          </div>
+          <div class="sunset-value">${this._sunset}</div>
         </div>
         <div class="text">
           ${this._solarNoon} aurinko korkeimmillaan<br />
@@ -115,34 +111,20 @@ class SunriseSunset extends LitElement {
           <smooth-expand ?expanded="${this._expanded}">
             <div>
               <br />
-              <div>
-                ${this._nightEnd} yö loppuu
-              </div>
-              <div>
-                ${this._nauticalDawn} hämärä alkaa
-              </div>
+              <div>${this._nightEnd} yö loppuu</div>
+              <div>${this._nauticalDawn} hämärä alkaa</div>
               <div>${this._sunrise} aurinko nousee</div>
               <div>${this._goldenHourEnd} aamun kultainen hetki päättyy</div>
               <br />
 
               <div>${this._solarNoon} aurinko korkeimmillaan</div>
               <br />
-              <div>
-                ${this._goldenHour} illan kultainen hetki alkaa
-              </div>
-              <div>
-                ${this._sunsetStart} auringon lasku alkaa
-              </div>
+              <div>${this._goldenHour} illan kultainen hetki alkaa</div>
+              <div>${this._sunsetStart} auringon lasku alkaa</div>
               <div>${this._sunset} aurinko laskee</div>
-              <div>
-                ${this._dusk} hämärä alkaa
-              </div>
-              <div>
-                ${this._nauticalDusk} tähtitieteellinen hämärä alkaa
-              </div>
-              <div>
-                ${this._night} yö alkaa
-              </div>
+              <div>${this._dusk} hämärä alkaa</div>
+              <div>${this._nauticalDusk} tähtitieteellinen hämärä alkaa</div>
+              <div>${this._night} yö alkaa</div>
               <br />
               <div>${this._darkestNight} aurinko matalimmillaan (pimeintä)</div>
             </div>

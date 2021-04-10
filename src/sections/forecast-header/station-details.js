@@ -57,9 +57,7 @@ class StationDetails extends LitElement {
       ${this.station.humidity
         ? html`
             <div class="item">
-              <div class="value">
-                ${this.station.humidity} %
-              </div>
+              <div class="value">${this.station.humidity} %</div>
               <div class="explanation">ilmankosteus</div>
             </div>
           `
@@ -67,9 +65,7 @@ class StationDetails extends LitElement {
       ${this.station.pressure
         ? html`
             <div class="item">
-              <div class="value">
-                ${this.station.pressure} hPa
-              </div>
+              <div class="value">${this.station.pressure} hPa</div>
               <div class="explanation">ilmanpaine</div>
             </div>
           `
@@ -77,9 +73,7 @@ class StationDetails extends LitElement {
       ${this.station.dewPoint
         ? html`
             <div class="item">
-              <div class="value">
-                ${this.station.dewPoint} °C
-              </div>
+              <div class="value">${this.station.dewPoint} °C</div>
               <div class="explanation">kastepiste</div>
             </div>
           `
@@ -87,9 +81,7 @@ class StationDetails extends LitElement {
       ${this.station.cloudiness
         ? html`
             <div class="item">
-              <div class="value">
-                ${this.station.cloudiness} / 8
-              </div>
+              <div class="value">${this.station.cloudiness} / 8</div>
               <div class="explanation">pilvisyys</div>
             </div>
           `
@@ -97,9 +89,7 @@ class StationDetails extends LitElement {
       ${this.station.visibility
         ? html`
             <div class="item">
-              <div class="value">
-                ${this.station.visibility} km
-              </div>
+              <div class="value">${this.station.visibility} km</div>
               <div class="explanation">näkyvyys</div>
             </div>
           `
@@ -107,9 +97,7 @@ class StationDetails extends LitElement {
       ${StationDetails._snow(this.station.snow)
         ? html`
             <div class="item">
-              <div class="value">
-                ${this.station.snow} cm
-              </div>
+              <div class="value">${this.station.snow} cm</div>
               <div class="explanation">lumen syvyys</div>
             </div>
           `
@@ -117,9 +105,7 @@ class StationDetails extends LitElement {
       ${this.station.rainExplanation
         ? html`
             <div class="item">
-              <div class="value">
-                ${this.station.rainExplanation} mm/h
-              </div>
+              <div class="value">${this.station.rainExplanation} mm/h</div>
               <div class="explanation">sateen rankkuus</div>
               <div></div>
             </div>
@@ -129,9 +115,7 @@ class StationDetails extends LitElement {
         ? html`
             <div class="item">
               <div class="value">${this.station.rain} mm</div>
-              <div class="explanation">
-                sade / edeltävä h
-              </div>
+              <div class="explanation">sade / edeltävä h</div>
             </div>
           `
         : ``}

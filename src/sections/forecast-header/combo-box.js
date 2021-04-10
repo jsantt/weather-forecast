@@ -153,9 +153,7 @@ class ComboBox extends LitElement {
   render() {
     return html`
       <form autocomplete="off" spellcheck="false">
-        <label id="label" for="comboInput">
-          Valitse kaupunki
-        </label>
+        <label id="label" for="comboInput"> Valitse kaupunki </label>
         <div
           class="combobox"
           role="combobox"
