@@ -8,6 +8,7 @@ import {
   INSTALL_CLICKED,
   INSTALL_CANCELLED,
   INSTALLED,
+  GEOLOCATE,
 } from '../../common-utils/tracker.js';
 import './bottom-notification.js';
 import '../../common-components/svg-icon.js';
@@ -401,6 +402,7 @@ class BottomSheet extends LitElement {
     }, 300);
 
     this._dispatchEvent('location-selector.locate-started');
+    track(GEOLOCATE);
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

@@ -4,7 +4,6 @@ class TemperatureLine extends LitElement {
   static get styles() {
     return css`
       :host {
-        --color-30: rgb(255, 172, 172);
         --color-30: rgb(255, 182, 182);
         --color-20: rgb(255, 193, 193);
         --color-15: rgb(255, 205, 205);

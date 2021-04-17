@@ -22,11 +22,11 @@ class SmoothExpand extends LitElement {
       :host {
         display: block;
         max-height: var(--initial-height, 0);
-    
+
         overflow: hidden;
         transition: var(--transition, max-height 0.3s, padding 0.3s);
       }
-    }`;
+    `;
   }
 
   render() {

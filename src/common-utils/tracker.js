@@ -26,6 +26,8 @@ const INSTALL_CLICKED = [GATEGORY_INSTALL, ACTION_CLICK, 'install clicked'];
 const INSTALL_CANCELLED = [GATEGORY_INSTALL, ACTION_CLICK, 'install cancelled'];
 const INSTALLED = [GATEGORY_INSTALL, ACTION_CLICK, 'installed'];
 
+const GEOLOCATE = [GATEGORY_APP, ACTION_CLICK, 'geolocate clicked'];
+
 // public functions
 
 function track(event) {
@@ -38,16 +40,17 @@ function track(event) {
     return;
   }
 
-  window.galite('send', {
-    hitType: HIT_TYPE_EVENT,
-    eventCategory: event[0],
-    eventAction: event[1],
-    eventLabel: event[2],
-  });
+  const hitType = HIT_TYPE_EVENT;
+  const eventCategory = event[0];
+  const eventAction = event[1];
+  const eventLabel = event[2];
+
+  window.galite('send', hitType, eventCategory, eventAction, eventLabel);
 }
 
 export {
   track,
+  GEOLOCATE,
   INSTALLED_VERSION_VIEW,
   WEB_VERSION_VIEW,
   INTRO_DISMISSED,

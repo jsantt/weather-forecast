@@ -34,6 +34,7 @@ class HolidayCalendar extends LitElement {
 
       .expandable {
         align-items: start;
+
         display: grid;
         grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
         grid-template-rows: auto;

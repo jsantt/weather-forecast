@@ -17,7 +17,6 @@ class WeatherSection extends LitElement {
       h3 {
         color: var(--color-blue-700);
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
 
         margin: 0;
         padding: var(--space-l);
