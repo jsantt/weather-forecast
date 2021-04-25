@@ -131,7 +131,7 @@ class ForecastHeader extends LitElement {
       }
 
       station-details {
-        background: var(--color-blue-700);
+        background: var(--color-blue-650);
         color: var(--color-white);
       }
     `;

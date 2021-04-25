@@ -72,6 +72,11 @@ class LocationSelector extends LitElement {
         this._notifyPreviousPlace();
       }
     });
+    document.addEventListener('pageshow', event => {
+      if (event.persisted) {
+        this._notifyPreviousPlace();
+      }
+    });
 
     this.addEventListener('combo-box.clicked', () => {
       this.city = '';
