@@ -15,7 +15,7 @@ class ExternalLinks extends LitElement {
       }
       nav {
         display: grid;
-        grid-template-columns: auto 2.75rem;
+        grid-template-columns: auto 4rem;
         grid-template-rows: auto;
         grid-gap: var(--space-l);
       }
@@ -24,7 +24,7 @@ class ExternalLinks extends LitElement {
         background: var(--color-blue-300);
         border-top-right-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius);
-        padding: var(--space-l) var(--space-m);
+        padding: var(--space-l);
         margin: auto;
       }
 
@@ -34,7 +34,7 @@ class ExternalLinks extends LitElement {
       }
 
       svg-icon[path*='new-window'] {
-        fill: var(--color-blue-500);
+        fill: none;
       }
 
       .link {
@@ -48,7 +48,7 @@ class ExternalLinks extends LitElement {
 
       a:link {
         color: var(--color-blue-500);
-        font-weight: var(--font-weight-bold);
+
         text-decoration: none;
       }
 
@@ -83,7 +83,7 @@ class ExternalLinks extends LitElement {
 
         <div class="link">
           <a href="https://www.norkko.fi/">
-            <span>Siitepölytiedote</span>
+            <span>siitepölytiedote</span>
             <svg-icon
               x-small
               path="assets/image/icons.svg#new-window"

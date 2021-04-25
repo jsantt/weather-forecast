@@ -32,7 +32,6 @@ class SunriseSunset extends LitElement {
 
       a:link {
         color: var(--color-blue-500);
-        font-weight: var(--font-weight-bold);
         text-decoration: none;
       }
 
@@ -76,7 +75,7 @@ class SunriseSunset extends LitElement {
       .sunrise-label,
       .sunset-label {
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
+
         padding-left: var(--space-m);
       }
 
@@ -91,7 +90,7 @@ class SunriseSunset extends LitElement {
       .sunrise-value,
       .sunset-value {
         font-size: var(--font-size-xl);
-        font-weight: var(--font-weight-bold);
+
         justify-self: end;
       }
 
@@ -119,10 +118,10 @@ class SunriseSunset extends LitElement {
       <weather-section>
         <div class="grid">
           <div class="sunset-value">${this._sunset}</div>
-          <div class="sunset-label">Aurinko laskee</div>
+          <div class="sunset-label">aurinko laskee</div>
 
           <div class="sunrise-value">${this._sunrise}</div>
-          <div class="sunrise-label">Aurinko nousee</div>
+          <div class="sunrise-label">aurinko nousee</div>
         </div>
 
         <div slot="footer-left">
