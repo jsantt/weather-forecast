@@ -32,6 +32,8 @@ class SunriseSunset extends LitElement {
 
       a:link {
         color: var(--color-blue-500);
+        font-weight: var(--font-weight-bold);
+        text-decoration: none;
       }
 
       a:visited,
@@ -51,22 +53,31 @@ class SunriseSunset extends LitElement {
 
       .grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
 
         grid-template-areas:
-          'sunrise-header   sunset-header'
-          'sunrise-value    sunset-value';
+          'sunset-value   sunset-label'
+          'sunrise-value    sunrise-label';
 
-        margin-bottom: var(--space-m);
+        align-items: baseline;
+
+        margin-top: var(--space-l);
       }
 
-      .sunrise-header {
-        grid-area: sunrise-header;
+      .sunrise-label {
+        grid-area: sunrise-label;
       }
 
-      .sunset-header {
-        grid-area: sunset-header;
+      .sunset-label {
+        grid-area: sunset-label;
+      }
+
+      .sunrise-label,
+      .sunset-label {
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
+        padding-left: var(--space-m);
       }
 
       .sunrise-value {
@@ -79,8 +90,22 @@ class SunriseSunset extends LitElement {
 
       .sunrise-value,
       .sunset-value {
-        font-size: var(--font-size-xxl);
+        font-size: var(--font-size-xl);
         font-weight: var(--font-weight-bold);
+        justify-self: end;
+      }
+
+      .details {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        grid-gap: var(--space-s);
+
+        margin-top: var(--space-m);
+      }
+
+      .more-space {
+        margin-bottom: var(--space-m);
       }
 
       [slot='footer-right'] {
@@ -91,56 +116,61 @@ class SunriseSunset extends LitElement {
 
   render() {
     return html`
-      <weather-section header="Aurinko">
+      <weather-section>
         <div class="grid">
-          <div class="sunrise">Aurinko nousee</div>
-          <div class="sunrise-value">${this._sunrise}</div>
-
-          <div class="sunset">Aurinko laskee</div>
           <div class="sunset-value">${this._sunset}</div>
-        </div>
-        <div class="text">
-          ${this._solarNoon} aurinko korkeimmillaan<br />
-          ${this._darkestNight} aurinko matalimmillaan<br />
+          <div class="sunset-label">Aurinko laskee</div>
+
+          <div class="sunrise-value">${this._sunrise}</div>
+          <div class="sunrise-label">Aurinko nousee</div>
         </div>
 
         <div slot="footer-left">
-          <a href="#" @click="${e => this._toggleDetails(e)}">
-            ${this._expanded ? 'näytä vähemmän' : 'näytä lisää'}
-          </a>
           <smooth-expand ?expanded="${this._expanded}">
-            <div>
-              <br />
-              <div>${this._nightEnd} yö loppuu</div>
-              <div>${this._nauticalDawn} hämärä alkaa</div>
-              <div>${this._sunrise} aurinko nousee</div>
-              <div>${this._goldenHourEnd} aamun kultainen hetki päättyy</div>
-              <br />
+            <div class="details">
+              <div>${this._nightEnd}</div>
+              <div>yö loppuu</div>
 
-              <div>${this._solarNoon} aurinko korkeimmillaan</div>
-              <br />
-              <div>${this._goldenHour} illan kultainen hetki alkaa</div>
-              <div>${this._sunsetStart} auringon lasku alkaa</div>
-              <div>${this._sunset} aurinko laskee</div>
-              <div>${this._dusk} hämärä alkaa</div>
-              <div>${this._nauticalDusk} tähtitieteellinen hämärä alkaa</div>
-              <div>${this._night} yö alkaa</div>
-              <br />
-              <div>${this._darkestNight} aurinko matalimmillaan (pimeintä)</div>
+              <div>${this._nauticalDawn}</div>
+              <div>hämärä alkaa</div>
+
+              <div>${this._sunrise}</div>
+              <div>aurinko nousee</div>
+
+              <div>${this._goldenHourEnd}</div>
+              <div class="more-space">aamun kultainen hetki päättyy</div>
+
+              <div>${this._solarNoon}</div>
+              <div class="more-space">aurinko korkeimmillaan</div>
+
+              <div>${this._goldenHour}</div>
+              <div>illan kultainen hetki alkaa</div>
+
+              <div>${this._sunsetStart}</div>
+              <div>auringon lasku alkaa</div>
+
+              <div>${this._sunset}</div>
+              <div>aurinko laskee</div>
+
+              <div>${this._dusk}</div>
+              <div>hämärä alkaa</div>
+
+              <div>${this._nauticalDusk}</div>
+              <div>tähtitieteellinen hämärä alkaa</div>
+
+              <div>${this._night}</div>
+              <div>yö alkaa</div>
+
+              <div>${this._darkestNight}</div>
+              <div>aurinko matalimmillaan (pimeintä)</div>
             </div>
           </smooth-expand>
         </div>
-        ${this._expanded
-          ? ''
-          : html` <div slot="footer-right">
-              <svg-icon
-                class="uv-index-svg"
-                path="assets/image/icons.svg#uvIndex"
-              ></svg-icon>
-              <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
-                UV-indeksi
-              </a>
-            </div>`}
+        <div slot="footer-right">
+          <a href="#" @click="${e => this._toggleDetails(e)}">
+            ${this._expanded ? 'näytä vähemmän' : 'näytä lisää'}
+          </a>
+        </div>
       </weather-section>
     `;
   }
@@ -212,6 +242,10 @@ class SunriseSunset extends LitElement {
   }
 
   static _formatTime(time) {
+    if (time.toString() === 'Invalid Date') {
+      return '-';
+    }
+
     const minutes = time.getMinutes();
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 

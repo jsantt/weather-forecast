@@ -30,8 +30,6 @@ class WeatherApp extends LitElement {
     return css`
       :host {
         --header-background-expand: 3.5rem;
-        --color-calendar: rgba(230, 230, 234, 0.4);
-        --color-symbols: var(--color-white);
 
         display: block;
       }
@@ -57,36 +55,26 @@ class WeatherApp extends LitElement {
         text-align: center;
       }
 
-      .section--sun,
-      .section--calendar,
-      .section--informationOnService,
-      .section--feedback,
-      .section--cookies,
-      .section--observations {
-        color: var(--color-blue-700);
-      }
-
       .container {
         display: grid;
         justify-items: stretch;
         align-items: stretch;
 
-        grid-gap: var(--space-s);
+        grid-gap: var(--space-l);
         grid-template-columns: auto;
         grid-template-areas:
           'forecast'
           'sun'
-          'calendar'
           'links'
+          'calendar'
           'info'
-          'symbols'
           'cookies'
-          'copy';
+          'copy'
+          'symbols';
       }
 
       @media only screen and (min-width: 430px) {
         .container {
-          grid-gap: var(--space-l);
           margin: 0 var(--space-l) var(--space-l) var(--space-l);
           padding-top: var(--space-l);
         }
@@ -98,43 +86,29 @@ class WeatherApp extends LitElement {
 
       @media only screen and (min-width: 550px) {
         .container {
-          grid-template-columns: minmax(300px, 400px) auto;
+          grid-template-columns: minmax(300px, 400px) minmax(300px, 400px) auto;
           grid-auto-rows: minmax(0px, auto);
 
           grid-template-areas:
-            'forecast sun'
-            'forecast symbols'
-            'calendar symbols'
-            'info     links'
-            'info     cookies'
-            'copy     copy';
+            'forecast sun       .'
+            'forecast links     .'
+            'forecast calendar  .'
+            'info     calendar  .'
+            'info     calendar  .'
+            'cookies  calendar  .'
+            'copy     copy      .'
+            'symbols  symbols symbols';
         }
       }
 
-      @media only screen and (min-width: 920px) {
-        .container {
-          grid-template-columns: minmax(300px, 350px) minmax(275px, 350px) minmax(
-              275px,
-              350px
-            );
-
-          grid-template-areas:
-            'forecast sun      links'
-            'forecast symbols  calendar'
-            'info     symbols  calendar'
-            'info     cookies  calendar'
-            'copy     copy     copy   ';
-        }
-      }
-
-      @media only screen and (min-width: 1200px) {
+      @media only screen and (min-width: 1024px) {
         .container {
           margin-left: 4rem;
         }
       }
 
       .section {
-        background: var(--color-white);
+        background-color: var(--color-white-transparent);
         border-radius: none;
         margin: 0;
         max-width: none;
@@ -152,12 +126,16 @@ class WeatherApp extends LitElement {
 
       .section--links {
         grid-area: links;
+        background: transparent;
+        /*box-shadow: var(--box-shadow);*/
       }
 
       .section--sun {
+        --padding: var(--space-l) var(--space-l) 0 var(--space-l);
+
         grid-area: sun;
 
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='-16 14 37 37' preserveAspectRatio='slice none'%3E%3Cpolygon fill='%23fff2cc' points='18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237'%3E%3C/polygon%3E%3Ccircle fill='%23fff2cc' stroke='%23FFFFFF' stroke-width='1.3028' cx='18.499' cy='18.363' r='6.362'%3E%3C/circle%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='-16 14 37 37' preserveAspectRatio='slice none'%3E%3Cpolygon fill='%23fbecb6' points='18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237'%3E%3C/polygon%3E%3Ccircle fill='%23fbecb6' stroke='%23FFFFFF' stroke-width='1.3028' cx='18.499' cy='18.363' r='6.362'%3E%3C/circle%3E%3C/svg%3E");
         background-position: right top;
         background-repeat: no-repeat;
         background-size: 495px auto;
@@ -165,7 +143,6 @@ class WeatherApp extends LitElement {
 
       .section--calendar {
         grid-area: calendar;
-        background: var(--color-calendar);
       }
 
       .section--informationOnService {
@@ -185,7 +162,7 @@ class WeatherApp extends LitElement {
       }
 
       .section--symbols {
-        background: var(--color-symbols);
+        background: transparent;
         grid-area: symbols;
       }
 
@@ -292,13 +269,7 @@ class WeatherApp extends LitElement {
             />
           </div>
           <div slot="footer-left"></div>
-          <div slot="footer-right">
-            <svg-icon path="assets/image/icons.svg#longTimeWeather"></svg-icon>
-
-            <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
-              >10&nbsp;vrk&nbsp;sää</a
-            >
-          </div>
+          <div slot="footer-right"></div>
         </weather-section>
 
         <external-links class="section section--links"></external-links>

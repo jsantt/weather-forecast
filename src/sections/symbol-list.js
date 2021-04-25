@@ -37,7 +37,7 @@ class SymbolList extends LitElement {
   }
 
   render() {
-    return html`<weather-section header="Käytetyt symbolit">
+    return html`<weather-section header="">
       <section>
         ${Object.entries(symbolName).map(([key, value]) => {
           return html`<div>

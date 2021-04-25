@@ -14,6 +14,12 @@ class SvgIcon extends LitElement {
 
         vertical-align: middle;
       }
+
+      :host([x-small]) {
+        height: 14px;
+        width: 14px;
+      }
+
       :host([small]) {
         height: 20px;
         width: 20px;
