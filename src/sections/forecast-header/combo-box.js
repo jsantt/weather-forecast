@@ -151,6 +151,13 @@ class ComboBox extends LitElement {
   }
 
   render() {
+    // This is needed for iOS to show the city inside combobox when
+    // navigating back from other page using iOS,
+
+    if (this._combobox != null) {
+      this._combobox.value = this.currentValue;
+    }
+
     return html`
       <form autocomplete="off" spellcheck="false">
         <label id="label" for="comboInput"> Valitse kaupunki </label>
@@ -165,7 +172,6 @@ class ComboBox extends LitElement {
             id="comboInput"
             type="text"
             name="myCountry"
-            .value="${this.currentValue}"
             aria-label="Sää paikassa"
             aria-labelledby="label"
             @click="${this._onInputClick}"

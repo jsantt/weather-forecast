@@ -67,12 +67,12 @@ class LocationSelector extends LitElement {
       coordinates: '60.1698557,24.9383791',
     };
 
-    document.addEventListener('visibilitychange', () => {
+    window.addEventListener('visibilitychange', () => {
       if (document.hidden === false) {
         this._notifyPreviousPlace();
       }
     });
-    document.addEventListener('pageshow', event => {
+    window.addEventListener('pageshow', event => {
       if (event.persisted) {
         this._notifyPreviousPlace();
       }
@@ -133,6 +133,7 @@ class LocationSelector extends LitElement {
    */
   _newPlace() {
     this.city = this.place.name;
+    this.shadowRoot.querySelector('combo-box').requestUpdate();
 
     const url = this.place.name;
 

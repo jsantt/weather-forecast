@@ -84,6 +84,7 @@ class ForecastData extends LitElement {
         const hourAdded = ForecastData._addFullHour(json);
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
         const forecastData = ForecastData._addSymbolAggregate(rainTypeAdded);
+        forecastData.fetchTime = new Date();
 
         this._dispatch('forecast-data.new-data', forecastData);
       })
@@ -178,6 +179,7 @@ class ForecastData extends LitElement {
       'mts-1-1-WeatherSymbol3',
       'symbol'
     );
+
     harmonieResponse.temperature = getTimeAndValuePairs(
       timeSeries,
       'mts-1-1-Temperature',
