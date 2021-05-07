@@ -70,10 +70,6 @@ class WeatherStation extends LitElement {
         transition: max-height var(--transition-time) ease-out;
         will-change: max-height;
       }
-
-      station-details {
-        --label-color: var(--color-blue-800);
-      }
     `;
   }
 

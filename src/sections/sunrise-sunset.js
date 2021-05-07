@@ -60,8 +60,6 @@ class SunriseSunset extends LitElement {
           'sunrise-value    sunrise-label';
 
         align-items: baseline;
-
-        margin-top: var(--space-l);
       }
 
       .sunrise-label {
@@ -75,8 +73,9 @@ class SunriseSunset extends LitElement {
       .sunrise-label,
       .sunset-label {
         font-size: var(--font-size-m);
-
+        font-weight: var(--font-weight-bold);
         padding-left: var(--space-m);
+        padding-bottom: var(--space-s);
       }
 
       .sunrise-value {
@@ -89,8 +88,8 @@ class SunriseSunset extends LitElement {
 
       .sunrise-value,
       .sunset-value {
-        font-size: var(--font-size-xl);
-
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
         justify-self: end;
       }
 

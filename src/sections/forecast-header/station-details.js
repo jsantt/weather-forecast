@@ -33,8 +33,9 @@ class StationDetails extends LitElement {
         font-weight: var(--font-weight-bold);
       }
 
-      .explanation {
-        color: var(--label-color, var(--color-gray-500));
+      .explanation,
+      .value {
+        color: var(--color-blue-100);
       }
 
       weather-name-wawa {
@@ -44,7 +45,6 @@ class StationDetails extends LitElement {
       }
 
       .updated-time {
-        color: var(--label-color, var(--color-gray-500));
         grid-column: 1 / -1;
         text-align: right;
         padding-top: var(--space-m);

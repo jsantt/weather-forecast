@@ -19,8 +19,8 @@ class WeatherSection extends LitElement {
         font-size: var(--font-size-m);
 
         margin: 0;
-        padding: var(--space-l);
-        text-transform: uppercase;
+        padding: var(--space-l) var(--space-l) 0 var(--space-l);
+        text-transform: capitalize;
         font-weight: var(--font-weight-boldest);
       }
 

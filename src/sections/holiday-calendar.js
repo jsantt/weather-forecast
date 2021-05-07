@@ -44,11 +44,12 @@ class HolidayCalendar extends LitElement {
       }
 
       .month {
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
-        margin-top: var(--space-s);
+        margin-top: 0;
         margin-bottom: var(--space-s);
-        text-transform: uppercase;
+        padding-top: 0;
+        text-transform: capitalize;
       }
 
       .weekday {
@@ -59,7 +60,8 @@ class HolidayCalendar extends LitElement {
       }
 
       .day {
-        background: var(--color-white);
+        background: var(--color-blue-300);
+
         border-radius: var(--day-border-radius);
         text-align: center;
       }
@@ -75,10 +77,9 @@ class HolidayCalendar extends LitElement {
       }
 
       .today {
-        background: var(--color-yellow-300);
+        background: var(--color-blue-600);
+        color: white;
         font-weight: var(--font-weight-bold);
-        border: 2px solid var(--color-blue-600);
-        margin: -2px;
       }
 
       .past {
@@ -285,15 +286,15 @@ class HolidayCalendar extends LitElement {
 
     const months = [];
 
-    for (let i = -1; i < 11; i += 1) {
+    for (let i = 0; i < 11; i += 1) {
       const previousMonth = HolidayCalendar._getFirstDayOfMonth(now, i);
       months.push({
-        monthName: HolidayCalendar._getMonthName(previousMonth),
+        monthName: HolidayCalendar._getMonthName(previousMonth, i),
         days: HolidayCalendar._dateRange(
           previousMonth,
           HolidayCalendar._getLastDayOfMonth(previousMonth)
         ),
-        expanded: i >= 0 && i <= 1,
+        expanded: i === 0,
       });
     }
 
@@ -363,9 +364,9 @@ class HolidayCalendar extends LitElement {
     return date.toLocaleString('fi-FI', { weekday: 'short' });
   }
 
-  static _getMonthName(date) {
+  static _getMonthName(date, index) {
     let year = '';
-    if (date.getMonth() === 0 || date.getMonth() === 11) {
+    if (date.getMonth() === 0 || date.getMonth() === 11 || index === 0) {
       year = `${date.getFullYear()} `;
     }
 
