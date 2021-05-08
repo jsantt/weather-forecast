@@ -45,7 +45,7 @@ class HolidayCalendar extends LitElement {
 
       .month {
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
+
         margin-top: 0;
         margin-bottom: var(--space-s);
         padding-top: 0;
