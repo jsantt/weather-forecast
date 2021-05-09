@@ -147,7 +147,7 @@ class HolidayCalendar extends LitElement {
       .holiday-row {
         grid-column: 1 / 9;
         font-size: var(--font-size-xs);
-        margin: -0.4rem 0;
+        margin: -0.3rem 0;
         border-left: 1px solid var(--color-blue-300);
         padding-left: 2px;
       }
