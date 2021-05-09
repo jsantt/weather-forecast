@@ -42,6 +42,9 @@ class SmoothExpand extends LitElement {
   updated() {
     if (this.expanded === true) {
       this._setMaxHeight(this._getHiddenHeight() + 12);
+      setTimeout(() => {
+        this._setMaxHeight(this._getHiddenHeight() + 12);
+      }, 310);
     } else {
       this._setMaxHeight(0);
     }

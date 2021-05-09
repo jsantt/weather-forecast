@@ -60,6 +60,8 @@ class SunriseSunset extends LitElement {
           'sunrise-value    sunrise-label';
 
         align-items: baseline;
+        margin-top: var(--space-l);
+        margin-bottom: -0.5rem;
       }
 
       .sunrise-label {

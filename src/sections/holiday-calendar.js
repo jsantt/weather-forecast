@@ -80,6 +80,7 @@ class HolidayCalendar extends LitElement {
         background: var(--color-blue-600);
         color: white;
         font-weight: var(--font-weight-bold);
+        margin-bottom: -3px;
       }
 
       .past {
@@ -87,10 +88,10 @@ class HolidayCalendar extends LitElement {
       }
 
       .flag {
-        height: 14px;
-        position: absolute;
-        left: -14px;
-        top: 18px;
+        width: 18px;
+        height: 20px;
+        padding-top: 5px;
+        margin-right: -3px;
       }
 
       .holiday {
@@ -147,6 +148,8 @@ class HolidayCalendar extends LitElement {
         grid-column: 1 / 9;
         font-size: var(--font-size-xs);
         margin: -0.4rem 0;
+        border-left: 1px solid var(--color-blue-300);
+        padding-left: 2px;
       }
 
       .holiday-row-last {
@@ -220,15 +223,8 @@ class HolidayCalendar extends LitElement {
 
                   <!-- DATE -->
                   <div class="date">
-                    ${
-                      day.holiday !== undefined && day.holiday.flag
-                        ? html` <svg-icon
-                            class="flag"
-                            path="assets/image/icons.svg#flag"
-                          ></svg-icon>`
-                        : ''
-                    }${day.day}
-                      </div>
+                    ${day.day}
+                  </div>
                    
                   </div>
                   ${
@@ -256,6 +252,12 @@ class HolidayCalendar extends LitElement {
                                 ? 'holiday-row-last'
                                 : ''}"
                             >
+                              ${holiday.flag === true
+                                ? html` <svg-icon
+                                    class="flag"
+                                    path="assets/image/icons.svg#flag"
+                                  ></svg-icon>`
+                                : ''}
                               ${holiday.label}
                             </div>`;
                           })} `
@@ -327,7 +329,12 @@ class HolidayCalendar extends LitElement {
       const weekdayName = HolidayCalendar._getWeekdayName(currentDate);
       const holiday = HolidayCalendar._getHoliday(currentDate);
       if (holiday !== undefined) {
-        weeksHolidays.push({ label: holiday.n, weekday, free: holiday.free });
+        weeksHolidays.push({
+          label: holiday.n,
+          weekday,
+          free: holiday.free,
+          flag: holiday.flag,
+        });
       }
 
       dateArray.push({
