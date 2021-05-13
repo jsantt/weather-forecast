@@ -279,7 +279,12 @@ class WeatherApp extends LitElement {
           <div slot="footer-right"></div>
         </weather-section>
 
-        <external-links class="section section--links"></external-links>
+        <external-links
+          .region="${this._forecastPlace !== undefined
+            ? this._forecastPlace.region
+            : undefined}"
+          class="section section--links"
+        ></external-links>
 
         <sunrise-sunset
           class="section section--sun"

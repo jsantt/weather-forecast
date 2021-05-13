@@ -154,7 +154,7 @@ class ComboBox extends LitElement {
     // This is needed for iOS to show the city inside combobox when
     // navigating back from other page using iOS,
 
-    if (this._combobox != null) {
+    if (this._combobox != null && this._combobox.value === '') {
       this._combobox.value = this.currentValue;
     }
 

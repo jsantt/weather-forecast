@@ -63,6 +63,14 @@ class ExternalLinks extends LitElement {
     `;
   }
 
+  static get properties() {
+    return {
+      region: {
+        type: String,
+      },
+    };
+  }
+
   render() {
     return html`
       <nav>
@@ -96,7 +104,13 @@ class ExternalLinks extends LitElement {
         </div>
 
         <div class="link">
-          <a href="https://www.ilmatieteenlaitos.fi/paikallissaa">
+          <a
+            href="${this.region &&
+            this.region !== 'Finland' &&
+            this.region.split(' ').length <= 1
+              ? `https://www.ilmatieteenlaitos.fi/saa/${this.region}/`
+              : 'https://www.ilmatieteenlaitos.fi/paikallissaa'}"
+          >
             <span>10&nbsp;vrk&nbsp;sää</span>
             <svg-icon
               x-small
