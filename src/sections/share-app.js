@@ -13,46 +13,95 @@ class ShareApp extends LitElement {
         padding: var(--space-m);
         margin: var(--space-m);
       }
-      button {
-        all: unset;
-        box-sizing: border-box;
-        background-color: var(--color-blue-500);
-        border-radius: var(--border-radius);
-        color: var(--color-white);
 
+      .content {
         display: flex;
         align-items: center;
-        justify-content: center;
+      }
 
-        font-weight: var(--font-weight-bold);
+      button {
+        background: transparent;
+        border: 2px solid var(--color-blue-700);
+
+        border-radius: 3rem;
+
+        color: var(--color-blue-700);
+        font-family: inherit;
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-boldest);
+
+        margin: 0;
+        padding: var(--space-m);
+
         text-align: center;
-        text-transform: uppercase;
-
-        padding: 1rem;
         width: 100%;
+      }
+
+      button:focus {
+        outline: none;
+      }
+
+      button:focus-visible {
+        outline: 2px solid var(--color-orange);
+      }
+
+      .qr {
+        fill: var(--color-blue-700);
+        min-width: 100px;
+        min-height: 100px;
+      }
+
+      .half {
+        height: 100%;
+        width: 100%;
+      }
+
+      .share {
+        fill: var(--color-blue-700);
+        opacity: 0.7;
       }
     `;
   }
 
   render() {
-    return html` ${ShareApp._show === true
-      ? html` <a @click="${ShareApp._share}">
-          Jaa sovellus
-          <svg-icon path="assets/image/icons.svg#iosShare"></svg-icon>
-        </a>`
-      : ''}`;
+    return html`
+      <weather-section header="Jaa sovellus">
+        <div class="content">
+          <div>
+            <svg-icon
+              class="qr half"
+              path="assets/image/icons.svg#qr"
+            ></svg-icon>
+          </div>
+
+          ${ShareApp._show() === true
+            ? html` <button class="half" @click="${ShareApp._share}">
+                lähetä linkki
+              </button>`
+            : ''}
+        </div>
+        <div slot="footer-left"></div>
+        <div slot="footer-right">
+          <svg-icon
+            class="share"
+            path="assets/image/icons.svg#share"
+            small
+          ></svg-icon>
+        </div>
+      </weather-section>
+    `;
   }
 
   static _show() {
-    return navigator.share;
+    return true; // navigator.share;
   }
 
   static _share() {
     if (navigator.share) {
       navigator.share({
-        title: 'Sääennuste',
+        title: 'Uusi sääsovellus',
         text:
-          'Paras, yksinkertaisin ja nopein sääennuste. Perustuu Ilmatieteen laitoksen avoimeen dataan.',
+          'Hei, ajattelin että saattaisit tykätä tästä sovelluksesta, joka näyttää Ilmatieteen laitoksen sään.',
         url: 'https://saaennuste.fi',
       });
     }

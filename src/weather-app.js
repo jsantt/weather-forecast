@@ -69,6 +69,7 @@ class WeatherApp extends LitElement {
           'calendar'
           'info'
           'cookies'
+          'share'
           'copy'
           'symbols';
       }
@@ -102,7 +103,7 @@ class WeatherApp extends LitElement {
             'forecast calendar  .'
             'info     calendar  .'
             'info     calendar  .'
-            'cookies  calendar  .'
+            'cookies  share     .'
             'copy     copy      .'
             'symbols  symbols symbols';
         }
@@ -154,6 +155,10 @@ class WeatherApp extends LitElement {
 
       .section--informationOnService {
         grid-area: info;
+      }
+
+      .section--share {
+        grid-area: share;
       }
 
       .section--copyright {
@@ -364,12 +369,12 @@ class WeatherApp extends LitElement {
           </div>
         </weather-section>
 
+        <share-app class="section section--share"></share-app>
+
         <weather-section class="section section--copyright">
           <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
           <div>Design / toteutus Jani Säntti</div>
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
-
-          <share-app></share-app>
         </weather-section>
 
         <symbol-list class="section section--symbols"></symbol-list>
