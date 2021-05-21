@@ -231,8 +231,8 @@ class WeatherDay extends LitElement {
 
           <wind-speed
             class="day day-wind"
-            .windRating="${WeatherDay._windRating(this.dayData)}"
-            .windDescription="${WeatherDay._windDescription(this.dayData)}"
+            .rating="${WeatherDay._windRating(this.dayData)}"
+            .maxWind="${WeatherDay._maxWind(this.dayData)}"
             @click="${() => this._toggleWind()}"
           >
             m/s
@@ -370,8 +370,8 @@ class WeatherDay extends LitElement {
     return day.toLocaleString('fi-FI', { weekday: 'short' });
   }
 
-  static _windDescription(dayData) {
-    return windWarning(dayData).description;
+  static _maxWind(dayData) {
+    return windWarning(dayData).maxWind;
   }
 
   static _windRating(dayData) {

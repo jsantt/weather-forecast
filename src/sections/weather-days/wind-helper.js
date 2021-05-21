@@ -6,9 +6,9 @@
  */
 const _WIND_TABLE = [
   { min: 8, max: 14, rate: 1, description: 'tuulista' },
-  { min: 14, max: 21, rate: 1, description: 'kovaa tuulta' },
-  { min: 21, max: 32, rate: 1, description: 'myrskyä' },
-  { min: 32, max: 99, rate: 1, description: 'hirmumyrskyä' },
+  { min: 14, max: 21, rate: 2, description: 'kovaa tuulta' },
+  { min: 21, max: 32, rate: 3, description: 'myrskyä' },
+  { min: 32, max: 99, rate: 4, description: 'hirmumyrskyä' },
 ];
 
 function windWarning(forecastData) {
@@ -16,17 +16,17 @@ function windWarning(forecastData) {
     return '';
   }
 
-  const maxWind = _max(forecastData, 'windGust');
-  const windRating = _windClassification(maxWind);
+  const maxWind = Math.round(_max(forecastData, 'windGust'));
+  const rating = _windClassification(maxWind);
 
-  const maxTextual = `${Math.round(maxWind)}`;
+  console.log({ rating, maxWind });
 
-  return { rating: windRating, description: maxTextual };
+  return { rating, maxWind };
 }
 
 function _windClassification(windSpeed) {
   if (Number.isNaN(windSpeed) || windSpeed < 8) {
-    return 1;
+    return 0;
   }
 
   const rows = _WIND_TABLE.filter(
