@@ -19,8 +19,6 @@ function windWarning(forecastData) {
   const maxWind = Math.round(_max(forecastData, 'windGust'));
   const rating = _windClassification(maxWind);
 
-  console.log({ rating, maxWind });
-
   return { rating, maxWind };
 }
 

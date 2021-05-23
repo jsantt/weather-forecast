@@ -101,8 +101,10 @@ class WeatherApp extends LitElement {
             'forecast sun       .'
             'forecast links     .'
             'forecast calendar  .'
+            'forecast calendar  .'
             'info     calendar  .'
             'info     calendar  .'
+            'info     share     .'
             'cookies  share     .'
             'copy     copy      .'
             'symbols  symbols symbols';
@@ -198,7 +200,7 @@ class WeatherApp extends LitElement {
 
       .info-icon {
         float: left;
-        margin: var(--space-m) var(--space-m) var(--space-s) var(--space-m);
+        margin: var(--space-m) var(--space-l) var(--space-s) var(--space-m);
       }
 
       .section--copyright {
@@ -307,42 +309,50 @@ class WeatherApp extends LitElement {
             class="info-icon"
             path="assets/image/icons.svg#info"
           ></svg-icon>
+          <p>
+            Saaennuste.fi kokoaa Ilmatieteen laitoksen havainnot, sääennusteen,
+            sadetutkan ja paljon säähän liittyvää hyödyllistä tietoa yhteen.
+            Näet tuntikohtaiset sadepylväät, tuuli- sade- ja lumimäärät yhdellä
+            vilkaisulla - myös kännykän pieneltä ruudulta.
+          </p>
 
           <p>
-            Useimmat sääsovellukset näyttävät vain yhden havaintoaseman
-            kerrallaan ja mobiililaitteella käytettävyys on heikkoa. Sääennuste
-            on yleensä joko muutamalle tunnille tarkasti tai monelle päivälle
-            hyvin epätarkasti. Lumisade ilmoitetaan vedeksi muutettuna
-            millimetreinä.
+            Siten saat nopeiten vastauksen kysymyksiin: Mitä puen päälle nyt,
+            koska sade loppuu ja koska on lähipäivien paras sää mennä ulos?
           </p>
+
+          <h3>Sää nyt</h3>
           <p>
-            Saaennuste.fi sai alkunsa muiden sovellusten ongelmista.
-            Sovelluksessa näytetään kerralla kaikkien lähiasemien sää ja
-            tuntikohtaiset ennusteet jopa kolmelle seuraavalle päivälle. Siten
-            saat nopeiten vastauksen esim. kysymyksiin: Mitä puen päälle nyt?
-            Koska on lähipäivien paras sää mennä ulos ja tarvitsenko
-            sateenvarjoa töihin? Ennuste perustuu luotettavaan ja tarkkaan
-            Ilmatieteen laitoksen
+            Sovellus näyttää lähistön sääasemat "kartalla" oikeilla paikoillaan
+            siten, että päällekkäin meneviä asemia on siirretty mahdollisimman
+            vähän. Klikkaamalla sääasemaa, näet kaikki asemalta saatavissa
+            olevat tiedot.
+          </p>
+
+          <h3>Ilmatieteen laitoksen sää</h3>
+          <p>
+            Sääennuste perustuu Ilmatieteen laitoksen tarkimpaan ja
+            luotettavimpaan
             <a
               href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
             >
               Harmonie-malliin</a
-            >.
+            >. Ilmatieteen laitos käyttää myös muita malleja, joten ennuste
+            saattaa poiketa niistä.
+            <i>Tuntuu kuin</i>
+            lasketaan Ilmatieteen laitoksen kaavalla.
           </p>
+
+          <h3>Palaute</h3>
           <p>
-            Havaintoasemat ovat "kartalla" oikeilla paikoillaan siten, että
-            päällekkäin meneviä asemia on siirretty mahdollisimman vähän.
-          </p>
-          <p>
-            <i>Tuntuu kuin</i> lasketaan Ilmatieteen laitoksen kaavalla. Se
-            näytetään havaintoasemilta, joista tuulen nopeus ja ilman kosteus
-            ovat saatavilla.
+            Onko jokin rikki, puuttuuko ominaisuus tai onko sinulla idea miten
+            parantaisit sovellusta? Olen kaikista palautteista kiitollinen!
           </p>
 
           <div slot="footer-left"></div>
           <div slot="footer-right">
-            <svg-icon path="assets/image/icons.svg#email"></svg-icon>
             palaute@saaennuste.fi
+            <svg-icon path="assets/image/icons.svg#email"></svg-icon>
           </div>
         </weather-section>
 
@@ -361,8 +371,8 @@ class WeatherApp extends LitElement {
           class="section section--cookies"
           header="Kerätyt tiedot"
         >
-          Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja esim. sovelluksen
-          asennuskerrat kerätään käyttäjää tunnistamatta.
+          Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja käyttäytyminen
+          kerätään käyttäjää tunnistamatta.
           <div slot="footer-left"></div>
           <div slot="footer-right">
             <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
