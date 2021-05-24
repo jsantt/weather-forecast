@@ -9,6 +9,7 @@ class RainBars extends LitElement {
     return css`
       :host {
         display: block;
+        opacity: 0.6;
       }
       .chart {
         position: relative;
