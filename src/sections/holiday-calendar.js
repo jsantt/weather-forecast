@@ -284,6 +284,21 @@ class HolidayCalendar extends LitElement {
   constructor() {
     super();
 
+    this._init();
+
+    window.addEventListener('visibilitychange', () => {
+      if (document.hidden === false) {
+        this._init();
+      }
+    });
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) {
+        this._init();
+      }
+    });
+  }
+
+  _init() {
     const now = new Date();
 
     const months = [];
