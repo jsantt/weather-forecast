@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
 import { totalRain, totalSnow } from './rain-helper.js';
-import { windWarning } from './wind-helper.js';
+import { windClassification, windWarning } from './wind-helper.js';
 
 import './rain-amount.js';
 import './snow-amount.js';
@@ -137,7 +137,6 @@ class WeatherDay extends LitElement {
       }
 
       .wind_header {
-        background: var(--color-dayHeader-delimiter);
         color: var(--color-black);
         font-size: var(--font-size-xs);
 
@@ -175,7 +174,6 @@ class WeatherDay extends LitElement {
       .wind--empty,
       .wind_header,
       smooth-expand {
-        background: var(--color-dayHeader-delimiter);
         z-index: var(--z-index-2);
       }
 
@@ -214,7 +212,7 @@ class WeatherDay extends LitElement {
       <div class="weatherDay">
         <div class="weatherDay_grid">
           <h3 class="day day-name">
-            <span class="visually-hidden">SÄÄ</span>
+            <span class="visually-hidden">Sää</span>
             ${WeatherDay._day(this.dayNumber)}
             ${WeatherDay._weekday(this.dayNumber)}
           </h3>
@@ -288,6 +286,7 @@ class WeatherDay extends LitElement {
                       <wind-icon
                         class="symbol"
                         .degrees="${entry.windDirection}"
+                        .rating="${windClassification(entry.windGust)}"
                         .windSpeed="${entry.wind}"
                         .windGustSpeed="${entry.windGust}"
                       >

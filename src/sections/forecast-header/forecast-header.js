@@ -1,5 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
+import { windClassification } from '../weather-days/wind-helper.js';
+
 import '../../common-components/smooth-expand.js';
 import '../../common-components/svg-icon.js';
 import '../../common-components/wind-icon.js';
@@ -184,6 +186,9 @@ class ForecastHeader extends LitElement {
                 <wind-icon
                   .degrees="${this._selectedStation.windDirection}"
                   large
+                  .rating="${windClassification(
+                    this._selectedStation.windGust
+                  )}"
                   whiteGust
                   .windSpeed="${this._selectedStation.wind}"
                   .windGustSpeed="${this._selectedStation.windGust}"

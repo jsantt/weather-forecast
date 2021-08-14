@@ -17,12 +17,12 @@ function windWarning(forecastData) {
   }
 
   const maxWind = Math.round(_max(forecastData, 'windGust'));
-  const rating = _windClassification(maxWind);
+  const rating = windClassification(maxWind);
 
   return { rating, maxWind };
 }
 
-function _windClassification(windSpeed) {
+function windClassification(windSpeed) {
   if (Number.isNaN(windSpeed) || windSpeed < 8) {
     return 0;
   }
@@ -49,4 +49,4 @@ function _max(forecastData, property) {
   return maxWind;
 }
 
-export { windWarning };
+export { windClassification, windWarning };

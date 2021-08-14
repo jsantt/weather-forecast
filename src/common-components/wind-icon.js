@@ -29,7 +29,7 @@ class WindIcon extends LitElement {
       }
 
       .windIcon_arrow {
-        fill: #ffcdd2;
+        fill: var(--color-gray-900);
         stroke: var(--color-gray-900);
       }
 
@@ -40,6 +40,24 @@ class WindIcon extends LitElement {
 
       g {
         transition: transform 1s ease;
+      }
+
+      :host([rating='1']) .windIcon_circle {
+        fill: var(--color-white);
+      }
+
+      :host([rating='2']) .windIcon_circle {
+        fill: var(--color-yellow-300);
+      }
+
+      :host([rating='3']) .windIcon_circle,
+      :host([rating='4']) .windIcon_circle {
+        fill: var(--color-red-500);
+      }
+
+      :host([rating='3']) .windSpeed,
+      :host([rating='4']) .windSpeed {
+        fill: var(--color-white);
       }
     `;
   }
@@ -97,6 +115,10 @@ class WindIcon extends LitElement {
       },
       large: {
         type: Boolean,
+        reflect: true,
+      },
+      rating: {
+        type: Number,
         reflect: true,
       },
       whiteGust: {
