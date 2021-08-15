@@ -14,10 +14,10 @@ class WindSpeed extends LitElement {
       }
 
       svg-icon {
-        fill: var(--color-white);
-        width: 12px;
-        height: 12px;
-        margin-bottom: 1px;
+        fill: var(--color-gray-300);
+        width: 11px;
+        height: 11px;
+        margin-bottom: 2px;
       }
 
       :host([rating='2']) svg-icon {
