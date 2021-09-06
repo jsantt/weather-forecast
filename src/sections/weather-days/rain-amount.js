@@ -15,8 +15,11 @@ class RainAmount extends LitElement {
 
   render() {
     return html`
-      ${RainAmount._hasRain(this.rainAmount) === true
-        ? html`<svg width="12" height="12" viewBox="0 0 32 32">
+      ${RainAmount._hasRain(this.rainAmount) === false
+        ? 'Poutaa'
+        : html`
+            Sadetta
+            <svg width="12" height="12" viewBox="0 0 32 32">
               <g>
                 <path
                   stroke="null"
@@ -24,8 +27,8 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
-            ${this.rainAmount}mm `
-        : ''}
+            ${this.rainAmount}mm
+          `}
     `;
   }
 

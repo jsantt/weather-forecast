@@ -1,18 +1,15 @@
 import { css, html, LitElement } from 'lit-element';
 
-import { totalRain, totalSnow } from './rain-helper.js';
-import { windClassification, windWarning } from './wind-helper.js';
-
-import './rain-amount.js';
-import './snow-amount.js';
 import './temperature-line.js';
 
 import './rain-bars.js';
-import './wind-speed.js';
+import './weather-description.js';
 
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
+
+import { windClassification } from './wind-helper.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -67,24 +64,13 @@ class WeatherDay extends LitElement {
 
       .day-name {
         border-top-left-radius: var(--border-radius);
-        grid-column: span 10;
+        border-top-right-radius: var(--border-radius);
+
+        grid-column: span 25;
         font-weight: var(--font-weight-normal);
         margin: 0;
         padding-left: var(--space-m);
         text-transform: uppercase;
-      }
-
-      .day-snow,
-      .day-rain,
-      .day-wind {
-        background-color: var(--color-dayHeader);
-        grid-column: span 5;
-        text-align: right;
-      }
-
-      .day-wind {
-        border-top-right-radius: var(--border-radius);
-        padding-right: var(--space-m);
       }
 
       .symbol_svg {
@@ -95,13 +81,13 @@ class WeatherDay extends LitElement {
       .hour--empty {
         font-size: var(--font-size-s);
 
-        grid-row: 2;
+        grid-row: 3;
         grid-column: span 1;
 
         text-align: center;
 
         color: var(--color-gray-900);
-        margin: var(--space-l) 0 var(--space-s) 0;
+        margin: var(--space-m) 0 var(--space-s) 0;
       }
 
       .hour--empty {
@@ -111,7 +97,7 @@ class WeatherDay extends LitElement {
       .symbol,
       .symbol--empty {
         grid-column: span 3;
-        grid-row: 4;
+        grid-row: 5;
         text-align: center;
         z-index: var(--z-index-1);
       }
@@ -123,7 +109,7 @@ class WeatherDay extends LitElement {
       .temperature--empty {
         font-weight: var(--font-weight-normal);
         grid-column: span 3;
-        grid-row: 5;
+        grid-row: 6;
 
         font-size: var(--font-size-m);
         text-align: center;
@@ -132,29 +118,24 @@ class WeatherDay extends LitElement {
 
       .temperature_line {
         grid-column: span 25;
-        grid-row: 6;
+        grid-row: 7;
         height: 0;
       }
 
       .wind_header {
+        grid-row: 100;
         color: var(--color-black);
-        font-size: var(--font-size-xs);
+        font-size: var(--font-size-s);
 
-        padding-left: 0.5rem;
+        padding: var(--space-m);
+
         grid-column: span 25;
-
-        margin-top: -0.25rem;
         text-align: right;
       }
 
       .wind,
       .wind--empty {
         grid-row: 98;
-      }
-
-      .wind_header {
-        grid-row: 100;
-        padding-right: var(--space-m);
       }
 
       .temperature--empty,
@@ -207,8 +188,6 @@ class WeatherDay extends LitElement {
 
   render() {
     return html`
-      <wind-helper></wind-helper>
-
       <div class="weatherDay">
         <div class="weatherDay_grid">
           <h3 class="day day-name">
@@ -217,32 +196,13 @@ class WeatherDay extends LitElement {
             ${WeatherDay._weekday(this.dayNumber)}
           </h3>
 
-          <snow-amount
-            class="day day-snow"
-            .snowAmount="${WeatherDay._snow(this.dayData)}"
-          ></snow-amount>
-
-          <rain-amount
-            class="day day-rain"
-            .rainAmount="${WeatherDay._rain(this.dayData)}"
-          ></rain-amount>
-
-          <wind-speed
-            class="day day-wind"
-            .rating="${WeatherDay._windRating(this.dayData)}"
-            .maxWind="${WeatherDay._maxWind(this.dayData)}"
-            @click="${() => this._toggleWind()}"
-          >
-            m/s
-          </wind-speed>
-
           <!-- headers here outside of repeat -->
 
-          <smooth-expand
-            class="wind_header"
-            ?expanded="${this.showWind === true}"
-            ><div>keskituuli / tuuli puuskissa</div>
-          </smooth-expand>
+          <div class="wind_header">
+            <weather-description .dayData="${this.dayData}">
+            </weather-description>
+          </div>
+
           ${this.dayData.map((entry, index) => {
             return html`
               <!-- EMPTY COLUMN -->
@@ -369,26 +329,6 @@ class WeatherDay extends LitElement {
     return day.toLocaleString('fi-FI', { weekday: 'short' });
   }
 
-  static _maxWind(dayData) {
-    return windWarning(dayData).maxWind;
-  }
-
-  static _windRating(dayData) {
-    if (dayData === undefined || dayData.length < 1) {
-      return '';
-    }
-
-    return windWarning(dayData).rating;
-  }
-
-  static _rain(dayData) {
-    return totalRain(dayData);
-  }
-
-  static _snow(dayData) {
-    return totalSnow(dayData);
-  }
-
   static _round(item) {
     const rounded = Math.round(item);
     const result = Number.isNaN(rounded) ? '' : rounded;
@@ -398,14 +338,6 @@ class WeatherDay extends LitElement {
 
   static _isThird(index) {
     return (index + 1) % 3 === 0;
-  }
-
-  _toggleWind() {
-    const toggleWind = new CustomEvent(`forecast-header.toggle-wind`, {
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(toggleWind);
   }
 }
 
