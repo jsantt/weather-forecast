@@ -144,10 +144,7 @@ class WeatherDay extends LitElement {
       }
 
       .wind {
-        color: var(--color-black);
         grid-column: span 3;
-        font-size: var(--font-size-m);
-
         text-align: center;
       }
 
@@ -159,8 +156,7 @@ class WeatherDay extends LitElement {
       }
 
       wind-icon {
-        margin-top: var(--space-m);
-        min-height: 37px;
+        margin-top: var(--space-l);
       }
 
       .rain-bars {
