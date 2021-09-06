@@ -77,18 +77,25 @@ class ForecastHeader extends LitElement {
         align-items: center;
 
         grid-template-areas:
-          'name    wind  expand'
-          'details details details';
+          'label   wind     expand'
+          'name    wind     expand'
+          'details details  details';
 
         line-height: var(--line-height-dense);
 
         text-align: left;
         padding: 0 var(--space-l);
       }
+      .selected-label {
+        grid-area: label;
+
+        color: var(--color-gray-500);
+        font-size: var(--font-size-s);
+      }
 
       .selected-name {
         grid-area: name;
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-l);
       }
 
       .selected-text {
@@ -127,8 +134,6 @@ class ForecastHeader extends LitElement {
       }
 
       weather-name-wawa {
-        font-size: var(--font-size-l);
-        font-weight: var(--font-weight-bold);
         padding-bottom: 0.15rem;
       }
 
@@ -160,13 +165,15 @@ class ForecastHeader extends LitElement {
         ${this._selectedStation !== undefined
           ? html`
             <div class="selected" @click="${this._expand}">
+            <div class="selected-label">SÄÄASEMA  ${
+              this._selectedStation.distance
+            } km</div>
             <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
             <div class="selected-name">
               
               <span class="selected-text">
               
               ${this._selectedStation.name}
-                ${this._selectedStation.distance} km
 
                </span>
                <weather-name-wawa

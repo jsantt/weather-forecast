@@ -326,7 +326,7 @@ class WeatherDay extends LitElement {
   static _weekday(number) {
     const day = new Date();
     day.setDate(day.getDate() + (number - 1));
-    return day.toLocaleString('fi-FI', { weekday: 'short' });
+    return `${day.toLocaleString('fi-FI', { weekday: 'long' })}na`;
   }
 
   static _round(item) {
