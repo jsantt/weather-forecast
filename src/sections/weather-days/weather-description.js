@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
 import './rain-amount.js';
-import './snow-amount.js';
 import './max-wind.js';
 
 import { totalRain, totalSnow } from './rain-helper.js';
@@ -15,6 +14,7 @@ class WeatherDescription extends LitElement {
   static get styles() {
     return css`
       :host {
+        display: inline-block;
       }
     `;
   }
@@ -25,11 +25,8 @@ class WeatherDescription extends LitElement {
 
       <rain-amount
         .rainAmount="${WeatherDescription._rain(this.dayData)}"
-      ></rain-amount>
-
-      <snow-amount
         .snowAmount="${WeatherDescription._snow(this.dayData)}"
-      ></snow-amount>
+      ></rain-amount>
 
       <max-wind
         .rating="${WeatherDescription._windRating(this.dayData)}"

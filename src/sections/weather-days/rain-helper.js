@@ -3,7 +3,7 @@ function _round(total) {
   if (total > 0 && total < 0.5) {
     roundedTotal = '0';
   } else {
-    roundedTotal = total === 0 ? '' : Math.round(total);
+    roundedTotal = total === 0 ? 0 : Math.round(total);
   }
 
   return roundedTotal;
