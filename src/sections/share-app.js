@@ -15,6 +15,7 @@ class ShareApp extends LitElement {
       }
 
       .content {
+        padding: 1rem;
         display: flex;
         align-items: center;
       }
@@ -65,30 +66,22 @@ class ShareApp extends LitElement {
 
   render() {
     return html`
-      <weather-section header="Jaa sovellus">
-        <div class="content">
-          <div>
-            <svg-icon
-              class="qr half"
-              path="assets/image/icons.svg#qr"
-            ></svg-icon>
-          </div>
+      <div class="content">
+        <div>
+          <svg-icon class="qr half" path="assets/image/icons.svg#qr"></svg-icon>
+        </div>
 
-          ${ShareApp._show() === true
-            ? html` <button class="half" @click="${ShareApp._share}">
-                lähetä linkki
-              </button>`
-            : ''}
-        </div>
-        <div slot="footer-left"></div>
-        <div slot="footer-right">
-          <svg-icon
-            class="share"
-            path="assets/image/icons.svg#share"
-            small
-          ></svg-icon>
-        </div>
-      </weather-section>
+        ${ShareApp._show() === true
+          ? html` <button class="half" @click="${ShareApp._share}">
+              lähetä linkki &nbsp;
+              <svg-icon
+                class="share"
+                path="assets/image/icons.svg#share"
+                small
+              ></svg-icon>
+            </button>`
+          : ''}
+      </div>
     `;
   }
 

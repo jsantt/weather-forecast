@@ -66,10 +66,9 @@ class WeatherApp extends LitElement {
           'forecast'
           'sun'
           'links'
-          'calendar'
+          'share'
           'info'
           'cookies'
-          'share'
           'copy'
           'symbols';
       }
@@ -100,12 +99,9 @@ class WeatherApp extends LitElement {
           grid-template-areas:
             'forecast sun       .'
             'forecast links     .'
-            'forecast calendar  .'
-            'forecast calendar  .'
-            'info     calendar  .'
-            'info     calendar  .'
-            'info     share     .'
-            'cookies  share     .'
+            'forecast share     .'
+            'forecast info      .'
+            'cookies  info      .'
             'copy     copy      .'
             'symbols  symbols symbols';
         }
@@ -299,7 +295,7 @@ class WeatherApp extends LitElement {
         ></sunrise-sunset>
 
         <!--public-holidays class="section section--calendar"></public-holidays-->
-        <holiday-calendar class="section section--calendar"></holiday-calendar>
+        <!--holiday-calendar class="section section--calendar"></holiday-calendar-->
 
         <weather-section
           class="section section--informationOnService"
