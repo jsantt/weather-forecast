@@ -27,7 +27,6 @@ class SymbolList extends LitElement {
 
       svg-icon {
         display: block;
-        margin-left: -0.45rem;
       }
 
       wind-icon {

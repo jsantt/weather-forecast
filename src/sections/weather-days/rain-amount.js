@@ -15,10 +15,6 @@ class RainAmount extends LitElement {
 
   render() {
     return html`
-      ${this.rainAmount === 0 && this.snowAmount === 0 ? 'Poutaa' : ''}
-      ${this.rainAmount > 0 && this.snowAmount > 0 ? 'Sadetta' : ''}
-      ${this.rainAmount === 0 && this.snowAmount > 0 ? 'Lunta' : ''}
-      ${this.rainAmount > 0 && this.snowAmount === 0 ? 'Sadetta' : ''}
       ${this.rainAmount > 0
         ? html`
             <svg width="12" height="12" viewBox="0 0 32 32">
@@ -29,7 +25,6 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
-            ${this.rainAmount}mm
           `
         : ''}
       ${this.snowAmount > 0
@@ -44,9 +39,14 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
-            ${this.snowAmount}cm
           `
         : ''}
+      ${this.rainAmount === 0 && this.snowAmount === 0 ? '' : ''}
+      ${this.rainAmount > 0 && this.snowAmount > 0 ? 'Sadetta' : ''}
+      ${this.rainAmount === 0 && this.snowAmount > 0 ? 'Lumisadetta' : ''}
+      ${this.rainAmount > 0 && this.snowAmount === 0 ? 'Sadetta' : ''}
+      ${this.rainAmount > 0 ? html` ${this.rainAmount} mm. ` : ''}
+      ${this.snowAmount > 0 ? html` ${this.snowAmount} cm. ` : ''}
     `;
   }
 

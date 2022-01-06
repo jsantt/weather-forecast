@@ -16,6 +16,12 @@ class WeatherDescription extends LitElement {
       :host {
         display: inline-block;
       }
+      sup {
+        vertical-align: text-top;
+      }
+      sub {
+        vertical-align: text-bottom;
+      }
     `;
   }
 
@@ -33,7 +39,7 @@ class WeatherDescription extends LitElement {
         .maxWind="${WeatherDescription._maxWind(this.dayData)}"
         @click="${() => this._toggleWind()}"
       >
-        m/s
+        <span><sup>m</sup>/<sub>s</sub></span>
       </max-wind>
     `;
   }

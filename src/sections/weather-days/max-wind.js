@@ -18,6 +18,7 @@ class MaxWind extends LitElement {
         width: 11px;
         height: 11px;
         margin-bottom: 2px;
+        margin-left: var(--space-s);
       }
 
       :host([rating='2']) svg-icon {
@@ -36,9 +37,9 @@ class MaxWind extends LitElement {
 
   render() {
     return html`
-      ja puuskissa ${MaxWind._windDescription(this.rating)}
       <svg-icon class="wind-icon" path="assets/image/icons.svg#wind"></svg-icon>
-      ${this.maxWind}<slot></slot>
+      Puuskissa ${MaxWind._windDescription(this.rating)} ${this.maxWind}<slot
+      ></slot>
     `;
   }
 
@@ -64,7 +65,7 @@ class MaxWind extends LitElement {
       case 4:
         return 'hirmumyrskyä';
       default:
-        return '';
+        return 'tuulee';
     }
   }
 }
