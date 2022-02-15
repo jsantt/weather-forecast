@@ -8,14 +8,11 @@ class StationDetails extends LitElement {
   static get styles() {
     return css`
       :host {
-        border-radius: var(--border-radius);
-        border: 2px solid var(--color-gray-300);
-
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: auto;
         grid-gap: var(--space-m);
-        padding: var(--space-l);
+        padding: var(--space-m);
       }
 
       @media only screen and (min-width: 430px) {

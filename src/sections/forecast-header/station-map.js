@@ -27,7 +27,8 @@ class StationMap extends LitElement {
 
       .selected-station circle {
         opacity: 1;
-        fill: var(--color-blue-650);
+        fill: var(--color-blue-800);
+        stroke: var(--color-white);
       }
 
       use,
@@ -94,10 +95,11 @@ class StationMap extends LitElement {
               @click="${() => this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
-              r="${observation.selectedStation ? 0.18 : 0.16}"
-              opacity="0.08"
-              stroke="var(--color-gray-300)"
+              r="${observation.selectedStation ? 0.16 : 0.16}"
+              opacity="0.8"
+              stroke="var(--color-gray-500)"
               stroke-width="0.013"
+              fill="var(--color-blue-650)"
             />
           
            <use

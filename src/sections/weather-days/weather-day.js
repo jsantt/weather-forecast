@@ -1,7 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './temperature-line.js';
-
 import './rain-bars.js';
 import './weather-description.js';
 
@@ -48,7 +46,7 @@ class WeatherDay extends LitElement {
       }
 
       .weatherDay_grid {
-        background-color: var(--color-white);
+        background-color: var(--color-gray-300);
         border-radius: var(--border-radius);
         display: grid;
         grid-row-gap: 0;
@@ -112,8 +110,18 @@ class WeatherDay extends LitElement {
         grid-row: 6;
 
         font-size: var(--font-size-m);
+        margin-top: 0.2rem;
         text-align: center;
+
         z-index: var(--z-index-1);
+      }
+
+      .temperature--negative {
+        color: var(--color-blue-500);
+      }
+
+      .temperature--positive {
+        color: var(--color-red-500);
       }
 
       .temperature_line {
@@ -124,18 +132,19 @@ class WeatherDay extends LitElement {
 
       .wind_header {
         grid-row: 100;
+
+        background: var(--color-gray-300);
         color: var(--color-black);
         font-size: var(--font-size-s);
 
         padding: var(--space-m);
 
         grid-column: span 25;
-        text-align: right;
       }
 
       .wind,
       .wind--empty {
-        grid-row: 98;
+        grid-row: 7;
       }
 
       .temperature--empty,
@@ -156,13 +165,14 @@ class WeatherDay extends LitElement {
       }
 
       wind-icon {
-        margin-top: var(--space-l);
+        margin-top: var(--space-m);
       }
 
       .rain-bars {
         grid-column: span 25;
         grid-row: 12;
-        padding-top: 1.55rem;
+
+        margin-top: 0.9rem;
       }
 
       .hourly-symbols {
@@ -225,7 +235,11 @@ class WeatherDay extends LitElement {
                       ></svg-icon>
                     </div>
 
-                    <div class="temperature">
+                    <div
+                      class="temperature ${entry.temperature < 0
+                        ? 'temperature--negative'
+                        : 'temperature--positive'}"
+                    >
                       ${Number.isFinite(entry.temperature) === true
                         ? html`${this.showFeelsLike === true
                             ? html`<span class="feels-like"
@@ -260,14 +274,6 @@ class WeatherDay extends LitElement {
           })}
 
           <div class="hour hour--empty"></div>
-
-          <div class="temperature_line">
-            <temperature-line
-              .minTemperature="${this.minTemperature}"
-              .dayData="${this.dayData}"
-            >
-            </temperature-line>
-          </div>
 
           <section class="rain-bars">
             <rain-bars

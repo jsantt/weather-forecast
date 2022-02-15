@@ -23,17 +23,49 @@ class ForecastHeader extends LitElement {
 
       :host {
         display: block;
+
         padding-bottom: var(--header-background-expand);
       }
 
       header {
-        background: var(--color-blue-600);
         margin-bottom: calc(-1 * (var(--header-background-expand)));
         padding-bottom: var(--header-background-expand);
 
         /* anchor for h2 */
         position: relative;
+
+        background: var(--color-blue-600);
+        /*background-image: linear-gradient(#174870e1, #174870e1),
+          url('assets/image/map.png');*/
+        background-image: linear-gradient(
+            rgb(46 110 161 / 87%),
+            rgb(32 100 155 / 87%)
+          ),
+          url(assets/image/map.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
       }
+
+      /*header::after {
+        background: var(--color-blue-600);
+        background-image: linear-gradient(var(--color-blue-600), #174870e1),
+          url('assets/image/kartta.png');
+        background-repeat: no-repeat; 
+        background-size: cover; 
+        background-position: center;
+
+        opacity: 1;
+
+        content: '';
+
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+      }*/
 
       @media only screen and (min-width: 430px) {
         header {
@@ -67,9 +99,6 @@ class ForecastHeader extends LitElement {
       }
 
       .selected {
-        backdrop-filter: blur(2px);
-        -webkit-backdrop-filter: blur(2px);
-
         color: var(--color-blue-100);
         display: grid;
         grid-template-columns: auto 3rem 2rem;
@@ -138,7 +167,6 @@ class ForecastHeader extends LitElement {
       }
 
       station-details {
-        background: var(--color-blue-650);
         color: var(--color-white);
       }
     `;

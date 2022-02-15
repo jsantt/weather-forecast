@@ -25,6 +25,7 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
+            Sadetta ${this.rainAmount} mm.
           `
         : ''}
       ${this.snowAmount > 0
@@ -39,14 +40,9 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
+            Lumisadetta ${this.snowAmount} cm.
           `
         : ''}
-      ${this.rainAmount === 0 && this.snowAmount === 0 ? '' : ''}
-      ${this.rainAmount > 0 && this.snowAmount > 0 ? 'Sadetta' : ''}
-      ${this.rainAmount === 0 && this.snowAmount > 0 ? 'Lumisadetta' : ''}
-      ${this.rainAmount > 0 && this.snowAmount === 0 ? 'Sadetta' : ''}
-      ${this.rainAmount > 0 ? html` ${this.rainAmount} mm. ` : ''}
-      ${this.snowAmount > 0 ? html` ${this.snowAmount} cm. ` : ''}
     `;
   }
 

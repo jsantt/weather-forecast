@@ -13,8 +13,8 @@ class WindIcon extends LitElement {
       }
 
       .windIcon--large {
-        height: 34px;
-        width: 34px;
+        height: 40px;
+        width: 40px;
       }
 
       .windSpeed,
