@@ -27,8 +27,13 @@ class StationMap extends LitElement {
 
       .selected-station circle {
         opacity: 1;
-        fill: var(--color-blue-800);
+        fill: var(--color-white);
         stroke: var(--color-white);
+      }
+
+      .selected-station .svg-text,
+      .selected-station .celcius {
+        fill: var(--color-black);
       }
 
       use,
@@ -96,8 +101,8 @@ class StationMap extends LitElement {
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
               r="${observation.selectedStation ? 0.16 : 0.16}"
-              opacity="0.8"
-              stroke="var(--color-gray-500)"
+              opacity="0.7"
+              stroke="var(--color-blue-650)"
               stroke-width="0.013"
               fill="var(--color-blue-650)"
             />
