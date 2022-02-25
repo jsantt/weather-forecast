@@ -20,6 +20,10 @@ class RainBars extends LitElement {
         animation: growRainBars 0.3s ease-out;
       }
 
+      .rainBar.rain {
+        fill: var(--color-rain);
+      }
+
       .svg {
         padding-bottom: 0.1rem;
 
@@ -114,7 +118,7 @@ class RainBars extends LitElement {
           'rect'
         );
 
-        bar.setAttribute('class', 'rainBar');
+        bar.setAttribute('class', `rainBar ${data[i].rainType}`);
         bar.setAttribute('width', '9');
 
         const rectHeight = RainBars._rectHeight(data[i].rain, data[i].rainType);

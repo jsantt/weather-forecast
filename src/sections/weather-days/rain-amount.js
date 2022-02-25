@@ -7,8 +7,11 @@ class RainAmount extends LitElement {
 
   static get styles() {
     return css`
-      svg {
-        fill: var(--color-lightblue-500);
+      .rain {
+        fill: var(--color-rain);
+      }
+      .snow {
+        fill: var(--color-snow);
       }
     `;
   }
@@ -17,7 +20,7 @@ class RainAmount extends LitElement {
     return html`
       ${this.rainAmount > 0
         ? html`
-            <svg width="12" height="12" viewBox="0 0 32 32">
+            <svg class="rain" width="12" height="12" viewBox="0 0 32 32">
               <g>
                 <path
                   stroke="null"
@@ -25,12 +28,12 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
-            Sadetta ${this.rainAmount} mm.
+            Sadetta ${this.rainAmount} mm.<br />
           `
         : ''}
       ${this.snowAmount > 0
         ? html`
-            <svg width="12" height="12" viewBox="0 0 32 32">
+            <svg class="snow" width="12" height="12" viewBox="0 0 32 32">
               <g>
                 <path
                   stroke="null"
@@ -40,7 +43,7 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
-            Lumisadetta ${this.snowAmount} cm.
+            Lumisadetta ${this.snowAmount} cm. <br />
           `
         : ''}
     `;

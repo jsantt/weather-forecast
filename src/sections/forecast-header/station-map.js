@@ -27,8 +27,8 @@ class StationMap extends LitElement {
 
       .selected-station circle {
         opacity: 1;
-        fill: var(--color-white);
-        stroke: var(--color-white);
+        fill: var(--color-gray-300);
+        stroke: var(--color-gray-300);
       }
 
       .selected-station .svg-text,
