@@ -132,13 +132,24 @@ class LocationSelector extends LitElement {
    * When customer chooses geolocate, we need to wait response containing place name
    */
   _newPlace() {
-    this.city = this.place.name;
+    this.city = LocationSelector._getPlaceName(this.place.name);
     this.shadowRoot.querySelector('combo-box').requestUpdate();
 
     const url = this.place.name;
 
     LocationSelector._changeUrl('place', url);
     LocationSelector._store('place', this.place.name, this.place.coordinates);
+  }
+
+  static _getPlaceName(name) {
+    const newName = CITIES.filter(item => {
+      return name === item.key;
+    });
+
+    if (newName.length > 0) {
+      return newName[0].city;
+    }
+    return name;
   }
 
   _notifyPreviousPlace() {

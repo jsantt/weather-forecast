@@ -59,7 +59,11 @@ const CITIES = [
   { city: 'Hausjärvi', coordinates: '60.787500,25.027778' },
   { city: 'Heinola', coordinates: '61.202778,26.031944' },
   { city: 'Heinävesi', coordinates: '62.426389,28.630556' },
-  { city: 'Helsinki', coordinates: '60.170833,24.937500' },
+  {
+    city: 'Helsinki',
+    key: 'Central Helsinki',
+    coordinates: '60.170833,24.937500',
+  },
   { city: 'Hirvensalmi', coordinates: '61.638889,26.780556' },
   { city: 'Hollola', coordinates: '60.987500,25.516667' },
   { city: 'Honkajoki', coordinates: '61.993056,22.263889' },
