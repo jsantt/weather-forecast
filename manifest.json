@@ -33,6 +33,6 @@
   "start_url": "index.html",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#84b9ff",
-  "background_color": "#84b9ff"
+  "theme_color": "#173f5f",
+  "background_color": "#173f5f"
 }
