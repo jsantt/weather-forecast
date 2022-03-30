@@ -35,6 +35,8 @@ class BottomSheet extends LitElement {
         margin-left: var(--space-m);
         margin-right: var(--space-m);
 
+        padding-bottom: env(safe-area-inset-bottom);
+
         position: fixed;
         bottom: 0;
         left: 0;
