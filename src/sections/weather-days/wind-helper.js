@@ -11,12 +11,23 @@ const _WIND_TABLE = [
   { min: 32, max: 99, rate: 4, description: 'hirmumyrskyä' },
 ];
 
-function windWarning(forecastData) {
+function windGustWarning(forecastData) {
   if (forecastData === undefined || forecastData.length < 1) {
     return '';
   }
 
   const maxWind = Math.round(_max(forecastData, 'windGust'));
+  const rating = windClassification(maxWind);
+
+  return { rating, maxWind };
+}
+
+function windWarning(forecastData) {
+  if (forecastData === undefined || forecastData.length < 1) {
+    return '';
+  }
+
+  const maxWind = Math.round(_max(forecastData, 'wind'));
   const rating = windClassification(maxWind);
 
   return { rating, maxWind };
@@ -49,4 +60,4 @@ function _max(forecastData, property) {
   return maxWind;
 }
 
-export { windClassification, windWarning };
+export { windClassification, windGustWarning, windWarning };

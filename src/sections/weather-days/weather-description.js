@@ -4,7 +4,7 @@ import './rain-amount.js';
 import './max-wind.js';
 
 import { totalRain, totalSnow } from './rain-helper.js';
-import { windWarning } from './wind-helper.js';
+import { windGustWarning, windWarning } from './wind-helper.js';
 
 class WeatherDescription extends LitElement {
   static get is() {
@@ -35,6 +35,8 @@ class WeatherDescription extends LitElement {
       ></rain-amount>
 
       <max-wind
+        .gustRating="${WeatherDescription._gustRating(this.dayData)}"
+        .maxGustWind="${WeatherDescription._maxWind(this.dayData)}"
         .rating="${WeatherDescription._windRating(this.dayData)}"
         .maxWind="${WeatherDescription._maxWind(this.dayData)}"
         @click="${() => this._toggleWind()}"
@@ -70,6 +72,14 @@ class WeatherDescription extends LitElement {
     }
 
     return windWarning(dayData).rating;
+  }
+
+  static _gustRating(dayData) {
+    if (dayData === undefined || dayData.length < 1) {
+      return '';
+    }
+
+    return windGustWarning(dayData).gustRating;
   }
 
   static _rain(dayData) {

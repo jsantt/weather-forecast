@@ -73,7 +73,7 @@ class BottomSheet extends LitElement {
         margin: 0 auto;
 
         padding: var(--space-s) var(--space-s)
-          max(var(--space-m), var(--safe-area-inset-bottom)) var(--space-s);
+          max(0.75rem, var(--safe-area-inset-bottom)) var(--space-s);
 
         /* prevent double tab zooming on bottom bar component*/
         touch-action: manipulation;
