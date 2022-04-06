@@ -57,10 +57,13 @@
     <!-- iOS -->
 
     <!-- Allow full-screen mode. -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     
     <!-- Status bar style -->
-    <!-- meta name="apple-mobile-web-app-status-bar-style" content="black" -->
+    <!-- possible content values: default, black or black-translucent -->
+    <meta name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent">
 
     <!-- iPhone non-retina icon -->
     <link rel="apple-touch-icon" href="assets/image/weather-icon-57x57.png">
@@ -110,6 +113,9 @@
         }
 
         body {
+
+          --safe-area-inset-bottom: env(safe-area-inset-bottom, 20px);
+
           --background-header: linear-gradient(
             to right,
             #20649bc5,

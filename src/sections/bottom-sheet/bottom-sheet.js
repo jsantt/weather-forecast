@@ -35,8 +35,6 @@ class BottomSheet extends LitElement {
         margin-left: var(--space-m);
         margin-right: var(--space-m);
 
-        padding-bottom: env(safe-area-inset-bottom);
-
         position: fixed;
         bottom: 0;
         left: 0;
@@ -73,7 +71,9 @@ class BottomSheet extends LitElement {
 
         text-align: center;
         margin: 0 auto;
-        padding: var(--space-s);
+
+        padding: var(--space-s) var(--space-s)
+          max(var(--space-m), var(--safe-area-inset-bottom)) var(--space-s);
 
         /* prevent double tab zooming on bottom bar component*/
         touch-action: manipulation;
@@ -372,7 +372,10 @@ class BottomSheet extends LitElement {
     }
 
     // if already installed
-    if (navigator.standalone) {
+    if (
+      navigator.standalone ||
+      window.matchMedia('(display-mode: standalone)')?.matches
+    ) {
       return false;
     }
 
