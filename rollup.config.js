@@ -51,6 +51,7 @@ export default merge(baseConfig, {
         { src: './assets/robots.txt', dest: './dist/' },
         { src: './manifest.json', dest: './dist/' },
         { src: './assets/sitemap.xml', dest: './dist/' },
+        { src: './kelaa.html', dest: './dist/' },
       ],
     }),
     analyze({ onAnalysis, summaryOnly: false }),
