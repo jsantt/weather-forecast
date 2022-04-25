@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit-element';
 import './rain-amount.js';
 import './max-wind.js';
 
-import { totalRain, totalSnow } from './rain-helper.js';
+import { rainStartTime, totalRain, totalSnow } from './rain-helper.js';
 import { windGustWarning, windWarning } from './wind-helper.js';
 
 class WeatherDescription extends LitElement {
@@ -30,8 +30,9 @@ class WeatherDescription extends LitElement {
       <wind-helper></wind-helper>
 
       <rain-amount
-        .rainAmount="${WeatherDescription._rain(this.dayData)}"
-        .snowAmount="${WeatherDescription._snow(this.dayData)}"
+        .rainStartTime="${rainStartTime(this.dayData)}"
+        .rainAmount="${totalRain(this.dayData)}"
+        .snowAmount="${totalSnow(this.dayData)}"
       ></rain-amount>
 
       <max-wind
@@ -80,14 +81,6 @@ class WeatherDescription extends LitElement {
     }
 
     return windGustWarning(dayData).gustRating;
-  }
-
-  static _rain(dayData) {
-    return totalRain(dayData);
-  }
-
-  static _snow(dayData) {
-    return totalSnow(dayData);
   }
 }
 

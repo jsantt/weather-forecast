@@ -9,6 +9,12 @@ function _round(total) {
   return roundedTotal;
 }
 
+function rainStartTime(dayData) {
+  const rainStartItem = dayData.find(item => item.rain > 0);
+
+  return rainStartItem === undefined ? undefined : rainStartItem.hour;
+}
+
 /**
  * Sleet is counted as rain
  */
@@ -35,6 +41,7 @@ function totalRain(dayData) {
 }
 
 function totalSnow(weatherDay) {
+  console.log(weatherDay);
   const SNOW_SYMBOLS = [41, 42, 43, 51, 52, 53];
 
   let snow;
@@ -53,4 +60,4 @@ function totalSnow(weatherDay) {
   return _round(total);
 }
 
-export { totalRain, totalSnow };
+export { totalRain, totalSnow, rainStartTime };
