@@ -95,7 +95,7 @@ class BottomNotification extends LitElement {
             <section aria-live="polite">
               ${this.showInstall === true
                 ? html` <header>
-                      Nopein tapa tarkistaa Ilmatieteen laitoksen sää! Lisää
+                      Ilmatieteen laitoksen sää yhdellä vilkaisulla! Lisää
                       sovellus kotivalikkoon
                     </header>
                     ${this.ios

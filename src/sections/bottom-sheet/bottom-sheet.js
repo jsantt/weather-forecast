@@ -206,7 +206,7 @@ class BottomSheet extends LitElement {
                     : ''}
                 </div>
 
-                <div class="button-text">asenna</div>
+                <div class="button-text">Sovellus</div>
               </button>
             `}
 

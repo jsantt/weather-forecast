@@ -53,6 +53,7 @@ class WeatherApp extends LitElement {
         font-weight: var(--font-weight-bold);
         border-radius: 0;
         text-align: center;
+        padding-top: var(--space-l);
       }
 
       .container {
@@ -231,10 +232,6 @@ class WeatherApp extends LitElement {
 
       <div class="container" ?hidden="${this._firstLoading}">
         <weather-section class="section section--forecast">
-          <p class="by">
-            Saaennuste.fi - Ilmatieteen laitoksen sää parhaassa muodossa
-          </p>
-
           <slot id="place"></slot>
 
           ${this._forecastError === true
@@ -275,6 +272,7 @@ class WeatherApp extends LitElement {
           ></bottom-sheet>
 
           <div class="by">
+            Ilmatieteen laitoksen sää yhdellä vilkaisulla<br />
             <img
               class="logo"
               alt="fmi logo"
