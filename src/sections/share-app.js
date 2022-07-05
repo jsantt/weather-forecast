@@ -24,7 +24,7 @@ class ShareApp extends LitElement {
         background: transparent;
         border: 2px solid var(--color-blue-700);
 
-        border-radius: 3rem;
+        border-radius: 1.5rem;
 
         color: var(--color-blue-700);
         font-family: inherit;
@@ -73,7 +73,7 @@ class ShareApp extends LitElement {
 
         ${ShareApp._show() === true
           ? html` <button class="half" @click="${ShareApp._share}">
-              lähetä linkki &nbsp;
+              lähetä linkki
               <svg-icon
                 class="share"
                 path="assets/image/icons.svg#share"

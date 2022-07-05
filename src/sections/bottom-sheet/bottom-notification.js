@@ -67,8 +67,8 @@ class BottomNotification extends LitElement {
       ol {
         font-weight: var(--font-weight-normal);
         line-height: 1.8;
-        margin: var(--space-l) var(--space-l) var(--space-l) 0;
-        padding: 0 0 0 var(--space-xl);
+        margin: var(--space-s) var(--space-l) var(--space-s) 0;
+        padding: 0 0 0 var(--space-l);
       }
 
       @media only screen and (min-width: 430px) {
@@ -95,8 +95,7 @@ class BottomNotification extends LitElement {
             <section aria-live="polite">
               ${this.showInstall === true
                 ? html` <header>
-                      Ilmatieteen laitoksen sää yhdellä vilkaisulla! Lisää
-                      sovellus kotivalikkoon
+                      Voit lisätä sovelluksen kotivalikkoon tai työpyödälle
                     </header>
                     ${this.ios
                       ? html` <ol>
@@ -135,7 +134,7 @@ class BottomNotification extends LitElement {
             </div>
 
             ${!this.ios && this.showInstall
-              ? html` <install-button> Asenna nyt</install-button>`
+              ? html` <install-button> Lisää nyt</install-button>`
               : ''}
           </div>`
         : ''}
