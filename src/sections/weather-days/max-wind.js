@@ -50,8 +50,7 @@ class MaxWind extends LitElement {
   render() {
     return html`
       <svg-icon class="wind-icon" path="assets/image/icons.svg#wind"></svg-icon>
-      Puuskissa ${MaxWind._windDescription(this.rating)} ${this.maxWind}<slot
-      ></slot>
+      ${MaxWind._windDescription(this.rating)} ${this.maxWind}<slot></slot>
     `;
   }
 
@@ -64,7 +63,7 @@ class MaxWind extends LitElement {
       case 4:
         return 'hirmumyrskyä';
       default:
-        return 'tuulee';
+        return 'tuulen nopeus';
     }
   }
 }

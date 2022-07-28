@@ -72,14 +72,11 @@ class ShareApp extends LitElement {
         </div>
 
         ${ShareApp._show() === true
-          ? html` <button class="half" @click="${ShareApp._share}">
-              lähetä linkki
-              <svg-icon
-                class="share"
-                path="assets/image/icons.svg#share"
-                small
-              ></svg-icon>
-            </button>`
+          ? html`
+              <button class="half" @click="${ShareApp._share}">
+                lähetä linkki
+              </button>
+            `
           : ''}
       </div>
     `;
