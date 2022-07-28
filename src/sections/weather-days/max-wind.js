@@ -44,26 +44,35 @@ class MaxWind extends LitElement {
         type: Number,
         reflect: true,
       },
+      maxGustWind: {
+        type: String,
+        reflect: true,
+      },
+      gustRating: {
+        type: Number,
+        reflect: true,
+      },
     };
   }
 
   render() {
     return html`
       <svg-icon class="wind-icon" path="assets/image/icons.svg#wind"></svg-icon>
-      ${MaxWind._windDescription(this.rating)} ${this.maxWind}<slot></slot>
+      ${MaxWind._windDescription(this.gustRating)} ${this.maxGustWind}<slot
+      ></slot>
     `;
   }
 
   static _windDescription(rating) {
     switch (rating) {
       case 2:
-        return 'kovaa tuulta';
+        return 'kovaa tuulta puuskissa';
       case 3:
-        return 'myrskyä';
+        return 'puuskissa myrskyä';
       case 4:
-        return 'hirmumyrskyä';
+        return 'puuskissa hirmumyrskyä';
       default:
-        return 'tuulen nopeus';
+        return 'tuulen nopeus puuskissa';
     }
   }
 }

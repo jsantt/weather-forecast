@@ -37,7 +37,7 @@ class WeatherDescription extends LitElement {
 
       <max-wind
         .gustRating="${WeatherDescription._gustRating(this.dayData)}"
-        .maxGustWind="${WeatherDescription._maxWind(this.dayData)}"
+        .maxGustWind="${WeatherDescription._maxGustWind(this.dayData)}"
         .rating="${WeatherDescription._windRating(this.dayData)}"
         .maxWind="${WeatherDescription._maxWind(this.dayData)}"
         @click="${() => this._toggleWind()}"
@@ -73,6 +73,10 @@ class WeatherDescription extends LitElement {
     }
 
     return windWarning(dayData).rating;
+  }
+
+  static _maxGustWind(dayData) {
+    return windGustWarning(dayData).maxGustWind;
   }
 
   static _gustRating(dayData) {

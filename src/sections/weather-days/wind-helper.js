@@ -16,10 +16,10 @@ function windGustWarning(forecastData) {
     return '';
   }
 
-  const maxWind = Math.round(_max(forecastData, 'windGust'));
-  const rating = windClassification(maxWind);
+  const maxGustWind = Math.round(_max(forecastData, 'windGust'));
+  const gustRating = windClassification(maxGustWind);
 
-  return { rating, maxWind };
+  return { gustRating, maxGustWind };
 }
 
 function windWarning(forecastData) {
