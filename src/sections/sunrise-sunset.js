@@ -130,23 +130,20 @@ class SunriseSunset extends LitElement {
               <div>${this._nightEnd}</div>
               <div>yö loppuu</div>
 
-              <div>${this._nauticalDawn}</div>
-              <div>hämärä alkaa</div>
+              <div>${this._dawn}</div>
+              <div>hämärä loppuu</div>
 
               <div>${this._sunrise}</div>
               <div>aurinko nousee</div>
 
               <div>${this._goldenHourEnd}</div>
-              <div class="more-space">aamun kultainen hetki päättyy</div>
+              <div class="more-space">kultainen hetki päättyy</div>
 
               <div>${this._solarNoon}</div>
               <div class="more-space">aurinko korkeimmillaan</div>
 
               <div>${this._goldenHour}</div>
-              <div>illan kultainen hetki alkaa</div>
-
-              <div>${this._sunsetStart}</div>
-              <div>auringon lasku alkaa</div>
+              <div>kultainen hetki alkaa</div>
 
               <div>${this._sunset}</div>
               <div>aurinko laskee</div>
@@ -154,11 +151,8 @@ class SunriseSunset extends LitElement {
               <div>${this._dusk}</div>
               <div>hämärä alkaa</div>
 
-              <div>${this._nauticalDusk}</div>
-              <div>tähtitieteellinen hämärä alkaa</div>
-
               <div>${this._night}</div>
-              <div>yö alkaa</div>
+              <div class="more-space">yö alkaa</div>
 
               <div>${this._darkestNight}</div>
               <div>aurinko matalimmillaan (pimeintä)</div>
