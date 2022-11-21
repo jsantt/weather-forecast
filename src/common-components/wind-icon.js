@@ -24,6 +24,10 @@ class WindIcon extends LitElement {
         font-size: 48px;
       }
 
+      :host([rating='2']) .windSpeed {
+        fill: #333;
+      }
+
       .windGustSpeed--white {
         fill: var(--color-secondary);
       }
