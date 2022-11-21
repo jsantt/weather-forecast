@@ -14,19 +14,13 @@ class ShareApp extends LitElement {
         margin: var(--space-m);
       }
 
-      .content {
-        padding: 1rem;
-        display: flex;
-        align-items: center;
-      }
-
       button {
         background: transparent;
         border: 2px solid var(--color-blue-700);
 
         border-radius: 1.5rem;
 
-        color: var(--color-blue-700);
+        color: var(--color-primary);
         font-family: inherit;
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-boldest);
@@ -50,6 +44,7 @@ class ShareApp extends LitElement {
         fill: var(--color-blue-700);
         min-width: 100px;
         min-height: 100px;
+        margin-bottom: var(--space-l);
       }
 
       .half {
@@ -66,19 +61,24 @@ class ShareApp extends LitElement {
 
   render() {
     return html`
-      <div class="content">
-        <div>
-          <svg-icon class="qr half" path="assets/image/icons.svg#qr"></svg-icon>
-        </div>
+      <weather-section header="Jaa sovellus">
+        <div class="content">
+          <div>
+            <svg-icon
+              class="qr half"
+              path="assets/image/icons.svg#qr"
+            ></svg-icon>
+          </div>
 
-        ${ShareApp._show() === true
-          ? html`
-              <button class="half" @click="${ShareApp._share}">
-                lähetä linkki
-              </button>
-            `
-          : ''}
-      </div>
+          ${ShareApp._show() === true
+            ? html`
+                <button class="half" @click="${ShareApp._share}">
+                  lähetä linkki
+                </button>
+              `
+            : ''}
+        </div>
+      </weather-section>
     `;
   }
 

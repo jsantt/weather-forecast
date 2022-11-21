@@ -21,15 +21,12 @@ class BottomSheet extends LitElement {
   static get styles() {
     return css`
       :host {
-        --color: var(--color-blue-700);
-
         display: block;
-        background: var(--color-gray-300);
+        background: var(--background-accent);
 
         border-top-left-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
 
-        border-top: 1px solid var(--color-gray-300);
         box-shadow: var(--box-shadow-upwards);
 
         margin-left: var(--space-m);
@@ -55,14 +52,14 @@ class BottomSheet extends LitElement {
       button {
         background: none;
         border: none;
-        color: var(--color);
+        color: var(--color-primary);
 
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
 
-        fill: var(--color);
+        fill: var(--color-primary);
         font-family: var(--font-family-primary);
         font-size: var(--font-size-s);
         font-weight: var(--font-weight-bold);
@@ -94,13 +91,15 @@ class BottomSheet extends LitElement {
       }
 
       :host([showFeelsLike]) .feelsLike,
-      :host([showWind]) .wind {
-        border-top: 3px solid var(--color-blue-700);
+      :host([showWind]) .wind,
+      :host([darkMode]) .darkmode {
+        border-top: 4px solid var(--color-blue-700);
       }
 
       :host([showFeelsLike]) .feelsLike-icon,
-      :host([showWind]) .wind-icon {
-        margin-top: -3px;
+      :host([showWind]) .wind-icon,
+      :host([darkMode]) .darkmode-icon {
+        margin-top: -4px;
       }
 
       .locate-icon {
@@ -118,7 +117,7 @@ class BottomSheet extends LitElement {
       }
 
       .small-icon {
-        fill: var(--color-blue-700);
+        fill: var(--color-primary);
 
         filter: drop-shadow(rgba(0, 0, 0, 0.3) 0px 3px 4px);
 
@@ -128,7 +127,7 @@ class BottomSheet extends LitElement {
       }
 
       .error {
-        color: var(--color-blue-700);
+        color: var(--color-primary);
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-boldest);
         padding: var(--space-m) var(--space-m) var(--space-l) var(--space-m);
@@ -172,27 +171,13 @@ class BottomSheet extends LitElement {
 
       <nav>
         ${this._installButtonVisible === false
-          ? html` <button @click="${this._toggleMapSize}">
-              ${this.largeMap === true
-                ? html`
-                    <svg
-                      class="small-icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M4.686 427.314L104 328l-32.922-31.029C55.958 281.851 66.666 256 88.048 256h112C213.303 256 224 266.745 224 280v112c0 21.382-25.803 32.09-40.922 16.971L152 376l-99.314 99.314c-6.248 6.248-16.379 6.248-22.627 0L4.686 449.941c-6.248-6.248-6.248-16.379 0-22.627zM443.314 84.686L344 184l32.922 31.029c15.12 15.12 4.412 40.971-16.97 40.971h-112C234.697 256 224 245.255 224 232V120c0-21.382 25.803-32.09 40.922-16.971L296 136l99.314-99.314c6.248-6.248 16.379-6.248 22.627 0l25.373 25.373c6.248 6.248 6.248 16.379 0 22.627z"
-                      />
-                    </svg>
-                  `
-                : html`
-                    <svg-icon
-                      class="small-icon"
-                      path="assets/image/icons.svg#expand"
-                    ></svg-icon>
-                  `}
-              <div class="button-text">havainnot</div>
+          ? html` <button @click="${this._toggleDarkMode}" class="darkmode">
+              <svg-icon
+                class="small-icon darkmode-icon"
+                path="assets/image/icons.svg#darkmode"
+              ></svg-icon>
+
+              <div class="button-text">tumma tila</div>
             </button>`
           : html`
               <button @click="${this._showInstallAd}">
@@ -258,6 +243,10 @@ class BottomSheet extends LitElement {
         reflect: true,
       },
       showWind: {
+        type: Boolean,
+        reflect: true,
+      },
+      darkMode: {
         type: Boolean,
         reflect: true,
       },
@@ -390,9 +379,8 @@ class BottomSheet extends LitElement {
     this._dispatchEvent('forecast-header.toggle-feels-like');
   }
 
-  _toggleMapSize() {
-    BottomSheet._scrollTop();
-    this._dispatchEvent('bottom-sheet.toggleMapSize');
+  _toggleDarkMode() {
+    this._dispatchEvent('bottom-sheet.toggle-darkmode');
   }
 
   _toggleWind() {

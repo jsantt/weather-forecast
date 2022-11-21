@@ -19,45 +19,45 @@ class WindIcon extends LitElement {
 
       .windSpeed,
       .windGustSpeed {
-        fill: var(--color-gray-900);
+        fill: var(--color-primary);
         font-weight: var(--font-weight-boldest);
         font-size: 48px;
       }
 
       .windGustSpeed--white {
-        fill: var(--color-gray-300);
+        fill: var(--color-secondary);
       }
 
       .windIcon_arrow {
-        fill: var(--color-gray-900);
-        stroke: var(--color-gray-900);
-      }
-
-      .windIcon_circle {
-        fill: var(--color-white);
-        stroke: var(--color-gray-900);
+        fill: var(--color-primary);
+        stroke: var(--color-primary);
       }
 
       g {
         transition: transform 1s ease;
       }
 
+      .windIcon_circle {
+        fill: var(--background-wind);
+        stroke: var(--color-gray-900);
+      }
+
       :host([rating='1']) .windIcon_circle {
-        fill: var(--color-white);
+        fill: var(--background-wind);
       }
 
       :host([rating='2']) .windIcon_circle {
-        fill: var(--color-yellow-300);
+        fill: var(--background-wind-warning);
       }
 
       :host([rating='3']) .windIcon_circle,
       :host([rating='4']) .windIcon_circle {
-        fill: var(--color-red-500);
+        fill: var(--background-wind-warning2);
       }
 
       :host([rating='3']) .windSpeed,
       :host([rating='4']) .windSpeed {
-        fill: var(--color-white);
+        fill: var(--color-wind-warning2);
       }
     `;
   }

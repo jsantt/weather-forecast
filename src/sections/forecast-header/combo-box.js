@@ -39,7 +39,7 @@ class ComboBox extends LitElement {
       }
 
       .refresh {
-        fill: var(--color-blue-650);
+        fill: var(--color-primary);
         position: absolute;
         right: 2px;
         top: 4px;
@@ -80,12 +80,12 @@ class ComboBox extends LitElement {
       }
 
       input[type='text'] {
-        background: var(--color-gray-300);
+        background: var(--background-accent);
         border: none;
         border-radius: 30px;
         box-shadow: var(--box-shadow);
 
-        color: var(--color-blue-800);
+        color: var(--color-primary);
         font-size: var(--font-size-l);
         font-family: var(--font-family-primary);
         font-weight: var(--font-weight-bold);

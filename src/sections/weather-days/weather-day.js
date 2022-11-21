@@ -19,14 +19,14 @@ class WeatherDay extends LitElement {
       :host {
         --grid-last-column: 25;
 
-        --color-dayHeader: var(--color-blue-650);
-        --color-dayHeader-delimiter: var(--color-gray-300);
+        --color-dayHeader: var(--background-accent2);
+        --color-dayHeader-delimiter: var(--background-panel);
 
         --color-dayHeader-font: var(--color-white);
 
         --color-toggle-background: var(--color-yellow-300);
 
-        color: var(--color-blue-800);
+        color: var(--color-primary);
       }
 
       .visually-hidden {
@@ -42,11 +42,10 @@ class WeatherDay extends LitElement {
       .weatherDay {
         min-height: 8rem;
         position: relative;
-        margin: 0 var(--space-m) var(--space-l) var(--space-m);
       }
 
       .weatherDay_grid {
-        background-color: var(--color-gray-300);
+        background-color: var(--background-panel);
         border-radius: var(--border-radius);
         display: grid;
         grid-row-gap: 0;
@@ -55,15 +54,12 @@ class WeatherDay extends LitElement {
       }
 
       .day {
-        background-color: var(--color-dayHeader);
-        color: var(--color-white);
+        background-color: var(--background-accent2);
+        color: var(--color-secondary);
         padding: var(--space-s) 0;
       }
 
       .day-name {
-        border-top-left-radius: var(--border-radius);
-        border-top-right-radius: var(--border-radius);
-
         grid-column: span 25;
         font-weight: var(--font-weight-normal);
         margin: 0;
@@ -84,7 +80,7 @@ class WeatherDay extends LitElement {
 
         text-align: center;
 
-        color: var(--color-gray-900);
+        color: var(--color-primary);
         margin: var(--space-m) 0 var(--space-s) 0;
       }
 
@@ -133,8 +129,8 @@ class WeatherDay extends LitElement {
       .wind_header {
         grid-row: 100;
 
-        background: var(--color-gray-300);
-        color: var(--color-black);
+        background: var(--packground-panel);
+        color: var(--color-primary);
         font-size: var(--font-size-s);
 
         padding: var(--space-m);

@@ -41,7 +41,7 @@ class BottomNotification extends LitElement {
       }
 
       section {
-        color: var(--color-blue-700);
+        color: var(--color-primary);
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
 

@@ -115,7 +115,7 @@ class WeatherApp extends LitElement {
       }
 
       .section {
-        background-color: var(--color-white-transparent);
+        background-color: var(--background-panel);
         border-radius: none;
         margin: 0;
         max-width: none;
@@ -178,12 +178,12 @@ class WeatherApp extends LitElement {
       }
 
       a:link {
-        color: var(--color-blue-500);
+        color: var(--color-primary);
       }
 
       a:visited,
       a:hover {
-        color: var(--color-blue-700);
+        color: var(--color-primary);
       }
 
       .logo {
@@ -191,7 +191,7 @@ class WeatherApp extends LitElement {
       }
 
       svg {
-        fill: var(--color-blue-700);
+        fill: var(--color-primary);
         margin-right: var(--space-s);
       }
 
@@ -269,6 +269,7 @@ class WeatherApp extends LitElement {
             ?largeMap="${this._largeMap}"
             ?showFeelsLike="${this._showFeelsLike}"
             ?showWind="${this._showWind}"
+            ?darkMode="${this._darkMode}"
           ></bottom-sheet>
 
           <div class="by">
@@ -394,6 +395,9 @@ class WeatherApp extends LitElement {
       _currentPlace: {
         type: Object,
       },
+      _darkMode: {
+        type: Boolean,
+      },
       _firstLoading: {
         type: Boolean,
       },
@@ -438,6 +442,7 @@ class WeatherApp extends LitElement {
 
     this._showWind = false;
     this._showFeelsLike = false;
+    this._darkMode = false;
 
     // user changes location
     this.addEventListener('location-selector.location-changed', event => {
@@ -485,6 +490,10 @@ class WeatherApp extends LitElement {
 
     this.addEventListener('bottom-sheet.toggle-wind', () => {
       this._showWind = !this._showWind;
+    });
+
+    this.addEventListener('bottom-sheet.toggle-darkmode', () => {
+      this._darkMode = !this._darkMode;
     });
 
     this.addEventListener('forecast-header.toggle-feels-like', () => {

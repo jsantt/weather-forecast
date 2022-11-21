@@ -19,7 +19,7 @@ class StationMap extends LitElement {
       }
 
       .svg-text {
-        fill: var(--color-gray-300);
+        fill: var(--color-secondary);
         font-size: 0.15px;
 
         text-rendering: optimizeLegibility;

@@ -31,13 +31,13 @@ class SunriseSunset extends LitElement {
       }
 
       a:link {
-        color: var(--color-blue-500);
+        color: var(--color-primary);
         text-decoration: none;
       }
 
       a:visited,
       a:hover {
-        color: var(--color-blue-700);
+        color: var(--color-primary);
       }
 
       .uv-index-svg {

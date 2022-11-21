@@ -13,17 +13,15 @@ class ExternalLinks extends LitElement {
       :host {
         display: block;
       }
+
       nav {
         display: grid;
         grid-template-columns: auto 4rem;
         grid-template-rows: auto;
-        grid-gap: var(--space-l);
       }
 
       .icon-container {
         background: var(--color-blue-300);
-        border-top-right-radius: var(--border-radius);
-        border-bottom-right-radius: var(--border-radius);
         padding: var(--space-l);
         margin: auto;
       }
@@ -38,7 +36,7 @@ class ExternalLinks extends LitElement {
       }
 
       .link {
-        background: var(--color-white-transparent);
+        background: var(--background-panel);
         display: grid;
         align-items: center;
         height: 100%;
@@ -47,7 +45,7 @@ class ExternalLinks extends LitElement {
       }
 
       a:link {
-        color: var(--color-blue-500);
+        color: var(--color-primary);
 
         text-decoration: none;
       }
@@ -58,7 +56,7 @@ class ExternalLinks extends LitElement {
 
       a:visited,
       a:hover {
-        color: var(--color-blue-700);
+        color: var(--color-primary);
       }
     `;
   }

@@ -123,7 +123,11 @@
               #20649bb4
             );
 
-          --background-footer: linear-gradient( to right, #20649b21, #20649b04 );
+          --background-image: linear-gradient(
+            rgb(46 110 161 / 87%),
+            rgb(32 100 155 / 87%)
+          ),
+          url(assets/image/map.png);
 
           --box-shadow:  0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
           --box-shadow-upwards: 0px -4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -135,8 +139,8 @@
           /* Colors */
           --color-black: #111;
           --color-white: #fff;
-          --color-white-transparent:#ffffffab;
 
+          --color-gray-200: #fefeff;
           --color-gray-300: #f5f5f6;
           --color-gray-400: #ededee;
           --color-gray-500: #cccccd;
@@ -173,9 +177,24 @@
           --color-orange-500: #ffa800;
 
           /* Main colors */
-          --color-primary: var(--color-blue-500);
-          --color-secondary: var(--color-blue-800);
-          --color-tertiary: var(--color-blue-800);
+
+          --background: linear-gradient( to right, var(--color-gray-300), var(--color-gray-300));
+          --background-panel:var(--color-gray-200);
+          --background-accent:var(--color-gray-300);
+          --background-accent2: var(--color-blue-650);
+
+          --color-primary: var(--color-blue-700);
+          --color-secondary: var(--color-blue-100);
+
+          --background-wind: var(--color-white);
+          --color-wind: var(--color-secondary);
+
+          --background-wind-warning: var(--color-yellow-300);
+          --color-wind-warning: #333;
+
+          --background-wind-warning2: var(--color-red-500);
+          --color--wind-warning: var(--color-secondary);
+
 
           
           /* Font */
@@ -262,8 +281,45 @@
           -webkit-font-smoothing: antialiased;
         }
 
+         /* DARK THEME */
+         body.force-dark-mode {
+          --background-header: linear-gradient(
+            to left,
+            #555,
+              #777
+            );
+
+          --background-image: linear-gradient(
+            rgb(22 22 22 / 87%),
+            rgb(22 22 22 / 87%)
+          ),
+          url(assets/image/map.png);
+
+
+          /* Main colors */
+
+          --background: linear-gradient( to right, #262626, #151515 );
+          --background-panel:#333;
+          --background-accent:#555;
+          --background-accent2: var(--color-blue-650);
+
+          --color-primary: #ccc;
+          --color-secondary: #ccc;
+
+          --background-wind: var(--background-panel);
+          --color-wind: var(--color-secondary);
+
+          --background-wind-warning: var(--color-yellow-300);
+          --color-wind-warning: #333;
+
+          --background-wind-warning2: var(--color-red-500);
+          --color-wind-warning2: var(--color-secondary);
+          }
+
+
+
         weather-app {
-          background: var(--background-footer);
+          background: var(--background);
           max-width: 1300px;
         }
         
@@ -347,6 +403,10 @@
           loadingView.parentNode.removeChild(loadingView);
         }
       });
+
+      document.addEventListener('bottom-sheet.toggle-darkmode', () => {
+        document.body.classList.toggle('force-dark-mode')
+      })
     </script>
     <noscript>
       Please enable JavaScript to view this website!

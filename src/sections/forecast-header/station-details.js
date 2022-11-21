@@ -32,7 +32,7 @@ class StationDetails extends LitElement {
 
       .explanation,
       .value {
-        color: var(--color-blue-100);
+        color: var(--color-secondary);
       }
 
       weather-name-wawa {

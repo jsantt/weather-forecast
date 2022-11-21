@@ -10,7 +10,7 @@ class ErrorNotification extends LitElement {
   static get styles() {
     return css`
       :host {
-        color: var(--color, var(--color-black));
+        color: var(--color, var(--color-primary));
         text-align: center;
         display: flex;
         align-items: center;
@@ -22,7 +22,7 @@ class ErrorNotification extends LitElement {
       }
 
       a {
-        color: var(--color, var(--color-black));
+        color: var(--color, var(--color-primary));
       }
 
       svg-icon {

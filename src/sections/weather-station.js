@@ -15,7 +15,7 @@ class WeatherStation extends LitElement {
   static get styles() {
     return css`
       :host {
-        color: var(--color-blue-800);
+        color: var(--color-primary);
 
         display: block;
       }
