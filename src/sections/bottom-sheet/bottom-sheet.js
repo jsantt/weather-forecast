@@ -91,14 +91,12 @@ class BottomSheet extends LitElement {
       }
 
       :host([showFeelsLike]) .feelsLike,
-      :host([showWind]) .wind,
-      :host([darkMode]) .darkmode {
+      :host([showWind]) .wind {
         border-top: 4px solid var(--color-blue-700);
       }
 
       :host([showFeelsLike]) .feelsLike-icon,
-      :host([showWind]) .wind-icon,
-      :host([darkMode]) .darkmode-icon {
+      :host([showWind]) .wind-icon {
         margin-top: -4px;
       }
 
@@ -305,6 +303,13 @@ class BottomSheet extends LitElement {
     this.addEventListener('install-button.clicked', () => {
       this._install();
     });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.darkMode === true) {
+      this._toggleDarkMode();
+    }
   }
 
   _scheduleInstallBadge() {

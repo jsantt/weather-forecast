@@ -513,6 +513,13 @@ class WeatherApp extends LitElement {
     this.addEventListener('bottom-sheet.toggleMapSize', () => {
       this._toggleMapSize();
     });
+
+    if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      this._darkMode = true;
+    }
   }
 
   _fetchDone() {
