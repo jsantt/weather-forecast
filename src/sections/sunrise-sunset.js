@@ -14,6 +14,7 @@ class SunriseSunset extends LitElement {
     return css`
       :host {
         display: block;
+        font-size: var(--font-size-m);
       }
 
       .arrow-svg {
@@ -33,6 +34,17 @@ class SunriseSunset extends LitElement {
       a:link {
         color: var(--color-primary);
         text-decoration: none;
+      }
+
+      .expand-icon {
+        height: 16px;
+        width: 16px;
+
+        transition: transform var(--transition-time) ease;
+      }
+
+      .expand-icon--open {
+        transform: scaleY(-1);
       }
 
       a:visited,
@@ -61,7 +73,7 @@ class SunriseSunset extends LitElement {
 
         align-items: baseline;
         margin-top: var(--space-l);
-        margin-bottom: -0.5rem;
+        margin-bottom: 1.5rem;
       }
 
       .sunrise-label {
@@ -159,11 +171,13 @@ class SunriseSunset extends LitElement {
             </div>
           </smooth-expand>
         </div>
-        <div slot="footer-right">
-          <a href="#" @click="${e => this._toggleDetails(e)}">
-            ${this._expanded ? 'näytä vähemmän' : 'näytä lisää'}
-          </a>
-        </div>
+        <a href="#" @click="${e => this._toggleDetails(e)}">
+          ${this._expanded ? `näytä vähemmän` : `näytä lisää`}
+          <svg-icon
+            class="expand-icon ${this._expanded ? 'expand-icon--open' : ''}"
+            path="assets/image/icons.svg#caret-down"
+          ></svg-icon>
+        </a>
       </weather-section>
     `;
   }

@@ -20,7 +20,6 @@ class StationMap extends LitElement {
 
       .temperature {
         font-size: 0.15px;
-        font-weight: var(--font-weight-bold);
 
         text-rendering: optimizeLegibility;
       }

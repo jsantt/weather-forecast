@@ -39,6 +39,8 @@ class ExternalLinks extends LitElement {
         background: var(--background-panel);
         display: grid;
         align-items: center;
+
+        font-size: var(--font-size-m);
         height: 100%;
         width: 100%;
         padding: 0 var(--space-l);

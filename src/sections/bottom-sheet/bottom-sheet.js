@@ -175,7 +175,7 @@ class BottomSheet extends LitElement {
                 path="assets/image/icons.svg#darkmode"
               ></svg-icon>
 
-              <div class="button-text">tumma tila</div>
+              <div class="button-text">tumma</div>
             </button>`
           : html`
               <button @click="${this._showInstallAd}">
