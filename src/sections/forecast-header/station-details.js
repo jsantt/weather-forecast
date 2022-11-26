@@ -146,6 +146,10 @@ class StationDetails extends LitElement {
 
     return `${dateTime.getHours()}.${fullMinutes}`;
   }
+
+  static _googleMapsURl(latitudeLongitude) {
+    return `https://www.google.com/maps/search/?api=1&query=${latitudeLongitude}&zoom=12`;
+  }
 }
 
 window.customElements.define(StationDetails.is, StationDetails);

@@ -17,7 +17,6 @@ import './sections/public-holidays.js';
 import './sections/sunrise-sunset.js';
 import './sections/symbol-list.js';
 import './sections/weather-days/weather-days.js';
-import './sections/weather-station.js';
 
 import './sections/share-app.js';
 

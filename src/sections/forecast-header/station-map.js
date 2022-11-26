@@ -18,11 +18,24 @@ class StationMap extends LitElement {
         padding-top: 2rem;
       }
 
-      .svg-text {
-        fill: var(--color-secondary);
+      .temperature {
         font-size: 0.15px;
+        font-weight: var(--font-weight-bold);
 
         text-rendering: optimizeLegibility;
+      }
+
+      .temperature--negative {
+        fill: var(--color-secondary);
+      }
+
+      .selected-station .temperature--negative {
+        fill: var(--color-blue-500);
+      }
+
+      .selected-station .temperature--positive,
+      .temperature--positive {
+        fill: var(--color-red-500);
       }
 
       .selected-station circle {
@@ -31,20 +44,14 @@ class StationMap extends LitElement {
         stroke: var(--color-gray-300);
       }
 
-      .selected-station .svg-text,
-      .selected-station .celcius {
-        fill: var(--color-black);
-      }
-
       use,
-      .svg-text {
+      .temperature {
         pointer-events: none;
       }
 
       .celcius {
         dominant-baseline: ideographic;
         font-size: 0.08px;
-        fill: var(--color-gray-300);
       }
 
       .feels-like {
@@ -122,9 +129,12 @@ class StationMap extends LitElement {
                 Number.isNaN(observation.feelsLike))
                 ? ''
                 : svg`
-                  <text  class="svg-text" text-anchor="end" x="${
-                    observation.lonForMap + 0.1
+                  <text class="temperature ${
+                    observation.temperature < 0
+                      ? 'temperature--negative'
+                      : 'temperature--positive'
                   }"
+                 text-anchor="end" x="${observation.lonForMap + 0.1}"
                   y="${-1 * observation.latForMap - 0.02}">${
                     showFeelsLike === true
                       ? svg`<tspan class="feels-like">${observation.feelsLike}<tspan class="celcius">°</tspan>`

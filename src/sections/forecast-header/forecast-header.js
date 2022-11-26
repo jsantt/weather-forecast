@@ -43,26 +43,6 @@ class ForecastHeader extends LitElement {
         background-position: center;
       }
 
-      /*header::after {
-        background: var(--color-blue-600);
-        background-image: linear-gradient(var(--color-blue-600), #174870e1),
-          url('assets/image/kartta.png');
-        background-repeat: no-repeat; 
-        background-size: cover; 
-        background-position: center;
-
-        opacity: 1;
-
-        content: '';
-
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        position: absolute;
-        z-index: -1;
-      }*/
-
       @media only screen and (min-width: 430px) {
         header {
           border-top-left-radius: var(--border-radius);
