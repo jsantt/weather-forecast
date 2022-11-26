@@ -132,7 +132,7 @@ class WeatherDay extends LitElement {
 
         background: var(--packground-panel);
         color: var(--color-primary);
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-m);
 
         padding: var(--space-m);
 

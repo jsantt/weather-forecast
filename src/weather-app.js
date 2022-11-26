@@ -84,14 +84,14 @@ class WeatherApp extends LitElement {
         }
       }
 
-      @media only screen and (min-width: 431px) and (max-width: 635px) {
+      @media only screen and (min-width: 431px) and (max-width: 685px) {
         .container {
           margin-left: 8%;
           margin-right: 8%;
         }
       }
 
-      @media only screen and (min-width: 636px) {
+      @media only screen and (min-width: 686px) {
         .container {
           grid-template-columns: minmax(300px, 400px) minmax(270px, 350px) auto;
           grid-auto-rows: minmax(0px, auto);

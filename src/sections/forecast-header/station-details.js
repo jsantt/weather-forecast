@@ -15,12 +15,6 @@ class StationDetails extends LitElement {
         padding: var(--space-m);
       }
 
-      @media only screen and (min-width: 430px) {
-        :host {
-          grid-template-columns: 1fr 1fr 1fr 1fr;
-        }
-      }
-
       .item {
         line-height: 1;
       }
