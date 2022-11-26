@@ -9,7 +9,7 @@ class WeatherSection extends LitElement {
     return css`
       :host {
         color: var(--color-primary);
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-s);
         display: flex;
         flex-direction: column;
         height: 100%;
