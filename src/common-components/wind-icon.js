@@ -8,8 +8,8 @@ class WindIcon extends LitElement {
       }
 
       .windIcon {
-        height: 30px;
-        width: 30px;
+        height: 36px;
+        width: 36px;
       }
 
       .windIcon--large {
