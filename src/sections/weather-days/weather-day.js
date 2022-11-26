@@ -61,9 +61,10 @@ class WeatherDay extends LitElement {
 
       .day-name {
         grid-column: span 25;
+        font-size: var(--font-size-m);
         font-weight: var(--font-weight-normal);
         margin: 0;
-        padding-left: var(--space-m);
+        padding-left: var(--space-l);
         text-transform: uppercase;
       }
 
@@ -132,9 +133,9 @@ class WeatherDay extends LitElement {
 
         background: var(--packground-panel);
         color: var(--color-primary);
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-s);
 
-        padding: var(--space-m);
+        padding: var(--space-m) var(--space-l);
 
         grid-column: span 25;
       }

@@ -10,7 +10,6 @@ class ShareApp extends LitElement {
   static get styles() {
     return css`
       :host {
-        padding: var(--space-m);
         margin: var(--space-m);
       }
 
