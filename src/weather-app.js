@@ -53,7 +53,7 @@ class WeatherApp extends LitElement {
         font-size: var(--font-size-s);
         border-radius: 0;
         text-align: center;
-        padding-top: var(--space-l);
+        padding-top: var(--space-xl);
       }
 
       .container {

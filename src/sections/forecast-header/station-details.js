@@ -11,8 +11,7 @@ class StationDetails extends LitElement {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: auto;
-        grid-gap: var(--space-m);
-        padding: var(--space-m);
+        grid-gap: var(--space-l);
       }
 
       .item {

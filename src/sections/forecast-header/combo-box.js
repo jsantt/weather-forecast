@@ -88,7 +88,7 @@ class ComboBox extends LitElement {
         color: var(--color-primary);
         font-size: var(--font-size-l);
         font-family: var(--font-family-primary);
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-boldest);
 
         margin: 0;
         min-width: 15rem;

@@ -77,18 +77,18 @@ class ForecastHeader extends LitElement {
       .selected {
         color: var(--color-secondary);
         display: grid;
-        grid-template-columns: auto 3rem 2rem;
+        grid-template-columns: 3rem auto 2rem;
         grid-template-rows: auto;
         align-items: center;
 
         grid-template-areas:
-          'label   wind     expand'
-          'name    wind     expand'
-          'details details  details';
+          'wind     label   expand'
+          'wind     name    expand'
+          'details  details details';
 
         line-height: var(--line-height-dense);
 
-        text-align: left;
+        text-align: right;
         padding: 0 var(--space-l);
       }
       .selected-label {
@@ -104,13 +104,11 @@ class ForecastHeader extends LitElement {
       }
 
       .selected-text {
-        display: flex;
-        justify-content: flex-start;
       }
 
       .selected-details {
         grid-area: details;
-        margin: 0 -0.5rem;
+        margin: 0 2rem 0 0.5rem;
         padding-top: var(--space-m);
 
         transition: padding var(--transition-time);
@@ -144,6 +142,8 @@ class ForecastHeader extends LitElement {
 
       station-details {
         color: var(--color-secondary);
+        margin: 0;
+        padding: 0;
       }
     `;
   }
