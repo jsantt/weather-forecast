@@ -81,6 +81,8 @@ class ForecastHeader extends LitElement {
         grid-template-rows: auto;
         align-items: center;
 
+        margin-bottom: var(--space-s);
+
         grid-template-areas:
           'wind     label   expand'
           'wind     name    expand'
@@ -100,10 +102,8 @@ class ForecastHeader extends LitElement {
 
       .selected-name {
         grid-area: name;
-        font-size: var(--font-size-l);
-      }
-
-      .selected-text {
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
       }
 
       .selected-details {

@@ -224,6 +224,7 @@ class ObservationData extends LitElement {
     const positions = xmlDocResponse
       .querySelector('positions')
       .innerHTML.trim();
+
     const positionRows = positions.split(/\r?\n/);
 
     const stationPositions = [];

@@ -20,7 +20,7 @@ class WindIcon extends LitElement {
       .windSpeed,
       .windGustSpeed {
         fill: var(--color-primary);
-        font-weight: var(--font-weight-boldest);
+        font-weight: var(--font-weight-bold);
         font-size: 48px;
       }
 

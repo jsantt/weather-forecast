@@ -41,7 +41,6 @@ function totalRain(dayData) {
 }
 
 function totalSnow(weatherDay) {
-  console.log(weatherDay);
   const SNOW_SYMBOLS = [41, 42, 43, 51, 52, 53];
 
   let snow;

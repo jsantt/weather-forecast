@@ -58,7 +58,7 @@ class StationMap extends LitElement {
       }
 
       error-notification {
-        padding: var(--space-l) 0 var(--space-xl) 0;
+        padding: var(--space-l) var(--space-m) var(--space-xl) var(--space-m);
         --color: var(--color-white);
       }
     `;
@@ -83,7 +83,7 @@ class StationMap extends LitElement {
   _createMap(large, coordinates, observations, error, showFeelsLike) {
     if (error === true) {
       return html`<error-notification
-        errorText="Sääasemille ei valitettavasti saatu yhteyttä"
+        errorText="Ilmatieteen laitoksen palveluissa on häiriö (25.12.2022 klo 13.30)"
       >
       </error-notification>`;
     }
