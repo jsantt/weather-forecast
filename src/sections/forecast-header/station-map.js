@@ -83,7 +83,7 @@ class StationMap extends LitElement {
   _createMap(large, coordinates, observations, error, showFeelsLike) {
     if (error === true) {
       return html`<error-notification
-        errorText="Ilmatieteen laitoksen palveluissa on häiriö (25.12.2022 klo 13.30)"
+        errorText="Sääasemien havaintotietojen haku epäonnistui."
       >
       </error-notification>`;
     }
