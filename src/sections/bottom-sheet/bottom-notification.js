@@ -22,8 +22,7 @@ class BottomNotification extends LitElement {
       }
 
       .content {
-        background: var(--color-white);
-        border: 1px solid var(--color-gray-300);
+        background: var(--background-accent);
 
         border-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
