@@ -59,8 +59,12 @@ class BottomNotification extends LitElement {
       }
 
       svg-icon {
-        fill: var(--color);
-        stroke: var(--color);
+        fill: currentColor;
+        stroke: currentColor;
+      }
+
+      svg-icon[medium] {
+        margin-top: -10px;
       }
 
       ol {
