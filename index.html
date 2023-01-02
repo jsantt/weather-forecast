@@ -1,247 +1,260 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fi">
   <head>
-    <meta charset="utf-8">
-    <base href="/">
-    <meta name="keywords" content="sääennuste, sää, sääsovellus, nyt, täsmäsää, paras, Ilmatieteen laitos, helsinki, espoo, tampere, vantaa, oulu, turku">
-    <meta name="author" content="saaennuste.fi">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes, viewport-fit=cover">
+    <meta charset="utf-8" />
+    <base href="/" />
+    <meta
+      name="keywords"
+      content="sääennuste, sää, sääsovellus, nyt, täsmäsää, paras, Ilmatieteen laitos, helsinki, espoo, tampere, vantaa, oulu, turku"
+    />
+    <meta name="author" content="saaennuste.fi" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes, viewport-fit=cover"
+    />
 
     <title>Sääennuste - Ilmatieteen laitoksen sää yhdellä vilkaisulla</title>
-    <meta name="description" content="Ilmatieteen laitoksen luotettava 3 vrk sääennuste
-    kännykälle optimoidussa muodossa. Näet kaikkien lähisääasemien tiedot kerralla.">
-
-
+    <meta
+      name="description"
+      content="Ilmatieteen laitoksen luotettava 3 vrk sääennuste
+    kännykälle optimoidussa muodossa. Näet kaikkien lähisääasemien tiedot kerralla."
+    />
 
     <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="assets/image/logo-32x32.png" sizes="32x32">  
-    
-    <script defer type="module" src="./src/weather-app.js"> </script>
-      
-    
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="assets/image/logo-32x32.png"
+      sizes="32x32"
+    />
+
+    <script defer type="module" src="./src/weather-app.js"></script>
+
     <!-- Load web fonts asynchronously -->
     <script>
-
       window.WebFontConfig = {
         google: {
-          families: ['Open Sans Condensed:300']
-        }
+          families: ['Open Sans Condensed:300'],
+        },
       };
 
       (d => {
-            const wf = d.createElement('script'); const s = d.scripts[0];
-            wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js?display=swap';
-            wf.async = true;
-            s.parentNode.insertBefore(wf, s);
-        })(document);
-
+        const wf = d.createElement('script');
+        const s = d.scripts[0];
+        wf.src =
+          'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js?display=swap';
+        wf.async = true;
+        s.parentNode.insertBefore(wf, s);
+      })(document);
     </script>
 
     <!--json-ld></json-ld-->
-    <script type="application/ld+json"> 
-      { "@context": "http://schema.org", 
-        "@type": "webSite", 
-        "name": "saaennuste.fi", 
-        "url": "https://saaennuste.fi", 
-        "sameAs": [ "https://www.facebook.com/saaennuste.fi" ] 
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "webSite",
+        "name": "saaennuste.fi",
+        "url": "https://saaennuste.fi",
+        "sameAs": ["https://www.facebook.com/saaennuste.fi"]
       }
     </script>
 
     <!-- set mock backend -->
     <!-- script src="node_modules/@polymer/sinonjs/sinon.js"></script>
     <script type="module" src="src/mock/mockSetup.js"></script -->
-    
-    <meta name="theme-color" content="#1e517b">
+
+    <meta name="theme-color" content="#1e517b" />
 
     <!-- iOS -->
 
     <!-- Allow full-screen mode. -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
     <!-- Status bar style -->
     <!-- possible content values: default, black or black-translucent -->
-    <meta name="apple-mobile-web-app-status-bar-style"
-        content="dark-content">
+    <meta name="apple-mobile-web-app-status-bar-style" content="dark-content" />
 
-        
     <!-- iPhone non-retina icon -->
-    <link rel="apple-touch-icon" href="assets/image/weather-icon-57x57.png">
+    <link rel="apple-touch-icon" href="assets/image/weather-icon-57x57.png" />
 
     <!-- override title -->
-    <meta name="apple-mobile-web-app-title" content="Sää">
+    <meta name="apple-mobile-web-app-title" content="Sää" />
 
     <!-- social media meta data-->
     <meta property="og:title" content="Sääennuste" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="http://saaennuste.fi" />
-    <meta property="og:image" content="https://saaennuste.fi/assets/image/weather-icon-192x192.png" />
-    <meta property="og:site_name" content="Sääennuste">
-    <meta property="og:description" content="Paras, yksinkertaisin ja nopein sääennuste sovellus. Perustuu Ilmatieteen laitoksen avoimeen dataan.">
+    <meta
+      property="og:image"
+      content="https://saaennuste.fi/assets/image/weather-icon-192x192.png"
+    />
+    <meta property="og:site_name" content="Sääennuste" />
+    <meta
+      property="og:description"
+      content="Paras, yksinkertaisin ja nopein sääennuste sovellus. Perustuu Ilmatieteen laitoksen avoimeen dataan."
+    />
 
     <!-- iOS startup image -->
     <!-- see media queries: https://gist.github.com/jabez128/28c19b386f610f8a0cf3#file-ios-8-web-app-html-L36-->
 
     <!-- iPhone 6 startup image -->
-    <link href="assets/image/ios-startup-750x1294.png"
-          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
-          rel="apple-touch-startup-image">
+    <link
+      href="assets/image/ios-startup-750x1294.png"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+      rel="apple-touch-startup-image"
+    />
 
-    <style>        
-        .loading-view {
-          background-color: white;
-          height: 100vh;
+    <style>
+      .loading-view {
+        background-color: var(--background-panel);
+        height: 100vh;
 
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        html.wf-loading weather-app {
-          visibility: hidden;
-        }
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
 
-        html {
-          margin: 0;
-          padding: 0;
-        }
+      html.wf-loading weather-app {
+        visibility: hidden;
+      }
 
-        body {
+      html {
+        margin: 0;
+        padding: 0;
+      }
 
-          --safe-area-inset-bottom: env(safe-area-inset-bottom, 20px);
+      body {
+        --safe-area-inset-bottom: env(safe-area-inset-bottom, 20px);
 
-          --background-header: linear-gradient(
-            to right,
-            #20649bc5,
-              #20649bb4
-            );
+        --background-header: linear-gradient(to right, #20649bc5, #20649bb4);
 
-          --background-image: linear-gradient(
+        --background-image: linear-gradient(
             rgb(46 110 161 / 87%),
             rgb(32 100 155 / 87%)
           ),
           url(assets/image/map.png);
 
-          --box-shadow:  0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-          --box-shadow-upwards: 0px -4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-          
-          --border-radius: 3px;
-          
-          
+        --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --box-shadow-upwards: 0px -4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-          /* Colors */
-          --color-black: #111;
-          --color-white: #fff;
+        --border-radius: 3px;
 
-          --color-gray-200: #fefeff;
-          --color-gray-300: #f5f5f6;
-          --color-gray-400: #ededee;
-          --color-gray-500: #cccccd;
-          --color-gray-600: #99999a;
-          --color-gray-800: #545455;
-          --color-gray-900: #424243;
+        /* Colors */
+        --color-black: #111;
+        --color-white: #fff;
 
-          --color-red-300: #e27875;
-          --color-red-500: #ed332b;
-          --color-red-800: #5f1411;
+        --color-gray-200: #fefeff;
+        --color-gray-300: #f5f5f6;
+        --color-gray-400: #ededee;
+        --color-gray-500: #cccccd;
+        --color-gray-600: #99999a;
+        --color-gray-800: #545455;
+        --color-gray-900: #424243;
 
-          --color-lightblue-500: #74ccf4;
+        --color-red-300: #e27875;
+        --color-red-500: #ed332b;
+        --color-red-800: #5f1411;
 
-          --color-rain: #13a7ec;
-          --color-snow: #74ccf4;
+        --color-lightblue-500: #74ccf4;
 
-          --color-blue-100: #ebf3f9;
-          --color-blue-300: #c0d9ed;
-          --color-blue-400: #afd1ec;
-          --color-blue-500: #20639b;
-          --color-blue-600: rgb(46,110,161);
-          --color-blue-650: #1e517b;
-          --color-blue-700: #174972;
-          
-          --color-blue-800: #173f5f;
+        --color-rain: #13a7ec;
+        --color-snow: #74ccf4;
 
-          --color-green-300: hsl(152, 41%, 80%);
-          --color-green-500: hsl(153, 41%, 72%);
-          --color-green-700: hsl(152, 41%, 42%);
-          --color-green-800: #1f5b55;
+        --color-blue-100: #ebf3f9;
+        --color-blue-300: #c0d9ed;
+        --color-blue-400: #afd1ec;
+        --color-blue-500: #20639b;
+        --color-blue-600: rgb(46, 110, 161);
+        --color-blue-650: #1e517b;
+        --color-blue-700: #174972;
 
-          --color-yellow-300: #fbecb6;
-          --color-yellow-500: #f6d55c;
-          --color-orange-500: #ffa800;
+        --color-blue-800: #173f5f;
 
-          /* Main colors */
+        --color-green-300: hsl(152, 41%, 80%);
+        --color-green-500: hsl(153, 41%, 72%);
+        --color-green-700: hsl(152, 41%, 42%);
+        --color-green-800: #1f5b55;
 
-          --background: linear-gradient( to right, var(--color-gray-300), var(--color-gray-300));
-          --background-panel:var(--color-gray-200);
-          --background-accent:var(--color-gray-300);
-          --background-accent2: var(--color-blue-650);
+        --color-yellow-300: #fbecb6;
+        --color-yellow-500: #f6d55c;
+        --color-orange-500: #ffa800;
 
-          --color-primary: var(--color-blue-700);
-          --color-secondary: var(--color-blue-100);
+        /* Main colors */
 
-          --background-wind: var(--color-white);
-          --color-wind: var(--color-secondary);
+        --background: linear-gradient(
+          to right,
+          var(--color-gray-300),
+          var(--color-gray-300)
+        );
+        --background-panel: var(--color-gray-200);
+        --background-accent: var(--color-gray-300);
+        --background-accent2: var(--color-blue-650);
 
-          --background-wind-warning: var(--color-yellow-300);
-          --color-wind-warning: #333;
+        --color-primary: var(--color-blue-700);
+        --color-secondary: var(--color-blue-100);
 
-          --background-wind-warning2: var(--color-red-500);
-          --color--wind-warning: var(--color-secondary);
+        --background-wind: var(--color-white);
+        --color-wind: var(--color-secondary);
 
+        --background-wind-warning: var(--color-yellow-300);
+        --color-wind-warning: #333;
 
-          
-          /* Font */
-          --font-family: "Open Sans Condensed", sans-serif;
-          --font-family-secondary: sans-serif;
+        --background-wind-warning2: var(--color-red-500);
+        --color--wind-warning: var(--color-secondary);
 
-          /* 
+        /* Font */
+        --font-family: 'Open Sans Condensed', sans-serif;
+        --font-family-secondary: sans-serif;
+
+        /* 
            * Modular scale base 1.1em, ratio 1.25 (modularscale.com)
            * e.g. 1.1em, 1,375
            */
-          --font-size-xxs: 0.704rem;
-          --font-size-xs: 0.88rem; 
-          --font-size-s: 1.1rem;
-          --font-size-m: 1.375rem;
-          --font-size-l: 1.719rem;
-          --font-size-xl: 2.148rem;
-          --font-size-xxl: 3.357rem;
-          --font-size-xxxl: 4.196rem;
-          --font-size-xxxxl: 5.245rem;
-          --font-size-xxxxxl: 6.557rem;
+        --font-size-xxs: 0.704rem;
+        --font-size-xs: 0.88rem;
+        --font-size-s: 1.1rem;
+        --font-size-m: 1.375rem;
+        --font-size-l: 1.719rem;
+        --font-size-xl: 2.148rem;
+        --font-size-xxl: 3.357rem;
+        --font-size-xxxl: 4.196rem;
+        --font-size-xxxxl: 5.245rem;
+        --font-size-xxxxxl: 6.557rem;
 
-          --font-weight-normal: 300;
-          --font-weight-bold: 500;
-          --font-weight-boldest: 700;
+        --font-weight-normal: 300;
+        --font-weight-bold: 500;
+        --font-weight-boldest: 700;
 
-          --line-height-dense: 0.9;
+        --line-height-dense: 0.9;
 
-          /* Use 0.25rem grid everywhere */
-          --space-s: 0.25rem;
-          --space-m: 0.5rem;
-          --space-l: 1rem;
-          --space-xl: 2rem;
+        /* Use 0.25rem grid everywhere */
+        --space-s: 0.25rem;
+        --space-m: 0.5rem;
+        --space-l: 1rem;
+        --space-xl: 2rem;
 
-          --transition-time: 0.3s;
-          --transition-cubic-bezier: cubic-bezier(0.36, 1.01, 0.32, 1.27);
-          
+        --transition-time: 0.3s;
+        --transition-cubic-bezier: cubic-bezier(0.36, 1.01, 0.32, 1.27);
 
+        /* z-index-1 and 2 are for ordering elements that are not lifted from UI */
+        --z-index-1: 1;
+        --z-index-2: 2;
 
-          /* z-index-1 and 2 are for ordering elements that are not lifted from UI */
-          --z-index-1: 1;
-          --z-index-2: 2;
+        /* Use only for floating/fixed elements that must be in front of everything */
+        --z-index-floating-1: 3;
+        --z-index-floating-2: 4;
 
-          /* Use only for floating/fixed elements that must be in front of everything */
-          --z-index-floating-1: 3;
-          --z-index-floating-2: 4;
-
-          /* BREAKPOINTS (copy from here, as CSS variables cannot be used in media queries) 
+        /* BREAKPOINTS (copy from here, as CSS variables cannot be used in media queries) 
             
             Compact
               - [0 - 429px]
@@ -267,107 +280,101 @@
               - @media only screen and (min-width: 11000px)
           */
 
-          /* End of common CSS properties */ 
-          background: var(--color-white);
-          box-sizing: border-box;
-          color: var(--color-white);
-          font-family: var(--font-family);
+        /* End of common CSS properties */
+        background: var(--color-white);
+        box-sizing: border-box;
+        color: var(--color-white);
+        font-family: var(--font-family);
 
-          font-size: 16px;
-          
-          margin: 0 auto;
-          padding: 0;
-          
-          -webkit-font-smoothing: antialiased;
-        }
+        font-size: 16px;
 
-         /* DARK THEME */
-         body.force-dark-mode {
-          --background-header: linear-gradient(
-            to left,
-            #555,
-              #777
-            );
+        margin: 0 auto;
+        padding: 0;
 
-          --background-image: linear-gradient(
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* DARK THEME */
+      body.force-dark-mode {
+        --background-header: linear-gradient(to left, #555, #777);
+
+        --background-image: linear-gradient(
             rgb(22 22 22 / 87%),
             rgb(22 22 22 / 87%)
           ),
           url(assets/image/map.png);
 
+        /* Main colors */
 
-          /* Main colors */
+        --background: linear-gradient(to right, #262626, #151515);
+        --background-panel: #333;
+        --background-accent: #555;
+        --background-accent2: var(--color-blue-650);
 
-          --background: linear-gradient( to right, #262626, #151515 );
-          --background-panel:#333;
-          --background-accent:#555;
-          --background-accent2: var(--color-blue-650);
+        --color-primary: #ccc;
+        --color-secondary: #ccc;
 
-          --color-primary: #ccc;
-          --color-secondary: #ccc;
+        --background-wind: var(--background-panel);
+        --color-wind: var(--color-secondary);
 
-          --background-wind: var(--background-panel);
-          --color-wind: var(--color-secondary);
+        --background-wind-warning: var(--color-yellow-300);
+        --color-wind-warning: #333;
 
-          --background-wind-warning: var(--color-yellow-300);
-          --color-wind-warning: #333;
+        --background-wind-warning2: var(--color-red-500);
+        --color-wind-warning2: var(--color-secondary);
+      }
 
-          --background-wind-warning2: var(--color-red-500);
-          --color-wind-warning2: var(--color-secondary);
-          }
+      weather-app {
+        background: var(--background);
+        max-width: 1300px;
+      }
 
+      .visually-hidden {
+        position: absolute !important;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0 !important;
+        border: 0 !important;
+        height: 1px !important;
+        width: 1px !important;
+        overflow: hidden;
+      }
 
+      .sun-icon {
+        display: block;
+        margin: auto;
 
-        weather-app {
-          background: var(--background);
-          max-width: 1300px;
+        width: 128px;
+        height: 128px;
+
+        animation: rotation 23s infinite linear;
+        -webkit-animation: rotation 23s infinite linear;
+      }
+
+      @keyframes rotation {
+        from {
+          transform: rotate(0deg);
         }
-        
-        .visually-hidden {
-          position: absolute !important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding:0 !important;
-          border:0 !important;
-          height: 1px !important; 
-          width: 1px !important; 
-          overflow: hidden;
+        to {
+          transform: rotate(359deg);
         }
+      }
 
-        .sun-icon {
-          display: block;
-          margin: auto;
-
-          width: 128px;
-          height: 128px;
-
-          animation: rotation 23s infinite linear;
-          -webkit-animation: rotation 23s infinite linear;
+      @-webkit-keyframes rotation {
+        from {
+          -webkit-transform: rotate(0deg);
         }
-
-        @keyframes rotation {
-          from {
-              transform: rotate(0deg);
-          }
-          to {
-              transform: rotate(359deg);
-          }
+        to {
+          -webkit-transform: rotate(359deg);
         }
-        
-        @-webkit-keyframes rotation {
-          from {
-              -webkit-transform: rotate(0deg);
-          }
-          to {
-              -webkit-transform: rotate(359deg);
-          }
-        }
+      }
     </style>
-     
   </head>
   <body>
-    <h1 class="visually-hidden">Sääennuste - paras sääsovellus Ilmatieteen laitoksen datalla</h1>
+    <h1 class="visually-hidden">
+      Sääennuste - paras sääsovellus Ilmatieteen laitoksen datalla
+    </h1>
     <!-- show sun icon before loaded -->
-    
+
     <weather-app>
       <h2 slot="place" class="visually-hidden">Sää <span id="place">havaintoasemilla</span> nyt</h2>
       <div slot="header">
@@ -376,43 +383,47 @@
       </div
     </weather-app>
     <div id="loading-view" class="loading-view" aria-label="ladataan">
-        <svg 
-          class="sun-icon" 
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 37 37">
-          <g>
-            <polygon fill="#ffa800" points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
+      <svg
+        class="sun-icon"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 37 37"
+      >
+        <g>
+          <polygon
+            fill="#ffa800"
+            points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
               30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
-              11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237">
-            </polygon>
-            <circle fill="#ffa800" stroke="#FFFFFF" stroke-width="1.3028" cx="18.499" cy="18.363" r="6.362"></circle>
-          </g>
-        </svg>
-      </div>  
+              11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237"
+          ></polygon>
+          <circle
+            fill="#ffa800"
+            stroke="#FFFFFF"
+            stroke-width="1.3028"
+            cx="18.499"
+            cy="18.363"
+            r="6.362"
+          ></circle>
+        </g>
+      </svg>
+    </div>
 
     <script>
-      document.addEventListener('location-selector.location-changed', (event) => {
-        document.querySelector("#place").innerHTML = event.detail.city;
+      document.addEventListener('location-selector.location-changed', event => {
+        document.querySelector('#place').innerHTML = event.detail.city;
       });
-      
-      document.addEventListener('forecast-data.fetch-done', () =>
-      {
+
+      document.addEventListener('forecast-data.fetch-done', () => {
         const loadingView = document.getElementById('loading-view');
-        if(loadingView) {
+        if (loadingView) {
           loadingView.parentNode.removeChild(loadingView);
         }
       });
 
       document.addEventListener('bottom-sheet.toggle-darkmode', () => {
-        document.body.classList.toggle('force-dark-mode')
-      })
+        document.body.classList.toggle('force-dark-mode');
+      });
     </script>
-    <noscript>
-      Please enable JavaScript to view this website!
-    </noscript>
-
-   
+    <noscript> Please enable JavaScript to view this website! </noscript>
   </body>
-
 </html>
