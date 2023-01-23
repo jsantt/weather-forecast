@@ -94,17 +94,17 @@ class WeatherApp extends LitElement {
 
       @media only screen and (min-width: 686px) {
         .container {
-          grid-template-columns: minmax(300px, 400px) minmax(270px, 350px) auto;
+          grid-template-columns: minmax(300px, 400px) minmax(270px, 350px);
           grid-auto-rows: minmax(0px, auto);
 
           grid-template-areas:
-            'forecast sun       .'
-            'forecast links     .'
-            'forecast share     .'
-            'forecast info      .'
-            'cookies  info      .'
-            'copy     copy      .'
-            'symbols  symbols symbols';
+            'forecast sun'
+            'forecast links'
+            'forecast share'
+            'forecast info'
+            'cookies  info'
+            'copy     copy'
+            'symbols  symbols';
         }
       }
 
