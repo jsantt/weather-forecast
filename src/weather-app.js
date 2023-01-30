@@ -260,6 +260,7 @@ class WeatherApp extends LitElement {
 
                 <weather-days
                   .forecastData="${this._forecastData}"
+                  .location="${this._location}"
                   ?showFeelsLike="${this._showFeelsLike}"
                   ?showWind="${this._showWind}"
                 >

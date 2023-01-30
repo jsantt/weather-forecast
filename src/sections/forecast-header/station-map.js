@@ -3,6 +3,7 @@ import { checkCollision, extendVector } from './vector-math.js';
 
 import '../../common-components/error-notification.js';
 import '../../common-components/wind-icon.js';
+import { isNight } from '../../data-helpers/sun-calculations.js';
 
 class StationMap extends LitElement {
   static get is() {
@@ -120,7 +121,7 @@ class StationMap extends LitElement {
               height="0.25"
               href="assets/image/weather-symbols.svg#weatherSymbol${
                 observation.weatherCode3
-              }"
+              }${isNight(new Date(), this.location) ? '-night' : ''}"
             ></use>
             ${
               showFeelsLike === true &&

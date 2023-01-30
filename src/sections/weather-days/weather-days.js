@@ -31,6 +31,7 @@ class WeatherDays extends LitElement {
       <weather-day
         class="weatherGrid"
         dayNumber="1"
+        .location="${this.location}"
         .minTemperature="${this._minTemperature}"
         .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
@@ -41,6 +42,7 @@ class WeatherDays extends LitElement {
       <weather-day
         class="weatherGrid"
         dayNumber="2"
+        .location="${this.location}"
         .minTemperature="${this._minTemperature}"
         .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
@@ -51,6 +53,7 @@ class WeatherDays extends LitElement {
       <weather-day
         class="weatherGrid"
         dayNumber="3"
+        .location="${this.location}"
         .minTemperature="${this._minTemperature}"
         .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
@@ -63,6 +66,11 @@ class WeatherDays extends LitElement {
     return {
       forecastData: {
         type: Array,
+      },
+
+      location: {
+        type: Object,
+        reflect: true,
       },
 
       showFeelsLike: {

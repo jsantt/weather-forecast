@@ -42,6 +42,9 @@ class SymbolList extends LitElement {
           return html`<div>
             <svg-icon
               path="${`assets/image/weather-symbols.svg#weatherSymbol${key}`}"
+            ></svg-icon>
+            <svg-icon
+              path="${`assets/image/weather-symbols.svg#weatherSymbol${key}-night`}"
             ></svg-icon
             >${value}
           </div>`;

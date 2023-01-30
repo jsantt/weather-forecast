@@ -6,6 +6,7 @@ import './weather-description.js';
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
+import { isNight } from '../../data-helpers/sun-calculations.js';
 
 import { windClassification } from './wind-helper.js';
 
@@ -229,7 +230,11 @@ class WeatherDay extends LitElement {
                 : html`
                     <div class="symbol">
                       <svg-icon
-                        path="${`assets/image/weather-symbols.svg#weatherSymbol${entry.symbol}`}"
+                        path="${`assets/image/weather-symbols.svg#weatherSymbol${
+                          entry.symbol
+                        }${
+                          isNight(entry.time, this.location) ? '-night' : ''
+                        }`}"
                       ></svg-icon>
                     </div>
 
@@ -289,6 +294,11 @@ class WeatherDay extends LitElement {
     return {
       dayNumber: {
         type: Number,
+        reflect: true,
+      },
+
+      location: {
+        type: Object,
         reflect: true,
       },
 
