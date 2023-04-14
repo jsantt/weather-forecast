@@ -7,8 +7,7 @@ import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 import { isNight } from '../../data-helpers/sun-calculations.js';
-
-import { windClassification } from './wind-helper.js';
+import { windGustWarning, windClassification } from './wind-helper.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -51,7 +50,7 @@ class WeatherDay extends LitElement {
         display: grid;
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);
-        grid-template-rows: minmax(1.4rem, auto);
+        grid-template-rows: minmax(0rem, auto);
       }
 
       .day {
@@ -202,12 +201,14 @@ class WeatherDay extends LitElement {
           </h3>
 
           <!-- headers here outside of repeat -->
-
-          <div class="wind_header">
-            <weather-description .dayData="${this.dayData}">
-            </weather-description>
-          </div>
-
+          ${windGustWarning(this.dayData).gustRating > 0
+            ? html`
+                <div class="wind_header">
+                  <weather-description .dayData="${this.dayData}">
+                  </weather-description>
+                </div>
+              `
+            : null}
           ${this.dayData.map((entry, index) => {
             return html`
               <!-- EMPTY COLUMN -->

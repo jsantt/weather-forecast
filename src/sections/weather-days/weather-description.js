@@ -36,10 +36,10 @@ class WeatherDescription extends LitElement {
       ></rain-amount>
 
       <max-wind
-        .gustRating="${WeatherDescription._gustRating(this.dayData)}"
-        .maxGustWind="${WeatherDescription._maxGustWind(this.dayData)}"
-        .rating="${WeatherDescription._windRating(this.dayData)}"
-        .maxWind="${WeatherDescription._maxWind(this.dayData)}"
+        .gustRating="${windGustWarning(this.dayData).gustRating}"
+        .maxGustWind="${windGustWarning(this.dayData).maxGustWind}"
+        .rating="${windWarning(this.dayData).rating}"
+        .maxWind="${windWarning(this.dayData).maxWind}"
         @click="${() => this._toggleWind()}"
       >
         <span><sup>m</sup>/<sub>s</sub></span>
@@ -61,30 +61,6 @@ class WeatherDescription extends LitElement {
       composed: true,
     });
     this.dispatchEvent(toggleWind);
-  }
-
-  static _maxWind(dayData) {
-    return windWarning(dayData).maxWind;
-  }
-
-  static _windRating(dayData) {
-    if (dayData === undefined || dayData.length < 1) {
-      return '';
-    }
-
-    return windWarning(dayData).rating;
-  }
-
-  static _maxGustWind(dayData) {
-    return windGustWarning(dayData).maxGustWind;
-  }
-
-  static _gustRating(dayData) {
-    if (dayData === undefined || dayData.length < 1) {
-      return '';
-    }
-
-    return windGustWarning(dayData).gustRating;
   }
 }
 

@@ -32,11 +32,14 @@ class WindIcon extends LitElement {
         fill: var(--color-secondary);
       }
 
-      .windIcon_arrow {
-        fill: var(--color-primary);
+      .windIcon_arrow,
+      .windIcon_circle {
         stroke: var(--color-primary);
       }
 
+      .windIcon_arrow {
+        fill: var(--color-primary);
+      }
       g {
         transition: transform 1s ease;
       }
@@ -63,6 +66,11 @@ class WindIcon extends LitElement {
       :host([rating='4']) .windSpeed {
         fill: var(--color-wind-warning2);
       }
+
+      .windIcon_innerCircle {
+        fill: none;
+        stroke: var(--background-wind-warning);
+      }
     `;
   }
 
@@ -84,10 +92,11 @@ class WindIcon extends LitElement {
         ></polyline>
         <circle
           class="windIcon_circle"
-          stroke-width="4"
+          stroke-width="3"
           cx="50"
           cy="60"
           r="33"
+          opacity="1"
         ></circle>
       </g>
       <text text-anchor="middle" x="49" y="79" class="windSpeed">
