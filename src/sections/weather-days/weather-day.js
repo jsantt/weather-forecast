@@ -201,7 +201,7 @@ class WeatherDay extends LitElement {
           </h3>
 
           <!-- headers here outside of repeat -->
-          ${windGustWarning(this.dayData).gustRating > 1
+          ${windGustWarning(this.dayData).gustRating > 0
             ? html`
                 <div class="wind_header">
                   <weather-description .dayData="${this.dayData}">
