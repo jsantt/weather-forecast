@@ -12,59 +12,44 @@ class WindIcon extends LitElement {
         width: 36px;
       }
 
-      .windIcon--large {
+      :host([large]) .windIcon {
         height: 40px;
         width: 40px;
       }
 
-      .windSpeed,
       .windGustSpeed {
         fill: var(--color-primary);
+      }
+
+      .windSpeed,
+      .windGustSpeed {
         font-weight: var(--font-weight-bold);
         font-size: 48px;
       }
 
-      :host([rating='2']) .windSpeed {
-        fill: #333;
-      }
-
-      .windGustSpeed--white {
+      :host([whiteGust]) .windGustSpeed {
         fill: var(--color-secondary);
       }
 
-      .windIcon_arrow,
-      .windIcon_circle {
-        stroke: var(--color-primary);
+      .windIcon_arrow {
+        fill: var(--color-gray-500);
       }
 
-      .windIcon_arrow {
-        fill: var(--color-primary);
+      .windIcon_circle {
+        fill: var(--background-accent);
       }
+
       g {
         transition: transform 1s ease;
       }
 
-      .windIcon_circle {
-        fill: var(--background-wind);
-        stroke: var(--color-gray-900);
-      }
-
-      :host([rating='1']) .windIcon_circle {
-        fill: var(--background-wind);
-      }
-
-      :host([rating='2']) .windIcon_circle {
+      :host([rating='2']) .windIcon_arrow {
         fill: var(--background-wind-warning);
       }
 
-      :host([rating='3']) .windIcon_circle,
-      :host([rating='4']) .windIcon_circle {
+      :host([rating='3']) .windIcon_arrow,
+      :host([rating='4']) .windIcon_arrow {
         fill: var(--background-wind-warning2);
-      }
-
-      :host([rating='3']) .windSpeed,
-      :host([rating='4']) .windSpeed {
-        fill: var(--color-wind-warning2);
       }
 
       .windIcon_innerCircle {
@@ -75,19 +60,23 @@ class WindIcon extends LitElement {
   }
 
   render() {
+    if (this.minimal && !this.isDayHighest) {
+      return html``;
+    }
+
     if (Number.isNaN(this.windSpeed)) {
       return html``;
     }
     return html`<svg
       id="windIcon"
-      class="windIcon ${this.large === true ? 'windIcon--large' : ''}"
+      class="windIcon"
       viewBox="0 0 115 110"
       preserveAspectRatio="xMidYMid meet"
     >
       <g transform="${WindIcon._rotate(this.degrees)}">
         <polyline
           class="windIcon_arrow"
-          stroke-width="4"
+          stroke-width="0"
           points="36,29 50,10 64,29"
         ></polyline>
         <circle
@@ -102,15 +91,7 @@ class WindIcon extends LitElement {
       <text text-anchor="middle" x="49" y="79" class="windSpeed">
         ${WindIcon._round(this.windSpeed)}
       </text>
-      <text
-        text-anchor="middle"
-        x="96"
-        y="38"
-        stroke="0"
-        class="windGustSpeed ${this.whiteGust === true
-          ? 'windGustSpeed--white'
-          : ''}"
-      >
+      <text text-anchor="middle" x="96" y="38" stroke="0" class="windGustSpeed">
         ${WindIcon._round(this.windGustSpeed)}
       </text>
     </svg>`;
@@ -126,12 +107,20 @@ class WindIcon extends LitElement {
         type: Number,
         reflect: true,
       },
+      isDayHighest: {
+        type: Boolean,
+        reflect: true,
+      },
       large: {
         type: Boolean,
         reflect: true,
       },
       rating: {
         type: Number,
+        reflect: true,
+      },
+      minimal: {
+        type: Boolean,
         reflect: true,
       },
       whiteGust: {

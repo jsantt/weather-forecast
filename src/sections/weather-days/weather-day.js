@@ -7,7 +7,7 @@ import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 import { isNight } from '../../data-helpers/sun-calculations.js';
-import { windGustWarning, windClassification } from './wind-helper.js';
+import { isDayHighest, windClassification } from './wind-helper.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -83,7 +83,7 @@ class WeatherDay extends LitElement {
         text-align: center;
 
         color: var(--color-primary);
-        margin: var(--space-m) 0 var(--space-s) 0;
+        margin: var(--space-l) 0 var(--space-s) 0;
       }
 
       .hour--empty {
@@ -108,7 +108,7 @@ class WeatherDay extends LitElement {
         grid-row: 6;
 
         font-size: var(--font-size-m);
-        margin-top: 0.2rem;
+        margin: 0.2rem 0 0 0;
         text-align: center;
 
         z-index: var(--z-index-1);
@@ -128,21 +128,25 @@ class WeatherDay extends LitElement {
         height: 0;
       }
 
-      .wind_header {
+      weather-description {
         grid-row: 100;
+        grid-column: span 25;
 
         background: var(--packground-panel);
         color: var(--color-primary);
         font-size: var(--font-size-s);
 
-        padding: var(--space-m) var(--space-l);
+        padding: var(--space-m) var(--space-l) var(--space-l) var(--space-l);
+      }
 
-        grid-column: span 25;
+      weather-description:empty {
+        padding: 0;
       }
 
       .wind,
       .wind--empty {
-        grid-row: 7;
+        grid-row: 9;
+        margin-top: 0.7rem;
       }
 
       .temperature--empty,
@@ -157,13 +161,9 @@ class WeatherDay extends LitElement {
 
       .wind,
       .wind--empty,
-      .wind_header,
+      weather-description,
       smooth-expand {
         z-index: var(--z-index-2);
-      }
-
-      wind-icon {
-        margin-top: var(--space-m);
       }
 
       .rain-bars {
@@ -201,14 +201,10 @@ class WeatherDay extends LitElement {
           </h3>
 
           <!-- headers here outside of repeat -->
-          ${windGustWarning(this.dayData).gustRating > 0
-            ? html`
-                <div class="wind_header">
-                  <weather-description .dayData="${this.dayData}">
-                  </weather-description>
-                </div>
-              `
-            : null}
+
+          <weather-description .dayData="${this.dayData}">
+          </weather-description>
+
           ${this.dayData.map((entry, index) => {
             return html`
               <!-- EMPTY COLUMN -->
@@ -256,16 +252,16 @@ class WeatherDay extends LitElement {
                         : ''}
                     </div>
 
-                    <smooth-expand class="wind" ?expanded="${this.showWind}">
-                      <wind-icon
-                        class="symbol"
-                        .degrees="${entry.windDirection}"
-                        .rating="${windClassification(entry.windGust)}"
-                        .windSpeed="${entry.wind}"
-                        .windGustSpeed="${entry.windGust}"
-                      >
-                      </wind-icon>
-                    </smooth-expand>
+                    <wind-icon
+                      class="symbol wind"
+                      .degrees="${entry.windDirection}"
+                      .rating="${windClassification(entry.windGust)}"
+                      .windSpeed="${entry.wind}"
+                      .windGustSpeed="${entry.windGust}"
+                      ?minimal="${this.showWind !== true}"
+                      ?isDayHighest="${isDayHighest(this.dayData, index)}"
+                    >
+                    </wind-icon>
                   `}
               <div class="hourly-symbols">
                 <weather-symbol-small

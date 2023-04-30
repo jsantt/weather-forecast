@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
+import { roundRain } from './rain-helper.js';
 
 class RainAmount extends LitElement {
   static get is() {
@@ -28,7 +29,10 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
-            Sadetta ${this.rainAmount} mm.<br />
+            ${this.rainAmount < 0.5
+              ? 'Sadetta alle 1'
+              : html`Sadetta ${roundRain(this.rainAmount)}`}
+            mm<br />
           `
         : ''}
       ${this.snowAmount > 0
@@ -43,7 +47,10 @@ class RainAmount extends LitElement {
                 />
               </g>
             </svg>
-            Lumisadetta ${this.snowAmount} cm. <br />
+            ${this.snowAmount < 0.5
+              ? 'Lumisadetta alle 1'
+              : html` Lumisadetta ${roundRain(this.snowAmount)}`}
+            cm <br />
           `
         : ''}
     `;

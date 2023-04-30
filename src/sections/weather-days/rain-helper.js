@@ -1,4 +1,4 @@
-function _round(total) {
+function roundRain(total) {
   let roundedTotal;
   if (total > 0 && total < 0.5) {
     roundedTotal = 0;
@@ -37,7 +37,7 @@ function totalRain(dayData) {
     return previous + rain;
   }, 0.0);
 
-  return _round(total);
+  return total;
 }
 
 function totalSnow(weatherDay) {
@@ -56,7 +56,7 @@ function totalSnow(weatherDay) {
     return previous + snow;
   }, 0.0);
 
-  return _round(total);
+  return total;
 }
 
-export { totalRain, totalSnow, rainStartTime };
+export { totalRain, totalSnow, rainStartTime, roundRain };

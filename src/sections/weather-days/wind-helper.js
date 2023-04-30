@@ -16,7 +16,7 @@ function windGustWarning(forecastData) {
     return '';
   }
 
-  const maxGustWind = Math.round(_max(forecastData, 'windGust'));
+  const maxGustWind = _max(forecastData, 'roundWindGust');
   const gustRating = windClassification(maxGustWind);
 
   return { gustRating, maxGustWind };
@@ -27,7 +27,7 @@ function windWarning(forecastData) {
     return '';
   }
 
-  const maxWind = Math.round(_max(forecastData, 'wind'));
+  const maxWind = _max(forecastData, 'roundWind');
   const rating = windClassification(maxWind);
 
   return { rating, maxWind };
@@ -60,4 +60,22 @@ function _max(forecastData, property) {
   return maxWind;
 }
 
-export { windClassification, windGustWarning, windWarning };
+function isDayHighest(dayData, currentIndex) {
+  const max = _max(dayData, 'roundWind');
+
+  let maxIndex;
+  dayData.map((item, index) => {
+    if (item.roundWind === max) {
+      maxIndex = index;
+    }
+    return undefined;
+  });
+
+  if (maxIndex === undefined) {
+    return false;
+  }
+
+  return Math.abs(currentIndex - maxIndex) <= 1;
+}
+
+export { isDayHighest, windClassification, windGustWarning, windWarning };

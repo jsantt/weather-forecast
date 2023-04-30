@@ -210,6 +210,7 @@ class ForecastData extends LitElement {
     for (let i = 0; i < data.temperature.length; i += 1) {
       const temperatureValue = getValue(data.temperature[i]);
       const windValue = getValue(data.wind[i]);
+      const windGustValue = getValue(data.windGust[i]);
       const humidityValue = getValue(data.humidity[i]);
 
       weatherJson.push({
@@ -220,8 +221,10 @@ class ForecastData extends LitElement {
         time: getTime(data.temperature[i]),
         temperature: temperatureValue,
         wind: windValue,
+        roundWind: Math.round(windValue),
         windDirection: getValue(data.windDirection[i]),
-        windGust: getValue(data.windGust[i]),
+        windGust: windGustValue,
+        roundWindGust: Math.round(windGustValue),
       });
     }
 
