@@ -86,7 +86,7 @@ class RainBars extends LitElement {
 
     this._rainBars(svg, dayData);
 
-    // remove previous childs
+    // remove previous children
 
     if (this._chart && this._chart.children.length > 0) {
       this._chart.removeChild(this._chart.children[0]);
@@ -145,7 +145,7 @@ class RainBars extends LitElement {
       return 1;
     }
 
-    return Number.isNaN(rainAmount) ? 0 : Math.min(rainAmount * 10, 107);
+    return Number.isNaN(rainAmount) ? 0 : Math.min(rainAmount * 10, 145);
   }
 
   get _chart() {

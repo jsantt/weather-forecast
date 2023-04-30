@@ -166,11 +166,9 @@ class WeatherDay extends LitElement {
         z-index: var(--z-index-2);
       }
 
-      .rain-bars {
+      rain-bars {
         grid-column: span 25;
         grid-row: 12;
-
-        margin-top: 0.9rem;
       }
 
       .hourly-symbols {
@@ -275,13 +273,11 @@ class WeatherDay extends LitElement {
 
           <div class="hour hour--empty"></div>
 
-          <section class="rain-bars">
-            <rain-bars
-              .minTemperature="${this.minTemperature}"
-              .dayData="${this.dayData}"
-            >
-            </rain-bars>
-          </section>
+          <rain-bars
+            .minTemperature="${this.minTemperature}"
+            .dayData="${this.dayData}"
+          >
+          </rain-bars>
         </div>
       </div>
     `;
