@@ -92,7 +92,7 @@ class ComboBox extends LitElement {
 
         margin: 0;
         min-width: 15rem;
-        padding: 0.425rem var(--space-l);
+        padding: 0.425rem var(--space-xl) 0.425rem var(--space-l);
         text-align: center;
 
         transition: padding var(--transition-time),
