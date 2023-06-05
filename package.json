@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start": "web-dev-server --app-index index.html --node-resolve --open --watch",
     "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
@@ -12,7 +13,6 @@
     "storybook": "start-storybook",
     "storybook:build": "build-storybook",
     "build": "rimraf dist && rollup -c rollup.config.js",
-    "start": "web-dev-server --app-index index.html --node-resolve --open --watch",
     "deploy-test": "npm run build && firebase serve",
     "deploy-prod": "npm run build && firebase deploy"
   },
@@ -37,6 +37,10 @@
     "stylelint-config-recommended": "^4.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.10.0"
+  },
+  "dependencies": {
+    "lit": "^2.7.5",
+    "suncalc": "^1.9.0"
   },
   "eslintConfig": {
     "extends": [
@@ -72,10 +76,5 @@
   "version": "0.0.0",
   "description": "saaennuste.fi",
   "author": "weather-forecast",
-  "license": "MIT",
-  "dependencies": {
-    "lit-element": "2.4.0",
-    "lit-html": "1.3.0",
-    "suncalc": "1.8.0"
-  }
+  "license": "MIT"
 }

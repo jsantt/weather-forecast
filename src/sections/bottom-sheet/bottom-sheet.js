@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import { isSafari, isPortableApple, isWebView } from './browser-detector.js';
 import { isState, setState, STATE } from '../../common-utils/state.js';

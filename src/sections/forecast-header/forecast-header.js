@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import { windClassification } from '../weather-days/wind-helper.js';
 

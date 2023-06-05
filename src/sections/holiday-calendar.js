@@ -1,5 +1,5 @@
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 
 import '../common-components/svg-icon.js';
 import '../weather-section.js';

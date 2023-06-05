@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import '../../common-components/smooth-expand.js';
 import '../../common-components/svg-icon.js';
@@ -359,9 +359,8 @@ class ComboBox extends LitElement {
         event.preventDefault();
 
         // and simulate a click on the "focused" item
-        const selectedItem = this.shadowRoot.querySelectorAll('li')[
-          this._focusIndex
-        ];
+        const selectedItem =
+          this.shadowRoot.querySelectorAll('li')[this._focusIndex];
         if (selectedItem !== undefined) {
           selectedItem.click();
         }

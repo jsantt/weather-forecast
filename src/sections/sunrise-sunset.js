@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import '../common-components/smooth-expand.js';
 import '../common-components/svg-icon.js';

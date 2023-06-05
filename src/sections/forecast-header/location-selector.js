@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import './combo-box.js';
 import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list.js';

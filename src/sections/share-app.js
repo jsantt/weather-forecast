@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import '../common-components/svg-icon.js';
 
@@ -89,8 +89,7 @@ class ShareApp extends LitElement {
     if (navigator.share) {
       navigator.share({
         title: 'Uusi sääsovellus',
-        text:
-          'Hei, ajattelin että saattaisit tykätä tästä sovelluksesta, joka näyttää Ilmatieteen laitoksen sään.',
+        text: 'Hei, ajattelin että saattaisit tykätä tästä sovelluksesta, joka näyttää Ilmatieteen laitoksen sään.',
         url: 'https://saaennuste.fi',
       });
     }

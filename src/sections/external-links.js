@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import '../weather-section.js';
 import '../common-components/svg-icon.js';

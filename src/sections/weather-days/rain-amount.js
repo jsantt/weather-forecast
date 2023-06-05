@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { roundRain } from './rain-helper.js';
 
 class RainAmount extends LitElement {

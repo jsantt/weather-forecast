@@ -1,4 +1,4 @@
-import { css, html, LitElement, svg } from 'lit-element';
+import { css, html, LitElement, svg } from 'lit';
 import { checkCollision, extendVector } from './vector-math.js';
 
 import '../../common-components/error-notification.js';

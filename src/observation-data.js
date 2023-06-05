@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 
 import { distance } from './data-helpers/distance.js';
 import { feelsLike } from './data-helpers/feels-like.js';
@@ -325,12 +325,10 @@ class ObservationData extends LitElement {
       return { ...item, ...observations[index] };
     });
 
-    const filteredObservations = ObservationData._removeWithoutTemperature(
-      combined
-    );
-    const temperatureRemoved = ObservationData._removeDuplicates(
-      filteredObservations
-    );
+    const filteredObservations =
+      ObservationData._removeWithoutTemperature(combined);
+    const temperatureRemoved =
+      ObservationData._removeDuplicates(filteredObservations);
 
     const observations9 = temperatureRemoved.map(item => {
       const copy = { ...item };
