@@ -60,22 +60,33 @@ function _max(forecastData, property) {
   return maxWind;
 }
 
-function isDayHighest(dayData, currentIndex) {
-  const max = _max(dayData, 'roundWind');
+function _maxIndex(forecastData, property) {
+  if (forecastData === undefined || forecastData.length < 1) {
+    return undefined;
+  }
 
-  let maxIndex;
-  dayData.map((item, index) => {
-    if (item.roundWind === max) {
+  let maxWind = 0;
+
+  forecastData.map(item => {
+    maxWind = item[property] > maxWind ? item[property] : maxWind;
+    return undefined;
+  });
+
+  let maxIndex = 0;
+  forecastData.map((item, index) => {
+    if (item[property] === maxWind) {
       maxIndex = index;
     }
     return undefined;
   });
 
-  if (maxIndex === undefined) {
-    return false;
-  }
+  return maxIndex;
+}
 
-  return Math.abs(currentIndex - maxIndex) <= 1;
+function isDayHighest(dayData, currentIndex) {
+  const maxWindGustIndex = Math.round(_maxIndex(dayData, 'windGust'));
+
+  return Math.abs(currentIndex - maxWindGustIndex) <= 1;
 }
 
 export { isDayHighest, windClassification, windGustWarning, windWarning };

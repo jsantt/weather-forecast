@@ -207,11 +207,19 @@ class ForecastData extends LitElement {
   static _toJson(data) {
     const weatherJson = [];
 
+    let previousRoundWind = 0;
+    let oneBeforePreviousRoundWind = 0;
+
+    let previousRoundWindGust = 0;
+    let oneBeforePreviousRoundWindGust = 0;
+
     for (let i = 0; i < data.temperature.length; i += 1) {
       const temperatureValue = getValue(data.temperature[i]);
       const windValue = getValue(data.wind[i]);
       const windGustValue = getValue(data.windGust[i]);
       const humidityValue = getValue(data.humidity[i]);
+      const roundWind = Math.round(windValue);
+      const roundWindGust = Math.round(windGustValue);
 
       weatherJson.push({
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
@@ -221,11 +229,27 @@ class ForecastData extends LitElement {
         time: getTime(data.temperature[i]),
         temperature: temperatureValue,
         wind: windValue,
-        roundWind: Math.round(windValue),
+        roundWind,
+        threeHourWindMax: Math.max(
+          roundWind,
+          previousRoundWind,
+          oneBeforePreviousRoundWind
+        ),
         windDirection: getValue(data.windDirection[i]),
         windGust: windGustValue,
-        roundWindGust: Math.round(windGustValue),
+        roundWindGust,
+        threeHourWindMaxGust: Math.max(
+          roundWindGust,
+          previousRoundWindGust,
+          oneBeforePreviousRoundWindGust
+        ),
       });
+
+      previousRoundWind = roundWind;
+      oneBeforePreviousRoundWind = previousRoundWind;
+
+      previousRoundWindGust = roundWindGust;
+      oneBeforePreviousRoundWindGust = previousRoundWindGust;
     }
 
     return weatherJson;

@@ -254,8 +254,8 @@ class WeatherDay extends LitElement {
                       class="symbol wind"
                       .degrees="${entry.windDirection}"
                       .rating="${windClassification(entry.windGust)}"
-                      .windSpeed="${entry.wind}"
-                      .windGustSpeed="${entry.windGust}"
+                      .windSpeed="${entry.threeHourWindMax}"
+                      .windGustSpeed="${entry.threeHourWindMaxGust}"
                       ?minimal="${this.showWind !== true}"
                       ?isDayHighest="${isDayHighest(this.dayData, index)}"
                     >
