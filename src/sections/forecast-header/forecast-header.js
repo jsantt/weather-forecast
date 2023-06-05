@@ -35,8 +35,6 @@ class ForecastHeader extends LitElement {
         position: relative;
 
         background: var(--color-blue-600);
-        /*background-image: linear-gradient(#174870e1, #174870e1),
-          url('assets/image/map.png');*/
         background-image: var(--background-image);
         background-repeat: no-repeat;
         background-size: cover;
