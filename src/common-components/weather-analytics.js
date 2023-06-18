@@ -11,6 +11,7 @@ class WeatherAnalytics extends HTMLElement {
       a = t.createElement(i);
       c = t.getElementsByTagName(i)[0];
       a.async = true;
+      a.rel = 'preconnect';
       a.src = s;
       c.parentNode.insertBefore(a, c);
     })(
