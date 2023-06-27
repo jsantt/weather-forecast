@@ -38,7 +38,8 @@ class ComboBox extends LitElement {
         width: 100%;
       }
 
-      .refresh {
+      .refresh,
+      .close {
         fill: var(--color-primary);
         position: absolute;
         right: 2px;
@@ -131,6 +132,10 @@ class ComboBox extends LitElement {
         color: var(--color-gray-600);
       }
 
+      li {
+        font-weight: var(--font-weight-normal);
+      }
+
       /* when navigating through the items using the arrow keys: */
       li[aria-selected='true'],
       li:hover {
@@ -145,7 +150,7 @@ class ComboBox extends LitElement {
       }
 
       strong {
-        color: var(--color-blue-650);
+        font-weight: var(--font-weight-boldest);
       }
     `;
   }
@@ -178,7 +183,7 @@ class ComboBox extends LitElement {
           />
           <svg-icon
             @click="${this._refresh}"
-            class="refresh"
+            class="${this._open === true ? 'close' : 'refresh'}"
             path="${this._open === true
               ? 'assets/image/icons.svg#close'
               : 'assets/image/icons.svg#refresh'}"
