@@ -111,7 +111,6 @@ class ComboBox extends LitElement {
       }
 
       input[type='text']:focus {
-        border: 2px solid #d6dde554;
         outline: none;
       }
 
