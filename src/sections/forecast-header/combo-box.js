@@ -174,6 +174,7 @@ class ComboBox extends LitElement {
         >
           <input
             id="comboInput"
+            autocomplete="off"
             type="text"
             name="myCountry"
             aria-label="Sää paikassa"

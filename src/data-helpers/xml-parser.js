@@ -22,6 +22,9 @@ function getTimeAndValuePairs(sourceXml, attributeName) {
 }
 
 function getValue(item) {
+  if (item?.children[1] === undefined) {
+    return Number.NaN;
+  }
   return parseFloat(value(item.children[1]));
 }
 
@@ -82,7 +85,7 @@ function raiseEvent(context, name, payload) {
 }
 
 function value(xmlElement) {
-  return xmlElement.childNodes[0].nodeValue;
+  return xmlElement?.childNodes[0]?.nodeValue;
 }
 
 export {

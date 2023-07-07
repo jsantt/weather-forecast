@@ -97,7 +97,14 @@ class WeatherDay extends LitElement {
         text-align: center;
         z-index: var(--z-index-1);
       }
+
       .symbol--empty {
+        grid-column: span 1;
+      }
+
+      :host([debug]) .symbol,
+      :host([debug]) .temperature,
+      :host([debug]) .wind {
         grid-column: span 1;
       }
 
@@ -206,7 +213,7 @@ class WeatherDay extends LitElement {
           ${this.dayData.map((entry, index) => {
             return html`
               <!-- EMPTY COLUMN -->
-              ${index === 1
+              ${index === 0 && this.debug !== true
                 ? html`
                     <div class="symbol--empty"></div>
                     <div class="temperature--empty"></div>
@@ -215,12 +222,10 @@ class WeatherDay extends LitElement {
                 : ''}
 
               <div class="hour">
-                ${WeatherDay._isThird(index) === true
-                  ? html`${entry.hour}`
-                  : ''}
+                ${this._isThird(index) === true ? html`${entry.hour}` : ''}
               </div>
 
-              ${WeatherDay._isThird(index) === false
+              ${this._isThird(index) === false
                 ? ''
                 : html`
                     <div class="symbol">
@@ -253,7 +258,7 @@ class WeatherDay extends LitElement {
                     <wind-icon
                       class="symbol wind"
                       .degrees="${entry.windDirection}"
-                      .rating="${windClassification(entry.windGust)}"
+                      .rating="${windClassification(entry.threeHourWindMax)}"
                       .windSpeed="${entry.threeHourWindMax}"
                       .windGustSpeed="${entry.threeHourWindMaxGust}"
                       ?minimal="${this.showWind !== true}"
@@ -267,6 +272,9 @@ class WeatherDay extends LitElement {
                   .rainType="${entry.rainType}"
                 >
                 </weather-symbol-small>
+                ${this.debug === true
+                  ? html`${entry.wind}<br />${entry.windGust}<br />${entry.threeHourWindMax}<br />${entry.threeHourWindMaxGust}<br />`
+                  : null}
               </div>
             `;
           })}
@@ -313,12 +321,24 @@ class WeatherDay extends LitElement {
       dayData: {
         type: Array,
       },
+      debug: {
+        type: Boolean,
+        reflect: true,
+      },
     };
   }
 
   constructor() {
     super();
+    this.debug = false;
     this.dayData = [];
+  }
+
+  _isThird(index) {
+    if (this.debug === true) {
+      return true;
+    }
+    return (index + 1) % 3 === 0;
   }
 
   static _day(number) {
@@ -337,10 +357,6 @@ class WeatherDay extends LitElement {
     const result = Number.isNaN(rounded) ? '' : rounded;
 
     return result;
-  }
-
-  static _isThird(index) {
-    return (index + 1) % 3 === 0;
   }
 }
 

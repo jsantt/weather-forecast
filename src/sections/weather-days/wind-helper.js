@@ -60,33 +60,12 @@ function _max(forecastData, property) {
   return maxWind;
 }
 
-function _maxIndex(forecastData, property) {
-  if (forecastData === undefined || forecastData.length < 1) {
-    return undefined;
-  }
-
-  let maxWind = 0;
-
-  forecastData.map(item => {
-    maxWind = item[property] > maxWind ? item[property] : maxWind;
-    return undefined;
-  });
-
-  let maxIndex = 0;
-  forecastData.map((item, index) => {
-    if (item[property] === maxWind) {
-      maxIndex = index;
-    }
-    return undefined;
-  });
-
-  return maxIndex;
-}
-
 function isDayHighest(dayData, currentIndex) {
-  const maxWindGustIndex = Math.round(_maxIndex(dayData, 'windGust'));
+  const dayHighest = dayData.reduce((prev, current) =>
+    prev.windGust > current.windGust ? prev : current
+  );
 
-  return Math.abs(currentIndex - maxWindGustIndex) <= 1;
+  return Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1;
 }
 
 export { isDayHighest, windClassification, windGustWarning, windWarning };

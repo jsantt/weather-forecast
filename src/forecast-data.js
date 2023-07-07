@@ -207,12 +207,6 @@ class ForecastData extends LitElement {
   static _toJson(data) {
     const weatherJson = [];
 
-    let previousRoundWind = 0;
-    let oneBeforePreviousRoundWind = 0;
-
-    let previousRoundWindGust = 0;
-    let oneBeforePreviousRoundWindGust = 0;
-
     for (let i = 0; i < data.temperature.length; i += 1) {
       const temperatureValue = getValue(data.temperature[i]);
       const windValue = getValue(data.wind[i]);
@@ -220,6 +214,22 @@ class ForecastData extends LitElement {
       const humidityValue = getValue(data.humidity[i]);
       const roundWind = Math.round(windValue);
       const roundWindGust = Math.round(windGustValue);
+
+      // previous wind and wind gust
+      let previousRoundWind = 0;
+      let previousRoundWindGust = 0;
+
+      if (i > 0) {
+        previousRoundWind = Math.round(getValue(data.wind[i - 1])) || 0;
+        previousRoundWindGust = Math.round(getValue(data.windGust[i - 1])) || 0;
+      }
+
+      // next wind and wind gust
+      const nextWind = getValue(data.wind[i + 1]) || 0;
+      const nextWindGust = getValue(data.windGust[i + 1]) || 0;
+
+      const nextRoundWind = Math.round(nextWind);
+      const nextRoundWindGust = Math.round(nextWindGust);
 
       weatherJson.push({
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
@@ -230,26 +240,19 @@ class ForecastData extends LitElement {
         temperature: temperatureValue,
         wind: windValue,
         roundWind,
-        threeHourWindMax: Math.max(
-          roundWind,
-          previousRoundWind,
-          oneBeforePreviousRoundWind
-        ),
+        threeHourWindMax: Math.max(roundWind, previousRoundWind, nextRoundWind),
         windDirection: getValue(data.windDirection[i]),
         windGust: windGustValue,
         roundWindGust,
         threeHourWindMaxGust: Math.max(
           roundWindGust,
           previousRoundWindGust,
-          oneBeforePreviousRoundWindGust
+          nextRoundWindGust
         ),
       });
 
       previousRoundWind = roundWind;
-      oneBeforePreviousRoundWind = previousRoundWind;
-
       previousRoundWindGust = roundWindGust;
-      oneBeforePreviousRoundWindGust = previousRoundWindGust;
     }
 
     return weatherJson;
