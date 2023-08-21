@@ -1,23 +1,22 @@
 import { css, html, LitElement } from 'lit';
 
 import './sections/meta-info/json-ld.js';
-
 import './forecast-data.js';
 import './observation-data.js';
+
 import './weather-section.js';
-
 import './common-components/error-notification.js';
-import './common-components/weather-analytics.js';
-
 import './sections/forecast-header/forecast-header.js';
+
 import './sections/bottom-sheet/bottom-sheet.js';
 import './sections/external-links.js';
 import './sections/holiday-calendar.js';
+
 import './sections/public-holidays.js';
 import './sections/sunrise-sunset.js';
 import './sections/symbol-list.js';
-import './sections/weather-days/weather-days.js';
 
+import './sections/weather-days/weather-days.js';
 import './sections/share-app.js';
 
 class WeatherApp extends LitElement {
@@ -223,8 +222,6 @@ class WeatherApp extends LitElement {
 
   render() {
     return html`
-      <weather-analytics key="UA-114081578-1"></weather-analytics>
-
       <!-- Observation / weather station data -->
       <observation-data .place="${this._forecastPlace}"> </observation-data>
 
