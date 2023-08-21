@@ -502,12 +502,6 @@ class WeatherApp extends LitElement {
       this._stationSelected(e)
     );
 
-    if (navigator.standalone) {
-      // track(INSTALLED_VERSION_VIEW);
-    } else {
-      // track(WEB_VERSION_VIEW);
-    }
-
     this.addEventListener('bottom-sheet.toggleMapSize', () => {
       this._toggleMapSize();
     });
