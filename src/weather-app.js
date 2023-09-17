@@ -144,6 +144,7 @@ class WeatherApp extends LitElement {
         background-position: right top;
         background-repeat: no-repeat;
         background-size: 400px auto;
+        background-blend-mode: var(--sun-background-blend);
       }
 
       .section--calendar {
