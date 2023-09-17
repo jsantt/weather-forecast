@@ -25,6 +25,13 @@ class WeatherSection extends LitElement {
         font-weight: var(--font-weight-boldest);
       }
 
+      .header-right {
+        display: inline-block;
+        text-align: right;
+        padding: var(--space-m) var(--space-m) 0 0;
+        margin-bottom: calc(-1 * var(--space-l));
+      }
+
       section {
         padding: var(--padding, var(--space-l));
       }
@@ -41,6 +48,7 @@ class WeatherSection extends LitElement {
   render() {
     return html`
       ${this.header === undefined ? '' : html`<h3>${this.header}</h3>`}
+      <slot class="header-right" name="header-right"></slot>
       <section>
         <slot></slot>
       </section>

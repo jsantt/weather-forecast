@@ -111,8 +111,6 @@ class SunriseSunset extends LitElement {
         grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
         grid-gap: var(--space-s);
-
-        margin-top: var(--space-m);
       }
 
       .more-space {
@@ -128,6 +126,9 @@ class SunriseSunset extends LitElement {
   render() {
     return html`
       <weather-section>
+        <div slot="header-right">
+          ${SunriseSunset._getDay()} | vk ${SunriseSunset._getWeek()}
+        </div>
         <div class="grid">
           <div class="sunset-value">${this._sunset}</div>
           <div class="sunset-label">aurinko laskee</div>
@@ -135,7 +136,6 @@ class SunriseSunset extends LitElement {
           <div class="sunrise-value">${this._sunrise}</div>
           <div class="sunrise-label">aurinko nousee</div>
         </div>
-
         <div slot="footer-left">
           <smooth-expand ?expanded="${this._expanded}">
             <div class="details">
@@ -257,6 +257,32 @@ class SunriseSunset extends LitElement {
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
     return `${time.getHours()}.${fullMinutes}`;
+  }
+
+  static _getDay() {
+    const now = new Date();
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    };
+    const locale = 'fi-FI';
+
+    return now.toLocaleDateString(locale, options);
+  }
+
+  static _getWeek() {
+    const dt = new Date();
+    const tdt = new Date(dt.valueOf());
+    const dayn = (dt.getDay() + 6) % 7;
+    tdt.setDate(tdt.getDate() - dayn + 3);
+    const firstThursday = tdt.valueOf();
+    tdt.setMonth(0, 1);
+    if (tdt.getDay() !== 4) {
+      tdt.setMonth(0, 1 + ((4 - tdt.getDay() + 7) % 7));
+    }
+    return 1 + Math.ceil((firstThursday - tdt) / 604800000);
   }
 }
 window.customElements.define(SunriseSunset.is, SunriseSunset);

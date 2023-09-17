@@ -10,7 +10,6 @@ import './sections/forecast-header/forecast-header.js';
 
 import './sections/bottom-sheet/bottom-sheet.js';
 import './sections/external-links.js';
-import './sections/holiday-calendar.js';
 
 import './sections/public-holidays.js';
 import './sections/sunrise-sunset.js';
