@@ -8,10 +8,6 @@
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:css": "stylelint \"src/**/*.js\"",
     "format": "npm run format:eslint && npm run format:prettier",
-    "test": "karma start --coverage",
-    "test:watch": "karma start --auto-watch=true --single-run=false",
-    "storybook": "start-storybook",
-    "storybook:build": "build-storybook",
     "build": "rimraf dist && rollup -c rollup.config.js",
     "deploy-test": "npm run build && firebase serve",
     "deploy-prod": "npm run build && firebase deploy"
