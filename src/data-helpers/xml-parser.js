@@ -58,17 +58,6 @@ function parseRegion(response) {
   return region;
 }
 
-/**
- * Parse latitude and longitude from gml:pos tag. All of them have the same value and we take the first
- * <gml:pos>61.92411 25.74815 </gml:pos>
- */
-function parseLatLon(response) {
-  const latLon = response.getElementsByTagName('gml:pos')[0];
-  const latLonValue = latLon.innerHTML;
-
-  return latLonValue;
-}
-
 function raiseEvent(context, name, payload) {
   let message = payload;
 
@@ -93,7 +82,6 @@ export {
   getTime,
   getTimeAndValuePairs,
   getValue,
-  parseLatLon,
   parseLocationName,
   parseRegion,
   raiseEvent,

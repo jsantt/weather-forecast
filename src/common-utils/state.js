@@ -19,4 +19,4 @@ function isState(value) {
   return getState() === value;
 }
 
-export { getState, isState, setState, STATE };
+export { isState, setState, STATE };

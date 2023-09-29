@@ -21,7 +21,6 @@
     "@open-wc/demoing-storybook": "^2.4.7",
     "@open-wc/eslint-config": "^2.0.0",
     "@open-wc/testing": "^2.5.32",
-    "@open-wc/testing-karma": "^3.0.0",
     "@web/dev-server": "^0.1.32",
     "deepmerge": "^3.2.0",
     "eslint": "^6.1.0",

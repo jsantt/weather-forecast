@@ -11,17 +11,6 @@ const _WIND_TABLE = [
   { min: 32, max: 99, rate: 4, description: 'hirmumyrskyä' },
 ];
 
-function windGustWarning(forecastData) {
-  if (forecastData === undefined || forecastData.length < 1) {
-    return '';
-  }
-
-  const maxGustWind = _max(forecastData, 'roundWindGust');
-  const gustRating = windClassification(maxGustWind);
-
-  return { gustRating, maxGustWind };
-}
-
 function windWarning(forecastData) {
   if (forecastData === undefined || forecastData.length < 1) {
     return '';
@@ -68,4 +57,4 @@ function isDayHighest(dayData, currentIndex) {
   return Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1;
 }
 
-export { isDayHighest, windClassification, windGustWarning, windWarning };
+export { isDayHighest, windClassification, windWarning };
