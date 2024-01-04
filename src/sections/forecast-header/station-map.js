@@ -49,11 +49,6 @@ class StationMap extends LitElement {
         pointer-events: none;
       }
 
-      .celcius {
-        dominant-baseline: ideographic;
-        font-size: 0.08px;
-      }
-
       .feels-like {
         font-style: italic;
       }
@@ -137,10 +132,8 @@ class StationMap extends LitElement {
                  text-anchor="end" x="${observation.lonForMap + 0.1}"
                   y="${-1 * observation.latForMap - 0.02}">${
                     showFeelsLike === true
-                      ? svg`<tspan class="feels-like">${observation.feelsLike}<tspan class="celcius">°</tspan>`
-                      : svg`${Math.round(
-                          observation.temperature
-                        )}<tspan class="celcius">°</tspan>`
+                      ? svg`<tspan class="feels-like">${observation.feelsLike}`
+                      : svg`${Math.round(observation.temperature)}`
                   }</text>`
             }
           </g>
