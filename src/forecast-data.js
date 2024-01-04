@@ -10,6 +10,7 @@ import {
   value,
   parseRegion,
 } from './data-helpers/xml-parser.js';
+import { snowAmount } from './sections/weather-days/rain-helper.js';
 
 import { feelsLike } from './data-helpers/feels-like.js';
 import { rainType } from './data-helpers/rain-type.js';
@@ -214,6 +215,8 @@ class ForecastData extends LitElement {
       const humidityValue = getValue(data.humidity[i]);
       const roundWind = Math.round(windValue);
       const roundWindGust = Math.round(windGustValue);
+      const rain = getValue(data.rain[i]);
+      const symbol = getValue(data.symbol[i]);
 
       // previous wind and wind gust
       let previousRoundWind = 0;
@@ -234,8 +237,9 @@ class ForecastData extends LitElement {
       weatherJson.push({
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
-        rain: getValue(data.rain[i]),
-        symbol: getValue(data.symbol[i]),
+        rain,
+        snow: snowAmount(temperatureValue, rain, symbol),
+        symbol,
         time: getTime(data.temperature[i]),
         temperature: temperatureValue,
         wind: windValue,

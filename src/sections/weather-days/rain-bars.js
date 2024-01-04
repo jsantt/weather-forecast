@@ -117,7 +117,11 @@ class RainBars extends LitElement {
         bar.setAttribute('class', `rainBar ${data[i].rainType}`);
         bar.setAttribute('width', '9');
 
-        const rectHeight = RainBars._rectHeight(data[i].rain, data[i].rainType);
+        const rectHeight = RainBars._rectHeight(
+          data[i].rain,
+          data[i].rainType,
+          data[i].snow
+        );
 
         bar.setAttribute('height', rectHeight);
 
@@ -134,14 +138,21 @@ class RainBars extends LitElement {
    *  draw rectangle of height 10 x rain amount, 107 being maximum height
    * @param {v} rainAmount
    */
-  static _rectHeight(rainAmount, rainType) {
-    // even though the rain amount is zero, if weather symbol shows the rain, we want to
+  static _rectHeight(rainAmount, rainType, snow) {
+    if (Number.isNaN(rainAmount)) {
+      return 0;
+    }
+    // even though the rain amount is zero, if weather symbol shows the rain or snow, we want to
     // show it
     if (rainAmount === 0 && rainType !== undefined) {
       return 1;
     }
 
-    return Number.isNaN(rainAmount) ? 0 : Math.min(rainAmount * 10, 145);
+    if (rainType === 'snow' && snow !== undefined) {
+      return Math.min(snow * 15, 145);
+    }
+
+    return Math.min(rainAmount * 10, 145);
   }
 
   get _chart() {
