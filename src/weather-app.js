@@ -229,7 +229,7 @@ class WeatherApp extends LitElement {
 
       <div class="container" ?hidden="${this._firstLoading}">
         <weather-section class="section section--forecast">
-          <slot id="place"></slot>
+          <slot name="place"></slot>
 
           ${this._forecastError === true
             ? html`
@@ -253,7 +253,7 @@ class WeatherApp extends LitElement {
                 </forecast-header>
 
                 <!-- today, tomorrow and a day after tomorrow -->
-                <slot id="header"></slot>
+                <slot name="header"></slot>
 
                 <weather-days
                   .forecastData="${this._forecastData}"
