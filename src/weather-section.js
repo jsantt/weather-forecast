@@ -47,7 +47,7 @@ class WeatherSection extends LitElement {
 
   render() {
     return html`
-      ${this.header === undefined ? '' : html`<h3>${this.header}</h3>`}
+      ${this.header === undefined ? '' : html`<h2>${this.header}</h2>`}
       <slot class="header-right" name="header-right"></slot>
       <section>
         <slot></slot>

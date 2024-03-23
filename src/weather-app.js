@@ -299,7 +299,7 @@ class WeatherApp extends LitElement {
 
         <weather-section
           class="section section--informationOnService"
-          header="Tietoja palvelusta"
+          header="Sääennuste.fi"
         >
           <svg-icon
             class="info-icon"
