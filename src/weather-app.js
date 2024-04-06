@@ -299,14 +299,14 @@ class WeatherApp extends LitElement {
 
         <weather-section
           class="section section--informationOnService"
-          header="Sääennuste.fi"
+          header="Sääennuste"
         >
           <svg-icon
             class="info-icon"
             path="assets/image/icons.svg#info"
           ></svg-icon>
           <p>
-            Saaennuste.fi kokoaa Ilmatieteen laitoksen havainnot, sääennusteen,
+            Palvelu kokoaa Ilmatieteen laitoksen havainnot, sääennusteen,
             sadetutkan ja paljon säähän liittyvää hyödyllistä tietoa yhteen.
             Näet tuntikohtaiset sadepylväät, tuuli- sade- ja lumimäärät yhdellä
             vilkaisulla - myös kännykän pieneltä ruudulta.
