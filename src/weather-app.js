@@ -305,11 +305,11 @@ class WeatherApp extends LitElement {
             class="info-icon"
             path="assets/image/icons.svg#info"
           ></svg-icon>
+
           <p>
-            Palvelu kokoaa Ilmatieteen laitoksen havainnot, sääennusteen,
-            sadetutkan ja paljon säähän liittyvää hyödyllistä tietoa yhteen.
-            Näet tuntikohtaiset sadepylväät, tuuli- sade- ja lumimäärät yhdellä
-            vilkaisulla - myös kännykän pieneltä ruudulta.
+            Kännykälle optimoitu palvelu kokoaa Ilmatieteen laitoksen havainnot,
+            sääennusteen, sadetutkan jne yhteen. Näet tuntikohtaiset
+            sadepylväät, tuuli- sade- ja lumimäärät yhdellä vilkaisulla.
           </p>
 
           <p>
