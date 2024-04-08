@@ -312,11 +312,6 @@ class WeatherApp extends LitElement {
             sadepylväät, tuuli- sade- ja lumimäärät yhdellä vilkaisulla.
           </p>
 
-          <p>
-            Siten saat nopeiten vastauksen kysymyksiin: Mitä puen päälle nyt,
-            koska sade loppuu ja koska on lähipäivien paras sää mennä ulos?
-          </p>
-
           <h3>Sää nyt</h3>
           <p>
             Sovellus näyttää lähistön sääasemat "kartalla" oikeilla paikoillaan
