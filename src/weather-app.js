@@ -217,6 +217,11 @@ class WeatherApp extends LitElement {
         width: 24px;
         fill: var(--color-blue-700);
       }
+
+      h2,
+      h3 {
+        font-size: var(--font-size-m);
+      }
     `;
   }
 
@@ -297,10 +302,8 @@ class WeatherApp extends LitElement {
         <!--public-holidays class="section section--calendar"></public-holidays-->
         <!--holiday-calendar class="section section--calendar"></holiday-calendar-->
 
-        <weather-section
-          class="section section--informationOnService"
-          header="Sääennuste"
-        >
+        <weather-section class="section section--informationOnService">
+          <h2>Sääennuste</h2>
           <svg-icon
             class="info-icon"
             path="assets/image/icons.svg#info"
