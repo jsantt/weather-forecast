@@ -310,9 +310,9 @@ class WeatherApp extends LitElement {
           ></svg-icon>
 
           <p>
-            Kännykälle optimoitu palvelu kokoaa Ilmatieteen laitoksen havainnot,
-            sääennusteen, sadetutkan jne yhteen. Näet tuntikohtaiset
-            sadepylväät, tuuli- sade- ja lumimäärät yhdellä vilkaisulla.
+            Sääennuste kokoaa Ilmatieteen laitoksen havainnot, sääennusteen,
+            sadetutkan jne yhteen. Näet tuntikohtaiset sadepylväät, tuuli- sade-
+            ja lumimäärät yhdellä vilkaisulla &ndash; myös kännykän ruudulta.
           </p>
 
           <h3>Sää nyt</h3>
@@ -377,7 +377,6 @@ class WeatherApp extends LitElement {
 
         <weather-section class="section section--copyright">
           <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
-          <div>Design / toteutus Jani Säntti</div>
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
         </weather-section>
 
