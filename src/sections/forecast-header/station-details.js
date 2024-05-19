@@ -36,8 +36,12 @@ class StationDetails extends LitElement {
 
       .updated-time {
         grid-column: 1 / -1;
-        text-align: right;
         padding-top: var(--space-m);
+
+        color: var(--color-gray-500);
+        font-size: var(--font-size-s);
+
+        text-align: right;
       }
     `;
   }
@@ -111,7 +115,8 @@ class StationDetails extends LitElement {
         : ``}
 
       <div class="item updated-time">
-        päivitetty klo ${StationDetails._time(this.station.timestamp)}
+        ${this.station.calculated ? 'Laskettu havainnoista, ' : null} päivitetty
+        klo ${StationDetails._time(this.station.timestamp)}
       </div>
     `;
   }

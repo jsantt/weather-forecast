@@ -51,6 +51,19 @@ class ObservationData extends LitElement {
       .then(parsedResponse => {
         window.observationsTest = parsedResponse;
         const formattedObservations = this._formatObservations(parsedResponse);
+
+        const currentPlace = ObservationData.calculateAverage({
+          lat: this.place.lat,
+          lon: this.place.lon,
+          region: this.place.region,
+          name: this.place.name,
+        });
+
+        this._dispatch('observation-data.new-data-test', [
+          currentPlace,
+          ...formattedObservations,
+        ]);
+
         this._dispatch('observation-data.new-data', formattedObservations);
       })
       .catch(rejected => {
@@ -60,6 +73,39 @@ class ObservationData extends LitElement {
         // eslint-disable-next-line no-console
         console.log(`error ${rejected.stack}`);
       });
+  }
+
+  static calculateAverage(params) {
+    return {
+      calculated: true,
+      lat: params.lat,
+      lon: params.lon,
+      latForMap: params.lat,
+      lonForMap: params.lon,
+      latLon: `${params.lat} ${params.lon}`,
+      timestamp: new Date('2024-05-18T07:40:00.000Z'),
+      name: `${params.region} ${params.name}`,
+      position: `${params.lat} ${params.lon}`,
+      temperature: 99,
+      wind: 3.5,
+      windGust: 5.3,
+      windDirection: 106,
+      humidity: 45,
+      dewPoint: 4.5,
+      rain: null,
+      rainExplanation: 0,
+      snow: -1,
+      pressure: 1021,
+      visibility: 40,
+      cloudiness: 0,
+      wawaCode: 0,
+      detailsVisible: false,
+      weatherCode3: 1,
+      feelsLike: 14,
+      distance: 0,
+      selectedStation: true,
+      collisionId: 0,
+    };
   }
 
   static _getParams(geoid) {

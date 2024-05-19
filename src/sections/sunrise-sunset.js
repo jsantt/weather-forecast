@@ -39,7 +39,7 @@ class SunriseSunset extends LitElement {
       .expand-icon {
         height: 16px;
         width: 16px;
-
+        margin-right: var(--space-m);
         transition: transform var(--transition-time) ease;
       }
 
@@ -172,11 +172,11 @@ class SunriseSunset extends LitElement {
           </smooth-expand>
         </div>
         <a href="#" @click="${e => this._toggleDetails(e)}">
-          ${this._expanded ? `näytä vähemmän` : `näytä lisää`}
           <svg-icon
             class="expand-icon ${this._expanded ? 'expand-icon--open' : ''}"
             path="assets/image/icons.svg#caret-down"
           ></svg-icon>
+          ${this._expanded ? `näytä vähemmän` : `näytä lisää`}
         </a>
       </weather-section>
     `;

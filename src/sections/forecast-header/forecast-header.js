@@ -75,20 +75,18 @@ class ForecastHeader extends LitElement {
       .selected {
         color: var(--color-secondary);
         display: grid;
-        grid-template-columns: 3rem auto 2rem;
+        grid-template-columns: 2rem auto 3rem;
         grid-template-rows: auto;
-        align-items: center;
 
         margin-bottom: var(--space-s);
 
         grid-template-areas:
-          'wind     label   expand'
-          'wind     name    expand'
-          'details  details details';
+          'expand     label   wind'
+          'expand     name    wind'
+          '.          details details';
 
         line-height: var(--line-height-dense);
 
-        text-align: right;
         padding: 0 var(--space-l);
       }
       .selected-label {
@@ -106,7 +104,6 @@ class ForecastHeader extends LitElement {
 
       .selected-details {
         grid-area: details;
-        margin: 0 2rem 0 0.5rem;
         padding-top: var(--space-m);
 
         transition: padding var(--transition-time);
@@ -123,10 +120,11 @@ class ForecastHeader extends LitElement {
 
       .expand-icon {
         grid-area: expand;
+        align-self: center;
+
         height: 16px;
         width: 16px;
 
-        margin-left: auto;
         transition: transform var(--transition-time) ease;
       }
 
@@ -140,7 +138,7 @@ class ForecastHeader extends LitElement {
 
       station-details {
         color: var(--color-secondary);
-        margin: 0;
+        margin: var(--space-l) 0 0 0;
         padding: 0;
       }
     `;
@@ -167,16 +165,20 @@ class ForecastHeader extends LitElement {
         ${this._selectedStation !== undefined
           ? html`
             <div class="selected" @click="${this._expand}">
-            <div class="selected-label">SÄÄASEMA  ${
-              this._selectedStation.distance
-            } km</div>
+            <div class="selected-label">${
+              this._selectedStation.calculated
+                ? null
+                : html`SÄÄASEMA ${this._selectedStation.distance} km`
+            }</div>
             <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
             <div class="selected-name">
               
               <span class="selected-text">
-              
-              ${this._selectedStation.name}
-
+              ${
+                this._selectedStation.calculated
+                  ? null
+                  : this._selectedStation.name
+              }
                </span>
                <weather-name-wawa
                 .wawaId="${this._selectedStation.wawaCode}"
@@ -250,6 +252,14 @@ class ForecastHeader extends LitElement {
     }
 
     return Math.round(value);
+  }
+
+  static _time(dateTime) {
+    const minutes = dateTime.getMinutes();
+
+    const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `klo ${dateTime.getHours()}.${fullMinutes}`;
   }
 }
 
