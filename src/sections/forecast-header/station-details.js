@@ -36,7 +36,6 @@ class StationDetails extends LitElement {
 
       .updated-time {
         grid-column: 1 / -1;
-        padding-top: var(--space-m);
 
         color: var(--color-gray-500);
         font-size: var(--font-size-s);

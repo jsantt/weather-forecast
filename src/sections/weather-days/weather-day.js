@@ -27,6 +27,7 @@ class WeatherDay extends LitElement {
         --color-toggle-background: var(--color-yellow-300);
 
         color: var(--color-primary);
+        display: block;
       }
 
       .visually-hidden {

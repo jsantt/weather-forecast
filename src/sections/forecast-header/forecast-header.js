@@ -78,8 +78,6 @@ class ForecastHeader extends LitElement {
         grid-template-columns: 2rem auto 3rem;
         grid-template-rows: auto;
 
-        margin-bottom: var(--space-s);
-
         grid-template-areas:
           'expand     label   wind'
           'expand     name    wind'
