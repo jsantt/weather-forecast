@@ -57,14 +57,15 @@ class ObservationData extends LitElement {
           lon: this.place.lon,
           region: this.place.region,
           name: this.place.name,
+          observations: formattedObservations,
         });
 
-        this._dispatch('observation-data.new-data-test', [
+        this._dispatch('observation-data.new-data', [
           currentPlace,
           ...formattedObservations,
         ]);
 
-        this._dispatch('observation-data.new-data', formattedObservations);
+        // this._dispatch('observation-data.new-data', formattedObservations);
       })
       .catch(rejected => {
         raiseEvent(this, 'observation-data.fetch-error', {
@@ -76,6 +77,14 @@ class ObservationData extends LitElement {
   }
 
   static calculateAverage(params) {
+    const observationsWithNormalizedWeights =
+      ObservationData.calculateWeights(params);
+
+    const distanceWeightedTemperature = ObservationData.weightedSum(
+      observationsWithNormalizedWeights,
+      'temperature'
+    );
+
     return {
       calculated: true,
       lat: params.lat,
@@ -83,10 +92,14 @@ class ObservationData extends LitElement {
       latForMap: params.lat,
       lonForMap: params.lon,
       latLon: `${params.lat} ${params.lon}`,
-      timestamp: new Date('2024-05-18T07:40:00.000Z'),
+      timestamp: params.observations.reduce((accumulator, observation) => {
+        return observation.timestamp > accumulator
+          ? observation.timestamp
+          : accumulator;
+      }, 0),
       name: `${params.region} ${params.name}`,
       position: `${params.lat} ${params.lon}`,
-      temperature: 99,
+      temperature: distanceWeightedTemperature,
       wind: 3.5,
       windGust: 5.3,
       windDirection: 106,
@@ -106,6 +119,37 @@ class ObservationData extends LitElement {
       selectedStation: true,
       collisionId: 0,
     };
+  }
+
+  static weightedSum(observationsWithNormalizedWeights, property) {
+    return observationsWithNormalizedWeights.reduce((accumulator, current) => {
+      return accumulator + current.normalizedWeight * current[property];
+    }, 0);
+  }
+
+  static calculateWeights(params) {
+    const pow = 2;
+
+    const observationsWithWeights = params.observations.map(observation => {
+      const weight = 1 / observation.distance ** pow;
+      return { ...observation, weight };
+    });
+
+    const totalWeight = observationsWithWeights.reduce(
+      (accumulator, current) => {
+        return accumulator + current.weight;
+      },
+      0
+    );
+
+    const observationsWithNormalizedWeights = observationsWithWeights.map(
+      observation => {
+        const normalizedWeight = observation.weight / totalWeight;
+        return { ...observation, normalizedWeight };
+      }
+    );
+
+    return observationsWithNormalizedWeights;
   }
 
   static _getParams(geoid) {

@@ -22,10 +22,6 @@ class WeatherDays extends LitElement {
         width: 1px !important;
         overflow: hidden;
       }
-
-      weather-day.first {
-        margin-top: var(--space-m);
-      }
     `;
   }
 
@@ -33,7 +29,7 @@ class WeatherDays extends LitElement {
     return html`
       <h3 class="visually-hidden">sää tänään</h3>
       <weather-day
-        class="weatherGrid first"
+        class="weatherGrid"
         dayNumber="1"
         .location="${this.location}"
         .minTemperature="${this._minTemperature}"

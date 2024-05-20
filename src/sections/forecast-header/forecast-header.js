@@ -75,13 +75,14 @@ class ForecastHeader extends LitElement {
       .selected {
         color: var(--color-secondary);
         display: grid;
-        grid-template-columns: 2rem auto 3rem;
-        grid-template-rows: auto;
+        grid-template-columns: auto 1fr 1fr;
+        grid-template-rows: auto auto auto var(--space-m);
 
         grid-template-areas:
-          'expand     label   wind'
-          'expand     name    wind'
-          '.          details details';
+          'label    wind    expand  '
+          'name     wind    expand  '
+          'details  details details '
+          '.        .       .       ';
 
         line-height: var(--line-height-dense);
 
@@ -102,26 +103,24 @@ class ForecastHeader extends LitElement {
 
       .selected-details {
         grid-area: details;
-        padding-top: var(--space-m);
 
         transition: padding var(--transition-time);
       }
 
-      :host([largeMap]) .selected-details {
-        padding-bottom: var(--space-m);
-      }
-
       wind-icon {
         grid-area: wind;
-        padding-left: var(--space-m);
+        padding-left: var(--space-l);
       }
 
       .expand-icon {
         grid-area: expand;
         align-self: center;
+        justify-self: end;
 
         height: 16px;
         width: 16px;
+
+        margin-right: var(--space-m);
 
         transition: transform var(--transition-time) ease;
       }
@@ -136,7 +135,7 @@ class ForecastHeader extends LitElement {
 
       station-details {
         color: var(--color-secondary);
-        margin: var(--space-l) 0 0 0;
+        margin: var(--space-l) 0 var(--space-l) 0;
         padding: 0;
       }
     `;
@@ -164,9 +163,7 @@ class ForecastHeader extends LitElement {
           ? html`
             <div class="selected" @click="${this._expand}">
             <div class="selected-label">${
-              this._selectedStation.calculated
-                ? null
-                : html`SÄÄASEMA ${this._selectedStation.distance} km`
+              this._selectedStation.calculated ? null : html`SÄÄASEMA`
             }</div>
             <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
             <div class="selected-name">
@@ -174,7 +171,7 @@ class ForecastHeader extends LitElement {
               <span class="selected-text">
               ${
                 this._selectedStation.calculated
-                  ? null
+                  ? this._selectedStation.name
                   : this._selectedStation.name
               }
                </span>

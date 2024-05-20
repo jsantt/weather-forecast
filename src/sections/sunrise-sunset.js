@@ -176,7 +176,7 @@ class SunriseSunset extends LitElement {
             class="expand-icon ${this._expanded ? 'expand-icon--open' : ''}"
             path="assets/image/icons.svg#caret-down"
           ></svg-icon>
-          ${this._expanded ? `näytä vähemmän` : `näytä lisää`}
+          ${this._expanded ? `Näytä vähemmän` : `Näytä lisää`}
         </a>
       </weather-section>
     `;

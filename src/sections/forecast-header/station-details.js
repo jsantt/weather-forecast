@@ -40,6 +40,8 @@ class StationDetails extends LitElement {
         color: var(--color-gray-500);
         font-size: var(--font-size-s);
 
+        padding-top: var(--space-m);
+
         text-align: right;
       }
     `;
@@ -47,6 +49,14 @@ class StationDetails extends LitElement {
 
   render() {
     return html`
+      ${this.station.distance
+        ? html`
+            <div class="item">
+              <div class="value">${this.station.distance} km</div>
+              <div class="explanation">Etäisyys</div>
+            </div>
+          `
+        : ``}
       ${this.station.humidity
         ? html`
             <div class="item">
