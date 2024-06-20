@@ -1,4 +1,5 @@
 import { css, html, LitElement, svg } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { checkCollision, extendVector } from './vector-math.js';
 
 import '../../common-components/error-notification.js';
@@ -40,8 +41,12 @@ class StationMap extends LitElement {
 
       .selected-station circle {
         opacity: 1;
-        fill: var(--color-gray-300);
         stroke: var(--color-gray-300);
+      }
+
+      .home-station circle {
+        fill: var(--color-white);
+        stroke: var(--color-white);
       }
 
       use,
@@ -95,15 +100,16 @@ class StationMap extends LitElement {
 
         ${this._observationData.map((observation, index) => {
           return svg`
-            <g class="${
-              observation.selectedStation === true ? 'selected-station' : ''
-            }">
+            <g class=${classMap({
+              'selected-station': observation.selectedStation === true,
+              'home-station': index === 0,
+            })}>
             <circle
               @click="${() => this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
-              r="${observation.selectedStation ? 0.16 : 0.16}"
-              opacity="0.7"
+              r="${index === 0 ? 0.16 : 0.16}"
+             
               stroke="var(--color-blue-650)"
               stroke-width="0.013"
               fill="var(--color-blue-650)"
@@ -129,8 +135,8 @@ class StationMap extends LitElement {
                       ? 'temperature--negative'
                       : 'temperature--positive'
                   }"
-                 text-anchor="end" x="${observation.lonForMap + 0.1}"
-                  y="${-1 * observation.latForMap - 0.02}">${
+                 text-anchor="end" x="${observation.lonForMap + 0.09}"
+                  y="${-1 * observation.latForMap - 0.01}">${
                     showFeelsLike === true
                       ? svg`<tspan class="feels-like">${observation.feelsLike}`
                       : svg`${Math.round(observation.temperature)}`
@@ -204,7 +210,7 @@ class StationMap extends LitElement {
 
     // for some reason, algorithm performs better when applied 3 times in a row :)
     for (let i = 0; i <= 2; i += 1) {
-      observations.forEach((o1, index) => {
+      observations.forEach(o1 => {
         observations.forEach(o2 => {
           while (
             o1.latForMap !== o2.latForMap &&
@@ -220,11 +226,6 @@ class StationMap extends LitElement {
               stationRadius
             ) === true
           ) {
-            // eslint-disable-next-line no-param-reassign
-            o1.collisionId = index;
-            // eslint-disable-next-line no-param-reassign
-            o2.collisionId = index;
-
             const extendedLine = extendVector(
               o1.lonForMap,
               o1.latForMap,

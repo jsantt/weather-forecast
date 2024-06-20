@@ -8,7 +8,7 @@ import { raiseEvent } from './data-helpers/xml-parser.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because
- * there is no support for coordinates. New data is available every 10 minutes
+ * there is no support for coordinates
  */
 class ObservationData extends LitElement {
   static get is() {
@@ -26,7 +26,7 @@ class ObservationData extends LitElement {
   }
 
   updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+    changedProperties.forEach((_, propName) => {
       if (propName === 'place' && this.place !== undefined) {
         this._newPlace();
       }
@@ -49,20 +49,24 @@ class ObservationData extends LitElement {
       .then(response => response.text())
       .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then(parsedResponse => {
-        window.observationsTest = parsedResponse;
+        // Form [{feelsLike, humidity, ...}, {...}]
         const formattedObservations = this._formatObservations(parsedResponse);
 
         // form calculated entry
-        const currentPlace = ObservationData.calculateAverage({
-          lat: this.place.lat,
-          lon: this.place.lon,
-          region: this.place.region,
-          name: this.place.name,
-          observations: formattedObservations,
-        });
+        const observationsWithNormalizedWeights =
+          ObservationData.calculateWeights(formattedObservations);
+
+        const calculatedCurrentPlace =
+          ObservationData.formObservationWithNormalizedWeights({
+            lat: this.place.lat,
+            lon: this.place.lon,
+            region: this.place.region,
+            name: this.place.name,
+            observations: observationsWithNormalizedWeights,
+          });
 
         this._dispatch('observation-data.new-data', [
-          currentPlace, // add calculated entry
+          calculatedCurrentPlace, // add calculated entry
           ...formattedObservations,
         ]);
 
@@ -77,20 +81,7 @@ class ObservationData extends LitElement {
       });
   }
 
-  static calculateAverage(params) {
-    const observationsWithNormalizedWeights =
-      ObservationData.calculateWeights(params);
-
-    return ObservationData.formObservationWithNormalizedWeights(
-      params,
-      observationsWithNormalizedWeights
-    );
-  }
-
-  static formObservationWithNormalizedWeights(
-    params,
-    observationsWithNormalizedWeights
-  ) {
+  static formObservationWithNormalizedWeights(params) {
     const object = {
       calculated: true,
       lat: params.lat,
@@ -106,23 +97,23 @@ class ObservationData extends LitElement {
       name: `${params.region} ${params.name}`,
       position: `${params.lat} ${params.lon}`,
       temperature: ObservationData.weightedSum(
-        observationsWithNormalizedWeights,
+        params.observations,
         'temperature'
       ),
 
-      wind: observationsWithNormalizedWeights
+      wind: params.observations
         .filter(item => {
           return item.wind !== undefined;
         })
         .at(0).wind,
 
-      windGust: observationsWithNormalizedWeights
+      windGust: params.observations
         .filter(item => {
           return item.windGust !== undefined;
         })
         .at(0).windGust,
 
-      windDirection: observationsWithNormalizedWeights
+      windDirection: params.observations
         .filter(item => {
           return item.windDirection !== undefined;
         })
@@ -165,7 +156,7 @@ class ObservationData extends LitElement {
       wawaCode: 0,
       detailsVisible: false,
       */
-      weatherCode3: observationsWithNormalizedWeights
+      weatherCode3: params.observations
         .filter(item => {
           return item.weatherCode3 !== undefined;
         })
@@ -195,11 +186,15 @@ class ObservationData extends LitElement {
     }, 0);
   }
 
-  /** calculate normalized weights based on distance. */
-  static calculateWeights(params) {
+  /**
+   * Calculate normalized weights based on distance.
+   * TODO: Ignore empty
+   *
+   */
+  static calculateWeights(observations) {
     const pow = 2;
 
-    const observationsWithWeights = params.observations.map(observation => {
+    const observationsWithWeights = observations.map(observation => {
       const weight = 1 / observation.distance ** pow;
       return { ...observation, weight };
     });

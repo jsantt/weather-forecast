@@ -495,9 +495,9 @@ class WeatherApp extends LitElement {
       this._showFeelsLike = !this._showFeelsLike;
     });
 
-    this.addEventListener('station-map.selected', e =>
-      this._stationSelected(e)
-    );
+    this.addEventListener('station-map.selected', e => {
+      this._stationSelected(e);
+    });
 
     this.addEventListener('bottom-sheet.toggleMapSize', () => {
       this._toggleMapSize();

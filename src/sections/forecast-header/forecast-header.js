@@ -227,11 +227,19 @@ class ForecastHeader extends LitElement {
   }
 
   updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+    changedProperties.forEach((_, propName) => {
       if (
         propName === 'observationData' &&
         this.observationData !== undefined
       ) {
+        // hack to fix expand issue with smooth expand
+        if (this.largeMap) {
+          this.largeMap = false;
+          setTimeout(() => {
+            this.largeMap = true;
+          }, 0);
+        }
+
         // eslint-disable-next-line prefer-destructuring
         this._selectedStation = this.observationData.filter(item => {
           return item.selectedStation === true;

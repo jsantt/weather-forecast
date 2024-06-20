@@ -30,24 +30,16 @@ class SmoothExpand extends LitElement {
   }
 
   render() {
-    return html`<slot aria-hidden="${this.expanded === true}"></slot>`;
+    return html`<slot
+      @slotchange="${() => console.log('slot changed')}"
+      aria-hidden="${this.expanded === true}"
+    ></slot>`;
   }
 
   static get properties() {
     return {
       expanded: { type: Boolean, reflect: true },
     };
-  }
-
-  updated() {
-    if (this.expanded === true) {
-      this._setMaxHeight(this._getHiddenHeight() + 12);
-      setTimeout(() => {
-        this._setMaxHeight(this._getHiddenHeight() + 12);
-      }, 310);
-    } else {
-      this._setMaxHeight(0);
-    }
   }
 
   _setMaxHeight(maxHeight) {
