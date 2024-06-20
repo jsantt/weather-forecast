@@ -92,8 +92,6 @@ class BottomNotification extends LitElement {
   }
 
   render() {
-    this.errorText = 'errors';
-
     return html`
       ${this.errorText !== undefined || this.showInstall
         ? html`<div class="content">
