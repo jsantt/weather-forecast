@@ -92,7 +92,8 @@ class ForecastHeader extends LitElement {
         grid-area: label;
 
         color: var(--color-gray-500);
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-xs);
+        align-self: flex-end;
       }
 
       .selected-name {
@@ -163,7 +164,9 @@ class ForecastHeader extends LitElement {
           ? html`
             <div class="selected" @click="${this._expand}">
             <div class="selected-label">${
-              this._selectedStation.calculated ? null : html`SÄÄASEMA`
+              this._selectedStation.calculated
+                ? 'LASKENNALLINEN'
+                : html`SÄÄASEMA`
             }</div>
             <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
             <div class="selected-name">

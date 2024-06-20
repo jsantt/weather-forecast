@@ -52,6 +52,7 @@ class ObservationData extends LitElement {
         window.observationsTest = parsedResponse;
         const formattedObservations = this._formatObservations(parsedResponse);
 
+        // form calculated entry
         const currentPlace = ObservationData.calculateAverage({
           lat: this.place.lat,
           lon: this.place.lon,
@@ -61,7 +62,7 @@ class ObservationData extends LitElement {
         });
 
         this._dispatch('observation-data.new-data', [
-          currentPlace,
+          currentPlace, // add calculated entry
           ...formattedObservations,
         ]);
 
@@ -80,12 +81,17 @@ class ObservationData extends LitElement {
     const observationsWithNormalizedWeights =
       ObservationData.calculateWeights(params);
 
-    const distanceWeightedTemperature = ObservationData.weightedSum(
-      observationsWithNormalizedWeights,
-      'temperature'
+    return ObservationData.formObservationWithNormalizedWeights(
+      params,
+      observationsWithNormalizedWeights
     );
+  }
 
-    return {
+  static formObservationWithNormalizedWeights(
+    params,
+    observationsWithNormalizedWeights
+  ) {
+    const object = {
       calculated: true,
       lat: params.lat,
       lon: params.lon,
@@ -99,34 +105,97 @@ class ObservationData extends LitElement {
       }, 0),
       name: `${params.region} ${params.name}`,
       position: `${params.lat} ${params.lon}`,
-      temperature: distanceWeightedTemperature,
-      wind: 3.5,
-      windGust: 5.3,
-      windDirection: 106,
-      humidity: 45,
-      dewPoint: 4.5,
-      rain: null,
-      rainExplanation: 0,
-      snow: -1,
-      pressure: 1021,
-      visibility: 40,
+      temperature: ObservationData.weightedSum(
+        observationsWithNormalizedWeights,
+        'temperature'
+      ),
+
+      wind: observationsWithNormalizedWeights
+        .filter(item => {
+          return item.wind !== undefined;
+        })
+        .at(0).wind,
+
+      windGust: observationsWithNormalizedWeights
+        .filter(item => {
+          return item.windGust !== undefined;
+        })
+        .at(0).windGust,
+
+      windDirection: observationsWithNormalizedWeights
+        .filter(item => {
+          return item.windDirection !== undefined;
+        })
+        .at(0).windDirection,
+
+      /*
+      humidity: Math.round(
+        ObservationData.weightedSum(
+          observationsWithNormalizedWeights,
+          'humidity'
+        )
+      ),
+      dewPoint: Math.round(
+        ObservationData.weightedSum(
+          observationsWithNormalizedWeights,
+          'dewPoint'
+        )
+      ),
+      */
+      // rain: null,
+      // rainExplanation: 0,
+      /* snow: Math.round(
+        ObservationData.weightedSum(observationsWithNormalizedWeights, 'snow')
+      ), */
+      /* pressure: Math.round(
+        ObservationData.weightedSum(
+          observationsWithNormalizedWeights,
+          'pressure'
+        )
+      ),
+      
+      visibility: Math.round(
+        ObservationData.weightedSum(
+          observationsWithNormalizedWeights,
+          'visibility'
+        )
+      ),
+      
       cloudiness: 0,
       wawaCode: 0,
       detailsVisible: false,
-      weatherCode3: 1,
-      feelsLike: 14,
+      */
+      weatherCode3: observationsWithNormalizedWeights
+        .filter(item => {
+          return item.weatherCode3 !== undefined;
+        })
+        .at(0).weatherCode3,
       distance: 0,
+
       selectedStation: true,
-      collisionId: 0,
     };
+
+    object.feelsLike = feelsLike(
+      object.temperature,
+      object.wind,
+      object.humidity
+    );
+    return object;
   }
 
   static weightedSum(observationsWithNormalizedWeights, property) {
     return observationsWithNormalizedWeights.reduce((accumulator, current) => {
+      // TODO: CalculateWeights separately for
+      // feelsLike ()
+      if (Number.isNaN(current[property])) {
+        return accumulator;
+      }
+
       return accumulator + current.normalizedWeight * current[property];
     }, 0);
   }
 
+  /** calculate normalized weights based on distance. */
   static calculateWeights(params) {
     const pow = 2;
 
@@ -435,7 +504,6 @@ class ObservationData extends LitElement {
       return 1;
     });
 
-    observations10[0].selectedStation = true;
     return observations10;
   }
 

@@ -124,8 +124,7 @@ class StationDetails extends LitElement {
         : ``}
 
       <div class="item updated-time">
-        ${this.station.calculated ? 'Laskettu havainnoista, ' : null} päivitetty
-        klo ${StationDetails._time(this.station.timestamp)}
+        päivitetty klo ${StationDetails._time(this.station.timestamp)}
       </div>
     `;
   }
