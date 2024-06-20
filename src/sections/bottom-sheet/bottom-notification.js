@@ -33,7 +33,7 @@ class BottomNotification extends LitElement {
         margin: 0 auto var(--space-l) auto;
 
         position: absolute;
-        bottom: 45px;
+        bottom: calc(45px + var(--safe-area-inset-bottom));
         left: 0px;
         right: 0px;
         box-shadow: var(--box-shadow);
@@ -92,6 +92,8 @@ class BottomNotification extends LitElement {
   }
 
   render() {
+    this.errorText = 'errors';
+
     return html`
       ${this.errorText !== undefined || this.showInstall
         ? html`<div class="content">
