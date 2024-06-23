@@ -49,14 +49,6 @@ class StationDetails extends LitElement {
 
   render() {
     return html`
-      ${this.station.distance
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.distance} km</div>
-              <div class="explanation">Etäisyys</div>
-            </div>
-          `
-        : ``}
       ${this.station.humidity
         ? html`
             <div class="item">
@@ -81,7 +73,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${this.station.cloudiness
+      ${Number.isInteger(this.station.cloudiness)
         ? html`
             <div class="item">
               <div class="value">${this.station.cloudiness} / 8</div>

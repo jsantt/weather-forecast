@@ -52,25 +52,14 @@ class ObservationData extends LitElement {
         // Form [{feelsLike, humidity, ...}, {...}]
         const formattedObservations = this._formatObservations(parsedResponse);
 
-        // form calculated entry
-        const observationsWithNormalizedWeights =
-          ObservationData.calculateWeights(formattedObservations);
-
-        const calculatedCurrentPlace =
-          ObservationData.formObservationWithNormalizedWeights({
-            lat: this.place.lat,
-            lon: this.place.lon,
-            region: this.place.region,
-            name: this.place.name,
-            observations: observationsWithNormalizedWeights,
-          });
+        const calculatedItem = this.calculateStationDetails(
+          formattedObservations
+        );
 
         this._dispatch('observation-data.new-data', [
-          calculatedCurrentPlace, // add calculated entry
+          calculatedItem, // add calculated entry
           ...formattedObservations,
         ]);
-
-        // this._dispatch('observation-data.new-data', formattedObservations);
       })
       .catch(rejected => {
         raiseEvent(this, 'observation-data.fetch-error', {
@@ -81,97 +70,105 @@ class ObservationData extends LitElement {
       });
   }
 
-  static formObservationWithNormalizedWeights(params) {
-    const object = {
+  /**
+   * Calculate stations details for the current point.
+   * @param {*} formattedObservations
+   * @returns
+   */
+  calculateStationDetails(formattedObservations) {
+    const calculatedItem = {
       calculated: true,
-      lat: params.lat,
-      lon: params.lon,
-      latForMap: params.lat,
-      lonForMap: params.lon,
-      latLon: `${params.lat} ${params.lon}`,
-      timestamp: params.observations.reduce((accumulator, observation) => {
+      selectedStation: true,
+      distance: 0,
+      lat: this.place.lat,
+      lon: this.place.lon,
+      latForMap: this.place.lat,
+      lonForMap: this.place.lon,
+      latLon: `${this.place.lat} ${this.place.lon}`,
+      position: `${this.place.lat} ${this.place.lon}`,
+      region: this.place.region,
+      name: this.place.name,
+    };
+
+    // calculate temperature
+    calculatedItem.temperature = ObservationData.calculateWeights(
+      formattedObservations,
+      'temperature'
+    );
+
+    calculatedItem.snow = ObservationData.calculateWeights(
+      formattedObservations,
+      'snow'
+    );
+
+    calculatedItem.wind = ObservationData.calculateWeights(
+      formattedObservations,
+      'wind'
+    );
+
+    calculatedItem.windGust = ObservationData.calculateWeights(
+      formattedObservations,
+      'windGust'
+    );
+
+    calculatedItem.windDirection = ObservationData.calculateWeights(
+      formattedObservations,
+      'windDirection'
+    );
+
+    calculatedItem.humidity = ObservationData.calculateWeights(
+      formattedObservations,
+      'humidity'
+    );
+
+    calculatedItem.dewPoint = ObservationData.calculateWeights(
+      formattedObservations,
+      'dewPoint'
+    );
+
+    calculatedItem.pressure = ObservationData.calculateWeights(
+      formattedObservations,
+      'pressure'
+    );
+
+    calculatedItem.rain = ObservationData.calculateWeights(
+      formattedObservations,
+      'rain'
+    );
+
+    calculatedItem.visibility = ObservationData.calculateWeights(
+      formattedObservations,
+      'visibility'
+    );
+
+    calculatedItem.timestamp = formattedObservations.reduce(
+      (accumulator, observation) => {
         return observation.timestamp > accumulator
           ? observation.timestamp
           : accumulator;
-      }, 0),
-      name: `${params.region} ${params.name}`,
-      position: `${params.lat} ${params.lon}`,
-      temperature: ObservationData.weightedSum(
-        params.observations,
-        'temperature'
-      ),
-
-      wind: params.observations
-        .filter(item => {
-          return item.wind !== undefined;
-        })
-        .at(0).wind,
-
-      windGust: params.observations
-        .filter(item => {
-          return item.windGust !== undefined;
-        })
-        .at(0).windGust,
-
-      windDirection: params.observations
-        .filter(item => {
-          return item.windDirection !== undefined;
-        })
-        .at(0).windDirection,
-
-      /*
-      humidity: Math.round(
-        ObservationData.weightedSum(
-          observationsWithNormalizedWeights,
-          'humidity'
-        )
-      ),
-      dewPoint: Math.round(
-        ObservationData.weightedSum(
-          observationsWithNormalizedWeights,
-          'dewPoint'
-        )
-      ),
-      */
-      // rain: null,
-      // rainExplanation: 0,
-      /* snow: Math.round(
-        ObservationData.weightedSum(observationsWithNormalizedWeights, 'snow')
-      ), */
-      /* pressure: Math.round(
-        ObservationData.weightedSum(
-          observationsWithNormalizedWeights,
-          'pressure'
-        )
-      ),
-      
-      visibility: Math.round(
-        ObservationData.weightedSum(
-          observationsWithNormalizedWeights,
-          'visibility'
-        )
-      ),
-      
-      cloudiness: 0,
-      wawaCode: 0,
-      detailsVisible: false,
-      */
-      weatherCode3: params.observations
-        .filter(item => {
-          return item.weatherCode3 !== undefined;
-        })
-        .at(0).weatherCode3,
-      distance: 0,
-
-      selectedStation: true,
-    };
-
-    object.feelsLike = feelsLike(
-      object.temperature,
-      object.wind,
-      object.humidity
+      },
+      0
     );
-    return object;
+
+    // use nearest weather code, average hard to calculate
+    calculatedItem.weatherCode3 = formattedObservations
+      .filter(item => {
+        return item.weatherCode3 !== undefined;
+      })
+      .at(0).weatherCode3;
+
+    calculatedItem.cloudiness = ObservationData.calculateWeights(
+      formattedObservations,
+      'cloudiness'
+    );
+
+    calculatedItem.feelsLike = feelsLike(
+      calculatedItem.temperature,
+      calculatedItem.wind,
+      calculatedItem.humidity
+    );
+
+    return calculatedItem;
   }
 
   static weightedSum(observationsWithNormalizedWeights, property) {
@@ -188,14 +185,22 @@ class ObservationData extends LitElement {
 
   /**
    * Calculate normalized weights based on distance.
-   * TODO: Ignore empty
+   * TODO: Ignore stations, where the data is not available
    *
    */
-  static calculateWeights(observations) {
+  static calculateWeights(observations, property) {
     const pow = 2;
 
     const observationsWithWeights = observations.map(observation => {
-      const weight = 1 / observation.distance ** pow;
+      let weight;
+      if (observation[property] == null) {
+        weight = 0;
+      } else if (observation.distance === 0) {
+        weight = 1;
+      } else {
+        weight = 1 / observation.distance ** pow;
+      }
+
       return { ...observation, weight };
     });
 
@@ -213,7 +218,12 @@ class ObservationData extends LitElement {
       }
     );
 
-    return observationsWithNormalizedWeights;
+    const calculatedAverage = ObservationData.weightedSum(
+      observationsWithNormalizedWeights,
+      property
+    );
+
+    return Math.round(calculatedAverage);
   }
 
   static _getParams(geoid) {

@@ -153,7 +153,7 @@ class ForecastHeader extends LitElement {
         </h2>
 
         <station-map
-          .largeMap="${this.largeMap}"
+          ?largeMap="${this.largeMap}"
           .location="${this.location}"
           .observationData=${this.observationData}
           ?observationError=${this.observationError}
@@ -166,7 +166,7 @@ class ForecastHeader extends LitElement {
             <div class="selected-label">${
               this._selectedStation.calculated
                 ? 'LASKENNALLINEN'
-                : html`SÄÄASEMA`
+                : html`SÄÄASEMA ${this._selectedStation.distance} km`
             }</div>
             <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
             <div class="selected-name">

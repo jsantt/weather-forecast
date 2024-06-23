@@ -31,22 +31,36 @@ class StationMap extends LitElement {
       }
 
       .selected-station .temperature--negative {
-        fill: var(--color-blue-500);
+        fill: var(--color-primary);
       }
 
       .selected-station .temperature--positive,
       .temperature--positive {
-        fill: var(--color-red-500);
+        fill: var(--color-white);
+      }
+
+      circle {
+        stroke: var(--color-blue-650);
+        fill: var(--color-blue-650);
+      }
+
+      .home-station circle {
+        fill: var(--background-home-station);
+        stroke: var(--background-home-station);
+      }
+
+      .home-station text {
+        font-size: 0.4px;
+        font-weight: 900;
+      }
+
+      .home-station .temperature--positive {
+        fill: var(--color-gray-800);
       }
 
       .selected-station circle {
         opacity: 1;
-        stroke: var(--color-gray-300);
-      }
-
-      .home-station circle {
-        fill: var(--color-white);
-        stroke: var(--color-white);
+        stroke: var(--background-home-station);
       }
 
       use,
@@ -91,7 +105,7 @@ class StationMap extends LitElement {
 
     this._observationData = observations;
 
-    StationMap._adjustCoordinates(coordinates, this._observationData);
+    StationMap._adjustCoordinates(this._observationData);
 
     return svg`
       <svg viewBox="${StationMap._viewBox(coordinates, large)}">
@@ -108,18 +122,24 @@ class StationMap extends LitElement {
               @click="${() => this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
-              r="${index === 0 ? 0.16 : 0.16}"
-             
-              stroke="var(--color-blue-650)"
+              r="${observation.calculated ? 0.32 : 0.16}"
+
               stroke-width="0.013"
-              fill="var(--color-blue-650)"
             />
           
            <use
-              x="${observation.lonForMap - 0.14}"
-              y="${-1 * observation.latForMap - 0.09}"
-              width="0.25"
-              height="0.25"
+              x="${
+                observation.calculated
+                  ? observation.lonForMap - 0.3
+                  : observation.lonForMap - 0.14
+              }"
+              y="${
+                observation.calculated
+                  ? -1 * observation.latForMap - 0.1
+                  : -1 * observation.latForMap - 0.09
+              }"
+              width="${observation.calculated ? 0.4 : 0.25}"
+              height="${observation.calculated ? 0.4 : 0.25}"
               href="assets/image/weather-symbols.svg#weatherSymbol${
                 observation.weatherCode3
               }${isNight(new Date(), this.location) ? '-night' : ''}"
@@ -135,8 +155,16 @@ class StationMap extends LitElement {
                       ? 'temperature--negative'
                       : 'temperature--positive'
                   }"
-                 text-anchor="end" x="${observation.lonForMap + 0.09}"
-                  y="${-1 * observation.latForMap - 0.01}">${
+                 text-anchor="end" x="${
+                   observation.calculated
+                     ? observation.lonForMap + 0.23
+                     : observation.lonForMap + 0.09
+                 }"
+                  y="${
+                    observation.calculated
+                      ? -1 * observation.latForMap + 0.07
+                      : -1 * observation.latForMap - 0.01
+                  }">${
                     showFeelsLike === true
                       ? svg`<tspan class="feels-like">${observation.feelsLike}`
                       : svg`${Math.round(observation.temperature)}`
@@ -204,15 +232,17 @@ class StationMap extends LitElement {
    * the nearest. If the placed stations collides with the previous stations, move
    * it by extendLength until it fits
    */
-  static _adjustCoordinates(coordinates, observations) {
+  static _adjustCoordinates(observations) {
     const stationRadius = 0.165;
+    const calculatedStationRadius = 0.35;
     const extendLength = 0.01; // how much station is moved per cycle
 
     // for some reason, algorithm performs better when applied 3 times in a row :)
-    for (let i = 0; i <= 2; i += 1) {
+    for (let i = 0; i <= 5; i += 1) {
       observations.forEach(o1 => {
         observations.forEach(o2 => {
           while (
+            o2.calculated !== true &&
             o1.latForMap !== o2.latForMap &&
             o1.lonForMap !== o2.latForMap &&
             o1.collision !== true &&
@@ -220,7 +250,7 @@ class StationMap extends LitElement {
             checkCollision(
               o1.lonForMap,
               o1.latForMap,
-              stationRadius,
+              o1.calculated ? calculatedStationRadius : stationRadius,
               o2.lonForMap,
               o2.latForMap,
               stationRadius
@@ -233,6 +263,7 @@ class StationMap extends LitElement {
               o2.latForMap,
               extendLength
             );
+
             // eslint-disable-next-line no-param-reassign
             o2.lonForMap = extendedLine.x2Ext;
             // eslint-disable-next-line no-param-reassign
