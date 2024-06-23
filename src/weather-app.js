@@ -317,10 +317,10 @@ class WeatherApp extends LitElement {
 
           <h3>Sää nyt</h3>
           <p>
-            Sovellus näyttää lähistön sääasemat "kartalla" oikeilla paikoillaan
-            siten, että päällekkäin meneviä asemia on siirretty mahdollisimman
-            vähän. Klikkaamalla sääasemaa, näet kaikki asemalta saatavissa
-            olevat tiedot.
+            Sää nyt lasketaan lähistön sääasemien tiedoista. Sääasemat näkyvät
+            "kartalla" oikeassa suunnassas siten, että päällekkäin meneviä
+            asemia on siirretty mahdollisimman vähän. Klikkaamalla sääasemaa,
+            näet kaikki asemalta saatavissa olevat tiedot.
           </p>
 
           <h3>Ilmatieteen laitoksen sää</h3>
@@ -432,6 +432,10 @@ class WeatherApp extends LitElement {
   constructor() {
     super();
 
+    if (window.location.href.includes('beta')) {
+      window.localStorage.setItem('beta', true);
+    }
+
     this._firstLoading = true;
     this._forecastError = false;
 
@@ -495,9 +499,9 @@ class WeatherApp extends LitElement {
       this._showFeelsLike = !this._showFeelsLike;
     });
 
-    this.addEventListener('station-map.selected', e =>
-      this._stationSelected(e)
-    );
+    this.addEventListener('station-map.selected', e => {
+      this._stationSelected(e);
+    });
 
     this.addEventListener('bottom-sheet.toggleMapSize', () => {
       this._toggleMapSize();

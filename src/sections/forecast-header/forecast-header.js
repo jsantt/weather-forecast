@@ -92,7 +92,8 @@ class ForecastHeader extends LitElement {
         grid-area: label;
 
         color: var(--color-gray-500);
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-xs);
+        align-self: flex-end;
       }
 
       .selected-name {
@@ -152,7 +153,7 @@ class ForecastHeader extends LitElement {
         </h2>
 
         <station-map
-          .largeMap="${this.largeMap}"
+          ?largeMap="${this.largeMap}"
           .location="${this.location}"
           .observationData=${this.observationData}
           ?observationError=${this.observationError}
@@ -163,7 +164,9 @@ class ForecastHeader extends LitElement {
           ? html`
             <div class="selected" @click="${this._expand}">
             <div class="selected-label">${
-              this._selectedStation.calculated ? null : html`SÄÄASEMA`
+              this._selectedStation.calculated
+                ? 'LASKENNALLINEN'
+                : html`SÄÄASEMA ${this._selectedStation.distance} km`
             }</div>
             <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
             <div class="selected-name">
@@ -224,11 +227,19 @@ class ForecastHeader extends LitElement {
   }
 
   updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+    changedProperties.forEach((_, propName) => {
       if (
         propName === 'observationData' &&
         this.observationData !== undefined
       ) {
+        // hack to fix expand issue with smooth expand
+        if (this.largeMap) {
+          this.largeMap = false;
+          setTimeout(() => {
+            this.largeMap = true;
+          }, 0);
+        }
+
         // eslint-disable-next-line prefer-destructuring
         this._selectedStation = this.observationData.filter(item => {
           return item.selectedStation === true;

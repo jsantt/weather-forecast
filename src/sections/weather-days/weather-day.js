@@ -127,7 +127,7 @@ class WeatherDay extends LitElement {
       }
 
       .temperature--positive {
-        color: var(--color-red-500);
+        color: var(--color-primary);
       }
 
       .temperature_line {

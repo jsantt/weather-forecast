@@ -8,7 +8,7 @@ import { raiseEvent } from './data-helpers/xml-parser.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because
- * there is no support for coordinates. New data is available every 10 minutes
+ * there is no support for coordinates
  */
 class ObservationData extends LitElement {
   static get is() {
@@ -26,7 +26,7 @@ class ObservationData extends LitElement {
   }
 
   updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+    changedProperties.forEach((_, propName) => {
       if (propName === 'place' && this.place !== undefined) {
         this._newPlace();
       }
@@ -49,23 +49,17 @@ class ObservationData extends LitElement {
       .then(response => response.text())
       .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then(parsedResponse => {
-        window.observationsTest = parsedResponse;
+        // Form [{feelsLike, humidity, ...}, {...}]
         const formattedObservations = this._formatObservations(parsedResponse);
 
-        const currentPlace = ObservationData.calculateAverage({
-          lat: this.place.lat,
-          lon: this.place.lon,
-          region: this.place.region,
-          name: this.place.name,
-          observations: formattedObservations,
-        });
+        const calculatedItem = this.calculateStationDetails(
+          formattedObservations
+        );
 
         this._dispatch('observation-data.new-data', [
-          currentPlace,
+          calculatedItem, // add calculated entry
           ...formattedObservations,
         ]);
-
-        // this._dispatch('observation-data.new-data', formattedObservations);
       })
       .catch(rejected => {
         raiseEvent(this, 'observation-data.fetch-error', {
@@ -76,62 +70,137 @@ class ObservationData extends LitElement {
       });
   }
 
-  static calculateAverage(params) {
-    const observationsWithNormalizedWeights =
-      ObservationData.calculateWeights(params);
+  /**
+   * Calculate stations details for the current point.
+   * @param {*} formattedObservations
+   * @returns
+   */
+  calculateStationDetails(formattedObservations) {
+    const calculatedItem = {
+      calculated: true,
+      selectedStation: true,
+      distance: 0,
+      lat: this.place.lat,
+      lon: this.place.lon,
+      latForMap: this.place.lat,
+      lonForMap: this.place.lon,
+      latLon: `${this.place.lat} ${this.place.lon}`,
+      position: `${this.place.lat} ${this.place.lon}`,
+      region: this.place.region,
+      name: this.place.name,
+    };
 
-    const distanceWeightedTemperature = ObservationData.weightedSum(
-      observationsWithNormalizedWeights,
+    // calculate temperature
+    calculatedItem.temperature = ObservationData.calculateWeights(
+      formattedObservations,
       'temperature'
     );
 
-    return {
-      calculated: true,
-      lat: params.lat,
-      lon: params.lon,
-      latForMap: params.lat,
-      lonForMap: params.lon,
-      latLon: `${params.lat} ${params.lon}`,
-      timestamp: params.observations.reduce((accumulator, observation) => {
+    calculatedItem.snow = ObservationData.calculateWeights(
+      formattedObservations,
+      'snow'
+    );
+
+    calculatedItem.wind = ObservationData.calculateWeights(
+      formattedObservations,
+      'wind'
+    );
+
+    calculatedItem.windGust = ObservationData.calculateWeights(
+      formattedObservations,
+      'windGust'
+    );
+
+    calculatedItem.windDirection = ObservationData.calculateWeights(
+      formattedObservations,
+      'windDirection'
+    );
+
+    calculatedItem.humidity = ObservationData.calculateWeights(
+      formattedObservations,
+      'humidity'
+    );
+
+    calculatedItem.dewPoint = ObservationData.calculateWeights(
+      formattedObservations,
+      'dewPoint'
+    );
+
+    calculatedItem.pressure = ObservationData.calculateWeights(
+      formattedObservations,
+      'pressure'
+    );
+
+    calculatedItem.rain = ObservationData.calculateWeights(
+      formattedObservations,
+      'rain'
+    );
+
+    calculatedItem.visibility = ObservationData.calculateWeights(
+      formattedObservations,
+      'visibility'
+    );
+
+    calculatedItem.timestamp = formattedObservations.reduce(
+      (accumulator, observation) => {
         return observation.timestamp > accumulator
           ? observation.timestamp
           : accumulator;
-      }, 0),
-      name: `${params.region} ${params.name}`,
-      position: `${params.lat} ${params.lon}`,
-      temperature: distanceWeightedTemperature,
-      wind: 3.5,
-      windGust: 5.3,
-      windDirection: 106,
-      humidity: 45,
-      dewPoint: 4.5,
-      rain: null,
-      rainExplanation: 0,
-      snow: -1,
-      pressure: 1021,
-      visibility: 40,
-      cloudiness: 0,
-      wawaCode: 0,
-      detailsVisible: false,
-      weatherCode3: 1,
-      feelsLike: 14,
-      distance: 0,
-      selectedStation: true,
-      collisionId: 0,
-    };
+      },
+      0
+    );
+
+    // use nearest weather code, average hard to calculate
+    calculatedItem.weatherCode3 = formattedObservations
+      .filter(item => {
+        return item.weatherCode3 !== undefined;
+      })
+      .at(0).weatherCode3;
+
+    calculatedItem.cloudiness = ObservationData.calculateWeights(
+      formattedObservations,
+      'cloudiness'
+    );
+
+    calculatedItem.feelsLike = feelsLike(
+      calculatedItem.temperature,
+      calculatedItem.wind,
+      calculatedItem.humidity
+    );
+
+    return calculatedItem;
   }
 
   static weightedSum(observationsWithNormalizedWeights, property) {
     return observationsWithNormalizedWeights.reduce((accumulator, current) => {
+      // TODO: CalculateWeights separately for
+      // feelsLike ()
+      if (Number.isNaN(current[property])) {
+        return accumulator;
+      }
+
       return accumulator + current.normalizedWeight * current[property];
     }, 0);
   }
 
-  static calculateWeights(params) {
+  /**
+   * Calculate normalized weights based on distance.
+   * TODO: Ignore stations, where the data is not available
+   *
+   */
+  static calculateWeights(observations, property) {
     const pow = 2;
 
-    const observationsWithWeights = params.observations.map(observation => {
-      const weight = 1 / observation.distance ** pow;
+    const observationsWithWeights = observations.map(observation => {
+      let weight;
+      if (observation[property] == null) {
+        weight = 0;
+      } else if (observation.distance === 0) {
+        weight = 1;
+      } else {
+        weight = 1 / observation.distance ** pow;
+      }
+
       return { ...observation, weight };
     });
 
@@ -149,7 +218,12 @@ class ObservationData extends LitElement {
       }
     );
 
-    return observationsWithNormalizedWeights;
+    const calculatedAverage = ObservationData.weightedSum(
+      observationsWithNormalizedWeights,
+      property
+    );
+
+    return Math.round(calculatedAverage);
   }
 
   static _getParams(geoid) {
@@ -435,7 +509,6 @@ class ObservationData extends LitElement {
       return 1;
     });
 
-    observations10[0].selectedStation = true;
     return observations10;
   }
 
