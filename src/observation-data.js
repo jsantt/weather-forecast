@@ -173,8 +173,6 @@ class ObservationData extends LitElement {
 
   static weightedSum(observationsWithNormalizedWeights, property) {
     return observationsWithNormalizedWeights.reduce((accumulator, current) => {
-      // TODO: CalculateWeights separately for
-      // feelsLike ()
       if (Number.isNaN(current[property])) {
         return accumulator;
       }
