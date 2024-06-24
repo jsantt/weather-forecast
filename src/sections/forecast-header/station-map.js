@@ -26,41 +26,27 @@ class StationMap extends LitElement {
         text-rendering: optimizeLegibility;
       }
 
-      .temperature--negative {
-        fill: var(--color-secondary);
-      }
-
-      .selected-station .temperature--negative {
-        fill: var(--color-primary);
-      }
-
-      .selected-station .temperature--positive,
-      .temperature--positive {
-        fill: var(--color-white);
-      }
-
       circle {
         stroke: var(--color-blue-650);
         fill: var(--color-blue-650);
       }
 
-      .home-station circle {
-        fill: var(--background-home-station);
-        stroke: var(--background-home-station);
+      text {
+        font-synthesis: style;
+        fill: var(--color-gray-300);
+      }
+
+      .selected-station text {
+        fill: var(--color-gray-800);
       }
 
       .home-station text {
         font-size: 0.4px;
-        font-weight: 900;
-      }
-
-      .home-station .temperature--positive {
-        fill: var(--color-gray-800);
       }
 
       .selected-station circle {
-        opacity: 1;
-        stroke: var(--background-home-station);
+        fill: var(--color-gray-400);
+        stroke: var(--color-gray-400);
       }
 
       use,
@@ -130,16 +116,16 @@ class StationMap extends LitElement {
            <use
               x="${
                 observation.calculated
-                  ? observation.lonForMap - 0.3
+                  ? observation.lonForMap - 0.35
                   : observation.lonForMap - 0.14
               }"
               y="${
                 observation.calculated
-                  ? -1 * observation.latForMap - 0.1
+                  ? -1 * observation.latForMap - 0.17
                   : -1 * observation.latForMap - 0.09
               }"
-              width="${observation.calculated ? 0.4 : 0.25}"
-              height="${observation.calculated ? 0.4 : 0.25}"
+              width="${observation.calculated ? 0.48 : 0.25}"
+              height="${observation.calculated ? 0.48 : 0.25}"
               href="assets/image/weather-symbols.svg#weatherSymbol${
                 observation.weatherCode3
               }${isNight(new Date(), this.location) ? '-night' : ''}"
@@ -155,14 +141,16 @@ class StationMap extends LitElement {
                       ? 'temperature--negative'
                       : 'temperature--positive'
                   }"
+                 paint-order="stroke"
+                 stroke-width="0.02"
                  text-anchor="end" x="${
                    observation.calculated
-                     ? observation.lonForMap + 0.23
+                     ? observation.lonForMap + 0.22
                      : observation.lonForMap + 0.09
                  }"
                   y="${
                     observation.calculated
-                      ? -1 * observation.latForMap + 0.07
+                      ? -1 * observation.latForMap + 0.05
                       : -1 * observation.latForMap - 0.01
                   }">${
                     showFeelsLike === true

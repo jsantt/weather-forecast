@@ -76,6 +76,10 @@ class ObservationData extends LitElement {
    * @returns
    */
   calculateStationDetails(formattedObservations) {
+    if (!formattedObservations) {
+      return undefined;
+    }
+
     const calculatedItem = {
       calculated: true,
       selectedStation: true,
@@ -383,6 +387,10 @@ class ObservationData extends LitElement {
    * @param {XMLDocument} xmlDocResponse
    */
   static _parsePositions(xmlDocResponse) {
+    if (!xmlDocResponse.querySelector('positions')) {
+      return [];
+    }
+
     const positions = xmlDocResponse
       .querySelector('positions')
       .innerHTML.trim();
@@ -408,6 +416,10 @@ class ObservationData extends LitElement {
   }
 
   static _parseObservations(xmlDocResponse) {
+    if (!xmlDocResponse.querySelector('doubleOrNilReasonTupleList')) {
+      return [];
+    }
+
     const observations = xmlDocResponse
       .querySelector('doubleOrNilReasonTupleList')
       .innerHTML.trim();
