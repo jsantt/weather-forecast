@@ -40,7 +40,8 @@ class StationDetails extends LitElement {
         color: var(--color-gray-500);
         font-size: var(--font-size-s);
 
-        padding-top: var(--space-m);
+        margin-top: var(--space-m);
+        margin-bottom: var(--space-m);
 
         text-align: right;
       }

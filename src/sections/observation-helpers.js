@@ -7,8 +7,8 @@ import { extendVector, checkCollision } from './vector-math.js';
  */
 function addCoordinatesForMap(obs) {
   const observations = [...obs];
-  const stationRadius = 0.165;
-  const calculatedStationRadius = 0.35;
+  const stationRadius = 0.164;
+  const calculatedStationRadius = 0.365;
   const extendLength = 0.01; // how much station is moved per cycle
 
   // for some reason, algorithm performs better when applied 3 times in a row :)
@@ -16,7 +16,7 @@ function addCoordinatesForMap(obs) {
     observations.forEach(o1 => {
       observations.forEach(o2 => {
         while (
-          o2.calculated !== true &&
+          !o2.calculated &&
           o1.latForMap !== o2.latForMap &&
           o1.lonForMap !== o2.latForMap &&
           o1.collision !== true &&
@@ -38,10 +38,13 @@ function addCoordinatesForMap(obs) {
             extendLength
           );
 
+          const x = extendedLine.x2Ext;
+          const y = extendedLine.y2Ext;
+
           // eslint-disable-next-line no-param-reassign
-          o2.lonForMap = extendedLine.x2Ext;
+          o2.lonForMap = x;
           // eslint-disable-next-line no-param-reassign
-          o2.latForMap = extendedLine.y2Ext;
+          o2.latForMap = y;
         }
       });
     });

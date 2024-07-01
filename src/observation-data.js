@@ -45,9 +45,7 @@ class ObservationData extends LitElement {
       .map(key => `${key}=${params[key]}`)
       .join('&');
 
-    const query = `https://opendata.fmi.fi/wfs?${queryParams}`;
-
-    fetch(query)
+    fetch(`https://opendata.fmi.fi/wfs?${queryParams}`)
       .then(response => response.text())
       .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then(parsedResponse => {
@@ -240,7 +238,7 @@ class ObservationData extends LitElement {
       storedquery_id: 'fmi::observations::weather::multipointcoverage', // multipointcoverage',
       geoid,
       meters: 'ws_10min,t2m',
-      maxlocations: 20,
+      maxlocations: 50,
       starttime: ObservationData._roundDownToFullMinutes(-12), // get the latest data only
       endtime: ObservationData._roundDownToFullMinutes(0), // get the latest data only
     };
