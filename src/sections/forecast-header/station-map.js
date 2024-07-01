@@ -1,6 +1,5 @@
 import { css, html, LitElement, svg } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { checkCollision, extendVector } from './vector-math.js';
 
 import '../../common-components/error-notification.js';
 import '../../common-components/wind-icon.js';
@@ -25,6 +24,9 @@ class StationMap extends LitElement {
 
         text-rendering: optimizeLegibility;
       }
+      .temperature.home-station {
+        font-size: 0.4px;
+      }
 
       circle {
         stroke: var(--color-blue-650);
@@ -36,17 +38,18 @@ class StationMap extends LitElement {
         fill: var(--color-gray-300);
       }
 
-      .selected-station text {
+      text.selected-station {
         fill: var(--color-gray-800);
+        stroke: var(--color-gray-400);
       }
 
-      .home-station text {
-        font-size: 0.4px;
-      }
-
-      .selected-station circle {
+      circle.selected-station {
         fill: var(--color-gray-400);
         stroke: var(--color-gray-400);
+      }
+      circle.original-location {
+        fill: red;
+        stroke: red;
       }
 
       use,
@@ -72,7 +75,6 @@ class StationMap extends LitElement {
 
     return html`
       ${this._createMap(
-        this.largeMap,
         this.location,
         this.observationData,
         this.observationError,
@@ -81,7 +83,7 @@ class StationMap extends LitElement {
     `;
   }
 
-  _createMap(large, coordinates, observations, error, showFeelsLike) {
+  _createMap(coordinates, observations, error, showFeelsLike) {
     if (error === true) {
       return html`<error-notification
         errorText="Sääasemien havaintotietojen haku epäonnistui."
@@ -91,20 +93,19 @@ class StationMap extends LitElement {
 
     this._observationData = observations;
 
-    StationMap._adjustCoordinates(this._observationData);
-
     return svg`
-      <svg viewBox="${StationMap._viewBox(coordinates, large)}">
+      <svg viewBox="${StationMap._viewBox(coordinates)}">
         <!-- paint in "z-index" order, because
               svg does not have z-index --> 
 
         ${this._observationData.map((observation, index) => {
           return svg`
-            <g class=${classMap({
-              'selected-station': observation.selectedStation === true,
-              'home-station': index === 0,
-            })}>
+            <g>
             <circle
+            class="${classMap({
+              'selected-station': observation.selectedStation === true,
+              'home-station': observation.calculated,
+            })}"
               @click="${() => this._stationClicked(index)}"
               cx="${observation.lonForMap}"
               cy="${-1 * observation.latForMap}"
@@ -112,7 +113,7 @@ class StationMap extends LitElement {
 
               stroke-width="0.013"
             />
-          
+
            <use
               x="${
                 observation.calculated
@@ -136,14 +137,15 @@ class StationMap extends LitElement {
                 Number.isNaN(observation.feelsLike))
                 ? ''
                 : svg`
-                  <text class="temperature ${
-                    observation.temperature < 0
-                      ? 'temperature--negative'
-                      : 'temperature--positive'
-                  }"
+                  <text class=${classMap({
+                    temperature: true,
+                    'selected-station': observation.selectedStation === true,
+                    'home-station': observation.calculated,
+                  })}
                  paint-order="stroke"
                  stroke-width="0.02"
-                 text-anchor="end" x="${
+                 text-anchor="end" 
+                 x="${
                    observation.calculated
                      ? observation.lonForMap + 0.22
                      : observation.lonForMap + 0.09
@@ -158,9 +160,23 @@ class StationMap extends LitElement {
                       : svg`${Math.round(observation.temperature)}`
                   }</text>`
             }
+          
           </g>
             `;
         })}
+        <!-- showing original location for debugging -->
+        <!-- ${this._observationData.map(observation => {
+          return observation.selectedStation
+            ? svg` <circle
+              class="original-location"
+              cx="${observation.lon}"
+              cy="${-1 * observation.lat}"
+              r="0.01"
+              stroke-width="0.013"
+            />
+            `
+            : undefined;
+        })} -->
       </svg>
     `;
   }
@@ -206,60 +222,13 @@ class StationMap extends LitElement {
    * @param { Number } coordinates.lon
    *
    */
-  static _viewBox(coordinates, large) {
+  static _viewBox(coordinates) {
     const width = 2;
-    const height = large === true ? 1.6 : 1.6;
+    const height = 1.6;
 
     return `${coordinates.lon - width / 2} -${
       coordinates.lat + height / 2
     } ${width} ${height}`;
-  }
-
-  /**
-   * Adjusting coordinates iteratively. Places the stations on the map starting from
-   * the nearest. If the placed stations collides with the previous stations, move
-   * it by extendLength until it fits
-   */
-  static _adjustCoordinates(observations) {
-    const stationRadius = 0.165;
-    const calculatedStationRadius = 0.35;
-    const extendLength = 0.01; // how much station is moved per cycle
-
-    // for some reason, algorithm performs better when applied 3 times in a row :)
-    for (let i = 0; i <= 5; i += 1) {
-      observations.forEach(o1 => {
-        observations.forEach(o2 => {
-          while (
-            o2.calculated !== true &&
-            o1.latForMap !== o2.latForMap &&
-            o1.lonForMap !== o2.latForMap &&
-            o1.collision !== true &&
-            o2.collision !== true &&
-            checkCollision(
-              o1.lonForMap,
-              o1.latForMap,
-              o1.calculated ? calculatedStationRadius : stationRadius,
-              o2.lonForMap,
-              o2.latForMap,
-              stationRadius
-            ) === true
-          ) {
-            const extendedLine = extendVector(
-              o1.lonForMap,
-              o1.latForMap,
-              o2.lonForMap,
-              o2.latForMap,
-              extendLength
-            );
-
-            // eslint-disable-next-line no-param-reassign
-            o2.lonForMap = extendedLine.x2Ext;
-            // eslint-disable-next-line no-param-reassign
-            o2.latForMap = extendedLine.y2Ext;
-          }
-        });
-      });
-    }
   }
 
   _stationClicked(index) {

@@ -14,7 +14,10 @@
  * @returns { Object } - new extended line endpoints
  */
 function extendVector(x1, y1, x2, y2, extendLength) {
-  const vectorNorm = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  let vectorNorm = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+
+  // dirty hack to avoid zero division
+  vectorNorm = vectorNorm === 0 ? 0.0001 : vectorNorm;
 
   const x1Ext = x1 - ((x2 - x1) * extendLength) / vectorNorm;
   const y1Ext = y1 - ((y2 - y1) * extendLength) / vectorNorm;

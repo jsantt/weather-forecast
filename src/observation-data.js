@@ -6,6 +6,8 @@ import { feelsLike } from './data-helpers/feels-like.js';
 import { wawaToSymbol3 } from './data-helpers/wawa-converter.js';
 import { raiseEvent } from './data-helpers/xml-parser.js';
 
+import { addCoordinatesForMap } from './sections/observation-helpers.js';
+
 /**
  * Observations are fetched from the nearest observation station using area name, because
  * there is no support for coordinates
@@ -55,10 +57,14 @@ class ObservationData extends LitElement {
         const calculatedItem = this.calculateStationDetails(
           formattedObservations
         );
+        const allObservations = [calculatedItem, ...formattedObservations];
+
+        const observationsWithMapCoordinates =
+          addCoordinatesForMap(allObservations);
 
         this._dispatch('observation-data.new-data', [
           calculatedItem, // add calculated entry
-          ...formattedObservations,
+          ...observationsWithMapCoordinates,
         ]);
       })
       .catch(rejected => {
