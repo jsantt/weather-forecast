@@ -32,4 +32,12 @@ function checkCollision(p1x, p1y, r1, p2x, p2y, r2) {
   return (r1 + r2) ** 2 > (p1x - p2x) ** 2 + (p1y - p2y) ** 2;
 }
 
-export { checkCollision, extendVector };
+function collisionLength(p1x, p1y, r1, p2x, p2y, r2) {
+  return (r1 + r2) ** 2 - (p1x - p2x) ** 2 + (p1y - p2y) ** 2;
+}
+
+function distanceBetween(x1, y1, x2, y2) {
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+}
+
+export { checkCollision, extendVector, collisionLength, distanceBetween };

@@ -42,13 +42,13 @@ class ObservationData extends LitElement {
 
     const params = ObservationData._getParams(this.place.geoid);
     const queryParams = Object.keys(params)
-      .map(key => `${key}=${params[key]}`)
+      .map((key) => `${key}=${params[key]}`)
       .join('&');
 
     fetch(`https://opendata.fmi.fi/wfs?${queryParams}`)
-      .then(response => response.text())
-      .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
-      .then(parsedResponse => {
+      .then((response) => response.text())
+      .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
+      .then((parsedResponse) => {
         // Form [{feelsLike, humidity, ...}, {...}]
         const formattedObservations = this._formatObservations(parsedResponse);
 
@@ -57,15 +57,17 @@ class ObservationData extends LitElement {
         );
         const allObservations = [calculatedItem, ...formattedObservations];
 
-        const observationsWithMapCoordinates =
-          addCoordinatesForMap(allObservations);
+        const observationsWithMapCoordinates = addCoordinatesForMap(
+          allObservations,
+          this
+        );
 
-        this._dispatch('observation-data.new-data', [
-          calculatedItem, // add calculated entry
-          ...observationsWithMapCoordinates,
-        ]);
+        this._dispatch(
+          'observation-data.new-data',
+          observationsWithMapCoordinates
+        );
       })
-      .catch(rejected => {
+      .catch((rejected) => {
         raiseEvent(this, 'observation-data.fetch-error', {
           text: 'Havaintoja ei saatavilla',
         });
@@ -160,7 +162,7 @@ class ObservationData extends LitElement {
 
     // use nearest weather code, average hard to calculate
     calculatedItem.weatherCode3 = formattedObservations
-      .filter(item => {
+      .filter((item) => {
         return item.weatherCode3 !== undefined;
       })
       .at(0).weatherCode3;
@@ -197,7 +199,7 @@ class ObservationData extends LitElement {
   static calculateWeights(observations, property) {
     const pow = 2;
 
-    const observationsWithWeights = observations.map(observation => {
+    const observationsWithWeights = observations.map((observation) => {
       let weight;
       if (observation[property] == null) {
         weight = 0;
@@ -218,7 +220,7 @@ class ObservationData extends LitElement {
     );
 
     const observationsWithNormalizedWeights = observationsWithWeights.map(
-      observation => {
+      (observation) => {
         const normalizedWeight = observation.weight / totalWeight;
         return { ...observation, normalizedWeight };
       }
@@ -403,7 +405,7 @@ class ObservationData extends LitElement {
 
     const stationPositions = [];
 
-    positionRows.forEach(positionRow => {
+    positionRows.forEach((positionRow) => {
       const singleValues = positionRow.trim().split(' ');
 
       stationPositions.push({
@@ -432,7 +434,7 @@ class ObservationData extends LitElement {
 
     const observationArray = observations.split(/\r?\n/);
 
-    observationArray.forEach(observationLine => {
+    observationArray.forEach((observationLine) => {
       const singleValues = observationLine.trim().split(' ');
 
       const station = {
@@ -470,7 +472,7 @@ class ObservationData extends LitElement {
   }
 
   static _removeWithoutTemperature(observations) {
-    return observations.filter(observation =>
+    return observations.filter((observation) =>
       Number.isFinite(observation.temperature)
     );
   }
@@ -492,9 +494,9 @@ class ObservationData extends LitElement {
     const stations = ObservationData._parseStations(rawResponse);
     const observations = ObservationData._parseObservations(rawResponse);
 
-    const positionAndName = positions.map(position => {
+    const positionAndName = positions.map((position) => {
       const correctStation = stations.find(
-        station => station.latLon === position.latLon
+        (station) => station.latLon === position.latLon
       );
       return { ...position, ...correctStation };
     });
@@ -508,7 +510,7 @@ class ObservationData extends LitElement {
     const temperatureRemoved =
       ObservationData._removeDuplicates(filteredObservations);
 
-    const observations9 = temperatureRemoved.map(item => {
+    const observations9 = temperatureRemoved.map((item) => {
       const copy = { ...item };
       copy.distance = Math.round(
         distance(copy.lat, copy.lon, this.place.lat, this.place.lon)

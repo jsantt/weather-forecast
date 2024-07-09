@@ -19,12 +19,12 @@ class StationMap extends LitElement {
       }
 
       .temperature {
-        font-size: 0.15px;
+        font-size: 0.12px;
 
         text-rendering: optimizeLegibility;
       }
       .temperature.home-station {
-        font-size: 0.4px;
+        font-size: 0.34px;
       }
 
       circle {
@@ -47,8 +47,7 @@ class StationMap extends LitElement {
         stroke: var(--color-gray-400);
       }
       circle.original-location {
-        fill: red;
-        stroke: red;
+        stroke: black;
       }
 
       use,
@@ -108,24 +107,25 @@ class StationMap extends LitElement {
                 @click="${() => this._stationClicked(index)}"
                 cx="${observation.lonForMap}"
                 cy="${-1 * observation.latForMap}"
-                r="${observation.calculated ? 0.32 : 0.16}"
+                r="${observation.calculated ? 0.26 : 0.11}"
 
                 stroke-width="0.013"
+                stroke="transparent"
               ></circle>
 
               <use
                 x="${
                   observation.calculated
-                    ? observation.lonForMap - 0.35
-                    : observation.lonForMap - 0.14
+                    ? observation.lonForMap - 0.29
+                    : observation.lonForMap - 0.12
                 }"
                 y="${
                   observation.calculated
-                    ? -1 * observation.latForMap - 0.17
-                    : -1 * observation.latForMap - 0.09
+                    ? -1 * observation.latForMap - 0.13
+                    : -1 * observation.latForMap - 0.06
                 }"
-                width="${observation.calculated ? 0.48 : 0.25}"
-                height="${observation.calculated ? 0.48 : 0.25}"
+                width="${observation.calculated ? 0.4 : 0.18}"
+                height="${observation.calculated ? 0.4 : 0.18}"
                 href="assets/image/weather-symbols.svg#weatherSymbol${
                   observation.weatherCode3
                 }${isNight(new Date(), this.location) ? '-night' : ''}"
@@ -146,13 +146,13 @@ class StationMap extends LitElement {
                   text-anchor="end" 
                   x="${
                     observation.calculated
-                      ? observation.lonForMap + 0.22
-                      : observation.lonForMap + 0.09
+                      ? observation.lonForMap + 0.17
+                      : observation.lonForMap + 0.07
                   }"
                     y="${
                       observation.calculated
-                        ? -1 * observation.latForMap + 0.05
-                        : -1 * observation.latForMap - 0.01
+                        ? -1 * observation.latForMap + 0.06
+                        : -1 * observation.latForMap - 0
                     }">${
                       showFeelsLike === true
                         ? svg`<tspan class="feels-like">${observation.feelsLike}`
@@ -163,7 +163,7 @@ class StationMap extends LitElement {
             `;
         })}
         <!-- showing original location for debugging -->
-        <!-- ${this._observationData.map(observation => {
+        ${this._observationData.map((observation) => {
           return observation.selectedStation
             ? svg` <circle
               class="original-location"
@@ -174,7 +174,7 @@ class StationMap extends LitElement {
             />
             `
             : undefined;
-        })} -->
+        })}
       </svg>
     `;
   }
@@ -221,11 +221,11 @@ class StationMap extends LitElement {
    *
    */
   static _viewBox(coordinates) {
-    const width = 2;
-    const height = 2.5;
+    const width = 1.5;
+    const height = 1.9;
 
     return `${coordinates.lon - width / 2} -${
-      coordinates.lat + height / 2
+      coordinates.lat + height / 2 + 0.13
     } ${width} ${height}`;
   }
 
