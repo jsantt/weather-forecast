@@ -50,6 +50,10 @@ class StationMap extends LitElement {
         stroke: black;
       }
 
+      circle.original-location.original-location--corrected {
+        stroke: red;
+      }
+
       use,
       .temperature {
         pointer-events: none;
@@ -96,7 +100,7 @@ class StationMap extends LitElement {
         <!-- paint in "z-index" order, because
               svg does not have z-index --> 
 
-        ${this._observationData.map((observation, index) => {
+        ${this._observationData.reverse().map((observation, index) => {
           return svg`
             <g>
               <circle
@@ -171,7 +175,14 @@ class StationMap extends LitElement {
               cy="${-1 * observation.lat}"
               r="0.01"
               stroke-width="0.013"
-            />
+            ></circle>
+             <circle
+              class="original-location original-location--corrected"
+              cx="${observation.lonSlot}"
+              cy="${-1 * observation.latSlot}"
+              r="0.01"
+              stroke-width="0.013"
+            ></circle>
             `
             : undefined;
         })}
@@ -222,7 +233,7 @@ class StationMap extends LitElement {
    */
   static _viewBox(coordinates) {
     const width = 1.5;
-    const height = 1.9;
+    const height = 1.8;
 
     return `${coordinates.lon - width / 2} -${
       coordinates.lat + height / 2 + 0.13
