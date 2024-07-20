@@ -31,7 +31,11 @@ class StationMap extends LitElement {
         stroke: var(--color-blue-650);
         fill: var(--color-blue-650);
       }
-
+      /* for debugging
+      circle.collides {
+        stroke: red;
+      }
+      */
       text {
         font-synthesis: style;
         fill: var(--color-gray-300);
@@ -100,13 +104,14 @@ class StationMap extends LitElement {
         <!-- paint in "z-index" order, because
               svg does not have z-index --> 
 
-        ${this._observationData.reverse().map((observation, index) => {
+        ${this._observationData.map((observation, index) => {
           return svg`
             <g>
               <circle
               class="${classMap({
                 'selected-station': observation.selectedStation === true,
                 'home-station': observation.calculated,
+                collides: observation.collision,
               })}"
                 @click="${() => this._stationClicked(index)}"
                 cx="${observation.lonForMap}"
@@ -167,7 +172,7 @@ class StationMap extends LitElement {
             `;
         })}
         <!-- showing original location for debugging -->
-        ${this._observationData.map((observation) => {
+        <!-- ${this._observationData.map((observation) => {
           return observation.selectedStation
             ? svg` <circle
               class="original-location"
@@ -178,14 +183,14 @@ class StationMap extends LitElement {
             ></circle>
              <circle
               class="original-location original-location--corrected"
-              cx="${observation.lonSlot}"
-              cy="${-1 * observation.latSlot}"
+              cx="${observation.lonMoved || 0}"
+              cy="${-1 * observation.latMoved || 0}"
               r="0.01"
               stroke-width="0.013"
             ></circle>
             `
             : undefined;
-        })}
+        })}-->
       </svg>
     `;
   }
@@ -232,8 +237,8 @@ class StationMap extends LitElement {
    *
    */
   static _viewBox(coordinates) {
-    const width = 1.5;
-    const height = 1.8;
+    const width = 2;
+    const height = 2;
 
     return `${coordinates.lon - width / 2} -${
       coordinates.lat + height / 2 + 0.13

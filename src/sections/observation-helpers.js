@@ -4,83 +4,201 @@ import {
   checkCollision,
 } from './vector-math.js';
 
-/**
- * Adjusting coordinates iteratively. Places the stations on the map starting from
- * the nearest. If the placed stations collides with the previous stations, move
- * it by extendLength until it fits
- */
 function addCoordinatesForMap(observations) {
-  const calculatedStation = observations.at(0);
+  const moved = moveIntoRightDistance(observations);
 
-  const allPositions = getAllSlots(
-    calculatedStation.lon,
-    calculatedStation.lat
-  );
+  return moved;
+}
 
-  let availableSlots = [...allPositions];
-  const fixedObservations = observations.map((observation) => {
+function resolveCollisions(observations) {
+  const stationRadius = 0.099;
+
+  const adjustedObs = [];
+  observations.map((observation) => {
     const copy = { ...observation };
+    // console.log('OUTER', observation.name);
 
-    const coordinates = findFreeSlot(
-      observation.lonForMap,
-      observation.latForMap,
-      availableSlots,
-      observation.distance
-    );
-
-    copy.lonSlot = coordinates.x;
-    copy.latSlot = coordinates.y;
-
-    copy.lonForMap = coordinates.x;
-    copy.latForMap = coordinates.y;
-
-    availableSlots = availableSlots.map((slot) => {
-      const slotCopy = { ...slot };
-      if (slot.x === copy.lonForMap && slot.y === copy.latForMap) {
-        slotCopy.free = false;
+    let collision = false;
+    adjustedObs.some((adjustedOb) => {
+      // console.log('inner', adjustedOb.name);
+      if (collision === true) {
+        return false;
       }
-      return slotCopy;
+      collision = checkCollision(
+        observation.lonForMap,
+        observation.latForMap,
+        stationRadius,
+        adjustedOb.lonForMap,
+        adjustedOb.latForMap,
+        stationRadius
+      );
+
+      if (collision) {
+        const corner = resolveCorner(
+          observations.at(0).lon,
+          observations.at(0).lat,
+          adjustedOb.lonForMap,
+          adjustedOb.latForMap
+        );
+
+        const nearbySlots = getAllSlots(
+          adjustedOb.lonForMap,
+          adjustedOb.latForMap,
+          corner
+        );
+
+        const coordinates = findFreeSlot(
+          adjustedOb.lonForMap,
+          adjustedOb.latForMap,
+          nearbySlots,
+          adjustedObs
+        );
+        if (coordinates.x === 99) {
+          console.log('COULDNT find slot for ', adjustedOb.name);
+        } else {
+          // console.log('adjusted ', adjustedOb.name);
+          copy.lonForMap = coordinates.x;
+          copy.latForMap = coordinates.y;
+        }
+        return true;
+      }
+      return false;
     });
+
+    adjustedObs.push(copy);
 
     return copy;
   });
-
-  const result = moveTowardsOrigin(fixedObservations);
-
-  return result;
+  return adjustedObs;
 }
 
+function resolveCorner(centerX, centerY, x, y) {
+  if (x > centerX && y > centerY) {
+    return 'top-right';
+  }
+  if (x > centerX && y < centerY) {
+    return 'bottom-right';
+  }
+  if (x < centerX && y > centerY) {
+    return 'top-left';
+  }
+  if (x < centerX && y < centerY) {
+    return 'bottom-left';
+  }
+
+  return undefined;
+}
+
+function moveIntoRightDistance(obs) {
+  const stationRadius = 0.099;
+  const calculatedStationRadius = 0.3;
+
+  const adjustedObs = [];
+
+  const result2 = obs.map((station) => {
+    if (station.calculated) {
+      return station;
+    }
+
+    // min = calculatedStationRadius + stationRadius
+    // max = 0.4
+    let distance = calculatedStationRadius + stationRadius;
+    if (station.distance < 5) {
+      distance += 0;
+    } else if (station.distance < 10) {
+      distance += 0.05;
+    } else if (station.distance < 15) {
+      distance += 0.1;
+    } else if (station.distance < 20) {
+      distance += 0.15;
+    } else if (station.distance < 25) {
+      distance += 0.2;
+    } else if (station.distance < 30) {
+      distance += 0.25;
+    } else if (station.distance < 35) {
+      distance += 0.3;
+    } else if (station.distance < 40) {
+      distance += 0.35;
+    } else {
+      distance += 0.4;
+    }
+
+    const distanceForMap = distance;
+
+    const dist = distanceBetween(
+      obs.at(0).lon,
+      obs.at(0).lat,
+      station.lonForMap,
+      station.latForMap
+    );
+
+    const extendedLine = extendVector(
+      obs.at(0).lon,
+      obs.at(0).lat,
+      station.lonForMap,
+      station.latForMap,
+      distanceForMap - dist
+    );
+
+    const stationCopy = { ...station };
+    stationCopy.lonForMap = extendedLine.x2Ext;
+    stationCopy.latForMap = extendedLine.y2Ext;
+    stationCopy.lonMoved = extendedLine.x2Ext;
+    stationCopy.latMoved = extendedLine.y2Ext;
+
+    const collision = adjustedObs.some((adjustedOb) => {
+      return checkCollision(
+        stationCopy.lonForMap,
+        stationCopy.latForMap,
+        stationCopy.calculated ? calculatedStationRadius : stationRadius,
+        adjustedOb.lonForMap,
+        adjustedOb.latForMap,
+        adjustedOb.calculated ? calculatedStationRadius : stationRadius
+      );
+    });
+    stationCopy.collision = collision;
+
+    adjustedObs.push(stationCopy);
+    return stationCopy;
+  });
+  return result2;
+}
 /**
  *
  * @param {*} x
  * @param {*} y
  * @param {*} allSlots e.g. [{24.3, 60.4}, {24.1, 60.1},..]
  */
-function findFreeSlot(x, y, allSlots, distance) {
+function findFreeSlot(x, y, allSlots, adjustedObs) {
   let minDistance = 999;
   const initValueForNearest = { x: 99, y: 99 };
 
-  return allSlots.reduce((nearest, current) => {
-    if (distance > 20 && current.inner) {
-      return nearest;
-    }
-
+  const stationRadius = 0.11;
+  const newSlot = allSlots.reduce((nearest, current) => {
     const distance2 = distanceBetween(x, y, current.x, current.y);
-    if (current.free && distance2 < minDistance) {
+    if (distance2 < minDistance) {
+      const collision = adjustedObs.some((adjustedOb) => {
+        return checkCollision(
+          current.x,
+          current.y,
+          stationRadius,
+          adjustedOb.lonForMap,
+          adjustedOb.latForMap,
+          stationRadius
+        );
+      });
+
+      if (collision) {
+        return nearest;
+      }
+
       minDistance = distance2;
       return current;
     }
 
     return nearest;
   }, initValueForNearest);
-}
-
-function getAllSlots(centerX, centerY) {
-  const slots = getSlots(centerX, centerY);
-
-  return slots.map((item) => {
-    return { ...item, free: true };
-  });
+  return newSlot;
 }
 
 /**
@@ -88,182 +206,42 @@ function getAllSlots(centerX, centerY) {
  * @param {*} params
  * @returns
  */
-function getSlots(centerX, centerY) {
+function getAllSlots(centerX, centerY, corner) {
+  let x = 1;
+  if (corner === 'top-left' || corner === 'bottom-left') {
+    x = -1;
+  }
+
   const stationRadius = 0.11;
-  const calculatedStationRadius = 0.31;
 
-  const innerCircleRadius = stationRadius + calculatedStationRadius + 0.09;
+  const circleRadius = 2 * stationRadius + 0.02;
 
-  const innerDistance1 = 0.5 * innerCircleRadius;
-  const innerDistance2 = 0.866 * innerCircleRadius;
-  const innerDistance3 = innerCircleRadius;
+  const innerDistance1 = 0.5 * circleRadius;
+  const innerDistance2 = stationRadius + 0.1;
 
-  const outerCircleRadius = 3 * stationRadius + calculatedStationRadius + 0.12;
-  const outerDistance1 = 0.5 * outerCircleRadius;
-  const outerDistance2 = 0.866 * outerCircleRadius;
-  const outerDistance3 = outerCircleRadius;
-
-  const centerSlot = { x: centerX, y: centerY, inner: true };
-
-  const innerCircleSlots = getSlots2(
-    centerX,
-    centerY,
-    innerDistance3,
-    innerDistance1,
-    innerDistance2,
-    true
-  );
-
-  const outerCircleSlots = getSlots2(
-    centerX,
-    centerY,
-    outerDistance3,
-    outerDistance1,
-    outerDistance2,
-    false
-  );
-
-  return [centerSlot, ...innerCircleSlots, ...outerCircleSlots];
-}
-
-function getSlots2(
-  centerX,
-  centerY,
-  innerDistance3,
-  innerDistance1,
-  innerDistance2,
-  inner
-) {
+  // slots for right
   return [
+    // on the right
     {
-      x: centerX,
-      y: centerY + innerDistance3,
-      inner,
-    },
-    {
-      x: centerX + innerDistance1,
-      y: centerY + innerDistance2,
-      inner,
-    },
-    {
-      x: centerX + innerDistance2,
-      y: centerY + innerDistance1,
-      inner,
-    },
-    {
-      x: centerX + innerDistance3,
+      x: centerX + circleRadius * x,
       y: centerY,
-      inner,
     },
+    // on top of previous
     {
-      x: centerX + innerDistance2,
-      y: centerY - innerDistance1,
-      inner,
-    },
-    {
-      x: centerX + innerDistance1,
-      y: centerY - innerDistance2,
-      inner,
-    },
-    {
-      x: centerX,
-      y: centerY - innerDistance3,
-      inner,
-    },
-    {
-      x: centerX - innerDistance1,
-      y: centerY - innerDistance2,
-      inner,
-    },
-    {
-      x: centerX - innerDistance2,
-      y: centerY - innerDistance1,
-      inner,
-    },
-    {
-      x: centerX - innerDistance3,
-      y: centerY,
-      inner,
-    },
-    {
-      x: centerX - innerDistance2,
-      y: centerY + innerDistance1,
-      inner,
-    },
-    {
-      x: centerX - innerDistance1,
+      x: centerX + innerDistance1 * x,
       y: centerY + innerDistance2,
-      inner,
+    },
+
+    // further
+    {
+      x: centerX + (3 * stationRadius + 0.03) * x,
+      y: centerY + circleRadius,
+    },
+    {
+      x: centerX + innerDistance1 * x,
+      y: centerY - innerDistance2,
     },
   ];
 }
 
-function moveTowardsOrigin(obs) {
-  const stationRadius = 0.099;
-  const calculatedStationRadius = 0.3;
-  const extendLength = -0.01; // how much station is moved per cycle
-
-  const result2 = obs.map((item, index1) => {
-    const nearest = { ...item };
-
-    if (nearest.calculated) {
-      return nearest;
-    }
-
-    let collideFree = true;
-    let distanceAchieved = false;
-    let counter = 0;
-
-    // move every item in distance order closer to their original point
-    while (collideFree && counter < 25 && !distanceAchieved) {
-      counter += 1;
-
-      const distance = distanceBetween(
-        obs.at(0).lon,
-        obs.at(0).lat,
-        nearest.lonForMap,
-        nearest.latForMap
-      );
-
-      if (
-        distance <
-        calculatedStationRadius + stationRadius + nearest.distance * 0.005
-      ) {
-        distanceAchieved = true;
-      }
-
-      collideFree = !obs.some((ob, index2) => {
-        if (index1 === index2) {
-          return false;
-        }
-
-        const collision =
-          checkCollision(
-            nearest.lonForMap,
-            nearest.latForMap,
-            nearest.calculated ? calculatedStationRadius : stationRadius,
-            ob.lonForMap,
-            ob.latForMap,
-            ob.calculated ? calculatedStationRadius : stationRadius
-          ) === true;
-        return collision;
-      });
-
-      if (collideFree) {
-        const extendedLine = extendVector(
-          obs.at(0).lon,
-          obs.at(0).lat,
-          nearest.lonForMap,
-          nearest.latForMap,
-          extendLength
-        );
-        nearest.lonForMap = extendedLine.x2Ext;
-        nearest.latForMap = extendedLine.y2Ext;
-      }
-    }
-    return nearest;
-  });
-  return result2;
-}
-
-export { addCoordinatesForMap };
+export { addCoordinatesForMap, resolveCollisions };

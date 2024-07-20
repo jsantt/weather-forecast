@@ -6,7 +6,10 @@ import { feelsLike } from './data-helpers/feels-like.js';
 import { wawaToSymbol3 } from './data-helpers/wawa-converter.js';
 import { raiseEvent } from './data-helpers/xml-parser.js';
 
-import { addCoordinatesForMap } from './sections/observation-helpers.js';
+import {
+  addCoordinatesForMap,
+  resolveCollisions,
+} from './sections/observation-helpers.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because
@@ -57,15 +60,12 @@ class ObservationData extends LitElement {
         );
         const allObservations = [calculatedItem, ...formattedObservations];
 
-        const observationsWithMapCoordinates = addCoordinatesForMap(
-          allObservations,
-          this
-        );
+        const observationsWithMapCoordinates =
+          addCoordinatesForMap(allObservations);
 
-        this._dispatch(
-          'observation-data.new-data',
-          observationsWithMapCoordinates
-        );
+        const resolvedObs = resolveCollisions(observationsWithMapCoordinates);
+
+        this._dispatch('observation-data.new-data', resolvedObs);
       })
       .catch((rejected) => {
         raiseEvent(this, 'observation-data.fetch-error', {
