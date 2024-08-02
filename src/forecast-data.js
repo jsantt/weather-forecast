@@ -60,15 +60,17 @@ class ForecastData extends LitElement {
     const params = ForecastData._getHarmonieParams(this.location);
 
     const queryParams = Object.keys(params)
-      .map(key => `${key}=${params[key]}`)
+      .map((key) => `${key}=${params[key]}`)
       .join('&');
 
-    const query = `https://opendata.fmi.fi/wfs?${queryParams}`;
-
-    fetch(query)
-      .then(response => response.text())
-      .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
-      .then(data => {
+    fetch(`https://opendata.fmi.fi/wfs?${queryParams}`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    })
+      .then((response) => response.text())
+      .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
+      .then((data) => {
         this._sendNotification(
           ForecastData._parseLocationGeoid(data),
           parseLocationName(data),
@@ -89,7 +91,7 @@ class ForecastData extends LitElement {
 
         this._dispatch('forecast-data.new-data', forecastData);
       })
-      .catch(rejected => {
+      .catch((rejected) => {
         raiseEvent(this, 'forecast-data.fetch-error', {
           text: 'Virhe haettaessa ennustetietoja',
         });
@@ -263,7 +265,7 @@ class ForecastData extends LitElement {
   }
 
   static _addFullHour(combinedData) {
-    const combined = combinedData.map(element => {
+    const combined = combinedData.map((element) => {
       const copy = { ...element };
       copy.hour = ForecastData._toHour(copy.time);
       return copy;
@@ -273,7 +275,7 @@ class ForecastData extends LitElement {
   }
 
   static _addRainType(data) {
-    const result = data.map(item => {
+    const result = data.map((item) => {
       const copy = { ...item };
       copy.rainType = rainType(copy.symbol);
       return copy;
@@ -286,7 +288,7 @@ class ForecastData extends LitElement {
     let previousItem;
     let currentItem;
 
-    forecastData.forEach(item => {
+    forecastData.forEach((item) => {
       previousItem = currentItem;
       currentItem = item;
 

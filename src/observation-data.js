@@ -48,7 +48,11 @@ class ObservationData extends LitElement {
       .map((key) => `${key}=${params[key]}`)
       .join('&');
 
-    fetch(`https://opendata.fmi.fi/wfs?${queryParams}`)
+    fetch(`https://opendata.fmi.fi/wfs?${queryParams}`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    })
       .then((response) => response.text())
       .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then((parsedResponse) => {

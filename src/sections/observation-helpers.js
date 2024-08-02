@@ -54,7 +54,7 @@ function resolveCollisions(observations) {
           adjustedObs
         );
         if (coordinates.x === 99) {
-          console.log('COULDNT find slot for ', adjustedOb.name);
+          console.log("couldn't find slot for ', adjustedOb.name");
         } else {
           // console.log('adjusted ', adjustedOb.name);
           copy.lonForMap = coordinates.x;

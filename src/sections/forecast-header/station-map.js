@@ -19,7 +19,7 @@ class StationMap extends LitElement {
       }
 
       .temperature {
-        font-size: 0.12px;
+        font-size: 0.13px;
 
         text-rendering: optimizeLegibility;
       }
@@ -133,8 +133,8 @@ class StationMap extends LitElement {
                     ? -1 * observation.latForMap - 0.13
                     : -1 * observation.latForMap - 0.06
                 }"
-                width="${observation.calculated ? 0.4 : 0.18}"
-                height="${observation.calculated ? 0.4 : 0.18}"
+                width="${observation.calculated ? 0.4 : 0.2}"
+                height="${observation.calculated ? 0.4 : 0.2}"
                 href="assets/image/weather-symbols.svg#weatherSymbol${
                   observation.weatherCode3
                 }${isNight(new Date(), this.location) ? '-night' : ''}"
