@@ -42,10 +42,10 @@ class ComboBox extends LitElement {
       .close {
         fill: var(--color-gray-800);
         position: absolute;
-        right: 2px;
-        top: 4px;
-        width: 32px;
-        height: 32px;
+        right: 3px;
+        top: 6px;
+        width: 40px;
+        height: 40px;
         padding: var(--space-s);
       }
 
@@ -87,7 +87,7 @@ class ComboBox extends LitElement {
         box-shadow: var(--box-shadow);
 
         color: var(--color-gray-800);
-        font-size: var(--font-size-l);
+        font-size: var(--font-size-xl);
         font-family: var(--font-family-primary);
         font-weight: var(--font-weight-boldest);
 
@@ -195,7 +195,7 @@ class ComboBox extends LitElement {
               aria-labelledBy="label"
               role="listbox"
             >
-              ${this._filteredItems.map(item => {
+              ${this._filteredItems.map((item) => {
                 return html` <li tabindex="-1" @click="${this._onItemClick}">
                   ${this._highlightMatch(item.city)}
                   <input type="hidden" .value="${item.city}" />
@@ -235,7 +235,7 @@ class ComboBox extends LitElement {
       this._openCombobox();
     });
 
-    this._combobox.addEventListener('keydown', event => {
+    this._combobox.addEventListener('keydown', (event) => {
       this._onKeyPress(event);
     });
   }
@@ -297,7 +297,7 @@ class ComboBox extends LitElement {
   }
 
   _filterItems(filterText) {
-    const filtered = this.items.filter(item => {
+    const filtered = this.items.filter((item) => {
       return (
         item.city.substr(0, filterText.length).toLowerCase() ===
         filterText.toLowerCase()
@@ -337,7 +337,7 @@ class ComboBox extends LitElement {
   }
 
   _clearSelected() {
-    this.shadowRoot.querySelectorAll('li').forEach(item => {
+    this.shadowRoot.querySelectorAll('li').forEach((item) => {
       item.removeAttribute('aria-selected');
     });
   }

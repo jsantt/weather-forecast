@@ -47,7 +47,6 @@ class WeatherDay extends LitElement {
 
       .weatherDay_grid {
         background-color: var(--background-panel);
-        border-radius: var(--border-radius);
         display: grid;
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);
@@ -62,11 +61,10 @@ class WeatherDay extends LitElement {
 
       .day-name {
         grid-column: span 25;
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-l);
         font-weight: var(--font-weight-normal);
         margin: 0;
         padding-left: var(--space-l);
-        text-transform: uppercase;
       }
 
       .symbol_svg {

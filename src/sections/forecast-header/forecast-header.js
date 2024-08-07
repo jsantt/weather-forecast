@@ -54,7 +54,7 @@ class ForecastHeader extends LitElement {
         position: absolute;
         right: 0;
         left: 0;
-        top: var(--space-l);
+        top: var(--space-xl);
       }
 
       station-map {
@@ -241,7 +241,7 @@ class ForecastHeader extends LitElement {
         }
 
         // eslint-disable-next-line prefer-destructuring
-        this._selectedStation = this.observationData.filter(item => {
+        this._selectedStation = this.observationData.filter((item) => {
           return item.selectedStation === true;
         })[0];
       }
