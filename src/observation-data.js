@@ -205,7 +205,7 @@ class ObservationData extends LitElement {
 
     const observationsWithWeights = observations.map((observation) => {
       let weight;
-      if (observation[property] == null) {
+      if (!observation[property]) {
         weight = 0;
       } else if (observation.distance === 0) {
         weight = 1;
@@ -451,7 +451,7 @@ class ObservationData extends LitElement {
         rain: window.parseFloat(singleValues[6]), // r_1h
         rainExplanation: window.parseFloat(singleValues[7]), // ri_10min
         snow: window.parseFloat(singleValues[8]), // snow_aws
-        pressure: Math.round(window.parseFloat(singleValues[9])), // p_sea
+        pressure: window.parseFloat(singleValues[9]), // p_sea
         visibility: Math.round(window.parseFloat(singleValues[10]) / 1000), // vis
         cloudiness: window.parseFloat(singleValues[11]), // n_man
         wawaCode: window.parseFloat(singleValues[12]), // wawa

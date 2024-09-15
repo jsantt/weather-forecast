@@ -61,7 +61,7 @@ class StationDetails extends LitElement {
       ${this.station.pressure
         ? html`
             <div class="item">
-              <div class="value">${this.station.pressure} hPa</div>
+              <div class="value">${Math.round(this.station.pressure)} hPa</div>
               <div class="explanation">ilmanpaine</div>
             </div>
           `
