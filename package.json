@@ -8,9 +8,8 @@
     "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
     "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
     "lint": "npm run lint:eslint && npm run lint:prettier",
-    "lint:css": "stylelint \"src/**/*.js\"",
+    "lint:css": "stylelint --fix \"src/**/*.js\"",
     "format": "npm run format:eslint && npm run format:prettier",
-
     "deploy-test": "npm run build && firebase serve",
     "deploy-prod": "npm run build && firebase deploy"
   },
@@ -56,7 +55,6 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
       "prettier --write",
       "git add"
     ]
