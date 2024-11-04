@@ -2,7 +2,7 @@ import { css, html, LitElement, svg } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 
 import '../../common-components/error-notification.js';
-import '../../common-components/wind-icon.js';
+import '../../common-components/wind-icon';
 import { isNight } from '../../data-helpers/sun-calculations.js';
 
 class StationMap extends LitElement {

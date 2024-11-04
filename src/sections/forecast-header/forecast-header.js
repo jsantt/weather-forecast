@@ -4,7 +4,7 @@ import { windClassification } from '../weather-days/wind-helper.js';
 
 import '../../common-components/smooth-expand.js';
 import '../../common-components/svg-icon.js';
-import '../../common-components/wind-icon.js';
+import '../../common-components/wind-icon';
 
 import './location-selector.js';
 import './station-map.js';

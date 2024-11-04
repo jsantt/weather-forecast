@@ -1,10 +1,10 @@
 import { LitElement } from 'lit';
 
-import { distance } from './data-helpers/distance.js';
-import { feelsLike } from './data-helpers/feels-like.js';
+import { distance } from './data-helpers/distance';
+import { feelsLike } from './data-helpers/feels-like';
 
-import { wawaToSymbol3 } from './data-helpers/wawa-converter.js';
-import { raiseEvent } from './data-helpers/xml-parser.js';
+import { wawaToSymbol3 } from './data-helpers/wawa-converter';
+import { raiseEvent } from './data-helpers/xml-parser';
 
 import {
   addCoordinatesForMap,

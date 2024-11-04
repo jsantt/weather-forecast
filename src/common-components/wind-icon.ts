@@ -1,6 +1,35 @@
 import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 class WindIcon extends LitElement {
+  static get is() {
+    return 'wind-icon';
+  }
+
+  @property({ type: Number, reflect: true })
+  degrees!: number;
+
+  @property({ type: Boolean, reflect: true })
+  isDayHighest!: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  large!: boolean;
+
+  @property({ type: Number, reflect: true })
+  rating!: number;
+
+  @property({ type: Boolean, reflect: true })
+  minimal!: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  whiteGust!: boolean;
+
+  @property({ type: Number, reflect: true })
+  windGustSpeed!: number;
+
+  @property({ type: Number, reflect: true })
+  windSpeed!: number;
+
   static get styles() {
     return css`
       :host {
@@ -95,47 +124,6 @@ class WindIcon extends LitElement {
         ${WindIcon._round(this.windGustSpeed)}
       </text>
     </svg>`;
-  }
-
-  static get is() {
-    return 'wind-icon';
-  }
-
-  static get properties() {
-    return {
-      degrees: {
-        type: Number,
-        reflect: true,
-      },
-      isDayHighest: {
-        type: Boolean,
-        reflect: true,
-      },
-      large: {
-        type: Boolean,
-        reflect: true,
-      },
-      rating: {
-        type: Number,
-        reflect: true,
-      },
-      minimal: {
-        type: Boolean,
-        reflect: true,
-      },
-      whiteGust: {
-        type: Boolean,
-        reflect: true,
-      },
-      windGustSpeed: {
-        type: Number,
-        reflect: true,
-      },
-      windSpeed: {
-        type: Number,
-        reflect: true,
-      },
-    };
   }
 
   static _rotate(degrees) {
