@@ -4,7 +4,7 @@ import '../weather-section.js';
 import '../common-components/svg-icon.js';
 import '../common-components/wind-icon';
 
-import { symbolName } from '../data-helpers/weather-symbol-name.js';
+import { symbolName } from '../data-helpers/weather-symbol-name';
 
 class SymbolList extends LitElement {
   static get is() {

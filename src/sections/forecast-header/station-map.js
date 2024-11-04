@@ -1,9 +1,9 @@
 import { css, html, LitElement, svg } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 
-import '../../common-components/error-notification.js';
+import '../../common-components/error-notification';
 import '../../common-components/wind-icon';
-import { isNight } from '../../data-helpers/sun-calculations.js';
+import { isNight } from '../../data-helpers/sun-calculations';
 
 class StationMap extends LitElement {
   static get is() {
