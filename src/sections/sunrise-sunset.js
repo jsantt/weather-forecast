@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 
-import '../common-components/smooth-expand.js';
-import '../common-components/svg-icon.js';
-import '../weather-section.js';
+import '../common-components/smooth-expand';
+import '../common-components/svg-icon';
+import '../weather-section';
 import { SunCalc } from '../data-helpers/suncalc-es6-fork.js';
 
 class SunriseSunset extends LitElement {

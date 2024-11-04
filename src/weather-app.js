@@ -4,19 +4,19 @@ import './sections/meta-info/json-ld.js';
 import './forecast-data';
 import './observation-data';
 
-import './weather-section.js';
-import './common-components/error-notification.js';
-import './sections/forecast-header/forecast-header.js';
+import './weather-section';
+import './common-components/error-notification';
+import './sections/forecast-header/forecast-header';
 
-import './sections/bottom-sheet/bottom-sheet.js';
-import './sections/external-links.js';
+import './sections/bottom-sheet/bottom-sheet';
+import './sections/external-links';
 
-import './sections/public-holidays.js';
-import './sections/sunrise-sunset.js';
-import './sections/symbol-list.js';
+import './sections/public-holidays';
+import './sections/sunrise-sunset';
+import './sections/symbol-list';
 
-import './sections/weather-days/weather-days.js';
-import './sections/share-app.js';
+import './sections/weather-days/weather-days';
+import './sections/share-app';
 
 class WeatherApp extends LitElement {
   static get is() {

@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
-import '../common-components/svg-icon.js';
-import '../weather-section.js';
+import '../common-components/svg-icon';
+import '../weather-section';
 
 class PublicHolidays extends LitElement {
   static get is() {
@@ -47,7 +47,7 @@ class PublicHolidays extends LitElement {
     return html`
       <weather-section header="Juhlapäivät 2020">
         ${this._holidays.map(
-          item =>
+          (item) =>
             html`
               <section class="${item.today === true ? 'today' : ''}">
                 <div class="date">
@@ -98,7 +98,7 @@ class PublicHolidays extends LitElement {
 
     const holidays = PublicHolidays._publicHolidays();
 
-    const today = holidays.find(day =>
+    const today = holidays.find((day) =>
       PublicHolidays._isToday(new Date(day.d))
     );
 
