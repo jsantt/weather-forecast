@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
-import { isSafari, isPortableApple, isWebView } from './browser-detector.js';
-import { isState, setState, STATE } from '../../common-utils/state.js';
+import { isSafari, isPortableApple, isWebView } from './browser-detector';
+import { isState, setState, STATE } from '../../common-utils/state';
 
 import {
   track,
@@ -9,9 +9,9 @@ import {
   INSTALL_CANCELLED,
   INSTALLED,
   GEOLOCATE,
-} from '../../common-utils/tracker.js';
-import './bottom-notification.js';
-import '../../common-components/svg-icon.js';
+} from '../../common-utils/tracker';
+import './bottom-notification';
+import '../../common-components/svg-icon';
 
 class BottomSheet extends LitElement {
   static get is() {
@@ -280,14 +280,14 @@ class BottomSheet extends LitElement {
       this._showIosInstructions() || this._forceShowOthers;
 
     // install button for Android, Edge and Chrome
-    window.addEventListener('beforeinstallprompt', event => {
+    window.addEventListener('beforeinstallprompt', (event) => {
       // prevent install prompt so it can be triggered later
       event.preventDefault();
       this._deferredPrompt = event;
       this._installButtonVisible = true;
     });
 
-    this.addEventListener('bottom-notification.closed', e => {
+    this.addEventListener('bottom-notification.closed', (e) => {
       if (e.detail.iosInstructions === true) {
         this._installAdOpen = false;
 
@@ -341,7 +341,7 @@ class BottomSheet extends LitElement {
     this._deferredPrompt.prompt();
 
     // Log the result
-    this._deferredPrompt.userChoice.then(choice => {
+    this._deferredPrompt.userChoice.then((choice) => {
       if (choice.outcome === 'dismissed') {
         track(INSTALL_CANCELLED);
       } else {
@@ -403,7 +403,7 @@ class BottomSheet extends LitElement {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           this._dispatchEvent(
             'location-selector.location-changed',
             BottomSheet._formPlaceObject(

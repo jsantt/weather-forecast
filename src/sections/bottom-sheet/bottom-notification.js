@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
-import './install-button.js';
-import '../../common-components/svg-icon.js';
+import './install-button';
+import '../../common-components/svg-icon';
 
 class BottomNotification extends LitElement {
   static get is() {
