@@ -17,11 +17,11 @@ function track(eventId) {
     return;
   }
 
-  if (window.tinyanalytics === undefined) {
+  if ((window as any).tinyanalytics === undefined) {
     return;
   }
 
-  window.tinyanalytics.goal(eventId);
+  (window as any).tinyanalytics.goal(eventId);
 }
 
 export { track, GEOLOCATE, INSTALL_CLICKED, INSTALL_CANCELLED, INSTALLED };
