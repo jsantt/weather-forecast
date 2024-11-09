@@ -11,7 +11,7 @@ function getTime(item) {
   return value(item.children[0]);
 }
 
-function getTimeAndValuePairs(sourceXml, attributeName) {
+function getTimeAndValuePairs(sourceXml: any, attributeName:string) {
   const measurementTVPs = getByAttributeValue(
     sourceXml,
     'gml:id',

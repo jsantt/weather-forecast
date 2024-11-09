@@ -9,11 +9,22 @@ import {
   raiseEvent,
   value,
   parseRegion,
-} from './data-helpers/xml-parser.js';
-import { snowAmount } from './sections/weather-days/rain-helper.js';
+} from './data-helpers/xml-parser';
+import { snowAmount } from './sections/weather-days/rain-helper';
 
-import { feelsLike } from './data-helpers/feels-like.js';
-import { rainType } from './data-helpers/rain-type.js';
+import { feelsLike } from './data-helpers/feels-like';
+import { rainType } from './data-helpers/rain-type';
+import { property } from 'lit/decorators.js';
+
+type HarmonieParams = {
+  request: string;
+  starttime: string;
+  endtime: string;
+  parameters?: string;
+  storedquery_id?: string;
+  latlon?: string;
+  place?: string;
+};
 
 /**
  *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.
@@ -34,17 +45,11 @@ class ForecastData extends LitElement {
     return 'forecast-data';
   }
 
-  static get properties() {
-    return {
-      location: {
-        type: Object,
-        reflect: true,
-      },
-    };
-  }
+  @property({ type: Object, reflect: true })
+  location;
 
   updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+    changedProperties.forEach((_, propName) => {
       if (propName === 'location' && this.location !== undefined) {
         this._newLocation();
       }
@@ -55,7 +60,7 @@ class ForecastData extends LitElement {
    * Fetches the data from the backend
    */
   _newLocation() {
-    this._dispatch('forecast-data.fetching');
+    this.dispatch('forecast-data.fetching');
 
     const params = ForecastData._getHarmonieParams(this.location);
 
@@ -89,7 +94,7 @@ class ForecastData extends LitElement {
         const forecastData = ForecastData._addSymbolAggregate(rainTypeAdded);
         forecastData.fetchTime = new Date();
 
-        this._dispatch('forecast-data.new-data', forecastData);
+        this.dispatch('forecast-data.new-data', forecastData);
       })
       .catch((rejected) => {
         raiseEvent(this, 'forecast-data.fetch-error', {
@@ -105,7 +110,7 @@ class ForecastData extends LitElement {
       });
   }
 
-  static _getHarmonieParams(location) {
+  static _getHarmonieParams(location): HarmonieParams {
     const params = ForecastData._commonParams(location);
 
     params.storedquery_id =
@@ -116,11 +121,13 @@ class ForecastData extends LitElement {
     return params;
   }
 
-  static _commonParams(location) {
-    const params = {
+  static _commonParams(location): HarmonieParams {
+    const params: HarmonieParams = {
       request: 'getFeature',
       starttime: ForecastData._todayFirstHour(),
       endtime: ForecastData._tomorrowLastHour(),
+      parameters: undefined,
+      storedquery_id: undefined,
     };
     if (location.coordinates) {
       params.latlon = location.coordinates;
@@ -165,44 +172,15 @@ class ForecastData extends LitElement {
       'wml2:MeasurementTimeseries'
     );
 
-    const harmonieResponse = {};
-
-    harmonieResponse.humidity = getTimeAndValuePairs(
-      timeSeries,
-      'mts-1-1-Humidity',
-      'humidity'
-    );
-    harmonieResponse.rain = getTimeAndValuePairs(
-      timeSeries,
-      'mts-1-1-Precipitation1h',
-      'rain'
-    );
-    harmonieResponse.symbol = getTimeAndValuePairs(
-      timeSeries,
-      'mts-1-1-WeatherSymbol3',
-      'symbol'
-    );
-
-    harmonieResponse.temperature = getTimeAndValuePairs(
-      timeSeries,
-      'mts-1-1-Temperature',
-      'temperature'
-    );
-    harmonieResponse.wind = getTimeAndValuePairs(
-      timeSeries,
-      'mts-1-1-WindSpeedMS',
-      'wind'
-    );
-    harmonieResponse.windDirection = getTimeAndValuePairs(
-      timeSeries,
-      'mts-1-1-WindDirection',
-      'windDirection'
-    );
-    harmonieResponse.windGust = getTimeAndValuePairs(
-      timeSeries,
-      'mts-1-1-WindGust',
-      'windGust'
-    );
+    const harmonieResponse = {
+      humidity: getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity'),
+      rain: getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h'),
+      symbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3'),
+      temperature: getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature'),
+      wind: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS'),
+      windDirection: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection'),
+      windGust: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindGust'),
+    };
 
     return harmonieResponse;
   }
@@ -236,7 +214,7 @@ class ForecastData extends LitElement {
       const nextRoundWind = Math.round(nextWind);
       const nextRoundWindGust = Math.round(nextWindGust);
 
-      weatherJson.push({
+      (weatherJson as any).push({
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
         rain,
@@ -367,7 +345,7 @@ class ForecastData extends LitElement {
     return tomorrow.toISOString();
   }
 
-  _dispatch(eventName, message) {
+  dispatch(eventName: string, message?: string): void {
     const event = new CustomEvent(eventName, {
       detail: message,
       bubbles: true,

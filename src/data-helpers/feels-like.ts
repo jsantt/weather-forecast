@@ -10,7 +10,7 @@
  * @param {Number} humidity
  * @param {Number} [radiation]
  */
-function feelsLike(temperature, wind, humidity, radiation) {
+function feelsLike(temperature, wind, humidity, radiation?) {
   if (
     temperature === undefined ||
     wind === undefined ||

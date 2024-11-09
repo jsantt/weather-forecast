@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
 
-import '../common-components/smooth-expand.js';
-import '../common-components/svg-icon.js';
-import '../weather-section.js';
-import 'suncalc';
+import '../common-components/smooth-expand';
+import '../common-components/svg-icon';
+import '../weather-section';
+import { SunCalc } from '../data-helpers/suncalc-es6-fork.js';
 
 class SunriseSunset extends LitElement {
   static get is() {
@@ -171,7 +171,7 @@ class SunriseSunset extends LitElement {
             </div>
           </smooth-expand>
         </div>
-        <a href="#" @click="${e => this._toggleDetails(e)}">
+        <a href="#" @click="${(e) => this._toggleDetails(e)}">
           <svg-icon
             class="expand-icon ${this._expanded ? 'expand-icon--open' : ''}"
             path="assets/image/icons.svg#caret-down"
@@ -213,7 +213,7 @@ class SunriseSunset extends LitElement {
   }
 
   _updateSunsetSunrise() {
-    const times = window.SunCalc.getTimes(
+    const times = SunCalc.getTimes(
       new Date(),
       this.location.lat,
       this.location.lon

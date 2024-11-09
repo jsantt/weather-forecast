@@ -10,6 +10,7 @@ import {
   addCoordinatesForMap,
   resolveCollisions,
 } from './sections/observation-helpers.js';
+import { property } from 'lit/decorators.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because
@@ -20,15 +21,9 @@ class ObservationData extends LitElement {
     return 'observation-data';
   }
 
-  static get properties() {
-    return {
-      // location object, e.g {geoid: "7521614", name: "Kattilalaakso"}
-      place: {
-        type: Object,
-        reflect: true,
-      },
-    };
-  }
+  // location object, e.g {geoid: "7521614", name: "Kattilalaakso"}
+  @property({ type: Object, reflect: true })
+  place!: {lat, lon, name, region, geoid};
 
   updated(changedProperties) {
     changedProperties.forEach((_, propName) => {
@@ -85,12 +80,12 @@ class ObservationData extends LitElement {
    * @param {*} formattedObservations
    * @returns
    */
-  calculateStationDetails(formattedObservations) {
+  calculateStationDetails(formattedObservations: any[]) {
     if (!formattedObservations) {
       return undefined;
     }
 
-    const calculatedItem = {
+    const calculatedItem: any = {
       calculated: true,
       selectedStation: true,
       distance: 0,
@@ -356,7 +351,7 @@ class ObservationData extends LitElement {
   static _parseStations(xmlDocResponse) {
     const stations = xmlDocResponse.querySelectorAll('Point');
 
-    const result = [];
+    const result: any = [];
 
     for (let i = 0; i < stations.length; i += 1) {
       const name = stations[i].querySelector('name').innerHTML.trim();
@@ -407,7 +402,7 @@ class ObservationData extends LitElement {
 
     const positionRows = positions.split(/\r?\n/);
 
-    const stationPositions = [];
+    const stationPositions: any[] = [];
 
     positionRows.forEach((positionRow) => {
       const singleValues = positionRow.trim().split(' ');
@@ -434,14 +429,14 @@ class ObservationData extends LitElement {
       .querySelector('doubleOrNilReasonTupleList')
       .innerHTML.trim();
 
-    const formattedObservations = [];
+    const formattedObservations: any = [];
 
     const observationArray = observations.split(/\r?\n/);
 
     observationArray.forEach((observationLine) => {
       const singleValues = observationLine.trim().split(' ');
 
-      const station = {
+      const station: any = {
         temperature: window.parseFloat(singleValues[0]), // t2m
         wind: window.parseFloat(singleValues[1]), // ws_10min
         windGust: window.parseFloat(singleValues[2]), // wg_10min

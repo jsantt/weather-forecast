@@ -1,22 +1,22 @@
 import { css, html, LitElement } from 'lit';
 
 import './sections/meta-info/json-ld.js';
-import './forecast-data.js';
-import './observation-data.js';
+import './forecast-data';
+import './observation-data';
 
-import './weather-section.js';
-import './common-components/error-notification.js';
-import './sections/forecast-header/forecast-header.js';
+import './weather-section';
+import './common-components/error-notification';
+import './sections/forecast-header/forecast-header';
 
-import './sections/bottom-sheet/bottom-sheet.js';
-import './sections/external-links.js';
+import './sections/bottom-sheet/bottom-sheet';
+import './sections/external-links';
 
-import './sections/public-holidays.js';
-import './sections/sunrise-sunset.js';
-import './sections/symbol-list.js';
+import './sections/public-holidays';
+import './sections/sunrise-sunset';
+import './sections/symbol-list';
 
-import './sections/weather-days/weather-days.js';
-import './sections/share-app.js';
+import './sections/weather-days/weather-days';
+import './sections/share-app';
 
 class WeatherApp extends LitElement {
   static get is() {
@@ -444,7 +444,7 @@ class WeatherApp extends LitElement {
     this._darkMode = false;
 
     // user changes location
-    this.addEventListener('location-selector.location-changed', event => {
+    this.addEventListener('location-selector.location-changed', (event) => {
       this._location = { ...event.detail };
     });
 
@@ -459,12 +459,12 @@ class WeatherApp extends LitElement {
       this._firstLoading = false;
     });
 
-    this.addEventListener('forecast-data.new-data', event => {
+    this.addEventListener('forecast-data.new-data', (event) => {
       this._forecastError = false;
       this._forecastData = event.detail;
     });
 
-    this.addEventListener('forecast-data.new-place', event => {
+    this.addEventListener('forecast-data.new-place', (event) => {
       this._forecastPlace = event.detail;
     });
 
@@ -474,7 +474,7 @@ class WeatherApp extends LitElement {
 
     // observation data
 
-    this.addEventListener('observation-data.new-data', event => {
+    this.addEventListener('observation-data.new-data', (event) => {
       this._observationError = false;
       this._observationData = event.detail;
     });
@@ -499,7 +499,7 @@ class WeatherApp extends LitElement {
       this._showFeelsLike = !this._showFeelsLike;
     });
 
-    this.addEventListener('station-map.selected', e => {
+    this.addEventListener('station-map.selected', (e) => {
       this._stationSelected(e);
     });
 
@@ -526,7 +526,7 @@ class WeatherApp extends LitElement {
    *
    */
   _stationSelected(event) {
-    const observationsCopy = this._observationData.map(observation => {
+    const observationsCopy = this._observationData.map((observation) => {
       const obs = { ...observation };
       obs.selectedStation = false;
       return obs;
@@ -552,7 +552,7 @@ class WeatherApp extends LitElement {
       return {};
     }
 
-    const hourForecast = data.filter(item => {
+    const hourForecast = data.filter((item) => {
       return item.time === time;
     })[0];
 

@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
-import '../common-components/svg-icon.js';
-import '../weather-section.js';
+import '../common-components/svg-icon';
+import '../weather-section';
 
 class ShareApp extends LitElement {
   static get is() {

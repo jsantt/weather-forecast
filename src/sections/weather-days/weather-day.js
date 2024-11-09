@@ -5,8 +5,8 @@ import './weather-description.js';
 
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
-import '../../common-components/wind-icon.js';
-import { isNight } from '../../data-helpers/sun-calculations.js';
+import '../../common-components/wind-icon';
+import { isNight } from '../../data-helpers/sun-calculations';
 import { isDayHighest, windClassification } from './wind-helper.js';
 
 class WeatherDay extends LitElement {

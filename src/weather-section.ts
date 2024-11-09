@@ -1,9 +1,16 @@
 import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 class WeatherSection extends LitElement {
   static get is() {
     return 'weather-section';
   }
+
+  @property({ type: String })
+  header?: string;
+
+  @property({ type: String })
+  footer?: string;
 
   static get styles() {
     return css`
@@ -57,17 +64,6 @@ class WeatherSection extends LitElement {
         <slot class="right" name="footer-right"></slot>
       </footer>
     `;
-  }
-
-  static get properties() {
-    return {
-      header: {
-        type: String,
-      },
-      footer: {
-        type: String,
-      },
-    };
   }
 }
 
