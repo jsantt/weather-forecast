@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
 import './combo-box.js';
-import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list.js';
+import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list';
 
 /**
  * @customElement
@@ -72,7 +72,7 @@ class LocationSelector extends LitElement {
         this._notifyPreviousPlace();
       }
     });
-    window.addEventListener('pageshow', event => {
+    window.addEventListener('pageshow', (event) => {
       if (event.persisted) {
         this._notifyPreviousPlace();
       }
@@ -82,7 +82,7 @@ class LocationSelector extends LitElement {
       this.city = '';
     });
 
-    this.addEventListener('combo-box.new-value', event => {
+    this.addEventListener('combo-box.new-value', (event) => {
       this.city = event.detail;
 
       if (
@@ -95,7 +95,7 @@ class LocationSelector extends LitElement {
 
       // combobox tells the city only, get city and coordinates from localstorage items and city list
       const cityAndCoordinates = LocationSelector._placeList().find(
-        item => item.city === this.city
+        (item) => item.city === this.city
       );
 
       const latLon = LocationSelector._splitCoordinates(
@@ -142,7 +142,7 @@ class LocationSelector extends LitElement {
   }
 
   static _getPlaceName(name) {
-    const newName = CITIES.filter(item => {
+    const newName = CITIES.filter((item) => {
       return name === item.key;
     });
 
@@ -176,7 +176,7 @@ class LocationSelector extends LitElement {
       return CITIES;
     }
 
-    const filterBadOnes = previousLocations.filter(item => {
+    const filterBadOnes = previousLocations.filter((item) => {
       return item.city !== undefined && item.coordinates !== undefined;
     });
     const allLocations = filterBadOnes.concat(CITIES);
@@ -214,7 +214,7 @@ class LocationSelector extends LitElement {
     const previousPlaces = LocationSelector._getFromLocalStorage('place');
 
     const filtered10 = newPlace.concat(
-      previousPlaces.filter(item => item.city !== city).slice(0, 9)
+      previousPlaces.filter((item) => item.city !== city).slice(0, 9)
     );
     LocationSelector._storeIntoLocalStorage(key, filtered10);
   }

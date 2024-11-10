@@ -49,7 +49,7 @@ class InstallButton extends LitElement {
     `;
   }
 
-  _dispatchEvent(name) {
+  _dispatchEvent(name: string) {
     const event = new CustomEvent(`${InstallButton.is}.${name}`, {
       bubbles: true,
       composed: true,

@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 import './install-button';
 import '../../common-components/svg-icon';
+import { property } from 'lit/decorators.js';
 
 class BottomNotification extends LitElement {
   static get is() {
@@ -144,24 +145,19 @@ class BottomNotification extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      showInstall: {
-        type: Boolean,
-        reflect: true,
-      },
-      errorText: {
-        type: String,
-        reflect: true,
-      },
-      ios: {
-        type: Boolean,
-        reflect: true,
-      },
-    };
-  }
+  @property({ type: Boolean, reflect: true })
+  showInstall?: boolean;
 
-  _dispatchEvent(name, payload) {
+  @property({ type: String, reflect: true })
+  errorText?: string;
+
+  @property({ type: Boolean, reflect: true })
+  ios?: boolean;
+
+  _dispatchEvent(
+    name: string,
+    payload: { iosInstructions: boolean | undefined }
+  ) {
     const event = new CustomEvent(`${BottomNotification.is}.${name}`, {
       detail: payload,
       bubbles: true,
@@ -172,3 +168,11 @@ class BottomNotification extends LitElement {
 }
 
 window.customElements.define(BottomNotification.is, BottomNotification);
+
+declare global {
+  interface CustomEventMap {
+    'bottom-notification.closed': CustomEvent<{
+      iosInstructions: boolean | undefined;
+    }>;
+  }
+}

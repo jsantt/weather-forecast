@@ -1,6 +1,4 @@
-export { isSafari, isPortableApple, isWebView };
-
-function isSafari() {
+function isSafari(): boolean {
   const { userAgent } = window.navigator;
   return (
     !/CriOS/.test(userAgent) &&
@@ -12,13 +10,15 @@ function isSafari() {
   );
 }
 
-function isPortableApple() {
+function isPortableApple(): boolean {
   return ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
 }
 
-function isWebView() {
+function isWebView(): boolean {
   return (
     window.navigator.userAgent.indexOf('FBAN') > 0 ||
     window.navigator.userAgent.indexOf('FBAV') > 0
   );
 }
+
+export { isSafari, isPortableApple, isWebView };

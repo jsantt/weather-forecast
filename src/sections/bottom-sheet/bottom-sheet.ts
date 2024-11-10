@@ -12,6 +12,7 @@ import {
 } from '../../common-utils/tracker';
 import './bottom-notification';
 import '../../common-components/svg-icon';
+import { property } from 'lit/decorators.js';
 
 class BottomSheet extends LitElement {
   static get is() {
@@ -158,6 +159,45 @@ class BottomSheet extends LitElement {
     `;
   }
 
+  @property({ type: Boolean })
+  largeMap?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  showWind?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  darkMode?: boolean;
+
+  @property({ type: String })
+  _error?: string;
+
+  @property({ type: Boolean, reflect: true })
+  _locating?: boolean;
+
+  @property({ type: Object })
+  _deferredPrompt?: object;
+
+  @property({ type: Boolean, reflect: true })
+  _installButtonVisible?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  _installBadgeVisible?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  _installAdOpen?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  _ios?: boolean;
+
+  @property({ type: String, reflect: true })
+  _notification?: string;
+
+  _forceShowIos = false;
+  _forceShowOthers = false;
+
   render() {
     return html`
       <bottom-notification
@@ -229,45 +269,8 @@ class BottomSheet extends LitElement {
       </nav>
     `;
   }
-
-  static get properties() {
-    return {
-      largeMap: {
-        type: Boolean,
-      },
-      showFeelsLike: {
-        type: Boolean,
-        reflect: true,
-      },
-      showWind: {
-        type: Boolean,
-        reflect: true,
-      },
-      darkMode: {
-        type: Boolean,
-        reflect: true,
-      },
-      _error: {
-        type: String,
-      },
-      _locating: {
-        type: Boolean,
-        reflect: true,
-      },
-      _deferredPrompt: { type: Object },
-      _installButtonVisible: { type: Boolean, reflect: true },
-      _installBadgeVisible: { type: Boolean, reflect: true },
-      _installAdOpen: { type: Boolean, reflect: true },
-      _ios: { type: Boolean, reflect: true },
-      _notification: { type: String, reflect: true },
-    };
-  }
-
   constructor() {
     super();
-
-    this._forceShowIos = false;
-    this._forceShowOthers = false;
 
     this._ios = (isPortableApple() && isSafari()) || this._forceShowIos;
 
@@ -288,7 +291,7 @@ class BottomSheet extends LitElement {
     });
 
     this.addEventListener('bottom-notification.closed', (e) => {
-      if (e.detail.iosInstructions === true) {
+      if ((e as any).detail.iosInstructions === true) {
         this._installAdOpen = false;
 
         setState(STATE.INSTALL_BADGE_DISMISSED);
@@ -338,10 +341,10 @@ class BottomSheet extends LitElement {
     }
 
     // Show the install prompt.
-    this._deferredPrompt.prompt();
+    (this._deferredPrompt as any).prompt();
 
     // Log the result
-    this._deferredPrompt.userChoice.then((choice) => {
+    (this._deferredPrompt as any).userChoice.then((choice) => {
       if (choice.outcome === 'dismissed') {
         track(INSTALL_CANCELLED);
       } else {
@@ -350,7 +353,7 @@ class BottomSheet extends LitElement {
 
       // Reset the deferred prompt variable, since
       // prompt() can only be called once.
-      this._deferredPrompt = null;
+      this._deferredPrompt = undefined;
 
       // Hide the install button.
       this._installButtonVisible = false;
@@ -366,7 +369,7 @@ class BottomSheet extends LitElement {
 
     // if already installed
     if (
-      navigator.standalone ||
+      (navigator as any).standalone ||
       window.matchMedia('(display-mode: standalone)')?.matches
     ) {
       return false;
@@ -433,7 +436,18 @@ class BottomSheet extends LitElement {
     }
   }
 
-  _dispatchEvent(name, payload) {
+  _dispatchEvent(
+    name: string,
+    payload?:
+      | {
+          city?: undefined;
+          coordinates?: string;
+          lat?: any;
+          lon?: any;
+          text?: string;
+        }
+      | undefined
+  ) {
     const event = new CustomEvent(name, {
       detail: payload,
       bubbles: true,

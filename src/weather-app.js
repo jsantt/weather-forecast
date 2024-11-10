@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 
-import './sections/meta-info/json-ld.js';
+import './sections/meta-info/json-ld';
 import './forecast-data';
 import './observation-data';
 

@@ -1,16 +1,42 @@
 import { LitElement } from 'lit';
 
-import { distance } from './data-helpers/distance.js';
-import { feelsLike } from './data-helpers/feels-like.js';
+import { distance } from './data-helpers/distance';
+import { feelsLike } from './data-helpers/feels-like';
 
-import { wawaToSymbol3 } from './data-helpers/wawa-converter.js';
-import { raiseEvent } from './data-helpers/xml-parser.js';
+import { wawaToSymbol3 } from './data-helpers/wawa-converter';
+import { raiseEvent } from './data-helpers/xml-parser';
 
 import {
   addCoordinatesForMap,
   resolveCollisions,
-} from './sections/observation-helpers.js';
+} from './sections/observation-helpers';
 import { property } from 'lit/decorators.js';
+
+type Station = {
+  cloudiness: number;
+  detailsVisible: boolean;
+  dewPoint: number;
+  humidity: number;
+
+  pressure: number;
+  rain: number;
+  rainExplanation: number;
+  snow: number;
+
+  temperature: number;
+  visibility: number;
+  wawaCode: number;
+  wind: number;
+
+  windDirection: any;
+  windGust: number;
+
+  calculated?: boolean;
+  distance?: number;
+  feelsLike?: number;
+  name?: string;
+  weatherCode3?: number;
+};
 
 /**
  * Observations are fetched from the nearest observation station using area name, because
@@ -23,7 +49,7 @@ class ObservationData extends LitElement {
 
   // location object, e.g {geoid: "7521614", name: "Kattilalaakso"}
   @property({ type: Object, reflect: true })
-  place!: {lat, lon, name, region, geoid};
+  place!: { lat; lon; name; region; geoid };
 
   updated(changedProperties) {
     changedProperties.forEach((_, propName) => {
@@ -436,7 +462,7 @@ class ObservationData extends LitElement {
     observationArray.forEach((observationLine) => {
       const singleValues = observationLine.trim().split(' ');
 
-      const station: any = {
+      const station: Station = {
         temperature: window.parseFloat(singleValues[0]), // t2m
         wind: window.parseFloat(singleValues[1]), // ws_10min
         windGust: window.parseFloat(singleValues[2]), // wg_10min
@@ -450,7 +476,7 @@ class ObservationData extends LitElement {
         visibility: Math.round(window.parseFloat(singleValues[10]) / 1000), // vis
         cloudiness: window.parseFloat(singleValues[11]), // n_man
         wawaCode: window.parseFloat(singleValues[12]), // wawa
-        detailsVisible: false, // toggle visibility in UI
+        detailsVisible: false,
       };
 
       station.weatherCode3 = wawaToSymbol3(
@@ -547,3 +573,5 @@ class ObservationData extends LitElement {
 }
 
 window.customElements.define(ObservationData.is, ObservationData);
+
+export type { Station };

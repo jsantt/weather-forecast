@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 class StationDetails extends LitElement {
   static get is() {
@@ -47,6 +48,12 @@ class StationDetails extends LitElement {
       }
     `;
   }
+
+  @property({ type: Object })
+  station: any;
+
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike?: boolean;
 
   render() {
     return html`
@@ -120,18 +127,6 @@ class StationDetails extends LitElement {
         päivitetty klo ${StationDetails._time(this.station.timestamp)}
       </div>
     `;
-  }
-
-  static get properties() {
-    return {
-      station: {
-        type: Object,
-      },
-      showFeelsLike: {
-        type: Boolean,
-        reflect: true,
-      },
-    };
   }
 
   static _snow(centimeters) {

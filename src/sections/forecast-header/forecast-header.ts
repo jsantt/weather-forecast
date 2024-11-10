@@ -1,14 +1,16 @@
 import { css, html, LitElement } from 'lit';
 
-import { windClassification } from '../weather-days/wind-helper.js';
+import { windClassification } from '../weather-days/wind-helper';
 
-import '../../common-components/smooth-expand.js';
-import '../../common-components/svg-icon.js';
+import '../../common-components/smooth-expand';
+import '../../common-components/svg-icon';
 import '../../common-components/wind-icon';
 
-import './location-selector.js';
-import './station-map.js';
-import './station-details.js';
+import './location-selector';
+import './station-map';
+import './station-details';
+import { property } from 'lit/decorators.js';
+import { Station } from '../../observation-data.ts';
 
 class ForecastHeader extends LitElement {
   static get is() {
@@ -142,6 +144,33 @@ class ForecastHeader extends LitElement {
     `;
   }
 
+  @property({ type: Boolean, reflect: true })
+  largeMap?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  loading?: boolean;
+
+  @property({ type: Object, reflect: true })
+  location?: object;
+
+  @property({ type: Object, reflect: true })
+  place?: object;
+
+  @property({ type: Array })
+  observationData?: [];
+
+  @property({ type: Boolean, reflect: true })
+  observationError?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  showWind?: boolean;
+
+  @property({ type: Object })
+  _selectedStation?: Station;
+
   render() {
     return html`
       <header>
@@ -212,39 +241,27 @@ class ForecastHeader extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      largeMap: { type: Boolean, reflect: true },
-      loading: { type: Boolean, reflect: true },
-      location: { type: Object, reflect: true },
-      place: { type: Object, reflect: true },
-      observationData: { type: Object },
-      observationError: { type: Boolean, reflect: true },
-      showFeelsLike: { type: Boolean, reflect: true },
-      showWind: { type: Boolean, reflect: true },
-      _selectedStation: { type: Object },
-    };
-  }
-
   updated(changedProperties) {
-    changedProperties.forEach((_, propName) => {
+    changedProperties.forEach((_, propName): undefined => {
       if (
-        propName === 'observationData' &&
-        this.observationData !== undefined
+        propName !== 'observationData' ||
+        this.observationData === undefined
       ) {
-        // hack to fix expand issue with smooth expand
-        if (this.largeMap) {
-          this.largeMap = false;
-          setTimeout(() => {
-            this.largeMap = true;
-          }, 0);
-        }
-
-        // eslint-disable-next-line prefer-destructuring
-        this._selectedStation = this.observationData.filter((item) => {
-          return item.selectedStation === true;
-        })[0];
+        return;
       }
+
+      // hack to fix expand issue with smooth expand
+      if (this.largeMap) {
+        this.largeMap = false;
+        setTimeout(() => {
+          this.largeMap = true;
+        }, 0);
+      }
+
+      // eslint-disable-next-line prefer-destructuring
+      this._selectedStation = this.observationData.filter((item: any) => {
+        return item.selectedStation === true;
+      })[0];
     });
   }
 
@@ -252,7 +269,7 @@ class ForecastHeader extends LitElement {
     this.largeMap = !this.largeMap;
   }
 
-  static _round(value) {
+  static _round(value: number) {
     if (Number.isNaN(value)) {
       return '';
     }
