@@ -36,6 +36,9 @@ type Station = {
   feelsLike?: number;
   name?: string;
   weatherCode3?: number;
+
+  latForMap?: number;
+  lonForMap?: number;
 };
 
 /**

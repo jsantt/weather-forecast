@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 class FeelsLikeIcon extends LitElement {
   static get is() {
@@ -21,6 +22,9 @@ class FeelsLikeIcon extends LitElement {
       }
     `;
   }
+
+  @property({ type: Number, reflect: true })
+  temperature?: number;
 
   render() {
     return html`
@@ -48,12 +52,6 @@ class FeelsLikeIcon extends LitElement {
         </text>
       </svg>
     `;
-  }
-
-  static get properties() {
-    return {
-      temperature: { type: Number, reflect: true },
-    };
   }
 }
 

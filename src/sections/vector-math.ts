@@ -13,7 +13,7 @@
  *
  * @returns { Object } - new extended line endpoints
  */
-function extendVector(x1, y1, x2, y2, extendLength) {
+function extendVector(x1: number, y1: number, x2: number, y2: number, extendLength: number) {
   let vectorNorm = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
   // dirty hack to avoid zero division

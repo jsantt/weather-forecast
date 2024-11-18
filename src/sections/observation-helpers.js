@@ -1,8 +1,4 @@
-import {
-  distanceBetween,
-  extendVector,
-  checkCollision,
-} from './vector-math.js';
+import { distanceBetween, extendVector, checkCollision } from './vector-math';
 
 function addCoordinatesForMap(observations) {
   const moved = moveIntoRightDistance(observations);
