@@ -14,7 +14,7 @@ import { snowAmount } from './sections/weather-days/rain-helper';
 
 import { feelsLike } from './data-helpers/feels-like';
 import { rainType } from './data-helpers/rain-type';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 type HarmonieParams = {
   request: string;
@@ -40,13 +40,10 @@ type HarmonieParams = {
  *    wind: 7.6
  *    windDirection: 296 }, {...}]
  */
+@customElement('forecast-data')
 class ForecastData extends LitElement {
-  static get is() {
-    return 'forecast-data';
-  }
-
   @property({ type: Object, reflect: true })
-  location;
+  location?: { coordinates: any; lat: number; lon: number };
 
   updated(changedProperties) {
     changedProperties.forEach((_, propName) => {
@@ -79,9 +76,9 @@ class ForecastData extends LitElement {
         this._sendNotification(
           ForecastData._parseLocationGeoid(data),
           parseLocationName(data),
-          this.location.coordinates,
-          this.location.lat,
-          this.location.lon,
+          this.location?.coordinates,
+          this.location?.lat,
+          this.location?.lon,
           parseRegion(data)
         );
 
@@ -355,4 +352,4 @@ class ForecastData extends LitElement {
   }
 }
 
-window.customElements.define(ForecastData.is, ForecastData);
+export { ForecastData };
