@@ -10,10 +10,12 @@
     "preview": "npm run build && vite preview",
     "prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
     "prettier:format": "prettier \"**/*.js\" --write --ignore-path .gitignore",
+    "generate-logos": "pwa-assets-generator --preset all public/assets/image/original-logo.svg",
     "deploy-test": "npm run build && firebase serve",
     "deploy-prod": "npm run build && firebase deploy"
   },
   "devDependencies": {
+    "@vite-pwa/assets-generator": "^0.2.6",
     "husky": "^1.0.0",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
