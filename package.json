@@ -10,7 +10,7 @@
     "preview": "npm run build && vite preview",
     "prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
     "prettier:format": "prettier \"**/*.js\" --write --ignore-path .gitignore",
-    "generate-logos": "pwa-assets-generator --preset all public/assets/image/original-logo.svg",
+    "generate-logos": "pwa-assets-generator --preset minimal public/original-logo.svg",
     "deploy-test": "npm run build && firebase serve",
     "deploy-prod": "npm run build && firebase deploy"
   },
