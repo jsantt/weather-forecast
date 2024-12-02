@@ -6,6 +6,12 @@ class StationDetails extends LitElement {
     return 'station-details';
   }
 
+  @property({ type: Object })
+  station: any;
+
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike?: boolean;
+
   static get styles() {
     return css`
       :host {
@@ -48,12 +54,6 @@ class StationDetails extends LitElement {
       }
     `;
   }
-
-  @property({ type: Object })
-  station: any;
-
-  @property({ type: Boolean, reflect: true })
-  showFeelsLike?: boolean;
 
   render() {
     return html`
@@ -129,11 +129,11 @@ class StationDetails extends LitElement {
     `;
   }
 
-  static _snow(centimeters) {
+  static _snow(centimeters: number) {
     return centimeters > -1;
   }
 
-  static _time(dateTime) {
+  static _time(dateTime: Date) {
     const minutes = dateTime.getMinutes();
 
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
@@ -141,7 +141,7 @@ class StationDetails extends LitElement {
     return `${dateTime.getHours()}.${fullMinutes}`;
   }
 
-  static _googleMapsURl(latitudeLongitude) {
+  static _googleMapsURl(latitudeLongitude: string) {
     return `https://www.google.com/maps/search/?api=1&query=${latitudeLongitude}&zoom=12`;
   }
 }

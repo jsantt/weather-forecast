@@ -12,7 +12,7 @@ import {
 } from './sections/observation-helpers';
 import { property } from 'lit/decorators.js';
 
-type Station = {
+type Station = {  
   cloudiness: number;
   detailsVisible: boolean;
   dewPoint: number;
@@ -32,6 +32,7 @@ type Station = {
   windGust: number;
 
   calculated?: boolean;
+  collision?: boolean;
   distance?: number;
   feelsLike?: number;
   name?: string;
@@ -39,6 +40,7 @@ type Station = {
 
   latForMap?: number;
   lonForMap?: number;
+  selectedStation?: boolean;
 };
 
 /**

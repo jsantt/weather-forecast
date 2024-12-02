@@ -4,11 +4,31 @@ import { classMap } from 'lit/directives/class-map.js';
 import '../../common-components/error-notification';
 import '../../common-components/wind-icon';
 import { isNight } from '../../data-helpers/sun-calculations';
+import { property } from 'lit/decorators.js';
+import { Station } from '../../observation-data.ts';
+
+// TODO: move to source once it is converted into TS
+type LocationCoordinates = { lon: number; lat: number };
 
 class StationMap extends LitElement {
   static get is() {
     return 'station-map';
   }
+
+  @property({ type: Object })
+  location?: LocationCoordinates;
+
+  @property({ type: Array })
+  observationData?: Station[];
+
+  @property({ type: Boolean })
+  observationError: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  showWind: boolean = false;
 
   static get styles() {
     return css`
@@ -75,43 +95,33 @@ class StationMap extends LitElement {
   }
 
   render() {
-    if (this.observationData === undefined && this.observationError !== true) {
-      return html``;
-    }
-
-    return html`
-      ${this._createMap(
-        this.location,
-        this.observationData,
-        this.observationError,
-        this.showFeelsLike
-      )}
-    `;
-  }
-
-  _createMap(coordinates, observations, error, showFeelsLike) {
-    if (error === true) {
+    if (this.observationError) {
       return html`<error-notification
         errorText="Sääasemien havaintotietojen haku epäonnistui."
       >
       </error-notification>`;
     }
 
-    this._observationData = observations;
-
     return svg`
-      <svg viewBox="${StationMap._viewBox(coordinates)}">
+      <svg viewBox="${StationMap._viewBox(this.location)}">
         <!-- paint in "z-index" order, because
               svg does not have z-index --> 
 
-        ${this._observationData.map((observation, index) => {
+        ${this.observationData?.map((observation: Station, index) => {
+          if (
+            observation.latForMap === undefined ||
+            observation.lonForMap === undefined
+          ) {
+            return svg`<g></g>`;
+          }
+
           return svg`
             <g>
               <circle
               class="${classMap({
                 'selected-station': observation.selectedStation === true,
-                'home-station': observation.calculated,
-                collides: observation.collision,
+                'home-station': observation.calculated === true,
+                collides: observation.collision === true,
               })}"
                 @click="${() => this._stationClicked(index)}"
                 cx="${observation.lonForMap}"
@@ -140,15 +150,15 @@ class StationMap extends LitElement {
                 }${isNight(new Date(), this.location) ? '-night' : ''}"
               ></use>
               ${
-                showFeelsLike === true &&
+                this.showFeelsLike === true &&
                 (observation.feelsLike === undefined ||
                   Number.isNaN(observation.feelsLike))
                   ? ''
                   : svg`
                   <text class=${classMap({
                     temperature: true,
-                    'selected-station': observation.selectedStation,
-                    'home-station': observation.calculated,
+                    'selected-station': observation.selectedStation === true,
+                    'home-station': observation.calculated === true,
                   })}
                   paint-order="stroke"
                   stroke-width="0.02"
@@ -163,7 +173,7 @@ class StationMap extends LitElement {
                         ? -1 * observation.latForMap + 0.06
                         : -1 * observation.latForMap - 0
                     }">${
-                      showFeelsLike === true
+                      this.showFeelsLike === true
                         ? svg`<tspan class="feels-like">${observation.feelsLike}`
                         : svg`${Math.round(observation.temperature)}`
                     }</text>`
@@ -171,77 +181,31 @@ class StationMap extends LitElement {
           </g>
             `;
         })}
-        <!-- showing original location for debugging -->
-        <!-- ${this._observationData.map((observation) => {
-          return observation.selectedStation
-            ? svg` <circle
-              class="original-location"
-              cx="${observation.lon}"
-              cy="${-1 * observation.lat}"
-              r="0.01"
-              stroke-width="0.013"
-            ></circle>
-             <circle
-              class="original-location original-location--corrected"
-              cx="${observation.lonMoved || 0}"
-              cy="${-1 * observation.latMoved || 0}"
-              r="0.01"
-              stroke-width="0.013"
-            ></circle>
-            `
-            : undefined;
-        })} -->
       </svg>
     `;
   }
 
-  static get properties() {
-    return {
-      largeMap: {
-        type: Boolean,
-      },
-      location: {
-        type: Object,
-      },
-      observationData: {
-        type: Array,
-      },
-      observationError: {
-        type: Boolean,
-      },
-      showFeelsLike: {
-        type: Boolean,
-        reflect: true,
-      },
-      showWind: {
-        type: Boolean,
-        reflect: true,
-      },
-      // local version with selected station
-      _observationData: {
-        type: Array,
-      },
-    };
-  }
-
   constructor() {
     super();
-    this.observationData = [];
   }
 
   /**
    * Negative latitude (y) to flip coordinates
-   * @param { Object } coordinates
-   * @param { Number } coordinates.lat
-   * @param { Number } coordinates.lon
+   * @param { Object } location
+   * @param { Number } location.lat
+   * @param { Number } location.lon
    *
    */
-  static _viewBox(coordinates) {
+  static _viewBox(location?: { lon: number; lat: number }) {
     const width = 1.8;
     const height = 2.2;
 
-    return `${coordinates.lon - width / 2} -${
-      coordinates.lat + height / 2 + 0.13
+    if (location === undefined) {
+      return '23.749041100000003 -61.4063682 1.8 2.2';
+    }
+
+    return `${location.lon - width / 2} -${
+      location.lat + height / 2 + 0.13
     } ${width} ${height}`;
   }
 
@@ -260,3 +224,5 @@ class StationMap extends LitElement {
 }
 
 window.customElements.define(StationMap.is, StationMap);
+
+export type { LocationCoordinates };

@@ -11,11 +11,39 @@ import './station-map';
 import './station-details';
 import { property } from 'lit/decorators.js';
 import { Station } from '../../observation-data.ts';
+import { LocationCoordinates } from './station-map';
 
 class ForecastHeader extends LitElement {
   static get is() {
     return 'forecast-header';
   }
+
+  @property({ type: Boolean, reflect: true })
+  largeMap?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  loading?: boolean;
+
+  @property({ type: Object, reflect: true })
+  location?: LocationCoordinates;
+
+  @property({ type: Object, reflect: true })
+  place?: object;
+
+  @property({ type: Array })
+  observationData?: [];
+
+  @property({ type: Boolean, reflect: true })
+  observationError?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  showWind?: boolean;
+
+  @property({ type: Object })
+  _selectedStation?: Station;
 
   static get styles() {
     return css`
@@ -143,33 +171,6 @@ class ForecastHeader extends LitElement {
       }
     `;
   }
-
-  @property({ type: Boolean, reflect: true })
-  largeMap?: boolean;
-
-  @property({ type: Boolean, reflect: true })
-  loading?: boolean;
-
-  @property({ type: Object, reflect: true })
-  location?: object;
-
-  @property({ type: Object, reflect: true })
-  place?: object;
-
-  @property({ type: Array })
-  observationData?: [];
-
-  @property({ type: Boolean, reflect: true })
-  observationError?: boolean;
-
-  @property({ type: Boolean, reflect: true })
-  showFeelsLike?: boolean;
-
-  @property({ type: Boolean, reflect: true })
-  showWind?: boolean;
-
-  @property({ type: Object })
-  _selectedStation?: Station;
 
   render() {
     return html`
