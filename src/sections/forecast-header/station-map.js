@@ -190,7 +190,7 @@ class StationMap extends LitElement {
             ></circle>
             `
             : undefined;
-        })}-->
+        })} -->
       </svg>
     `;
   }

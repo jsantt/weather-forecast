@@ -1,22 +1,21 @@
 import { css, html, LitElement } from 'lit';
 
-import './sections/meta-info/json-ld';
 import './forecast-data';
 import './observation-data';
 
 import './weather-section';
-import './common-components/error-notification';
+
 import './sections/forecast-header/forecast-header';
 
 import './sections/bottom-sheet/bottom-sheet';
 import './sections/external-links';
 
-import './sections/public-holidays';
 import './sections/sunrise-sunset';
-import './sections/symbol-list';
 
+import './sections/symbol-list';
 import './sections/weather-days/weather-days';
 import './sections/share-app';
+import('./common-components/error-notification');
 
 class WeatherApp extends LitElement {
   static get is() {

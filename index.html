@@ -308,15 +308,8 @@
 
     <base href="/" />
 
-    <link
-      rel="icon"
-      type="image/png"
-      href="assets/image/logo-32x32.png"
-      sizes="32x32"
-    />
-
     <!--json-ld></json-ld-->
-    <script type="application/ld+json">
+    <!-- script type="application/ld+json">
       {
         "@context": "http://schema.org",
         "@type": "webSite",
@@ -324,7 +317,7 @@
         "url": "https://saaennuste.fi",
         "sameAs": ["https://www.facebook.com/saaennuste.fi"]
       }
-    </script>
+    </script -->
 
     <meta name="author" content="saaennuste.fi" />
     <meta
@@ -336,24 +329,6 @@
     <!-- set mock backend -->
     <!-- script src="node_modules/@polymer/sinonjs/sinon.js"></script>
     <script type="module" src="src/mock/mockSetup.js"></script -->
-
-    <meta name="theme-color" content="#1e517b" />
-
-    <!-- iOS -->
-
-    <!-- Allow full-screen mode. -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-
-    <!-- Status bar style -->
-    <!-- possible content values: default, black or black-translucent -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="dark-content" />
-
-    <!-- iPhone non-retina icon -->
-    <link rel="apple-touch-icon" href="assets/image/weather-icon-57x57.png" />
-
-    <!-- override title -->
-    <meta name="apple-mobile-web-app-title" content="Sää" />
 
     <!-- social media meta data-->
     <meta property="og:title" content="Sääennuste" />
@@ -367,16 +342,6 @@
     <meta
       property="og:description"
       content="Paras, yksinkertaisin ja nopein sääennuste sovellus. Perustuu Ilmatieteen laitoksen avoimeen dataan."
-    />
-
-    <!-- iOS startup image -->
-    <!-- see media queries: https://gist.github.com/jabez128/28c19b386f610f8a0cf3#file-ios-8-web-app-html-L36-->
-
-    <!-- iPhone 6 startup image -->
-    <link
-      href="assets/image/ios-startup-750x1294.png"
-      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
-      rel="apple-touch-startup-image"
     />
 
     <script
