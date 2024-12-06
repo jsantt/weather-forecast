@@ -195,7 +195,7 @@ class ForecastHeader extends LitElement {
             <div class="selected" @click="${this._expand}">
             <div class="selected-label">${
               this._selectedStation.calculated
-                ? 'LASKENNALLINEN'
+                ? 'SÄÄ NYT'
                 : html`SÄÄASEMA ${this._selectedStation.distance} km`
             }</div>
             <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  

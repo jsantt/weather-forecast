@@ -8,13 +8,13 @@ import './weather-section';
 import './sections/forecast-header/forecast-header';
 
 import './sections/bottom-sheet/bottom-sheet';
-import './sections/external-links';
+import('./sections/external-links');
 
-import './sections/sunrise-sunset';
+import('./sections/sunrise-sunset');
 
-import './sections/symbol-list';
-import './sections/weather-days/weather-days';
-import './sections/share-app';
+import('./sections/symbol-list');
+import('./sections/weather-days/weather-days');
+import('./sections/share-app');
 import('./common-components/error-notification');
 
 class WeatherApp extends LitElement {
@@ -276,11 +276,11 @@ class WeatherApp extends LitElement {
 
           <div class="by">
             Ilmatieteen laitoksen sää yhdellä vilkaisulla<br />
-            <img
-              class="logo"
-              alt="fmi logo"
-              src="./assets/image/FMI0DATA_small.png"
-            />
+            <object
+              data="./assets/image/il-avoin-data-logo-rgb.svg"
+              width="100"
+              height="30"
+            ></object>
           </div>
           <div slot="footer-left"></div>
           <div slot="footer-right"></div>
