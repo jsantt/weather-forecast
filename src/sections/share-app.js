@@ -11,12 +11,12 @@ class ShareApp extends LitElement {
   static get styles() {
     return css`
       :host {
-        margin: var(--space-m);
+        display: block;
       }
 
       button {
         background: transparent;
-        border: 2px solid var(--color-blue-700);
+        border: 2px solid var(--color-primary);
 
         border-radius: 1.5rem;
 
@@ -61,7 +61,7 @@ class ShareApp extends LitElement {
 
   render() {
     return html`
-      <weather-section header="Jaa sovellus">
+      <weather-section padding liftedHeading="Jaa sovellus" pink>
         <div class="content">
           <div>
             <svg-icon

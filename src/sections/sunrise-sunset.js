@@ -13,7 +13,8 @@ class SunriseSunset extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block;
+        /* to stretch inside grid */
+        display: grid;
         font-size: var(--font-size-m);
       }
 
@@ -72,7 +73,7 @@ class SunriseSunset extends LitElement {
           'sunrise-value    sunrise-label';
 
         align-items: baseline;
-        margin-top: var(--space-l);
+
         margin-bottom: 1.5rem;
       }
 
@@ -111,21 +112,18 @@ class SunriseSunset extends LitElement {
         grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
         grid-gap: var(--space-s);
+        margin-bottom: var(--space-l);
       }
 
       .more-space {
         margin-bottom: var(--space-m);
-      }
-
-      [slot='footer-right'] {
-        white-space: nowrap;
       }
     `;
   }
 
   render() {
     return html`
-      <weather-section>
+      <weather-section liftedHeading="Aurinko" padding orange>
         <div slot="header-right">
           ${SunriseSunset._getDay()} | vk ${SunriseSunset._getWeek()}
         </div>
@@ -136,7 +134,6 @@ class SunriseSunset extends LitElement {
           <div class="sunrise-value">${this._sunrise}</div>
           <div class="sunrise-label">aurinko nousee</div>
         </div>
-        <div slot="footer-left">
           <smooth-expand ?expanded="${this._expanded}">
             <div class="details">
               <div>${this._nightEnd}</div>

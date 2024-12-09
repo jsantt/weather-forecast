@@ -45,7 +45,7 @@ class PublicHolidays extends LitElement {
 
   render() {
     return html`
-      <weather-section header="Juhlapäivät 2020">
+      <weather-section heading="Juhlapäivät 2020">
         ${this._holidays.map(
           (item) =>
             html`

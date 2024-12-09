@@ -11,7 +11,6 @@ class WeatherDays extends LitElement {
     return css`
       :host {
         display: block;
-        margin-top: calc(-1 * var(--header-background-expand));
       }
       .visually-hidden {
         position: absolute !important;

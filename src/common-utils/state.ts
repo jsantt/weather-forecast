@@ -6,16 +6,16 @@ const STATE = {
   INSTALL_BADGE_DISMISSED: 'install-badge-dismissed',
 };
 
-function getState() {
+function getState(): string | null {
   return localStorage.getItem(KEY);
 }
 
-function setState(value) {
+function setState(value: string) {
   localStorage.setItem(KEY, value);
   // console.log(`state changed to ${value}`);
 }
 
-function isState(value) {
+function isState(value: string | null) {
   return getState() === value;
 }
 

@@ -61,8 +61,6 @@
       body {
         --safe-area-inset-bottom: env(safe-area-inset-bottom, 20px);
 
-        --background-header: linear-gradient(to right, #20649bc5, #20649bb4);
-
         --background-image: linear-gradient(
             rgb(46 110 161 / 87%),
             rgb(32 100 155 / 87%)
@@ -73,8 +71,6 @@
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
         --box-shadow-upwards: 0px -4px 6px -1px rgba(0, 0, 0, 0.1),
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-        --border-radius: 3px;
 
         /* Colors */
         --color-black: #111;
@@ -105,6 +101,9 @@
         --color-blue-650: #1e517b;
         --color-blue-700: #174972;
 
+        --color-turquoise: rgb(161, 195, 211);
+        --color-pink: rgb(255, 208, 213);
+
         --color-blue-800: #173f5f;
 
         --color-green-300: hsl(152, 41%, 80%);
@@ -114,21 +113,20 @@
 
         --color-yellow-300: #fbecb6;
         --color-yellow-500: #f6d55c;
-        --color-orange-500: #ffa800;
+        --color-orange-500: #ffa800; /**/
 
         /* Main colors */
 
-        --background: linear-gradient(
-          to right,
-          var(--color-gray-300),
-          var(--color-gray-300)
-        );
-        --background-panel: var(--color-gray-200);
+        --background: var(--color-turquoise);
+        --background-panel: var(--color-gray-400);
         --background-accent: var(--color-gray-300);
-        --background-accent2: var(--color-blue-650);
+        --background-accent2: var(--color-blue-800);
 
-        --color-primary: var(--color-blue-700);
+        --color-primary: var(--color-blue-800);
         --color-secondary: var(--color-blue-100);
+        --color-primary-static: var(--color-blue-800);
+
+        --color-temperature-negative: var(--color-blue-500);
 
         --background-wind: var(--color-white);
         --color-wind: var(--color-secondary);
@@ -145,7 +143,36 @@
         --font-family: 'Open Sans Condensed', sans-serif;
         --font-family-secondary: sans-serif;
 
-        /* 
+        /* Responsive  */
+        --padding-left-right-header: var(--space-m);
+
+        --padding-body: 0;
+        --padding-panel: 0;
+        --padding-panel-textual: var(--space-l) var(--space-m);
+
+        --padding-header: var(--space-m);
+        --border-radius: 0;
+
+        --padding-header: var(--space-l) var(--space-m);
+
+        @media only screen and (min-width: 430px) {
+          --padding-left-right-header: var(--space-l);
+
+          --padding-body: var(--space-m);
+          --padding-panel: var(--space-m) var(--space-m);
+          --border-radius: 2px;
+          --padding-header: var(--space-xl) var(--space-l);
+
+          --padding-panel-textual: var(--space-l) var(--space-l);
+        }
+
+        @media only screen and (min-width: 600px) {
+          --padding-left-right-header: var(--space-xxl);
+          --padding-body: var(--space-l) var(--space-xxl);
+          --padding-header: var(--space-xl) var(--padding-left-right-header);
+        }
+
+        /*
        * Modular scale base 1.1em, ratio 1.25 (modularscale.com)
        * e.g. 1.1em, 1,375
        */
@@ -171,6 +198,7 @@
         --space-m: 0.5rem;
         --space-l: 1rem;
         --space-xl: 2rem;
+        --space-xxl: 2rem;
 
         --transition-time: 0.3s;
         --transition-cubic-bezier: cubic-bezier(0.36, 1.01, 0.32, 1.27);
@@ -183,8 +211,8 @@
         --z-index-floating-1: 3;
         --z-index-floating-2: 4;
 
-        /* BREAKPOINTS (copy from here, as CSS variables cannot be used in media queries) 
-        
+        /* BREAKPOINTS (copy from here, as CSS variables cannot be used in media queries)
+
         Compact
           - [0 - 429px]
           - default (mobile first)
@@ -210,25 +238,23 @@
       */
 
         /* End of common CSS properties */
-        background: var(--color-white);
-        box-sizing: border-box;
-        color: var(--color-white);
-        font-family: var(--font-family);
 
+        box-sizing: border-box;
+        font-family: var(--font-family);
         font-size: 16px;
 
-        margin: 0 auto;
+        margin: 0;
         padding: 0;
 
         -webkit-font-smoothing: antialiased;
         -webkit-text-size-adjust: 100%;
         text-size-adjust: 100%;
+
+        padding-bottom: var(--space-l);
       }
 
       /* DARK THEME */
       body.force-dark-mode {
-        --background-header: linear-gradient(to left, #555, #777);
-
         --background-image: linear-gradient(
             rgb(22 22 22 / 87%),
             rgb(22 22 22 / 87%)
@@ -237,13 +263,14 @@
 
         /* Main colors */
 
-        --background: linear-gradient(to right, #262626, #151515);
-        --background-panel: #333;
+        --background: #333;
+        --background-panel: var(--color-gray-900);
         --background-accent: #555;
-        --background-accent2: var(--color-blue-650);
 
         --color-primary: #ccc;
         --color-secondary: #ccc;
+
+        --color-temperature-negative: var(--color-blue-400);
 
         --background-wind: var(--background-panel);
         --color-wind: var(--color-secondary);
@@ -255,23 +282,10 @@
         --color-wind-warning2: var(--color-secondary);
 
         --background-home-station: var(--color-gray-400);
-        --sun-background-blend: overlay;
       }
 
       weather-app {
         background: var(--background);
-        display: flex;
-        justify-content: center;
-      }
-
-      .visually-hidden {
-        position: absolute !important;
-        clip: rect(1px, 1px, 1px, 1px);
-        padding: 0 !important;
-        border: 0 !important;
-        height: 1px !important;
-        width: 1px !important;
-        overflow: hidden;
       }
 
       .sun-icon {
@@ -301,6 +315,12 @@
         to {
           -webkit-transform: rotate(359deg);
         }
+      }
+      weather-app {
+        background-position: right top;
+        background-repeat: no-repeat;
+        background-size: 370px auto;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='-16 14 37 37' preserveAspectRatio='slice none'%3E%3Cpolygon fill='%23fbecb6' points='18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237'%3E%3C/polygon%3E%3Ccircle fill='%23fbecb6' stroke='%23FFFFFF' stroke-width='1.3028' cx='18.499' cy='18.363' r='6.362'%3E%3C/circle%3E%3C/svg%3E");
       }
     </style>
 
@@ -350,20 +370,8 @@
     ></script>
   </head>
   <body>
-    <h1 class="visually-hidden">
-      Sääennuste - Ilmatieteen laitoksen sää yhdellä vilkaisulla
-    </h1>
     <!-- show sun icon before loaded -->
-
     <weather-app>
-      <h2 slot="place" class="visually-hidden">
-        Sää <span id="place">havaintoasemilla</span> nyt
-      </h2>
-      <div slot="header">
-        <h2 class="visually-hidden">Sääennuste</h2>
-        <h3 class="visually-hidden">Sää tänään, huomenna ja ylihuomenna</h3>
-      </div>
-    </weather-app>
     <div id="loading-view" class="loading-view" aria-label="ladataan">
       <svg
         class="sun-icon"

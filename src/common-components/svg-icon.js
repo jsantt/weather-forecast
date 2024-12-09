@@ -30,6 +30,11 @@ class SvgIcon extends LitElement {
         width: 32px;
       }
 
+      :host([large]) {
+        height: 48px;
+        width: 48px;
+      }
+
       svg {
         display: block;
         pointer-events: none;

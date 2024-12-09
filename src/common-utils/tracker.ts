@@ -9,7 +9,7 @@ const GEOLOCATE = 'gm8rsv8jpobrgkrs';
 
 // public functions
 
-function track(eventId) {
+function track(eventId: string) {
   if (
     window.location.href.includes('localhost') === true &&
     trackOnLocalhost === false

@@ -1,7 +1,11 @@
 import { css, html, LitElement } from 'lit';
 
+import { getTime } from './data-helpers/time.ts';
+
 import './forecast-data';
 import './observation-data';
+
+import './sections/forecast-header/top-bar.ts';
 
 import './weather-section';
 
@@ -25,7 +29,7 @@ class WeatherApp extends LitElement {
   static get styles() {
     return css`
       :host {
-        --header-background-expand: 3.5rem;
+        --header-background-expand: 1rem;
 
         display: block;
       }
@@ -50,129 +54,6 @@ class WeatherApp extends LitElement {
         font-size: var(--font-size-s);
         border-radius: 0;
         text-align: center;
-        padding-top: var(--space-xl);
-      }
-
-      .container {
-        display: grid;
-        justify-items: stretch;
-        align-items: stretch;
-
-        grid-gap: var(--space-l);
-        grid-template-columns: auto;
-        grid-template-areas:
-          'forecast'
-          'sun'
-          'links'
-          'share'
-          'info'
-          'cookies'
-          'copy'
-          'symbols';
-      }
-
-      @media only screen and (min-width: 430px) {
-        .container {
-          margin: 0 var(--space-l) var(--space-l) var(--space-l);
-          padding-top: var(--space-l);
-        }
-
-        .section {
-          border-radius: var(--border-radius);
-        }
-      }
-
-      @media only screen and (min-width: 431px) and (max-width: 685px) {
-        .container {
-          margin-left: 8%;
-          margin-right: 8%;
-        }
-      }
-
-      @media only screen and (min-width: 686px) {
-        .container {
-          grid-template-columns: minmax(300px, 400px) minmax(270px, 350px);
-          grid-auto-rows: minmax(0px, auto);
-
-          grid-template-areas:
-            'forecast sun'
-            'forecast links'
-            'forecast share'
-            'forecast info'
-            'cookies  info'
-            'copy     copy'
-            'symbols  symbols';
-        }
-      }
-
-      @media only screen and (min-width: 1024px) {
-        .container {
-          margin-left: 4rem;
-        }
-      }
-
-      .section {
-        background-color: var(--background-panel);
-        border-radius: none;
-        margin: 0;
-        max-width: none;
-      }
-
-      .section--forecast {
-        --padding: 0;
-
-        grid-area: forecast;
-      }
-
-      .section--observations {
-        grid-area: observations;
-      }
-
-      .section--links {
-        grid-area: links;
-        background: transparent;
-        /*box-shadow: var(--box-shadow);*/
-      }
-
-      .section--sun {
-        --padding: var(--space-l) var(--space-l) 0 var(--space-l);
-
-        grid-area: sun;
-
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='-16 14 37 37' preserveAspectRatio='slice none'%3E%3Cpolygon fill='%23fbecb6' points='18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237'%3E%3C/polygon%3E%3Ccircle fill='%23fbecb6' stroke='%23FFFFFF' stroke-width='1.3028' cx='18.499' cy='18.363' r='6.362'%3E%3C/circle%3E%3C/svg%3E");
-        background-position: right top;
-        background-repeat: no-repeat;
-        background-size: 400px auto;
-        background-blend-mode: var(--sun-background-blend);
-      }
-
-      .section--calendar {
-        grid-area: calendar;
-      }
-
-      .section--informationOnService {
-        grid-area: info;
-      }
-
-      .section--share {
-        grid-area: share;
-      }
-
-      .section--copyright {
-        grid-area: copy;
-      }
-
-      .section--feedback {
-        grid-area: feedback;
-      }
-
-      .section--cookies {
-        grid-area: cookies;
-      }
-
-      .section--symbols {
-        background: transparent;
-        grid-area: symbols;
       }
 
       a:link {
@@ -182,10 +63,6 @@ class WeatherApp extends LitElement {
       a:visited,
       a:hover {
         color: var(--color-primary);
-      }
-
-      .logo {
-        margin-top: var(--space-s);
       }
 
       svg {
@@ -198,12 +75,6 @@ class WeatherApp extends LitElement {
         margin: var(--space-m) var(--space-l) var(--space-s) var(--space-m);
       }
 
-      .section--copyright {
-        background: transparent;
-        text-align: center;
-        margin-bottom: var(--space-xl);
-      }
-
       .locate-button-container {
         position: relative;
         width: 100%;
@@ -211,15 +82,70 @@ class WeatherApp extends LitElement {
         justify-content: center;
       }
 
-      svg-icon {
-        height: 24px;
-        width: 24px;
-        fill: var(--color-blue-700);
-      }
-
       h2,
       h3 {
         font-size: var(--font-size-m);
+      }
+
+      .grid-container {
+        display: grid;
+        gap: var(--space-l);
+        grid-template-columns: 1fr;
+
+        max-width: 600px;
+
+        padding: var(--padding-body);
+        padding-bottom: 4rem;
+
+        .grid-item {
+          display: grid;
+        }
+
+        .grid-map {
+          grid-column-start: 1;
+          grid-column-end: -1;
+
+          @media only screen and (min-width: 1000px) {
+            grid-column-start: 1;
+            grid-column-end: 3;
+          }
+        }
+        .grid-forecast {
+          grid-column-start: 1;
+          grid-column-end: -1;
+
+          @media only screen and (min-width: 1000px) {
+            grid-column-start: 3;
+            grid-column-end: 4;
+          }
+        }
+
+        .grid-info {
+          @media only screen and (min-width: 700px) {
+            grid-column: span 2;
+          }
+        }
+
+        .grid-copy {
+          text-align: center;
+          grid-column-start: 1;
+          grid-column-end: -1;
+        }
+
+        .grid-symbols {
+          grid-column-start: 1;
+          grid-column-end: -1;
+        }
+
+        @media only screen and (min-width: 700px) {
+          grid-template-columns: 1fr 1fr;
+          max-width: 600px;
+        }
+
+        @media only screen and (min-width: 1000px) {
+          grid-template-columns: 1fr 1fr 1fr;
+          max-width: 1000px;
+        }
       }
     `;
   }
@@ -231,10 +157,15 @@ class WeatherApp extends LitElement {
 
       <forecast-data .location="${this._location}"> </forecast-data>
 
-      <div class="container" ?hidden="${this._firstLoading}">
-        <weather-section class="section section--forecast">
-          <slot name="place"></slot>
+      <top-bar></top-bar>
 
+      <div class="grid-container" ?hidden="${this._firstLoading}">
+        <weather-section
+          class="grid-item grid-map"
+          .padding=${false}
+          liftedHeading=${`Sää klo ${getTime(new Date())}`}
+        >
+          <slot name="place"></slot>
           ${this._forecastError === true
             ? html`
                 <error-notification
@@ -255,27 +186,25 @@ class WeatherApp extends LitElement {
                   ?showWind="${this._showWind}"
                 >
                 </forecast-header>
-
-                <!-- today, tomorrow and a day after tomorrow -->
-                <slot name="header"></slot>
-
-                <weather-days
-                  .forecastData="${this._forecastData}"
-                  .location="${this._location}"
-                  ?showFeelsLike="${this._showFeelsLike}"
-                  ?showWind="${this._showWind}"
-                >
-                </weather-days>
               `}
-          <bottom-sheet
-            ?largeMap="${this._largeMap}"
+        </weather-section>
+
+        <weather-section
+          class="grid-item grid-forecast"
+          liftedHeading="Ennuste"
+        >
+          <!-- today, tomorrow and a day after tomorrow -->
+          <slot name="header"></slot>
+
+          <weather-days
+            .forecastData="${this._forecastData}"
+            .location="${this._location}"
             ?showFeelsLike="${this._showFeelsLike}"
             ?showWind="${this._showWind}"
-            ?darkMode="${this._darkMode}"
-          ></bottom-sheet>
+          >
+          </weather-days>
 
           <div class="by">
-            Ilmatieteen laitoksen sää yhdellä vilkaisulla<br />
             <object
               data="./assets/image/il-avoin-data-logo-rgb.svg"
               width="100"
@@ -286,24 +215,45 @@ class WeatherApp extends LitElement {
           <div slot="footer-right"></div>
         </weather-section>
 
+        <sunrise-sunset
+          class="grid-item grid-sun"
+          .location="${this._location}"
+        ></sunrise-sunset>
+
         <external-links
+          class="grid-item grid-links"
           .region="${this._forecastPlace !== undefined
             ? this._forecastPlace.region
             : undefined}"
-          class="section section--links"
         ></external-links>
 
-        <sunrise-sunset
-          class="section section--sun"
-          .location="${this._location}"
-        ></sunrise-sunset>
+        <share-app class="grid-item grid-share"></share-app>
+
+        <!--weather-section
+          class="grid-item grid-cookies"
+          padding
+          liftedHeading="Kerätyt tiedot"
+          pink
+        >
+          Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja käyttäytyminen
+          kerätään käyttäjää tunnistamatta eikä sinun tarvitse klikkailla
+          turhia.
+          <div slot="footer-left"></div>
+          <div slot="footer-right">
+            <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
+          </div>
+        </weather-section-->
 
         <!--public-holidays class="section section--calendar"></public-holidays-->
         <!--holiday-calendar class="section section--calendar"></holiday-calendar-->
 
-        <weather-section class="section section--informationOnService">
-          <h2>Sääennuste</h2>
+        <weather-section
+          class="grid-item grid-info"
+          padding
+          liftedHeading="Sääennuste.fi"
+        >
           <svg-icon
+            medium
             class="info-icon"
             path="assets/image/icons.svg#info"
           ></svg-icon>
@@ -336,20 +286,23 @@ class WeatherApp extends LitElement {
             lasketaan Ilmatieteen laitoksen kaavalla.
           </p>
 
+          <h3>Yksityisyys</h3>
+          Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja käyttäytyminen
+          kerätään käyttäjää tunnistamatta eikä sinun tarvitse hyväksyä turhia
+          käyttöehtoja.
+          <div slot="footer-left"></div>
+          <div slot="footer-right">
+            <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
+          </div>
+
           <h3>Palaute</h3>
           <p>
             Onko jokin rikki, puuttuuko ominaisuus tai onko sinulla idea miten
-            parantaisit sovellusta? Olen kaikista palautteista kiitollinen!
+            parantaisit sovellusta? palaute@saaennuste.fi
           </p>
-
-          <div slot="footer-left"></div>
-          <div slot="footer-right">
-            palaute@saaennuste.fi
-            <svg-icon path="assets/image/icons.svg#email"></svg-icon>
-          </div>
         </weather-section>
 
-        <!--weather-section class="section section--feedback" header="Palaute">
+        <!--weather-section class="section section--feedback" heading="Palaute">
           Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea miten
           parantaisit sovellusta? Ota yhteyttä!
 
@@ -360,27 +313,19 @@ class WeatherApp extends LitElement {
           </div>
         </weather-section-->
 
-        <weather-section
-          class="section section--cookies"
-          header="Kerätyt tiedot"
-        >
-          Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja käyttäytyminen
-          kerätään käyttäjää tunnistamatta.
-          <div slot="footer-left"></div>
-          <div slot="footer-right">
-            <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
-          </div>
-        </weather-section>
+        <symbol-list class="grid-item grid-symbols"></symbol-list>
 
-        <share-app class="section section--share"></share-app>
-
-        <weather-section class="section section--copyright">
+        <weather-section class="grid-item grid-copy">
           <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
         </weather-section>
-
-        <symbol-list class="section section--symbols"></symbol-list>
       </div>
+      <bottom-sheet
+        ?largeMap="${this._largeMap}"
+        ?showFeelsLike="${this._showFeelsLike}"
+        ?showWind="${this._showWind}"
+        ?darkMode="${this._darkMode}"
+      ></bottom-sheet>
     `;
   }
 
