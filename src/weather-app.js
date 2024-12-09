@@ -95,7 +95,7 @@ class WeatherApp extends LitElement {
         max-width: 600px;
 
         padding: var(--padding-body);
-        padding-bottom: 4rem;
+        padding-bottom: 5rem;
       }
 
       .grid-item {
