@@ -98,6 +98,31 @@ class WeatherApp extends LitElement {
         padding-bottom: 4rem;
       }
 
+      .grid-item {
+        display: grid;
+      }
+
+      .grid-map {
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
+      .grid-forecast {
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
+      .grid-copy {
+        text-align: center;
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
+      .grid-symbols {
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
       @media only screen and (min-width: 700px) {
         .grid-container {
           grid-template-columns: 1fr 1fr;
@@ -124,31 +149,6 @@ class WeatherApp extends LitElement {
           grid-column-start: 3;
           grid-column-end: 4;
         }
-      }
-
-      .grid-item {
-        display: grid;
-      }
-
-      .grid-map {
-        grid-column-start: 1;
-        grid-column-end: -1;
-      }
-
-      .grid-forecast {
-        grid-column-start: 1;
-        grid-column-end: -1;
-      }
-
-      .grid-copy {
-        text-align: center;
-        grid-column-start: 1;
-        grid-column-end: -1;
-      }
-
-      .grid-symbols {
-        grid-column-start: 1;
-        grid-column-end: -1;
       }
     `;
   }
