@@ -58,13 +58,19 @@ class WeatherSection extends LitElement {
       }
 
       .lifted-heading {
-        margin-bottom: var(--space-m);
+        margin-bottom: 0;
         background-color: var(--background-accent2);
         color: var(--color-secondary);
         display: inline-block;
         padding: 0 var(--space-l) var(--space-s) var(--space-l);
         font-size: var(--font-size-s);
         border-radius: var(--border-radius);
+      }
+
+      @media only screen and (min-width: 430px) {
+        .lifted-heading {
+          margin-bottom: var(--space-m);
+        }
       }
 
       h2 {
