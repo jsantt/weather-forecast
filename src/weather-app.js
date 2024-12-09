@@ -89,7 +89,7 @@ class WeatherApp extends LitElement {
 
       .grid-container {
         display: grid;
-        gap: var(--space-l);
+        gap: var(--space-xl) var(--space-l);
         grid-template-columns: 1fr;
 
         max-width: 600px;
