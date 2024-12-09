@@ -161,6 +161,12 @@ class WeatherApp extends LitElement {
       <forecast-data .location="${this._location}"> </forecast-data>
 
       <top-bar></top-bar>
+      <bottom-sheet
+        ?largeMap="${this._largeMap}"
+        ?showFeelsLike="${this._showFeelsLike}"
+        ?showWind="${this._showWind}"
+        ?darkMode="${this._darkMode}"
+      ></bottom-sheet>
 
       <div class="grid-container" ?hidden="${this._firstLoading}">
         <weather-section
@@ -323,12 +329,6 @@ class WeatherApp extends LitElement {
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
         </weather-section>
       </div>
-      <bottom-sheet
-        ?largeMap="${this._largeMap}"
-        ?showFeelsLike="${this._showFeelsLike}"
-        ?showWind="${this._showWind}"
-        ?darkMode="${this._darkMode}"
-      ></bottom-sheet>
     `;
   }
 

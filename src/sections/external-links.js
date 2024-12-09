@@ -94,10 +94,6 @@ class ExternalLinks extends LitElement {
           <div class="link">
             <a href="https://www.norkko.fi/">
               <span>siitepölytiedote</span>
-              <svg-icon
-                x-small
-                path="assets/image/icons.svg#new-window"
-              ></svg-icon>
             </a>
           </div>
 
@@ -114,10 +110,19 @@ class ExternalLinks extends LitElement {
                 : 'https://www.ilmatieteenlaitos.fi/paikallissaa'}"
             >
               <span>10&nbsp;vrk&nbsp;sää</span>
-              <svg-icon
-                x-small
-                path="assets/image/icons.svg#new-window"
-              ></svg-icon>
+            </a>
+          </div>
+
+          <div class="icon-container icon-container-weather">
+            <svg-icon
+              medium
+              path="assets/image/icons.svg#longTimeWeather"
+            ></svg-icon>
+          </div>
+
+          <div class="link">
+            <a href="https://www.ilmatieteenlaitos.fi/revontulet-ja-avaruussaa">
+              <span>revontulet</span>
             </a>
           </div>
 

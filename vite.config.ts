@@ -13,10 +13,10 @@ export default {
         start_url: '/index.html',
         display: 'standalone',
         scope: '/',
-        theme_color: '#1e517b',
+        theme_color: '#a1c3d3',
         categories: ['weather'],
         lang: 'fi',
-        background_color: '#1e517b',
+        background_color: '#a1c3d3',
         description:
           'Kännykälle optimoidusta palvelusta näet lähiajan sään yhdellä vilkaisulla ja nopeiten. Säädata tulee Ilmatieteen laitokselta.',
         icons: [

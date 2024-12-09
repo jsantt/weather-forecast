@@ -82,7 +82,8 @@
         --color-gray-500: #cccccd;
         --color-gray-600: #99999a;
         --color-gray-800: #545455;
-        --color-gray-900: #424243;
+        --color-gray-900: #424242;
+        --color-gray-950: #323232;
 
         --color-red-300: #e27875;
         --color-red-500: #ed332b;
@@ -101,8 +102,8 @@
         --color-blue-650: #1e517b;
         --color-blue-700: #174972;
 
-        --color-turquoise: rgb(161, 195, 211);
-        --color-pink: rgb(255, 208, 213);
+        --color-turquoise: #a1c3d3;
+        --color-pink: #ffd0d5;
 
         --color-blue-800: #173f5f;
 
@@ -121,6 +122,7 @@
         --background-panel: var(--color-gray-400);
         --background-accent: var(--color-gray-300);
         --background-accent2: var(--color-blue-800);
+        --background-accent3: var(--color-gray-300);
 
         --color-primary: var(--color-blue-800);
         --color-secondary: var(--color-blue-100);
@@ -144,7 +146,7 @@
         --font-family-secondary: sans-serif;
 
         /* Responsive  */
-        --padding-left-right-header: var(--space-l);
+        --padding-left-right-header: calc(var(--space-l) + env(safe-area-inset-left));
 
         --padding-body: 0;
         --padding-panel: 0;
@@ -251,16 +253,17 @@
       /* DARK THEME */
       body.force-dark-mode {
         --background-image: linear-gradient(
-            rgb(22 22 22 / 87%),
-            rgb(22 22 22 / 87%)
+            rgb(52 52 52 / 90%),
+            rgb(52 52 52 / 90%)
           ),
           url('/map.webp');
 
         /* Main colors */
 
-        --background: #555;
-        --background-panel: var(--color-gray-900);
+        --background-panel: #555;
+        --background: var(--color-gray-950);
         --background-accent: #555;
+        --background-accent3: var(--color-gray-600);
 
         --color-primary: #ccc;
         --color-secondary: #ccc;
