@@ -33,28 +33,22 @@ class WeatherSection extends LitElement {
         grid-template-rows: auto 1fr;
       }
 
-      :host([padding]) {
-        .normal-heading {
-          padding: var(--space-m) var(--space-l) 0 var(--space-l);
-        }
-
-        section {
-          padding: var(--padding-panel-textual);
-        }
+      :host([padding]) .normal-heading {
+        padding: var(--space-m) var(--space-l) 0 var(--space-l);
       }
 
-      :host([orange]) {
-        .lifted-heading {
-          background-color: var(--color-orange-500);
-          color: var(--color-primary-static);
-        }
+      :host([padding]) section {
+        padding: var(--padding-panel-textual);
       }
 
-      :host([pink]) {
-        .lifted-heading {
-          background-color: var(--color-pink);
-          color: var(--color-primary-static);
-        }
+      :host([orange]) .lifted-heading {
+        background-color: var(--color-orange-500);
+        color: var(--color-primary-static);
+      }
+
+      :host([pink]) .lifted-heading {
+        background-color: var(--color-pink);
+        color: var(--color-primary-static);
       }
 
       section {

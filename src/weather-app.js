@@ -96,56 +96,59 @@ class WeatherApp extends LitElement {
 
         padding: var(--padding-body);
         padding-bottom: 4rem;
+      }
 
-        .grid-item {
-          display: grid;
-        }
-
-        .grid-map {
-          grid-column-start: 1;
-          grid-column-end: -1;
-
-          @media only screen and (min-width: 1000px) {
-            grid-column-start: 1;
-            grid-column-end: 3;
-          }
-        }
-        .grid-forecast {
-          grid-column-start: 1;
-          grid-column-end: -1;
-
-          @media only screen and (min-width: 1000px) {
-            grid-column-start: 3;
-            grid-column-end: 4;
-          }
-        }
-
-        .grid-info {
-          @media only screen and (min-width: 700px) {
-            grid-column: span 2;
-          }
-        }
-
-        .grid-copy {
-          text-align: center;
-          grid-column-start: 1;
-          grid-column-end: -1;
-        }
-
-        .grid-symbols {
-          grid-column-start: 1;
-          grid-column-end: -1;
-        }
-
-        @media only screen and (min-width: 700px) {
+      @media only screen and (min-width: 700px) {
+        .grid-container {
           grid-template-columns: 1fr 1fr;
           max-width: 600px;
         }
 
-        @media only screen and (min-width: 1000px) {
+        .grid-info {
+          grid-column: span 2;
+        }
+      }
+
+      @media only screen and (min-width: 1000px) {
+        .grid-container {
           grid-template-columns: 1fr 1fr 1fr;
           max-width: 1000px;
         }
+
+        .grid-map {
+          grid-column-start: 1;
+          grid-column-end: 3;
+        }
+
+        .grid-forecast {
+          grid-column-start: 3;
+          grid-column-end: 4;
+        }
+      }
+
+      .grid-item {
+        display: grid;
+      }
+
+      .grid-map {
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
+      .grid-forecast {
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
+      .grid-copy {
+        text-align: center;
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
+      .grid-symbols {
+        grid-column-start: 1;
+        grid-column-end: -1;
       }
     `;
   }
