@@ -318,7 +318,7 @@ class WeatherApp extends LitElement {
 
         <symbol-list class="grid-item grid-symbols"></symbol-list>
 
-        <weather-section class="grid-item grid-copy">
+        <weather-section class="grid-item grid-copy" padding>
           <svg-icon path="assets/image/icons.svg#copyright"></svg-icon>
           <div>Säädata ja symbolit Ilmatieteen laitos</div>
         </weather-section>
