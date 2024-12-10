@@ -46,8 +46,23 @@ class WeatherSection extends LitElement {
         color: var(--color-primary-static);
       }
 
+      :host([gray]) .lifted-heading {
+        background-color: var(--color-gray-400);
+        color: var(--color-gray-900);
+      }
+
       :host([pink]) .lifted-heading {
         background-color: var(--color-pink);
+        color: var(--color-primary-static);
+      }
+
+      :host([yellow]) .lifted-heading {
+        background-color: var(--color-yellow-300);
+        color: var(--color-primary-static);
+      }
+
+      :host([green]) .lifted-heading {
+        background-color: var(--color-green-300);
         color: var(--color-primary-static);
       }
 
@@ -62,15 +77,11 @@ class WeatherSection extends LitElement {
         background-color: var(--color-blue-700);
         color: var(--color-secondary);
         display: inline-block;
-        padding: 0 var(--space-l) var(--space-s) var(--space-l);
+        padding: 0.16rem var(--space-l) var(--space-s) var(--space-l);
         font-size: var(--font-size-s);
         border-radius: var(--border-radius);
-      }
 
-      @media only screen and (min-width: 430px) {
-        .lifted-heading {
-          margin-bottom: var(--space-m);
-        }
+        margin-bottom: var(--space-m);
       }
 
       h2 {

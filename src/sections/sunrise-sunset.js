@@ -123,7 +123,7 @@ class SunriseSunset extends LitElement {
 
   render() {
     return html`
-      <weather-section liftedHeading="Aurinko" padding orange>
+      <weather-section liftedHeading="Aurinko" padding yellow>
         <div slot="header-right">
           ${SunriseSunset._getDay()} | vk ${SunriseSunset._getWeek()}
         </div>

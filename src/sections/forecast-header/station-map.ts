@@ -70,6 +70,7 @@ class StationMap extends LitElement {
         fill: var(--color-gray-400);
         stroke: var(--color-gray-400);
       }
+
       circle.original-location {
         stroke: black;
       }

@@ -170,6 +170,7 @@ class WeatherApp extends LitElement {
 
       <div class="grid-container" ?hidden="${this._firstLoading}">
         <weather-section
+          yellow
           class="grid-item grid-map"
           .padding=${false}
           liftedHeading=${`Sää klo ${getTime(new Date())}`}
@@ -199,6 +200,7 @@ class WeatherApp extends LitElement {
         </weather-section>
 
         <weather-section
+          pink
           class="grid-item grid-forecast"
           liftedHeading="Ennuste"
         >
@@ -258,6 +260,7 @@ class WeatherApp extends LitElement {
 
         <weather-section
           class="grid-item grid-info"
+          green
           padding
           liftedHeading="Sääennuste.fi"
         >
@@ -310,17 +313,6 @@ class WeatherApp extends LitElement {
             parantaisit sovellusta? palaute@saaennuste.fi
           </p>
         </weather-section>
-
-        <!--weather-section class="section section--feedback" heading="Palaute">
-          Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea miten
-          parantaisit sovellusta? Ota yhteyttä!
-
-          <div slot="footer-left"></div>
-          <div slot="footer-right">
-            <svg-icon path="assets/image/icons.svg#email"></svg-icon>
-            palaute@saaennuste.fi
-          </div>
-        </weather-section-->
 
         <symbol-list class="grid-item grid-symbols"></symbol-list>
 

@@ -74,7 +74,7 @@ class ExternalLinks extends LitElement {
 
   render() {
     return html`
-      <weather-section liftedHeading="Säätietoja muualla">
+      <weather-section gray liftedHeading="Säätietoja muualla">
         <nav>
           <div class="link">
             <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
