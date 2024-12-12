@@ -48,13 +48,13 @@ class StationMap extends LitElement {
       }
 
       circle {
-        stroke: var(--color-blue-650);
-        fill: var(--color-blue-650);
+        stroke: var(--background-accent2);
+        fill: var(--background-accent2);
       }
       /* for debugging
       circle.collides {
         stroke: red;
-      }
+  
       */
       text {
         font-synthesis: style;

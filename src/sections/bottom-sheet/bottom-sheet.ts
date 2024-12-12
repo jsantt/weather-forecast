@@ -23,7 +23,7 @@ class BottomSheet extends LitElement {
     return css`
       :host {
         display: block;
-        background: var(--background-accent);
+        background: var(--background);
 
         border-top-left-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
