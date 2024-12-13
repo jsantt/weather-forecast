@@ -74,7 +74,7 @@ class WeatherSection extends LitElement {
 
       .lifted-heading {
         margin-bottom: 0;
-        background-color: var(--color-blue-700);
+        background-color: var(--background-accent2);
         color: var(--color-secondary);
         display: inline-block;
         padding: 0.16rem var(--space-l) var(--space-s) var(--space-l);

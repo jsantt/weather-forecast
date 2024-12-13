@@ -60,7 +60,6 @@
 
       body {
         --safe-area-inset-bottom: env(safe-area-inset-bottom, 20px);
-
         --background-image: linear-gradient(
             rgb(46 110 161 / 87%),
             rgb(32 100 155 / 87%)
@@ -253,16 +252,16 @@
       /* DARK THEME */
       body.force-dark-mode {
         --background-image: linear-gradient(
-            rgb(72 72 72 / 90%),
-            rgb(72 72 72 / 90%)
+            rgb(49 49 49 / 90%),
+            rgb(49 49 49 / 90%)
           ),
           url('/map.webp');
 
         /* Main colors */
 
-        --background-panel: #555;
+        --background-panel: var(--color-gray-900);
         --background: var(--color-gray-950);
-        --background-accent: #555;
+        --background-accent: var(--color-gray-900);
         --background-accent3: var(--color-gray-600);
 
         --color-primary: #ccc;
