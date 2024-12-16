@@ -15,7 +15,7 @@ class SymbolList extends LitElement {
     return css`
       :host {
         display: block;
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
       }
 
       section {

@@ -11,7 +11,7 @@ class TopBar extends LitElement {
 
       header {
         padding: var(--padding-header);
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
 
         font-size: var(--font-size-s);
         display: grid;

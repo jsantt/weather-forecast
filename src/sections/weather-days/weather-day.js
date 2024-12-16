@@ -26,7 +26,7 @@ class WeatherDay extends LitElement {
 
         --color-toggle-background: var(--color-yellow-300);
 
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
         display: block;
       }
 
@@ -55,7 +55,7 @@ class WeatherDay extends LitElement {
 
       .day {
         background-color: var(--background-accent2);
-        color: var(--color-secondary);
+        color: var(--color-light);
         padding: var(--space-s) 0;
       }
 
@@ -81,7 +81,7 @@ class WeatherDay extends LitElement {
 
         text-align: center;
 
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
         margin: var(--space-l) 0 var(--space-s) 0;
       }
 
@@ -125,7 +125,7 @@ class WeatherDay extends LitElement {
       }
 
       .temperature--positive {
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
       }
 
       .temperature_line {
@@ -138,8 +138,7 @@ class WeatherDay extends LitElement {
         grid-row: 100;
         grid-column: span 25;
 
-        background: var(--packground-panel);
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
         font-size: var(--font-size-s);
 
         padding: var(--space-m) var(--space-l) var(--space-l) var(--space-l);

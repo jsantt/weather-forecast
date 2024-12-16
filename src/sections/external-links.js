@@ -22,14 +22,14 @@ class ExternalLinks extends LitElement {
       }
 
       .icon-container {
-        background: var(--color-blue-300);
+        background: var(--color-green);
         padding: var(--space-l);
         margin: auto;
       }
 
       svg,
       svg-icon {
-        fill: var(--color-blue-700);
+        fill: var(--color-blue);
       }
 
       svg-icon[path*='new-window'] {
@@ -37,7 +37,6 @@ class ExternalLinks extends LitElement {
       }
 
       .link {
-        background: var(--background-panel);
         display: grid;
         align-items: center;
 
@@ -48,7 +47,7 @@ class ExternalLinks extends LitElement {
       }
 
       a:link {
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
 
         text-decoration: none;
       }
@@ -59,7 +58,7 @@ class ExternalLinks extends LitElement {
 
       a:visited,
       a:hover {
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
       }
     `;
   }

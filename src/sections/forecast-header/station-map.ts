@@ -98,7 +98,7 @@ class StationMap extends LitElement {
   render() {
     if (this.observationError) {
       return html`<error-notification
-        errorText="Sääasemien havaintotietojen haku epäonnistui."
+        errorText="Sääasemien tietojen haku epäonnistui."
       >
       </error-notification>`;
     }

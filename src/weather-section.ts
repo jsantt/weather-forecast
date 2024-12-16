@@ -25,7 +25,7 @@ class WeatherSection extends LitElement {
     return css`
       :host {
         display: inline-block;
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
         font-size: var(--font-size-s);
 
         display: grid;
@@ -41,29 +41,24 @@ class WeatherSection extends LitElement {
         padding: var(--padding-panel-textual);
       }
 
-      :host([orange]) .lifted-heading {
-        background-color: var(--color-orange-500);
-        color: var(--color-primary-static);
-      }
-
       :host([gray]) .lifted-heading {
-        background-color: var(--color-gray-400);
-        color: var(--color-gray-900);
+        background-color: var(--color-gray);
+        color: var(--color-dark);
       }
 
       :host([pink]) .lifted-heading {
         background-color: var(--color-pink);
-        color: var(--color-primary-static);
+        color: var(--color-dark);
       }
 
       :host([yellow]) .lifted-heading {
-        background-color: var(--color-yellow-300);
-        color: var(--color-primary-static);
+        background-color: var(--color-yellow);
+        color: var(--color-dark);
       }
 
       :host([green]) .lifted-heading {
-        background-color: var(--color-green-300);
-        color: var(--color-primary-static);
+        background-color: var(--color-green);
+        color: var(--color-dark);
       }
 
       section {
@@ -74,8 +69,9 @@ class WeatherSection extends LitElement {
 
       .lifted-heading {
         margin-bottom: 0;
-        background-color: var(--background-accent2);
-        color: var(--color-secondary);
+        background-color: var(--color-blue);
+        color: var(--color-light);
+
         display: inline-block;
         padding: 0.16rem var(--space-l) var(--space-s) var(--space-l);
         font-size: var(--font-size-s);
@@ -85,7 +81,7 @@ class WeatherSection extends LitElement {
       }
 
       h2 {
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
         font-size: var(--font-size-m);
         margin: 0;
         padding: 0;

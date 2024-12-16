@@ -19,7 +19,7 @@ class SunriseSunset extends LitElement {
       }
 
       .arrow-svg {
-        fill: var(--color-gray-600);
+        fill: var(--color-dark-and-light);
         height: 36px;
       }
 
@@ -33,7 +33,7 @@ class SunriseSunset extends LitElement {
       }
 
       a:link {
-        color: var(--color-primary);
+        color: var(--color-light-and-dark);
         text-decoration: none;
       }
 
@@ -50,13 +50,7 @@ class SunriseSunset extends LitElement {
 
       a:visited,
       a:hover {
-        color: var(--color-primary);
-      }
-
-      .uv-index-svg {
-        height: 24px;
-        width: 24px;
-        fill: var(--color-blue-700);
+        color: var(--color-dark-and-light);
       }
 
       .text {

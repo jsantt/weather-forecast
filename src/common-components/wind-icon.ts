@@ -47,7 +47,7 @@ class WindIcon extends LitElement {
       }
 
       .windGustSpeed {
-        fill: var(--color-primary);
+        fill: var(--color-dark-and-light);
       }
 
       .windSpeed,
@@ -57,7 +57,7 @@ class WindIcon extends LitElement {
       }
 
       :host([whiteGust]) .windGustSpeed {
-        fill: var(--color-secondary);
+        fill: var(--color-light);
       }
 
       .windIcon_arrow {

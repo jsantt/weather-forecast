@@ -80,6 +80,7 @@
         --color-gray-400: #ededee;
         --color-gray-500: #cccccd;
         --color-gray-600: #99999a;
+        --color-gray-700: #666666;
         --color-gray-800: #545455;
         --color-gray-900: #424242;
         --color-gray-950: #323232;
@@ -101,8 +102,7 @@
         --color-blue-650: #1e517b;
         --color-blue-700: #174972;
 
-        --color-turquoise: #a1c3d3;
-        --color-pink: #ffd0d5;
+
 
         --color-blue-800: #173f5f;
 
@@ -123,22 +123,34 @@
         --background-accent2: var(--color-blue-800);
         --background-accent3: var(--color-gray-300);
 
-        --color-primary: var(--color-blue-800);
-        --color-secondary: var(--color-blue-100);
-        --color-primary-static: var(--color-blue-800);
-
         --color-temperature-negative: var(--color-blue-500);
 
         --background-wind: var(--color-white);
-        --color-wind: var(--color-secondary);
+        --color-wind: var(--color-light);
 
         --background-wind-warning: var(--color-yellow-500);
         --color-wind-warning: #333;
 
         --background-wind-warning2: var(--color-red-500);
-        --color--wind-warning: var(--color-secondary);
+        --color--wind-warning: var(--color-light);
 
         --background-home-station: var(--color-gray-300);
+
+        /* new colors */
+        --background: var(--color-turquoise);
+        --background-middle: var(--color-gray-400);
+        --background-topmost: var(--color-gray-300);
+
+        --color-light: var(--color-blue-100);
+        --color-dark: var(--color-blue-800);
+        --color-dark-and-light: var(--color-blue-800);
+
+        --color-turquoise: #a1c3d3;
+        --color-pink: #ffd0d5;
+        --color-yellow: var(--color-yellow-300);
+        --color-gray: var(--color-gray-400);
+        --color-green: var(--color-green-300);
+        --color-blue: var(--color-blue-800);
 
         /* Font */
         --font-family: 'Open Sans Condensed', sans-serif;
@@ -257,28 +269,42 @@
           ),
           url('/map.webp');
 
-        /* Main colors */
+        /* Main colors, dark mode */
 
         --background-panel: var(--color-gray-900);
         --background: var(--color-gray-950);
         --background-accent: var(--color-gray-900);
         --background-accent3: var(--color-gray-600);
 
-        --color-primary: #ccc;
-        --color-secondary: #ccc;
 
         --color-temperature-negative: var(--color-blue-400);
 
         --background-wind: var(--background-panel);
-        --color-wind: var(--color-secondary);
+        --color-wind: var(--color-light);
 
         --background-wind-warning: var(--color-yellow-300);
         --color-wind-warning: #333;
 
         --background-wind-warning2: var(--color-red-500);
-        --color-wind-warning2: var(--color-secondary);
+        --color-wind-warning2: var(--color-light);
 
         --background-home-station: var(--color-gray-400);
+
+        /* new colors, dark mode */
+        --background: var(--color-gray-950);
+        --background-middle: var(--color-gray-900);
+        --background-topmost: var(--color-gray-700);
+      
+        --color-light: var(--color-gray-500);
+        --color-dark: var(--color-blue-800);
+        --color-dark-and-light: var(--color-gray-500);
+
+        --color-turquoise: #a1c3d3;
+        --color-pink: #ffd0d5;
+        --color-yellow: var(--color-yellow-300);
+        --color-gray: var(--color-gray-400);
+        --color-green: var(--color-green-300);
+        --color-blue: var(--color-blue-800);
       }
 
       weather-app {

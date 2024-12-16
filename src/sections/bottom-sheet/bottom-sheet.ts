@@ -23,7 +23,7 @@ class BottomSheet extends LitElement {
     return css`
       :host {
         display: block;
-        background: var(--background);
+        background: var(--background-topmost);
 
         border-top-left-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
@@ -53,14 +53,14 @@ class BottomSheet extends LitElement {
       button {
         background: none;
         border: none;
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
 
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
 
-        fill: var(--color-primary);
+        fill: var(--color-dark-and-light);
         font-family: var(--font-family-primary);
         font-size: var(--font-size-s);
         font-weight: var(--font-weight-bold);
@@ -93,7 +93,7 @@ class BottomSheet extends LitElement {
 
       :host([showFeelsLike]) .feelsLike,
       :host([showWind]) .wind {
-        border-top: 4px solid var(--color-blue-700);
+        border-top: 4px solid var(--color-dark-and-light);
       }
 
       :host([showFeelsLike]) .feelsLike-icon,
@@ -116,24 +116,13 @@ class BottomSheet extends LitElement {
       }
 
       .small-icon {
-        fill: var(--color-primary);
+        fill: var(--color-dark-and-light);
 
         filter: drop-shadow(rgba(0, 0, 0, 0.3) 0px 3px 4px);
 
         height: 20px;
         width: 20px;
         padding: var(--space-s) var(--space-s) 0 var(--space-s);
-      }
-
-      .error {
-        color: var(--color-primary);
-        font-size: var(--font-size-m);
-        font-weight: var(--font-weight-boldest);
-        padding: var(--space-m) var(--space-m) var(--space-l) var(--space-m);
-        text-align: center;
-
-        border-top-left-radius: 0.75rem;
-        border-top-right-radius: 0.75rem;
       }
 
       .position-anchor {
@@ -417,22 +406,22 @@ class BottomSheet extends LitElement {
         },
         () => {
           this._dispatchEvent('location-selector.locate-error', {
-            text: 'salli paikannus nähdäksesi paikkakuntasi sää',
+            text: 'Salli paikannus nähdäksesi paikkakuntasi sää',
           });
           if (isWebView()) {
             this._notification =
-              'avaa ulkoisessa selaimessa salliaksesi paikannus';
+              'Avaa ulkoisessa selaimessa salliaksesi paikannus';
           } else {
             this._notification =
-              'salli paikannus/sijainti selaimesi asetuksista';
+              'Salli paikannus/sijainti selaimesi asetuksista';
           }
         }
       );
     } else {
       this._dispatchEvent('location-selector.locate-error', {
-        text: 'paikantaminen epäonnistui, yritä uudelleen',
+        text: 'Paikantaminen epäonnistui, yritä uudelleen',
       });
-      this._notification = 'paikantaminen epäonnistui, yritä uudelleen';
+      this._notification = 'Paikantaminen epäonnistui, yritä uudelleen';
     }
   }
 

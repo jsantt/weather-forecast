@@ -23,7 +23,7 @@ class BottomNotification extends LitElement {
       }
 
       .content {
-        background: var(--background-accent);
+        background: var(--background-topmost);
 
         border-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
@@ -41,7 +41,7 @@ class BottomNotification extends LitElement {
       }
 
       section {
-        color: var(--color-primary);
+        color: var(--color-dark-and-light);
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
 
@@ -60,8 +60,7 @@ class BottomNotification extends LitElement {
       }
 
       svg-icon {
-        fill: currentColor;
-        stroke: currentColor;
+        color: var(--color-dark-and-light);
       }
 
       svg-icon[medium] {
