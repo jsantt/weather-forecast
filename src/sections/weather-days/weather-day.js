@@ -20,7 +20,7 @@ class WeatherDay extends LitElement {
         --grid-last-column: 25;
 
         --color-dayHeader: var(--background-accent2);
-        --color-dayHeader-delimiter: var(--background-panel);
+        --color-dayHeader-delimiter: var(--background-middle);
 
         --color-dayHeader-font: var(--color-white);
 
@@ -46,7 +46,6 @@ class WeatherDay extends LitElement {
       }
 
       .weatherDay_grid {
-        background-color: var(--background-panel);
         display: grid;
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);

@@ -62,7 +62,7 @@ class WeatherSection extends LitElement {
       }
 
       section {
-        background-color: var(--background-panel);
+        background-color: var(--background-middle);
         padding: var(--padding-panel);
         border-radius: var(--border-radius);
       }
