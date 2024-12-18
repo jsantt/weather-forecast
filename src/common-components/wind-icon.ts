@@ -65,7 +65,7 @@ class WindIcon extends LitElement {
       }
 
       .windIcon_circle {
-        fill: var(--background-accent3);
+        fill: var(--background-topmost);
       }
 
       g {

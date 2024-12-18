@@ -126,7 +126,7 @@ class ComboBox extends LitElement {
         left: 0;
         right: 0;
 
-        background: var(--background-accent);
+        background: var(--background-middle);
 
         color: var(--color-gray-600);
       }

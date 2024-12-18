@@ -41,7 +41,7 @@ class ShareApp extends LitElement {
       }
 
       .qr {
-        fill: var(--background-accent2);
+        fill: var(--color-blue-800);
         min-width: 100px;
         min-height: 100px;
         margin-bottom: var(--space-l);
