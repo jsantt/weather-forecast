@@ -100,7 +100,7 @@ class WeatherApp extends LitElement {
 
       @media only screen and (min-width: 1000px) {
         .grid-container {
-          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-columns: 8fr 8fr 11fr;
           max-width: 1000px;
         }
 
