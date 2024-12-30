@@ -138,14 +138,14 @@ class ComboBox extends LitElement {
       /* when navigating through the items using the arrow keys: */
       li[aria-selected='true'],
       li:hover {
-        background: var(--color-blue-650);
-        color: var(-color-gray-300);
+        background: var(--color-blue-700);
+        color: var(--color-gray-300);
       }
 
       li[aria-selected='true'] strong,
       li:hover strong {
         background: var(--color-blue-800);
-        color: var(--color-white);
+        color: var(--color-gray-100);
       }
 
       strong {

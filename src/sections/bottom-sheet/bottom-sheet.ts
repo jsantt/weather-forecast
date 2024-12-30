@@ -133,7 +133,7 @@ class BottomSheet extends LitElement {
         background: var(--color-red-500);
         border-radius: 50%;
 
-        color: var(--color-white);
+        color: var(--color-gray-100);
         font-size: var(--font-size-xs);
 
         width: 1rem;

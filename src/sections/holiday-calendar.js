@@ -60,7 +60,7 @@ class HolidayCalendar extends LitElement {
       }
 
       .day {
-        background: var(--color-blue-300);
+        background: var(--color-blue-400);
 
         border-radius: var(--day-border-radius);
         text-align: center;
@@ -148,7 +148,7 @@ class HolidayCalendar extends LitElement {
         grid-column: 1 / 9;
         font-size: var(--font-size-xs);
         margin: -0.3rem 0;
-        border-left: 1px solid var(--color-blue-300);
+        border-left: 1px solid var(--color-blue-400);
         padding-left: 2px;
       }
 
@@ -198,7 +198,7 @@ class HolidayCalendar extends LitElement {
               <smooth-expand ?expanded="${month.expanded}">
                 <div class="expandable">
                   <!-- MONTHS -->
-                  ${month.days.map(day => {
+                  ${month.days.map((day) => {
                     if (day === undefined) {
                       // empty days to keep mondays to be leftmost
                       return html`<div></div>`;
@@ -291,7 +291,7 @@ class HolidayCalendar extends LitElement {
         this._init();
       }
     });
-    window.addEventListener('pageshow', event => {
+    window.addEventListener('pageshow', (event) => {
       if (event.persisted) {
         this._init();
       }
@@ -421,7 +421,7 @@ class HolidayCalendar extends LitElement {
       ...HolidayCalendar._staticHolidays('2021'),
     ];
 
-    return holidays.find(holiday => {
+    return holidays.find((holiday) => {
       const hol = new Date(holiday.d);
       return HolidayCalendar._sameDay(date, hol);
     });

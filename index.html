@@ -72,48 +72,40 @@
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
         /* Colors */
-        --color-black: #111;
-        --color-white: #fff;
+       
+        --color-gray-hue: 240;
+        
+        --color-gray-100: hsl(var(--gray-hue), 0%, 99%);
+        --color-gray-300: hsl(var(--color-gray-hue), 0%, 96%);
+        --color-gray-400: hsl(var(--color-gray-hue), 0%, 93%);
+        --color-gray-500: hsl(var(--color-gray-hue), 0%, 80%);
+        --color-gray-600: hsl(var(--color-gray-hue), 0%, 60%);
+        --color-gray-700: hsl(var(--color-gray-hue), 0%, 40%);
+        --color-gray-800: hsl(var(--color-gray-hue), 0%, 33%);
+        --color-gray-900: hsl(var(--color-gray-hue), 0%, 20%);
+        
+        --color-red-hue: 2;
 
-        --color-gray-200: #fefeff;
-        --color-gray-300: #f5f5f6;
-        --color-gray-400: #ededee;
-        --color-gray-500: #cccccd;
-        --color-gray-600: #99999a;
-        --color-gray-700: #666666;
-        --color-gray-800: #545455;
-        --color-gray-900: #424242;
-        --color-gray-950: #323232;
+        --color-red-300: hsl(var(--color-red-hue), 65%, 67%);
+        --color-red-500: hsl(var(--color-red-hue), 84%, 55%);
 
-        --color-red-300: #e27875;
-        --color-red-500: #ed332b;
-        --color-red-800: #5f1411;
+        --color-blue-hue: 213; /* originally 207 */
+        
+        --color-blue-100: hsl(var(--color-blue-hue), 54%, 95%);
+        --color-blue-400: hsl(var(--color-blue-hue), 62%, 81%);
+        --color-blue-500: hsl(var(--color-blue-hue), 66%, 37%);
+        --color-blue-600: hsl(var(--color-blue-hue), 56%, 41%);
+        --color-blue-700: hsl(var(--color-blue-hue), 66%, 27%);
+        --color-blue-800: hsl(var(--color-blue-hue), 61%, 23%);
 
-        --color-lightblue-500: #74ccf4;
+        --color-yellow-300: hsl(47, 90%, 85%);
+        --color-yellow-500: hsl(47, 90%, 66%);
 
-        --color-rain: #13a7ec;
-        --color-snow: #74ccf4;
+        --color-orange-500: hsl(40, 100%, 50%);
 
-        --color-blue-100: #ebf3f9;
-        --color-blue-300: #c0d9ed;
-        --color-blue-400: #afd1ec;
-        --color-blue-500: #20639b;
-        --color-blue-600: rgb(46, 110, 161);
-        --color-blue-650: #1e517b;
-        --color-blue-700: #174972;
-
-
-
-        --color-blue-800: #173f5f;
-
-        --color-green-300: hsl(152, 41%, 80%);
-        --color-green-500: hsl(153, 41%, 72%);
-        --color-green-700: hsl(152, 41%, 42%);
-        --color-green-800: #1f5b55;
-
-        --color-yellow-300: #fbecb6;
-        --color-yellow-500: #f6d55c;
-        --color-orange-500: #ffa800; /**/
+        /* not used in icons */
+        --color-rain: hsl(199, 85%, 50%);
+        --color-snow: hsl(199, 85%, 71%);
 
         /* new colors */
         --background: var(--color-turquoise);
@@ -134,7 +126,7 @@
         /* component specific colors */
 
         --color-temperature-negative: var(--color-blue-500);
-        --background-wind: var(--color-white);
+        --background-wind: var(--color-gray-100);
         --color-wind: var(--color-light);
 
         --background-wind-warning: var(--color-orange-500);
@@ -279,7 +271,7 @@
         --background-home-station: var(--color-gray-400);
 
         /* new colors, dark mode */
-        --background: var(--color-gray-950);
+        --background: var(--color-gray-900);
         --background-middle: var(--color-gray-900);
         --background-topmost: var(--color-gray-700);
       

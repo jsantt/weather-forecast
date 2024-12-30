@@ -22,7 +22,7 @@ class WeatherDay extends LitElement {
         --color-dayHeader: var(--color-blue-800);
         --color-dayHeader-delimiter: var(--background-middle);
 
-        --color-dayHeader-font: var(--color-white);
+        --color-dayHeader-font: var(--color-gray-100);
 
         --color-toggle-background: var(--color-yellow-300);
 

@@ -90,7 +90,7 @@ class StationMap extends LitElement {
 
       error-notification {
         padding: var(--space-l) var(--space-m) var(--space-xl) var(--space-m);
-        --color: var(--color-white);
+        --color: var(--color-gray-100);
       }
     `;
   }
