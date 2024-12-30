@@ -67,6 +67,10 @@ class WeatherSection extends LitElement {
         border-radius: var(--border-radius);
       }
 
+      :host([transparent]) section {
+        background-color: transparent;
+      }
+
       .lifted-heading {
         margin-bottom: 0;
         background-color: var(--color-blue);

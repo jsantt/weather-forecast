@@ -45,7 +45,7 @@ class ForecastData extends LitElement {
   @property({ type: Object, reflect: true })
   location?: { coordinates: any; lat: number; lon: number };
 
-  updated(changedProperties) {
+  updated(changedProperties: Map<string, any>) {
     changedProperties.forEach((_, propName) => {
       if (propName === 'location' && this.location !== undefined) {
         this._newLocation();

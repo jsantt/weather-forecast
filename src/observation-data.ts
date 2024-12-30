@@ -12,7 +12,7 @@ import {
 } from './sections/observation-helpers';
 import { property } from 'lit/decorators.js';
 
-type Station = {  
+type Station = {
   cloudiness: number;
   detailsVisible: boolean;
   dewPoint: number;
@@ -43,6 +43,15 @@ type Station = {
   selectedStation?: boolean;
 };
 
+type Place = {
+  geoid: string;
+  name: string;
+  coordinates: string;
+  region: string;
+  lat: string;
+  lon: string;
+};
+
 /**
  * Observations are fetched from the nearest observation station using area name, because
  * there is no support for coordinates
@@ -54,9 +63,9 @@ class ObservationData extends LitElement {
 
   // location object, e.g {geoid: "7521614", name: "Kattilalaakso"}
   @property({ type: Object, reflect: true })
-  place!: { lat; lon; name; region; geoid };
+  place!: Place;
 
-  updated(changedProperties) {
+  updated(changedProperties: Map<string, any>) {
     changedProperties.forEach((_, propName) => {
       if (propName === 'place' && this.place !== undefined) {
         this._newPlace();
@@ -579,4 +588,4 @@ class ObservationData extends LitElement {
 
 window.customElements.define(ObservationData.is, ObservationData);
 
-export type { Station };
+export type { Place, Station };

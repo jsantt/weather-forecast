@@ -67,6 +67,8 @@ class WeatherApp extends LitElement {
       }
 
       .grid-map {
+        --padding-panel: 0;
+
         grid-column-start: 1;
         grid-column-end: -1;
       }
@@ -135,6 +137,7 @@ class WeatherApp extends LitElement {
 
       <div class="grid-container" ?hidden="${this._firstLoading}">
         <weather-section
+          transparent
           yellow
           class="grid-item grid-map"
           .padding=${false}

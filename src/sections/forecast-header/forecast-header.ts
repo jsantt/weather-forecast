@@ -6,7 +6,7 @@ import '../../common-components/smooth-expand';
 import '../../common-components/svg-icon';
 import '../../common-components/wind-icon';
 
-import './location-selector';
+import './location-selector.ts';
 import './station-map';
 import './station-details';
 import { property } from 'lit/decorators.js';
@@ -242,7 +242,7 @@ class ForecastHeader extends LitElement {
     `;
   }
 
-  updated(changedProperties) {
+  updated(changedProperties: Map<string, any>) {
     changedProperties.forEach((_, propName): undefined => {
       if (
         propName !== 'observationData' ||

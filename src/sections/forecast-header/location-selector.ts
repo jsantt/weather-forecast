@@ -1,11 +1,10 @@
 import { css, html, LitElement } from 'lit';
 
 import './combo-box.js';
-import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list';
+import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list.js';
+import { property } from 'lit/decorators.js';
+import { Place } from '../../observation-data.js';
 
-/**
- * @customElement
- */
 class LocationSelector extends LitElement {
   static get is() {
     return 'location-selector';
@@ -32,30 +31,17 @@ class LocationSelector extends LitElement {
   /**
    * place example: {"geoid":"651436","name":"Korospohja","coordinates":"61.92410999999999,25.748151","region":"Jyväskylä"}
    */
-  static get properties() {
-    return {
-      _defaultPlace: {
-        type: Object,
-        reflect: true,
-      },
-      _previousPlace: {
-        type: Object,
-        reflect: true,
-      },
-      loading: {
-        type: Boolean,
-        reflect: true,
-      },
-      place: {
-        type: Object,
-        reflect: true,
-      },
-      city: {
-        type: String,
-        reflect: true,
-      },
-    };
-  }
+  @property({ type: Object })
+  _defaultPlace: { city: string; coordinates: string };
+
+  @property({ type: Boolean, reflect: true })
+  loading: boolean = false;
+
+  @property({ type: Object })
+  place?: Place;
+
+  @property({ type: String, reflect: true })
+  city: string;
 
   constructor() {
     super();
@@ -82,7 +68,9 @@ class LocationSelector extends LitElement {
       this.city = '';
     });
 
-    this.addEventListener('combo-box.new-value', (event) => {
+    this.addEventListener('combo-box.new-value', ((
+      event: CustomEvent<string>
+    ) => {
       this.city = event.detail;
 
       if (
@@ -108,7 +96,7 @@ class LocationSelector extends LitElement {
         'location-selector.location-changed',
         cityAndCoordinates
       );
-    });
+    }) as EventListener);
   }
 
   static _splitCoordinates(coordinateString) {
@@ -120,8 +108,8 @@ class LocationSelector extends LitElement {
     this._notifyPreviousPlace();
   }
 
-  updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+  updated(changedProperties: Map<string, any>) {
+    changedProperties.forEach((_oldValue, propName) => {
       if (propName === 'place' && this.place != null) {
         this._newPlace();
       }
@@ -132,8 +120,11 @@ class LocationSelector extends LitElement {
    * When customer chooses geolocate, we need to wait response containing place name
    */
   _newPlace() {
+    if (this.place === undefined) {
+      return;
+    }
     this.city = LocationSelector._getPlaceName(this.place.name);
-    this.shadowRoot.querySelector('combo-box').requestUpdate();
+    (this.shadowRoot?.querySelector('combo-box') as any).requestUpdate();
 
     const url = this.place.name;
 
@@ -193,7 +184,7 @@ class LocationSelector extends LitElement {
   }
 
   static _changeUrl(paramName, paramValue) {
-    window.history.replaceState(null, null, `?${paramName}=${paramValue}`);
+    window.history.replaceState(null, '', `?${paramName}=${paramValue}`);
   }
 
   _dispatchEvent(name, payload) {
@@ -209,7 +200,7 @@ class LocationSelector extends LitElement {
     return { city, coordinates };
   }
 
-  static _store(key, city, coordinates) {
+  static _store(key: string, city, coordinates) {
     const newPlace = [LocationSelector._formPlaceObject(city, coordinates)];
     const previousPlaces = LocationSelector._getFromLocalStorage('place');
 
@@ -219,12 +210,19 @@ class LocationSelector extends LitElement {
     LocationSelector._storeIntoLocalStorage(key, filtered10);
   }
 
-  static _storeIntoLocalStorage(key, valueObject) {
+  static _storeIntoLocalStorage(
+    key: string,
+    valueObject: { city: any; coordinates: any }[]
+  ) {
     localStorage.setItem(key, JSON.stringify(valueObject));
   }
 
-  static _getFromLocalStorage(key) {
-    return JSON.parse(localStorage.getItem(key));
+  static _getFromLocalStorage(key: string) {
+    const item = localStorage.getItem(key);
+    if (item === null) {
+      return undefined;
+    }
+    return JSON.parse(item);
   }
 }
 
