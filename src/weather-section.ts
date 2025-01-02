@@ -72,6 +72,7 @@ class WeatherSection extends LitElement {
       }
 
       .lifted-heading {
+        font-family: var(--font-family-heading);
         margin-bottom: 0;
         background-color: var(--color-blue);
         color: var(--color-light);

@@ -24,6 +24,7 @@ class TopBar extends LitElement {
       }
 
       h1 {
+        font-family: var(--font-family-heading);
         text-align: left;
         grid-area: h1;
         font-size: var(--font-size-m);

@@ -9,10 +9,9 @@
     <!--title>Sääennuste - Ilmatieteen laitoksen sää yhdellä vilkaisulla</title-->
     <title>Sääennuste - Nopein tapa tarkastaa Ilmatieteen laitoksen sää</title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-
-    <!-- Load web fonts asynchronously -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    
     <script>
       window.WebFontConfig = {
         google: {
@@ -121,7 +120,7 @@
         --color-pink: #ffd0d5;
         --color-yellow: var(--color-yellow-300);
         --color-gray: var(--color-gray-400);
-        --color-green: var(--color-green-300);
+        --color-green: hsl(152, 41%, 80%);
         --color-blue: var(--color-blue-800);
 
         /* component specific colors */
@@ -140,7 +139,8 @@
 
         /* Font */
         --font-family: 'Open Sans Condensed', sans-serif;
-        --font-family-secondary: sans-serif;
+
+        --font-family-heading: 'Open Sans Condensed', sans-serif;
 
         /* Responsive  */
         --padding-left-right-header: calc(var(--space-l) + env(safe-area-inset-left));
@@ -285,7 +285,7 @@
         --color-pink: #ffd0d5;
         --color-yellow: var(--color-yellow-300);
         --color-gray: var(--color-gray-400);
-        --color-green: hsl(152, 41%, 80%);
+        
         --color-blue: var(--color-blue-800);
 
         --color-blue-800: 	hsl(var(--color-blue-hue), 28%, 20%);
