@@ -71,7 +71,7 @@ class ForecastHeader extends LitElement {
         background-position: center;
       }
 
-      @media only screen and (min-width: 430px) {
+      @media only screen and (min-width: 400px) {
         header {
           border-top-left-radius: var(--border-radius);
           border-top-right-radius: var(--border-radius);

@@ -74,7 +74,7 @@ class BottomNotification extends LitElement {
         padding: 0 0 0 var(--space-l);
       }
 
-      @media only screen and (min-width: 430px) {
+      @media only screen and (min-width: 400px) {
         button {
           padding-bottom: 0;
         }
