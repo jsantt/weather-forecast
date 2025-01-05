@@ -14,6 +14,10 @@ class ComboBox extends LitElement {
         display: block;
       }
 
+      :host * {
+        box-sizing: border-box;
+      }
+
       ::selection {
         background-color: var(--color-yellow-500);
       }
@@ -29,13 +33,13 @@ class ComboBox extends LitElement {
       li {
         padding: var(--space-m) var(--space-s);
         margin: 0;
+        font-size: var(--font-size-m);
       }
 
       /*the container must be positioned relative:*/
       .combobox {
         position: relative;
-        display: inline-block;
-        width: 100%;
+        display: block;
       }
 
       .refresh,
@@ -87,12 +91,12 @@ class ComboBox extends LitElement {
         box-shadow: var(--box-shadow);
 
         color: var(--color-gray-800);
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-l);
         font-family: var(--font-family-primary);
         font-weight: var(--font-weight-boldest);
 
         margin: 0;
-        min-width: 15rem;
+        min-width: 100%;
         padding: 0.425rem var(--space-xl) 0.425rem var(--space-l);
         text-align: center;
 
@@ -126,13 +130,9 @@ class ComboBox extends LitElement {
         left: 0;
         right: 0;
 
-        background: var(--background-middle);
+        background: var(--background-home-station);
 
         color: var(--color-gray-600);
-      }
-
-      li {
-        font-weight: var(--font-weight-normal);
       }
 
       /* when navigating through the items using the arrow keys: */

@@ -175,13 +175,6 @@ class ForecastHeader extends LitElement {
   render() {
     return html`
       <header>
-        <div class="circle"></div>
-        <h2>
-          <span class="visually-hidden">Sää nyt paikassa</span>
-          <location-selector .loading="${this.loading}" .place="${this.place}">
-          </location-selector>
-        </h2>
-
         <station-map
           ?largeMap="${this.largeMap}"
           .location="${this.location}"

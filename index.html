@@ -108,7 +108,7 @@
         --color-snow: hsl(199, 85%, 71%);
 
         /* new colors */
-        --background: var(--color-turquoise);
+        --background: #c2d3db;;
         --background-middle: var(--color-gray-400);
         --background-topmost: var(--color-gray-300);
 
@@ -407,12 +407,6 @@
     </div>
 
     <script>
-      document.addEventListener(
-        'location-selector.location-changed',
-        (event) => {
-          document.querySelector('#place').innerHTML = event.detail.city;
-        }
-      );
 
       document.addEventListener('forecast-data.fetch-done', () => {
         const loadingView = document.getElementById('loading-view');

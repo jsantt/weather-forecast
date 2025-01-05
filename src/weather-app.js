@@ -62,6 +62,11 @@ class WeatherApp extends LitElement {
         padding-bottom: 5rem;
       }
 
+      .grid-location {
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+
       .grid-item {
         display: grid;
       }
@@ -106,6 +111,10 @@ class WeatherApp extends LitElement {
           max-width: 1000px;
         }
 
+        .grid-location {
+          max-width: 36rem;
+        }
+
         .grid-map {
           grid-column-start: 1;
           grid-column-end: 3;
@@ -123,7 +132,6 @@ class WeatherApp extends LitElement {
     return html`
       <!-- Observation / weather station data -->
       <observation-data .place="${this._forecastPlace}"> </observation-data>
-
       <forecast-data .location="${this._location}"> </forecast-data>
 
       <top-bar></top-bar>
@@ -136,12 +144,19 @@ class WeatherApp extends LitElement {
       ></bottom-sheet>
 
       <div class="grid-container" ?hidden="${this._firstLoading}">
+        <location-selector
+          class="grid-item grid-location"
+          .loading="${this._loading}"
+          .place="${this._forecastPlace}"
+        >
+        </location-selector>
+
         <weather-section
           transparent
           yellow
           class="grid-item grid-map"
           .padding=${false}
-          liftedHeading=${`Sää klo ${getTime(new Date())}`}
+          liftedHeading=${`Klo ${getTime(new Date())} havainnot`}
         >
           <slot name="place"></slot>
           <forecast-header
