@@ -111,7 +111,7 @@ class ForecastData extends LitElement {
     const params = ForecastData._commonParams(location);
 
     params.storedquery_id =
-      'fmi::forecast::harmonie::surface::point::timevaluepair';
+      'fmi::forecast::edited::weather::scandinavia::point::timevaluepair';
     params.parameters =
       'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3';
 
@@ -122,7 +122,7 @@ class ForecastData extends LitElement {
     const params: HarmonieParams = {
       request: 'getFeature',
       starttime: ForecastData._todayFirstHour(),
-      endtime: ForecastData._tomorrowLastHour(),
+      endtime: ForecastData._endTime(),
       parameters: undefined,
       storedquery_id: undefined,
     };
@@ -235,7 +235,7 @@ class ForecastData extends LitElement {
       previousRoundWind = roundWind;
       previousRoundWindGust = roundWindGust;
     }
-
+    
     return weatherJson;
   }
 
@@ -332,11 +332,11 @@ class ForecastData extends LitElement {
     return hour === 0 ? 24 : dateObject.getHours();
   }
 
-  static _tomorrowLastHour() {
+  static _endTime() {
     const now = new Date();
 
     const tomorrow = new Date();
-    tomorrow.setDate(now.getDate() + 2);
+    tomorrow.setDate(now.getDate() + 11);
     tomorrow.setHours(24, 0, 0, 0);
 
     return tomorrow.toISOString();
