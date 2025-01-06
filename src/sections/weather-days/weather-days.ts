@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
 
-import './weather-day.js';
+import './weather-day';
+import { ForecastDay } from '../../forecast-data.ts';
+import { property, state } from 'lit/decorators.js';
 
 class WeatherDays extends LitElement {
   static get is() {
@@ -59,7 +61,7 @@ class WeatherDays extends LitElement {
         .dayData="${this._day3Data}"
       ></weather-day>
 
-      <weather-day
+      <!--weather-day
         class="weatherGrid"
         dayNumber="4"
         .location="${this.location}"
@@ -127,65 +129,39 @@ class WeatherDays extends LitElement {
         .showFeelsLike="${this.showFeelsLike}"
         .showWind="${this.showWind}"
         .dayData="${this._day10Data}"
-      ></weather-day>
+      ></weather-day-->
     `;
   }
 
-  static get properties() {
-    return {
-      forecastData: {
-        type: Array,
-      },
+  @property({ type: Array })
+  forecastData?: ForecastDay[];
 
-      location: {
-        type: Object,
-        reflect: true,
-      },
+  @property({ type: Object })
+  location?: object;
 
-      showFeelsLike: {
-        type: Boolean,
-        reflect: true,
-      },
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike: boolean = false;
 
-      showWind: {
-        type: Boolean,
-        reflect: true,
-      },
+  @property({ type: Boolean, reflect: true })
+  showWind: boolean = false;
 
-      _todayData: {
-        type: Array,
-      },
+  @state()
+  _todayData = [];
 
-      _day2Data: {
-        type: Array,
-      },
+  _day2Data = [];
+  _day3Data = [];
+  _day4Data = [];
+  _day5Data = [];
+  _day6Data = [];
+  _day7Data = [];
+  _day8Data = [];
+  _day9Data = [];
+  _day10Data = [];
 
-      _day3Data: {
-        type: Array,
-      },
-
-      _minTemperature: {
-        type: Number,
-        reflect: true,
-      },
-    };
-  }
-
-  constructor() {
-    super();
-    this._todayData = [];
-    this._day2Data = [];
-    this._day3Data = [];
-    this._day5Data = [];
-    this._day6Data = [];
-    this._day7Data = [];
-    this._day8Data = [];
-    this._day9Data = [];
-    this._day10Data = [];
-  }
+  _minTemperature?: number;
 
   updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+    changedProperties.forEach((_oldValue, propName) => {
       if (propName === 'forecastData' && this.forecastData !== undefined) {
         this._todayData = WeatherDays._sliceDay(this.forecastData, 1);
         this._day2Data = WeatherDays._sliceDay(this.forecastData, 2);
@@ -198,7 +174,7 @@ class WeatherDays extends LitElement {
         this._day9Data = WeatherDays._sliceDay(this.forecastData, 9);
         this._day10Data = WeatherDays._sliceDay(this.forecastData, 10);
 
-        this._minTemperature = WeatherDays._minTemp(this.forecastData, 8);
+        this._minTemperature = WeatherDays._minTemp(this.forecastData);
       }
     });
   }

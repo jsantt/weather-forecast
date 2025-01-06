@@ -5,14 +5,37 @@ import './weather-description.js';
 
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
-import '../../common-components/wind-icon';
-import { isNight } from '../../data-helpers/sun-calculations';
+import '../../common-components/wind-icon.js';
+import { isNight } from '../../data-helpers/sun-calculations.js';
 import { isDayHighest, windClassification } from './wind-helper.js';
+import { property } from 'lit/decorators.js';
+import { ForecastDay } from '../../forecast-data.js';
 
 class WeatherDay extends LitElement {
   static get is() {
     return 'weather-day';
   }
+
+  @property({ type: Number, reflect: true })
+  dayNumber: number = 0;
+
+  @property({ type: Object })
+  location?: object;
+
+  @property({ type: Number, reflect: true })
+  minTemperature?: number;
+
+  @property({ type: Boolean, reflect: true })
+  showFeelsLike: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  showWind: boolean = false;
+
+  @property({ type: Array })
+  dayData: ForecastDay[];
+
+  @property({ type: Boolean, reflect: true })
+  debug: boolean = false;
 
   static get styles() {
     return css`
@@ -288,68 +311,31 @@ class WeatherDay extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      dayNumber: {
-        type: Number,
-        reflect: true,
-      },
-
-      location: {
-        type: Object,
-        reflect: true,
-      },
-
-      minTemperature: {
-        type: Number,
-        reflect: true,
-      },
-
-      showFeelsLike: {
-        type: Boolean,
-        reflect: true,
-      },
-
-      showWind: {
-        type: Boolean,
-        reflect: true,
-      },
-
-      dayData: {
-        type: Array,
-      },
-      debug: {
-        type: Boolean,
-        reflect: true,
-      },
-    };
-  }
-
   constructor() {
     super();
     this.debug = false;
     this.dayData = [];
   }
 
-  _isThird(index) {
+  _isThird(index: number) {
     if (this.debug === true) {
       return true;
     }
     return (index + 1) % 3 === 0;
   }
 
-  static _day(number) {
+  static _day(number: number) {
     const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
     return dayNames[number - 1];
   }
 
-  static _weekday(number) {
+  static _weekday(number: number) {
     const day = new Date();
     day.setDate(day.getDate() + (number - 1));
     return `${day.toLocaleString('fi-FI', { weekday: 'long' })}na`;
   }
 
-  static _round(item) {
+  static _round(item: number) {
     const rounded = Math.round(item);
     const result = Number.isNaN(rounded) ? '' : rounded;
 

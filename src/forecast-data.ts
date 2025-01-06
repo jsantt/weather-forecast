@@ -26,6 +26,29 @@ type HarmonieParams = {
   place?: string;
 };
 
+type ForecastDay = {
+  humidity: number;
+  time: number;
+  threeHourWindMax: number;
+
+  threeHourWindMaxGust: number;
+  rain: number;
+  roundWind: number;
+
+  roundWindGust: number;
+  snow: number;
+  wind: number;
+
+  windGust: number;
+  symbol: number;
+  temperature: number;
+
+  windDirection: number;
+  feelsLike?: number;
+  hour?: number;
+  rainType?: number;
+};
+
 /**
  *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.
  *
@@ -113,7 +136,7 @@ class ForecastData extends LitElement {
     params.storedquery_id =
       'fmi::forecast::edited::weather::scandinavia::point::timevaluepair';
     params.parameters =
-      'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3';
+      'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,WeatherSymbol3';
 
     return params;
   }
@@ -176,7 +199,7 @@ class ForecastData extends LitElement {
       temperature: getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature'),
       wind: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS'),
       windDirection: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection'),
-      windGust: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindGust'),
+      windGust: getTimeAndValuePairs(timeSeries, 'mts-1-1-HourlyMaximumGust'),
     };
 
     return harmonieResponse;
@@ -211,7 +234,7 @@ class ForecastData extends LitElement {
       const nextRoundWind = Math.round(nextWind);
       const nextRoundWindGust = Math.round(nextWindGust);
 
-      (weatherJson as any).push({
+      const forecastEntry: ForecastDay = {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
         rain,
@@ -230,12 +253,14 @@ class ForecastData extends LitElement {
           previousRoundWindGust,
           nextRoundWindGust
         ),
-      });
+      };
+
+      (weatherJson as any).push(forecastEntry);
 
       previousRoundWind = roundWind;
       previousRoundWindGust = roundWindGust;
     }
-    
+
     return weatherJson;
   }
 
@@ -353,3 +378,4 @@ class ForecastData extends LitElement {
 }
 
 export { ForecastData };
+export type { ForecastDay };

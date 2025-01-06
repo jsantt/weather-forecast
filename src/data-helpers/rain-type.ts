@@ -11,7 +11,7 @@ const icons = [
  * @param {Number} symbol - weather symbol
  * @returns {'rain'|'snow'|'thunder'|'slush'} rain type
  */
-function rainType(symbol) {
+function rainType(symbol: number) {
   for (const item of icons) {
     if (item.min < symbol && symbol < item.max) {
       return item.symbolName;
