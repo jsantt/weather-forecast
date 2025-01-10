@@ -10,6 +10,7 @@ import { isNight } from '../../data-helpers/sun-calculations.js';
 import { isDayHighest, windClassification } from './wind-helper.js';
 import { property } from 'lit/decorators.js';
 import { ForecastDay } from '../../forecast-data.js';
+import { getDayName, getDayNumber, getWeekday } from './time-texts.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -32,7 +33,7 @@ class WeatherDay extends LitElement {
   showWind: boolean = false;
 
   @property({ type: Array })
-  dayData: ForecastDay[];
+  dayData: ForecastDay[] = [];
 
   @property({ type: Boolean, reflect: true })
   debug: boolean = false;
@@ -51,6 +52,12 @@ class WeatherDay extends LitElement {
 
         color: var(--color-dark-and-light);
         display: block;
+        padding: var(--space-m) 0;
+        border-bottom: 3px solid var(--background);
+      }
+
+      :host([daynumber='10']) {
+        border-bottom: none;
       }
 
       .visually-hidden {
@@ -75,18 +82,31 @@ class WeatherDay extends LitElement {
         grid-template-rows: minmax(0rem, auto);
       }
 
+      :host([daynumber='2']) day,
+      :host([daynumber='4']) day,
+      :host([daynumber='6']) day,
+      :host([daynumber='8']) day,
+      :host([daynumber='10']) day {
+        background: var(--background);
+      }
+
       .day {
-        background-color: var(--color-blue-800);
-        color: var(--color-light);
+        border-radius: var(--border-radius);
         padding: var(--space-s) 0;
+        text-transform: capitalize;
       }
 
       .day-name {
         grid-column: span 25;
-        font-size: var(--font-size-l);
+        font-size: var(--font-size-m);
         font-weight: var(--font-weight-normal);
         margin: 0;
+        padding-right: var(--space-l);
         padding-left: var(--space-l);
+      }
+
+      .day-name--date {
+        float: right;
       }
 
       .symbol_svg {
@@ -220,9 +240,10 @@ class WeatherDay extends LitElement {
       <div class="weatherDay">
         <div class="weatherDay_grid">
           <h3 class="day day-name">
-            <span class="visually-hidden">Sää</span>
-            ${WeatherDay._day(this.dayNumber)}
-            ${WeatherDay._weekday(this.dayNumber)}
+            ${getDayName(this.dayNumber)} ${getWeekday(this.dayNumber)}
+            <span class="day-name--date">
+              ${getDayNumber(this.dayNumber)}
+            </span>
           </h3>
 
           <!-- headers here outside of repeat -->
@@ -268,7 +289,7 @@ class WeatherDay extends LitElement {
                             ? html`<span class="feels-like"
                                 >${entry.feelsLike}°</span
                               >`
-                            : html`${WeatherDay._round(entry.temperature)}<span
+                            : html`${WeatherDay.round(entry.temperature)}<span
                                   class="celcius"
                                   >°</span
                                 >`} `
@@ -311,36 +332,21 @@ class WeatherDay extends LitElement {
     `;
   }
 
-  constructor() {
-    super();
-    this.debug = false;
-    this.dayData = [];
-  }
-
-  _isThird(index: number) {
+  private _isThird(index: number) {
     if (this.debug === true) {
       return true;
     }
     return (index + 1) % 3 === 0;
   }
 
-  static _day(number: number) {
-    const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
-    return dayNames[number - 1];
-  }
-
-  static _weekday(number: number) {
-    const day = new Date();
-    day.setDate(day.getDate() + (number - 1));
-    return `${day.toLocaleString('fi-FI', { weekday: 'long' })}na`;
-  }
-
-  static _round(item: number) {
+  private static round(item: number) {
     const rounded = Math.round(item);
     const result = Number.isNaN(rounded) ? '' : rounded;
 
     return result;
   }
 }
+
+export { WeatherDay };
 
 window.customElements.define(WeatherDay.is, WeatherDay);

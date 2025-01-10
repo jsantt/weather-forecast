@@ -49,6 +49,7 @@ class WeatherApp extends LitElement {
         font-size: var(--font-size-s);
         border-radius: 0;
         text-align: center;
+        margin-top: var(--space-l);
       }
 
       .grid-container {

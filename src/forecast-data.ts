@@ -43,6 +43,9 @@ type ForecastDay = {
   symbol: number;
   temperature: number;
 
+  symbolAggregate?: number;
+  symbolCompactAggregate?: number;
+
   windDirection: number;
   feelsLike?: number;
   hour?: number;
@@ -111,8 +114,11 @@ class ForecastData extends LitElement {
         // enrich data here to keep logic inside components simple
         const hourAdded = ForecastData._addFullHour(json);
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
-        const forecastData = ForecastData._addSymbolAggregate(rainTypeAdded);
-        forecastData.fetchTime = new Date();
+        const symbolAggregateAdded =
+          ForecastData._addSymbolAggregate(rainTypeAdded);
+
+        const forecastData =
+          ForecastData._addSymbolAggregateForCompactMode(symbolAggregateAdded);
 
         this.dispatch('forecast-data.new-data', forecastData);
       })
@@ -284,22 +290,46 @@ class ForecastData extends LitElement {
     return result;
   }
 
+  static _addSymbolAggregateForCompactMode(forecastData: any[]) {
+    let previousItem = { symbol: -Infinity };
+    const forecast = forecastData.map((item, index) => {
+      const newItem = { ...item };
+
+      newItem.symbolCompactAggregate = Math.max(
+        previousItem.symbol,
+        item.symbol
+      );
+
+      if (index === 8 || index === 15 || index === 24) {
+        previousItem = { symbol: -Infinity };
+      } else {
+        previousItem = newItem;
+      }
+      return newItem;
+    });
+    return forecast;
+  }
+
   static _addSymbolAggregate(forecastData) {
-    let previousItem;
-    let currentItem;
+    let previousItem: ForecastDay;
+    let currentItem: ForecastDay;
 
     forecastData.forEach((item) => {
       previousItem = currentItem;
       currentItem = item;
 
-      if (currentItem.hour % 3 === 0) {
+      if (currentItem.hour && currentItem.hour % 3 === 0) {
         currentItem.symbolAggregate = Math.max(
           previousItem.symbol,
           currentItem.symbol
         );
       }
 
-      if (currentItem.hour % 4 === 0) {
+      if (
+        currentItem.hour &&
+        currentItem.hour % 4 === 0 &&
+        previousItem.symbolAggregate
+      ) {
         previousItem.symbolAggregate = Math.max(
           previousItem.symbolAggregate,
           currentItem.symbol
@@ -367,7 +397,7 @@ class ForecastData extends LitElement {
     return tomorrow.toISOString();
   }
 
-  dispatch(eventName: string, message?: string): void {
+  dispatch(eventName: string, message?: any): void {
     const event = new CustomEvent(eventName, {
       detail: message,
       bubbles: true,

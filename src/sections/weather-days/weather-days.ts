@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
 
 import './weather-day';
+import './weather-day-compact';
+
 import { ForecastDay } from '../../forecast-data.ts';
 import { property, state } from 'lit/decorators.js';
 
@@ -14,122 +16,59 @@ class WeatherDays extends LitElement {
       :host {
         display: block;
       }
-      .visually-hidden {
-        position: absolute !important;
-        clip: rect(1px, 1px, 1px, 1px);
-        padding: 0 !important;
-        border: 0 !important;
-        height: 1px !important;
-        width: 1px !important;
-        overflow: hidden;
-      }
     `;
+  }
+
+  @state()
+  days: boolean[] = [
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
+
+  private toggle(index: number) {
+    console.log('toggled', index, this.days);
+
+    const copy = [...this.days];
+    copy[index] = !copy[index];
+
+    this.days = copy;
   }
 
   render() {
     return html`
-      <h3 class="visually-hidden">sää tänään</h3>
-      <weather-day
-        class="weatherGrid"
-        dayNumber="1"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._todayData}"
-      ></weather-day>
-
-      <h3 class="visually-hidden">sää huomenna</h3>
-      <weather-day
-        class="weatherGrid"
-        dayNumber="2"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day2Data}"
-      ></weather-day>
-
-      <h3 class="visually-hidden">sää ylihuomenna</h3>
-      <weather-day
-        class="weatherGrid"
-        dayNumber="3"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day3Data}"
-      ></weather-day>
-
-      <!--weather-day
-        class="weatherGrid"
-        dayNumber="4"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day4Data}"
-      ></weather-day>
-
-      <weather-day
-        class="weatherGrid"
-        dayNumber="5"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day5Data}"
-      ></weather-day>
-
-      <weather-day
-        class="weatherGrid"
-        dayNumber="6"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day6Data}"
-      ></weather-day>
-
-      <weather-day
-        class="weatherGrid"
-        dayNumber="7"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day7Data}"
-      ></weather-day>
-
-      <weather-day
-        class="weatherGrid"
-        dayNumber="8"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day8Data}"
-      ></weather-day>
-
-      <weather-day
-        class="weatherGrid"
-        dayNumber="9"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day9Data}"
-      ></weather-day>
-
-      <weather-day
-        class="weatherGrid"
-        dayNumber="10"
-        .location="${this.location}"
-        .minTemperature="${this._minTemperature}"
-        .showFeelsLike="${this.showFeelsLike}"
-        .showWind="${this.showWind}"
-        .dayData="${this._day10Data}"
-      ></weather-day-->
+      ${this.days.map((day, index) => {
+        if (day) {
+          return html`<weather-day
+            @click=${() => this.toggle(index)}
+            class="weatherGrid"
+            dayNumber=${index + 1}
+            .location="${this.location}"
+            .minTemperature="${this._minTemperature}"
+            .showFeelsLike="${this.showFeelsLike}"
+            .showWind="${this.showWind}"
+            .dayData="${WeatherDays._sliceDay(this.forecastData, index + 1)}"
+          ></weather-day> `;
+        } else {
+          return html`<weather-day-compact
+            @click=${() => this.toggle(index)}
+            class="weatherGrid"
+            dayNumber=${index + 1}
+            .location="${this.location}"
+            .minTemperature="${this._minTemperature}"
+            .showFeelsLike="${this.showFeelsLike}"
+            .showWind="${this.showWind}"
+            .dayData="${WeatherDays._sliceDay(this.forecastData, index + 1)}"
+          ></weather-day-compact> `;
+        }
+      })}
     `;
   }
 
@@ -146,8 +85,7 @@ class WeatherDays extends LitElement {
   showWind: boolean = false;
 
   @state()
-  _todayData = [];
-
+  _day1Data = [];
   _day2Data = [];
   _day3Data = [];
   _day4Data = [];
@@ -163,7 +101,7 @@ class WeatherDays extends LitElement {
   updated(changedProperties) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === 'forecastData' && this.forecastData !== undefined) {
-        this._todayData = WeatherDays._sliceDay(this.forecastData, 1);
+        this._day1Data = WeatherDays._sliceDay(this.forecastData, 1);
         this._day2Data = WeatherDays._sliceDay(this.forecastData, 2);
         this._day3Data = WeatherDays._sliceDay(this.forecastData, 3);
         this._day4Data = WeatherDays._sliceDay(this.forecastData, 4);
