@@ -5,6 +5,12 @@ import './weather-day-compact';
 
 import { ForecastDay } from '../../forecast-data.ts';
 import { property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+
+type DayState = {
+  type: 'normal' | 'compact';
+  animation?: 'fading';
+};
 
 class WeatherDays extends LitElement {
   static get is() {
@@ -16,39 +22,67 @@ class WeatherDays extends LitElement {
       :host {
         display: block;
       }
+
+      .weatherGrid {
+        transition: opacity 0.15s;
+        opacity: 1;
+      }
+
+      .weatherGrid.fading {
+        opacity: 0;
+      }
     `;
   }
 
   @state()
-  days: boolean[] = [
-    true,
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
+  days: DayState[] = [
+    { type: 'normal' },
+    { type: 'normal' },
+    { type: 'compact' },
+    { type: 'compact' },
+    { type: 'compact' },
+    { type: 'compact' },
+    { type: 'compact' },
+    { type: 'compact' },
+    { type: 'compact' },
+    { type: 'compact' },
   ];
 
   private toggle(index: number) {
-    console.log('toggled', index, this.days);
-
     const copy = [...this.days];
-    copy[index] = !copy[index];
 
+    copy[index].animation = 'fading';
     this.days = copy;
+
+    setTimeout(() => {
+      const copy = [...this.days];
+      copy[index].animation = 'fading';
+      if (copy[index].type === 'compact') {
+        copy[index].type = 'normal';
+      } else {
+        copy[index].type = 'compact';
+      }
+
+      this.days = copy;
+    }, 150);
+    setTimeout(() => {
+      const copy = [...this.days];
+      copy[index].animation = undefined;
+      this.days = copy;
+
+      this.days = copy;
+    }, 300);
   }
 
   render() {
     return html`
       ${this.days.map((day, index) => {
-        if (day) {
+        if (day.type === 'compact') {
           return html`<weather-day
             @click=${() => this.toggle(index)}
-            class="weatherGrid"
+            class="weatherGrid ${classMap({
+              fading: day.animation === 'fading',
+            })}"
             dayNumber=${index + 1}
             .location="${this.location}"
             .minTemperature="${this._minTemperature}"
@@ -59,7 +93,9 @@ class WeatherDays extends LitElement {
         } else {
           return html`<weather-day-compact
             @click=${() => this.toggle(index)}
-            class="weatherGrid"
+            class="weatherGrid ${classMap({
+              fading: day.animation === 'fading',
+            })}"
             dayNumber=${index + 1}
             .location="${this.location}"
             .minTemperature="${this._minTemperature}"

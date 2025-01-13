@@ -121,8 +121,7 @@ class WeatherDay extends LitElement {
           class="temperature ${this.dayMax && this.dayMax < 0
             ? 'temperature--negative'
             : 'temperature--positive'}"
-        ></span
-        >${this.dayMax}<span class="celcius">°</span>
+        >${this.dayMax}°</span>
       </section>
 
       <div class="symbols">
