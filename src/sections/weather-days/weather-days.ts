@@ -22,15 +22,6 @@ class WeatherDays extends LitElement {
       :host {
         display: block;
       }
-
-      .weatherGrid {
-        transition: opacity 0.15s;
-        opacity: 1;
-      }
-
-      .weatherGrid.fading {
-        opacity: 0;
-      }
     `;
   }
 
@@ -64,14 +55,14 @@ class WeatherDays extends LitElement {
       }
 
       this.days = copy;
-    }, 150);
+    }, 200);
     setTimeout(() => {
       const copy = [...this.days];
       copy[index].animation = undefined;
       this.days = copy;
 
       this.days = copy;
-    }, 300);
+    }, 400);
   }
 
   render() {
@@ -100,7 +91,6 @@ class WeatherDays extends LitElement {
             .location="${this.location}"
             .minTemperature="${this._minTemperature}"
             .showFeelsLike="${this.showFeelsLike}"
-            .showWind="${this.showWind}"
             .dayData="${WeatherDays._sliceDay(this.forecastData, index + 1)}"
           ></weather-day-compact> `;
         }

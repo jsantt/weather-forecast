@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { roundRain } from './rain-helper.js';
+import { property } from 'lit/decorators.js';
 
 class RainAmount extends LitElement {
   static get is() {
@@ -8,6 +9,14 @@ class RainAmount extends LitElement {
 
   static get styles() {
     return css`
+      :host {
+        display: block;
+        padding: var(--space-l);
+      }
+
+      :host([empty]) {
+        padding: 0;
+      }
       .rain {
         fill: var(--color-rain);
       }
@@ -15,6 +24,14 @@ class RainAmount extends LitElement {
         fill: var(--color-snow);
       }
     `;
+  }
+
+  willUpdate() {
+    if (this.rainAmount <= 0 && this.snowAmount <= 0) {
+      this.empty = true;
+    } else {
+      this.empty = false;
+    }
   }
 
   render() {
@@ -66,6 +83,10 @@ class RainAmount extends LitElement {
       },
       snowAmount: {
         type: Number,
+      },
+      empty: {
+        type: Boolean,
+        reflect: true,
       },
     };
   }

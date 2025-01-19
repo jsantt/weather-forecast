@@ -53,7 +53,9 @@ class WeatherDay extends LitElement {
         color: var(--color-dark-and-light);
         display: block;
         padding: var(--space-m) 0;
-        border-bottom: 3px solid var(--background);
+        border-bottom: 2px solid var(--background);
+
+        opacity: 1;
       }
 
       :host([daynumber='10']) {
@@ -92,7 +94,7 @@ class WeatherDay extends LitElement {
 
       .day {
         border-radius: var(--border-radius);
-        padding: var(--space-s) 0;
+        padding: var(--space-m) 0;
         text-transform: capitalize;
       }
 
@@ -182,8 +184,6 @@ class WeatherDay extends LitElement {
 
         color: var(--color-dark-and-light);
         font-size: var(--font-size-s);
-
-        padding: var(--space-m) var(--space-l) var(--space-l) var(--space-l);
       }
 
       weather-description:empty {

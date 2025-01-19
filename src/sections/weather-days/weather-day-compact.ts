@@ -6,7 +6,6 @@ import './weather-description.js';
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
-import { windClassification } from './wind-helper.js';
 
 import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../forecast-data.js';
@@ -29,9 +28,6 @@ class WeatherDay extends LitElement {
 
   @property({ type: Boolean, reflect: true })
   showFeelsLike: boolean = false;
-
-  @property({ type: Boolean, reflect: true })
-  showWind: boolean = false;
 
   @property({ type: Array })
   dayData: ForecastDay[] = [];
@@ -76,7 +72,15 @@ class WeatherDay extends LitElement {
         gap: var(--space-m);
         grid-template-columns: 2fr 3fr 1fr;
 
-        border-bottom: 3px solid var(--background);
+        border-bottom: 2px solid var(--background);
+
+        transition: opacity 0.15s;
+
+        opacity: 1;
+      }
+
+      :host(.fading) .fade {
+        opacity: 0;
       }
 
       :host([daynumber='10']) {
@@ -104,11 +108,10 @@ class WeatherDay extends LitElement {
   }
 
   render() {
-    return html`
-      <header>
+    return html` <header>
         ${this.dayNumber === 1 ? 'Tänään' : getWeekdayShort(this.dayNumber)}
       </header>
-      <section>
+      <section class="fade">
         <span
           class="temperature ${this.dayMin && this.dayMin < 0
             ? 'temperature--negative'
@@ -121,10 +124,11 @@ class WeatherDay extends LitElement {
           class="temperature ${this.dayMax && this.dayMax < 0
             ? 'temperature--negative'
             : 'temperature--positive'}"
-        >${this.dayMax}°</span>
+          >${this.dayMax}°</span
+        >
       </section>
 
-      <div class="symbols">
+      <div class="symbols fade">
         <svg-icon
           large
           path="${`assets/image/weather-symbols.svg#weatherSymbol${
@@ -143,17 +147,7 @@ class WeatherDay extends LitElement {
             this.dayData[23].symbolCompactAggregate
           }${isNight(this.dayData[23].time, this.location) ? '-night' : ''}`}"
         ></svg-icon>
-      </div>
-      ${this.showWind
-        ? html` <wind-icon
-            .degrees="${this.dayData[0].windDirection}"
-            .rating="${windClassification(this.dayData[0].threeHourWindMax)}"
-            .windSpeed="${this.dayData[0].threeHourWindMax}"
-            .windGustSpeed="${this.dayData[0].threeHourWindMaxGust}"
-          >
-          </wind-icon>`
-        : null}
-    `;
+      </div>`;
   }
 }
 
