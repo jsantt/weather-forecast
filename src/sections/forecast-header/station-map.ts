@@ -63,7 +63,6 @@ class StationMap extends LitElement {
 
       text.selected-station {
         fill: var(--color-gray-800);
-        stroke: var(--color-gray-400);
       }
 
       circle.selected-station {
@@ -199,10 +198,10 @@ class StationMap extends LitElement {
    */
   static _viewBox(location?: { lon: number; lat: number }) {
     const width = 1.8;
-    const height = 2.2;
+    const height = 2;
 
     if (location === undefined) {
-      return '23.749041100000003 -61.4063682 1.8 2.2';
+      return '23.749041100000003 -61.4063682 1.8 2';
     }
 
     return `${location.lon - width / 2} -${

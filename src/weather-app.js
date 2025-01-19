@@ -157,7 +157,7 @@ class WeatherApp extends LitElement {
           yellow
           class="grid-item grid-map"
           .padding=${false}
-          liftedHeading=${`Klo ${getTime(new Date())} havainnot`}
+          liftedHeading=${`Klo ${getTime(new Date())} havainnot "kartalla"`}
         >
           <slot name="place"></slot>
           <forecast-header

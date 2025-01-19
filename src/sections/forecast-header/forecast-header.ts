@@ -65,7 +65,6 @@ class ForecastHeader extends LitElement {
         position: relative;
 
         background: var(--color-blue-600);
-        background-image: var(--background-image);
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
