@@ -273,6 +273,7 @@ class WeatherApp extends LitElement {
       window.localStorage.setItem('beta', true);
     }
 
+    this._largeMap = true;
     this._firstLoading = true;
     this._forecastError = false;
 
