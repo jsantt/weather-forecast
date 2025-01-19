@@ -70,7 +70,7 @@ class WeatherDay extends LitElement {
         display: grid;
         align-items: center;
         gap: var(--space-m);
-        grid-template-columns: 2fr 3fr 1fr;
+        grid-template-columns: 6rem 3rem 2fr 1fr;
 
         border-bottom: 2px solid var(--background);
 
@@ -97,7 +97,7 @@ class WeatherDay extends LitElement {
         display: flex;
       }
 
-      section {
+      .temperature {
         font-size: var(--font-size-l);
       }
 
@@ -111,38 +111,35 @@ class WeatherDay extends LitElement {
     return html` <header>
         ${this.dayNumber === 1 ? 'Tänään' : getWeekdayShort(this.dayNumber)}
       </header>
-      <section class="fade">
-        <span
-          class="temperature ${this.dayMin && this.dayMin < 0
-            ? 'temperature--negative'
-            : 'temperature--positive'}"
-        >
-          ${this.dayMin}°</span
-        >
-        ...
-        <span
-          class="temperature ${this.dayMax && this.dayMax < 0
-            ? 'temperature--negative'
-            : 'temperature--positive'}"
-          >${this.dayMax}°</span
-        >
-      </section>
+
+      <div
+        class="temperature ${this.dayMin && this.dayMin < 0
+          ? 'temperature--negative'
+          : 'temperature--positive'}"
+      >
+        ${this.dayMin}°
+      </div>
+
+      <div
+        class="temperature ${this.dayMax && this.dayMax < 0
+          ? 'temperature--negative'
+          : 'temperature--positive'}"
+      >
+        ${this.dayMax}°
+      </div>
 
       <div class="symbols fade">
         <svg-icon
-          large
           path="${`assets/image/weather-symbols.svg#weatherSymbol${
             this.dayData[8].symbolCompactAggregate
           }${isNight(this.dayData[9].time, this.location) ? '-night' : ''}`}"
         ></svg-icon>
         <svg-icon
-          large
           path="${`assets/image/weather-symbols.svg#weatherSymbol${
             this.dayData[15].symbolCompactAggregate
           }${isNight(this.dayData[14].time, this.location) ? '-night' : ''}`}"
         ></svg-icon>
         <svg-icon
-          large
           path="${`assets/image/weather-symbols.svg#weatherSymbol${
             this.dayData[23].symbolCompactAggregate
           }${isNight(this.dayData[23].time, this.location) ? '-night' : ''}`}"

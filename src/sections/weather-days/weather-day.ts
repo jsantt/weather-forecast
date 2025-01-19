@@ -95,6 +95,9 @@ class WeatherDay extends LitElement {
       .day {
         border-radius: var(--border-radius);
         padding: var(--space-m) 0;
+      }
+
+      .day::first-letter {
         text-transform: capitalize;
       }
 
@@ -246,14 +249,11 @@ class WeatherDay extends LitElement {
             </span>
           </h3>
 
-          <!-- headers here outside of repeat -->
-
           <weather-description .dayData="${this.dayData}">
           </weather-description>
 
           ${this.dayData.map((entry, index) => {
             return html`
-              <!-- EMPTY COLUMN -->
               ${index === 0 && this.debug !== true
                 ? html`
                     <div class="symbol--empty"></div>
