@@ -68,7 +68,7 @@ class WeatherDays extends LitElement {
   render() {
     return html`
       ${this.days.map((day, index) => {
-        if (day.type === 'compact') {
+        if (day.type === 'normal') {
           return html`<weather-day
             @click=${() => this.toggle(index)}
             class="weatherGrid ${classMap({
