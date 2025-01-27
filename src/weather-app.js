@@ -61,6 +61,7 @@ class WeatherApp extends LitElement {
 
         padding: var(--padding-body);
         padding-bottom: 5rem;
+        padding-top: 0;
       }
 
       .grid-location {
@@ -154,7 +155,7 @@ class WeatherApp extends LitElement {
 
         <weather-section
           transparent
-          yellow
+          blue
           class="grid-item grid-map"
           .padding=${false}
           liftedHeading=${`Klo ${getTime(new Date())} havainnot "kartalla"`}
