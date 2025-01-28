@@ -10,27 +10,26 @@ class TopBar extends LitElement {
       }
 
       header {
-        padding: var(--padding-header);
+        padding: 1.5rem var(--margin) calc(var(--space-xl) + var(--margin))
+          var(--margin);
         color: var(--color-dark-and-light);
 
-        font-size: var(--font-size-s);
         display: grid;
         align-items: center;
         grid-template-columns: auto 1fr;
         grid-template-rows: 1fr;
-        grid-template-areas:
-          'icon heading';
+        grid-template-areas: 'icon heading';
 
-        gap: var(--space-m)
+        gap: var(--space-m);
       }
 
       .icon {
         grid-area: icon;
         background: var(--color-yellow);
-  border-radius: 12px;
-  padding: var(--space-m);
-        width: 44px;
-        height: 44px;
+        border-radius: 12px;
+        padding: var(--space-m);
+        width: 28px;
+        height: 28px;
       }
 
       .heading {
@@ -40,7 +39,7 @@ class TopBar extends LitElement {
       h1 {
         font-family: var(--font-family-heading);
         text-align: left;
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-m);
         line-height: 1;
         margin: 0;
         padding: 0;
@@ -56,6 +55,23 @@ class TopBar extends LitElement {
         line-height: 1;
         margin: 0;
         padding: 0;
+      }
+
+      @media only screen and (min-width: 600px) {
+        header {
+          padding-top: var(--space-xl);
+        }
+        .icon {
+          width: 44px;
+          height: 44px;
+        }
+        h1 {
+          font-size: var(--font-size-l);
+        }
+        h2 {
+          font-size: var(--font-size-m);
+        }
+      }
     `;
   }
 

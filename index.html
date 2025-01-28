@@ -133,7 +133,7 @@
         --background-wind-warning2: var(--color-red-500);
         --color--wind-warning: var(--color-light);
 
-        --background-home-station: var(--color-gray-300);
+        --background-home-station: var(--color-gray-400);
 
         /* Font */
         --font-family: 'Open Sans Condensed', sans-serif;
@@ -141,30 +141,36 @@
         --font-family-heading: 'Open Sans Condensed', sans-serif;
 
         /* Responsive  */
-        --padding-left-right-header: calc(var(--space-l) + env(safe-area-inset-left));
 
+        --margin: 0rem;
         --padding-body: 0;
         --padding-panel: 0;
         --padding-panel-textual: var(--space-xl) var(--space-m);
 
-        --padding-header: var(--space-xl) var(--padding-left-right-header)  var(--space-xl)  var(--padding-left-right-header) ;
         --border-radius: 0;
+
+        @media only screen and (min-width: 360px) {
+          --margin: var(--space-s);
+        }
+
 
         @media only screen and (min-width: 400px) {
 
-          --padding-body: var(--space-m) var(--padding-left-right-header);
+          --margin: var(--space-m);
           --padding-panel: var(--space-m) var(--space-m);
           --border-radius: 2px;
 
           --padding-panel-textual: var(--space-l) var(--space-l);
         }
+        @media only screen and (min-width: 450px) {
+          --margin: var(--space-l);
+        }
 
         @media only screen and (min-width: 600px) {
-          --padding-body: var(--space-l) var(--padding-left-right-header);
+          --margin: var(--space-xl);
         }
 
         @media only screen and (min-width: 1200px) {
-          --padding-left-right-header: 3rem;
         }
 
         
@@ -262,7 +268,7 @@
         --background-wind-warning2: var(--color-red-500);
         --color-wind-warning2: var(--color-light);
 
-        --background-home-station: var(--color-gray-400);
+        --background-home-station: var(--color-gray-500);
 
         /* new colors, dark mode */
         --background: var(--color-gray-1000);

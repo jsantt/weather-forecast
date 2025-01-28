@@ -66,8 +66,8 @@ class StationMap extends LitElement {
       }
 
       circle.selected-station {
-        fill: var(--color-gray-400);
-        stroke: var(--color-gray-400);
+        fill: var(--background-home-station);
+        stroke: var(--background-home-station);
       }
 
       circle.original-location {
