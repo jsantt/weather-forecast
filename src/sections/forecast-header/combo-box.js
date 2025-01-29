@@ -44,7 +44,8 @@ class ComboBox extends LitElement {
 
       .refresh,
       .close {
-        fill: var(--color-gray-800);
+        color: var(--color-dark-and-light);
+        fill: var(--color-dark-and-light);
         position: absolute;
         right: 3px;
         top: 6px;
@@ -56,12 +57,6 @@ class ComboBox extends LitElement {
       :host([_loadingPlus]) .refresh {
         animation: spin 1s infinite linear;
         transform-origin: center center;
-      }
-
-      :host([_loadingPlus]) input[type='text'],
-      :host([_loadingPlus]) .refresh {
-        color: var(--color-gray-600);
-        fill: var(--color-gray-600);
       }
 
       @keyframes spin {
@@ -85,12 +80,11 @@ class ComboBox extends LitElement {
       }
 
       input[type='text'] {
-        background: var(--background-home-station);
+        background: var(--background-middle);
         border: none;
         border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
 
-        color: var(--color-gray-800);
+        color: var(--color-dark-and-light);
         font-size: var(--font-size-l);
         font-family: var(--font-family-primary);
         font-weight: var(--font-weight-boldest);
@@ -112,6 +106,11 @@ class ComboBox extends LitElement {
         padding-left: 2rem;
         padding-right: 2rem;
         transition: padding var(--transition-time);
+        box-shadow: var(--box-shadow);
+      }
+
+      :host([_open]) smooth-expand {
+        box-shadow: var(--box-shadow);
       }
 
       input[type='text']:focus {
@@ -130,9 +129,8 @@ class ComboBox extends LitElement {
         left: 0;
         right: 0;
 
-        background: var(--background-home-station);
-
-        color: var(--color-gray-600);
+        background: var(--background-middle);
+        color: var(--color-dark-and-light);
       }
 
       /* when navigating through the items using the arrow keys: */
