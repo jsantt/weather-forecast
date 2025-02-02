@@ -58,6 +58,7 @@ class ForecastHeader extends LitElement {
       }
 
       header {
+        border-radius: var(--border-radius);
         margin-bottom: calc(-1 * (var(--header-background-expand)));
         padding-bottom: var(--header-background-expand);
 
@@ -68,13 +69,6 @@ class ForecastHeader extends LitElement {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
-      }
-
-      @media only screen and (min-width: 400px) {
-        header {
-          border-top-left-radius: var(--border-radius);
-          border-top-right-radius: var(--border-radius);
-        }
       }
 
       h2 {
