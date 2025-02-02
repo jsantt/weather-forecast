@@ -114,7 +114,8 @@ class WeatherApp extends LitElement {
         }
 
         .grid-location {
-          max-width: 36rem;
+          grid-column-start: 1;
+          grid-column-end: 3;
         }
 
         .grid-map {
