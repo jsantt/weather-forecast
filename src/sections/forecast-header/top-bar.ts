@@ -95,7 +95,7 @@ class TopBar extends LitElement {
       </svg>
       <div class="heading">
         <h1>Saaennuste<span>.fi</span></h1>
-        <h2>Ilmatieteen laitoksen sää yhdellä vilkaisulla</h2>
+        <h2>Nopein tapa tarkastaa Ilmatieteen laitoksen sää</h2>
       </div>
     </header> `;
   }

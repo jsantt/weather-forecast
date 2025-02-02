@@ -48,27 +48,21 @@ class WeatherInfo extends LitElement {
         ></svg-icon>
 
         <p>
-          Sääennuste kokoaa Ilmatieteen laitoksen havainnot, sääennusteen,
-          sadetutkan jne yhteen. Näet tuntikohtaiset sadepylväät, tuuli- sade-
-          ja lumimäärät yhdellä vilkaisulla &ndash; myös kännykän ruudulta.
+          Saaennuste.fi esittää Ilmatieteen laitoksen viralliset havainnot
+          paremmassa muodossa. Saat yleiskuvan ja tarpeelliset yksityiskohdat
+          vähemmällä klikkailulla - myös kännykän pieneltä ruudulta.
         </p>
 
-        <h3>Ilmatieteen laitoksen sää</h3>
+        <h3>Havainnot "kartalla"</h3>
         <p>
-          Sääennuste perustuu Ilmatieteen laitoksen viralliseen ennusteeseen.
-        </p>
-
-        <h3>Sää nyt</h3>
-        <p>
-          Sää nyt lasketaan lähistön sääasemien tiedoista. Sääasemat näkyvät
-          "kartalla" oikeassa suunnassas siten, että päällekkäin meneviä asemia
-          on siirretty mahdollisimman vähän. Klikkaamalla sääasemaa, näet kaikki
-          asemalta saatavissa olevat tiedot.
+          Havainnot "kartalla" näyttää lähistön sääasemien tiedot "kartalla"
+          oikeassa suunnassa siten, että päällekkäin meneviä asemia on siirretty
+          mahdollisimman vähän.
         </p>
 
         <h3>Yksityisyys</h3>
         Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja käyttäytyminen
-        kerätään käyttäjää tunnistamatta eikä sinun tarvitse hyväksyä turhia
+        kerätään käyttäjää tunnistamatta, joten sinun tarvitse hyväksyä turhia
         käyttöehtoja.
         <div slot="footer-left"></div>
         <div slot="footer-right">
@@ -78,7 +72,7 @@ class WeatherInfo extends LitElement {
         <h3>Palaute</h3>
         <p>
           Onko jokin rikki, puuttuuko ominaisuus tai onko sinulla idea miten
-          parantaisit sovellusta? palaute@saaennuste.fi
+          parantaisit sovellusta? Ota yhteyttä palaute@saaennuste.fi.
         </p>
       </weather-section>
     `;
