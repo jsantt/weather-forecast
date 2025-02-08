@@ -48,8 +48,8 @@ class StationMap extends LitElement {
       }
 
       circle {
-        stroke: var(--color-blue-800);
-        fill: var(--color-blue-800);
+        stroke: var(--background-station);
+        fill: var(--background-station);
       }
       /* for debugging
       circle.collides {
@@ -58,7 +58,7 @@ class StationMap extends LitElement {
       */
       text {
         font-synthesis: style;
-        fill: var(--color-gray-300);
+        fill: var(--color-light);
       }
 
       text.selected-station {
@@ -66,8 +66,8 @@ class StationMap extends LitElement {
       }
 
       circle.selected-station {
-        fill: var(--background-home-station);
-        stroke: var(--background-home-station);
+        fill: var(--background-selected-station);
+        stroke: var(--background-selected-station);
       }
 
       circle.original-location {

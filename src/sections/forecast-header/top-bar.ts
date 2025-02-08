@@ -39,7 +39,7 @@ class TopBar extends LitElement {
       h1 {
         font-family: var(--font-family-heading);
         text-align: left;
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-l);
         line-height: 1;
         margin: 0;
         padding: 0;
@@ -66,7 +66,7 @@ class TopBar extends LitElement {
           height: 44px;
         }
         h1 {
-          font-size: var(--font-size-l);
+          font-size: var(--font-size-xl);
         }
         h2 {
           font-size: var(--font-size-m);

@@ -55,14 +55,14 @@ class WeatherDays extends LitElement {
       }
 
       this.days = copy;
-    }, 200);
+    }, 20);
     setTimeout(() => {
       const copy = [...this.days];
       copy[index].animation = undefined;
       this.days = copy;
 
       this.days = copy;
-    }, 400);
+    }, 40);
   }
 
   render() {

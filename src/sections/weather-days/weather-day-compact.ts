@@ -73,14 +73,6 @@ class WeatherDay extends LitElement {
         grid-template-columns: 6rem 3rem 2fr 1fr;
 
         border-bottom: 2px solid var(--background);
-
-        transition: opacity 0.15s;
-
-        opacity: 1;
-      }
-
-      :host(.fading) .fade {
-        opacity: 0;
       }
 
       :host([daynumber='10']) {

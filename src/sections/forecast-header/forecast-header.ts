@@ -65,7 +65,7 @@ class ForecastHeader extends LitElement {
         /* anchor for h2 */
         position: relative;
 
-        background: var(--color-blue-600);
+        background: var(--background-map);
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
@@ -96,7 +96,6 @@ class ForecastHeader extends LitElement {
       }
 
       .selected {
-        color: var(--color-light);
         display: grid;
         grid-template-columns: auto 1fr 1fr;
         grid-template-rows: auto auto auto var(--space-m);
@@ -120,6 +119,7 @@ class ForecastHeader extends LitElement {
       }
 
       .selected-name {
+        color: var(--color-light);
         grid-area: name;
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
@@ -158,7 +158,6 @@ class ForecastHeader extends LitElement {
       }
 
       station-details {
-        color: var(--color-light);
         margin: var(--space-l) 0 var(--space-l) 0;
         padding: 0;
       }
