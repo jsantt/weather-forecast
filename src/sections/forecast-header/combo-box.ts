@@ -2,11 +2,43 @@ import { css, html, LitElement } from 'lit';
 
 import '../../common-components/smooth-expand.js';
 import '../../common-components/svg-icon.js';
+import { property, query, state } from 'lit/decorators.js';
 
 class ComboBox extends LitElement {
   static get is() {
     return 'combo-box';
   }
+
+  @query('#comboInput')
+  _combobox?: HTMLInputElement;
+
+  @property({ type: String, reflect: true })
+  currentValue?: string;
+
+  @property({ type: Array })
+  items: { city: string }[] = [];
+
+  @property({ type: String, reflect: true })
+  key?: string;
+
+  @property({ type: Boolean, reflect: true })
+  loading: boolean = false;
+
+  // loading plus some delay, as users might not otherwise notice the loading
+  @property({ type: Boolean, reflect: true })
+  _loadingPlus: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  _open: boolean = false;
+
+  @state()
+  private _filteredItems: { city: string }[] = [];
+
+  @state()
+  private _focusIndex: number = -1;
+
+  @state()
+  private _previousValue?: string;
 
   static get styles() {
     return css`
@@ -153,12 +185,9 @@ class ComboBox extends LitElement {
   }
 
   render() {
-    // This is needed for iOS to show the city inside combobox when
-    // navigating back from other page using iOS,
-
-    if (this._combobox != null && this._combobox.value === '') {
+    /*if (this._combobox?.value === '' && this.currentValue) {
       this._combobox.value = this.currentValue;
-    }
+    }*/
 
     return html`
       <form autocomplete="off" spellcheck="false">
@@ -172,7 +201,10 @@ class ComboBox extends LitElement {
         >
           <input
             id="comboInput"
+            @input=${() => this.onInput()}
+            @keydown=${(ev: KeyboardEvent) => this.onKeyDown(ev)}
             autocomplete="off"
+            .value=${this.currentValue ?? ''}
             type="text"
             name="myCountry"
             aria-label="Sää paikassa"
@@ -206,42 +238,22 @@ class ComboBox extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      currentValue: { type: String, reflect: true },
-      items: { type: Array },
-      key: { type: String, reflect: true },
-      loading: { type: Boolean, reflect: true },
-      _filteredItems: { type: Array },
-      _focusIndex: { type: Number, reflect: true },
-      // loading plus some delay, as users might not otherwise notice the loading
-      _loadingPlus: { type: Boolean, reflect: true },
-      _open: { type: Boolean, reflect: true },
-      _previousValue: { type: Object },
-    };
+  private onInput() {
+    const inputValue = this._combobox?.value;
+    this._filteredItems = this._filterItems(inputValue);
+    this._openCombobox();
   }
 
-  constructor() {
-    super();
-    this._filteredItems = [];
+  private onKeyDown(ev: KeyboardEvent) {
+    this._onKeyPress(ev);
   }
 
-  firstUpdated() {
-    this._combobox.addEventListener('input', () => {
-      const inputValue = this._combobox.value;
-      this._filteredItems = this._filterItems(inputValue);
-      this._openCombobox();
-    });
-
-    this._combobox.addEventListener('keydown', (event) => {
-      this._onKeyPress(event);
-    });
-  }
-
-  updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
+  updated(changedProperties: Map<string, any>) {
+    changedProperties.forEach((_, propName) => {
       if (propName === 'currentValue') {
-        this._combobox.value = this.currentValue;
+        if (this.currentValue && this._combobox) {
+          this._combobox.value = this.currentValue;
+        }
 
         if (this.currentValue === '') {
           this._filteredItems = this.items;
@@ -281,10 +293,14 @@ class ComboBox extends LitElement {
     this._dispatch('combo-box.new-value', this.currentValue);
   }
 
-  _setFocus(itemIndex) {
+  _setFocus(itemIndex: number) {
     this._clearSelected();
 
-    const items = this.shadowRoot.querySelectorAll('li');
+    const items = this.shadowRoot?.querySelectorAll('li');
+
+    if (!items) {
+      return;
+    }
 
     if (items[itemIndex] === undefined) {
       this._focusIndex = -1;
@@ -294,19 +310,26 @@ class ComboBox extends LitElement {
     }
   }
 
-  _filterItems(filterText) {
-    const filtered = this.items.filter((item) => {
+  _filterItems(filterText?: string): { city: string }[] {
+    if (!filterText) {
+      return this.items;
+    }
+
+    const filtered = this.items?.filter((item) => {
       return (
         item.city.substr(0, filterText.length).toLowerCase() ===
         filterText.toLowerCase()
       );
     });
 
-    return filtered;
+    return filtered ?? [];
   }
 
-  _highlightMatch(city) {
-    const inputValue = this._combobox.value;
+  _highlightMatch(city: string) {
+    const inputValue = this._combobox?.value;
+    if (!inputValue) {
+      return html`${city}`;
+    }
 
     return html`<strong>${city.substr(0, inputValue.length)}</strong
       >${city.substr(inputValue.length)}`;
@@ -318,7 +341,7 @@ class ComboBox extends LitElement {
 
   _closeCombobox() {
     this._open = false;
-    if (this._combobox.value === '') {
+    if (this._combobox?.value === '') {
       this.currentValue = this._previousValue;
     }
   }
@@ -335,7 +358,7 @@ class ComboBox extends LitElement {
   }
 
   _clearSelected() {
-    this.shadowRoot.querySelectorAll('li').forEach((item) => {
+    this.shadowRoot?.querySelectorAll('li').forEach((item) => {
       item.removeAttribute('aria-selected');
     });
   }
@@ -344,7 +367,7 @@ class ComboBox extends LitElement {
    * Handle keyboard navigation
    * @param {*} event
    */
-  _onKeyPress(event) {
+  _onKeyPress(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 40 /* arrow DOWN */:
         this._focusIndex += 1;
@@ -363,7 +386,7 @@ class ComboBox extends LitElement {
 
         // and simulate a click on the "focused" item
         const selectedItem =
-          this.shadowRoot.querySelectorAll('li')[this._focusIndex];
+          this.shadowRoot?.querySelectorAll('li')[this._focusIndex];
         if (selectedItem !== undefined) {
           selectedItem.click();
         }
@@ -377,17 +400,13 @@ class ComboBox extends LitElement {
     }
   }
 
-  _dispatch(eventName, message) {
+  _dispatch(eventName: string, message?: string) {
     const event = new CustomEvent(eventName, {
       detail: message,
       bubbles: true,
       composed: true,
     });
     this.dispatchEvent(event);
-  }
-
-  get _combobox() {
-    return this.shadowRoot.getElementById('comboInput');
   }
 }
 

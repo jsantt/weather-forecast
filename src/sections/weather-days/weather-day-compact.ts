@@ -38,8 +38,8 @@ class WeatherDay extends LitElement {
   @state()
   dayMax?: number;
 
-  willUpdate(changedProperties) {
-    if (changedProperties.has('dayData')) {
+  willUpdate(changedProperties: Map<string, any>) {
+    if (changedProperties.has('dayData') && this.dayData) {
       this.dayMin = Math.round(
         this.dayData.reduce((min, entry) => {
           if (!Number.isNaN(entry.temperature)) {

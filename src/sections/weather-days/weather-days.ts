@@ -124,7 +124,7 @@ class WeatherDays extends LitElement {
 
   _minTemperature?: number;
 
-  updated(changedProperties) {
+  updated(changedProperties: Map<string, any>) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === 'forecastData' && this.forecastData !== undefined) {
         this._day1Data = WeatherDays._sliceDay(this.forecastData, 1);
@@ -146,6 +146,18 @@ class WeatherDays extends LitElement {
   // for computed properties
 
   static _sliceDay(data, dayNumber) {
+    if (data === undefined) {
+      return;
+    }
+
+    try {
+      data[(dayNumber - 1) * 24];
+      data[dayNumber * 24];
+    } catch (e) {
+      console.log('cannot slice', data, dayNumber);
+      return;
+    }
+
     return data.slice((dayNumber - 1) * 24, dayNumber * 24);
   }
 

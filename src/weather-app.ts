@@ -2,31 +2,71 @@ import { css, html, LitElement } from 'lit';
 
 import { getTime } from './data-helpers/time.ts';
 
-import './forecast-data';
-import './observation-data';
+import './forecast-data.ts';
+import './observation-data.ts';
 
 import './sections/forecast-header/top-bar.ts';
 
-import './weather-section';
+import './weather-section.ts';
 
-import './sections/forecast-header/forecast-header';
+import './sections/forecast-header/forecast-header.ts';
 
-import './sections/bottom-sheet/bottom-sheet';
-import('./sections/external-links');
+import './sections/bottom-sheet/bottom-sheet.ts';
+import { property } from 'lit/decorators.js';
+import('./sections/external-links.js');
 
-import('./sections/sunrise-sunset');
-import('./sections/weather-info');
+import('./sections/sunrise-sunset.js');
+import('./sections/weather-info.ts');
 
-import('./sections/symbol-list');
-import('./sections/weather-days/weather-days');
-import('./sections/share-app');
-import('./common-components/error-notification');
-import('./sections/app-copyright');
+import('./sections/symbol-list.js');
+import('./sections/weather-days/weather-days.ts');
+import('./sections/share-app.js');
+import('./common-components/error-notification.js');
+import('./sections/app-copyright.ts');
 
 class WeatherApp extends LitElement {
   static get is() {
     return 'weather-app';
   }
+
+  @property({ type: Object })
+  _currentPlace?: object;
+
+  @property({ type: Boolean })
+  _darkMode: boolean = false;
+
+  @property({ type: Boolean })
+  _firstLoading: boolean = false;
+
+  @property({ type: Array })
+  _forecastData?: any[];
+
+  @property({ type: Boolean })
+  _forecastError: boolean = false;
+
+  @property({ type: Object })
+  _forecastPlace?: { region: string };
+
+  @property({ type: Boolean, reflect: true })
+  _largeMap: boolean = true;
+
+  @property({ type: Boolean, reflect: true })
+  _loading: boolean = false;
+
+  @property({ type: Object, reflect: true })
+  _location?: object;
+
+  @property({ type: Boolean, reflect: true })
+  _showFeelsLike: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  _showWind: boolean = false;
+
+  @property({ type: Array })
+  _observationData?: any[];
+
+  @property({ type: Boolean })
+  _observationError: boolean = false;
 
   static get styles() {
     return css`
@@ -224,69 +264,19 @@ class WeatherApp extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      _currentPlace: {
-        type: Object,
-      },
-      _darkMode: {
-        type: Boolean,
-      },
-      _firstLoading: {
-        type: Boolean,
-      },
-      _forecastData: {
-        type: Array,
-      },
-      _forecastError: {
-        type: Boolean,
-      },
-      _forecastPlace: {
-        type: Object,
-      },
-      _largeMap: {
-        type: Boolean,
-      },
-      _loading: {
-        type: Boolean,
-      },
-      _location: {
-        type: Object,
-      },
-      _showFeelsLike: {
-        type: Boolean,
-      },
-      _showWind: {
-        type: Boolean,
-      },
-      _observationData: {
-        type: Array,
-      },
-      _observationError: {
-        type: Boolean,
-      },
-    };
-  }
-
   constructor() {
     super();
 
     if (window.location.href.includes('beta')) {
-      window.localStorage.setItem('beta', true);
+      window.localStorage.setItem('beta', 'true');
     }
 
-    this._largeMap = true;
-    this._firstLoading = true;
-    this._forecastError = false;
-
-    this._showWind = false;
-    this._showFeelsLike = false;
-    this._darkMode = false;
-
     // user changes location
-    this.addEventListener('location-selector.location-changed', (event) => {
+    this.addEventListener('location-selector.location-changed', ((
+      event: CustomEvent
+    ) => {
       this._location = { ...event.detail };
-    });
+    }) as EventListener);
 
     // forecast data
     this.addEventListener('forecast-data.fetching', () => {
@@ -299,14 +289,14 @@ class WeatherApp extends LitElement {
       this._firstLoading = false;
     });
 
-    this.addEventListener('forecast-data.new-data', (event) => {
+    this.addEventListener('forecast-data.new-data', ((event: CustomEvent) => {
       this._forecastError = false;
       this._forecastData = event.detail;
-    });
+    }) as EventListener);
 
-    this.addEventListener('forecast-data.new-place', (event) => {
+    this.addEventListener('forecast-data.new-place', ((event: CustomEvent) => {
       this._forecastPlace = event.detail;
-    });
+    }) as EventListener);
 
     this.addEventListener('forecast-data.fetch-error', () => {
       this._forecastError = true;
@@ -314,10 +304,12 @@ class WeatherApp extends LitElement {
 
     // observation data
 
-    this.addEventListener('observation-data.new-data', (event) => {
+    this.addEventListener('observation-data.new-data', ((
+      event: CustomEvent
+    ) => {
       this._observationError = false;
       this._observationData = event.detail;
-    });
+    }) as EventListener);
 
     this.addEventListener('observation-data.fetch-error', () => {
       this._observationError = true;
@@ -339,9 +331,9 @@ class WeatherApp extends LitElement {
       this._showFeelsLike = !this._showFeelsLike;
     });
 
-    this.addEventListener('station-map.selected', (e) => {
+    this.addEventListener('station-map.selected', ((e: CustomEvent) => {
       this._stationSelected(e);
-    });
+    }) as EventListener);
 
     this.addEventListener('bottom-sheet.toggleMapSize', () => {
       this._toggleMapSize();
@@ -365,7 +357,11 @@ class WeatherApp extends LitElement {
    * @param {Number} event.detail selected station index
    *
    */
-  _stationSelected(event) {
+  _stationSelected(event: CustomEvent<number>) {
+    if (!this._observationData) {
+      return;
+    }
+
     const observationsCopy = this._observationData.map((observation) => {
       const obs = { ...observation };
       obs.selectedStation = false;

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 
-import './combo-box.js';
+import './combo-box';
 import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list.js';
 import { property } from 'lit/decorators.js';
 import { Place } from '../../observation-data.js';
