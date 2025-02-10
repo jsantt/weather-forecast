@@ -165,9 +165,6 @@ class SunriseSunset extends LitElement {
   render() {
     return html`
       <weather-section liftedHeading="Aurinko" padding yellow>
-        <div slot="header-right">
-          ${SunriseSunset._getDay()} | vk ${SunriseSunset._getWeek()}
-        </div>
         <div class="grid">
           <div class="sunset-value">${this._sunset}</div>
           <div class="sunset-label">aurinko laskee</div>
@@ -280,32 +277,6 @@ class SunriseSunset extends LitElement {
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
     return `${time.getHours()}.${fullMinutes}`;
-  }
-
-  static _getDay() {
-    const now = new Date();
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    };
-    const locale = 'fi-FI';
-
-    return now.toLocaleDateString(locale, options);
-  }
-
-  static _getWeek() {
-    const dt = new Date();
-    const tdt = new Date(dt.valueOf());
-    const dayn = (dt.getDay() + 6) % 7;
-    tdt.setDate(tdt.getDate() - dayn + 3);
-    const firstThursday = tdt.valueOf();
-    tdt.setMonth(0, 1);
-    if (tdt.getDay() !== 4) {
-      tdt.setMonth(0, 1 + ((4 - tdt.getDay() + 7) % 7));
-    }
-    return 1 + Math.ceil((firstThursday - tdt) / 604800000);
   }
 }
 window.customElements.define(SunriseSunset.is, SunriseSunset);

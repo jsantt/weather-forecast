@@ -15,6 +15,7 @@ import { snowAmount } from './sections/weather-days/rain-helper';
 import { feelsLike } from './data-helpers/feels-like';
 import { rainType } from './data-helpers/rain-type';
 import { customElement, property } from 'lit/decorators.js';
+import { LocationCoordinates } from './sections/forecast-header/station-map.ts';
 
 type HarmonieParams = {
   request: string;
@@ -69,7 +70,7 @@ type ForecastDay = {
 @customElement('forecast-data')
 class ForecastData extends LitElement {
   @property({ type: Object, reflect: true })
-  location?: Location;
+  location?: LocationCoordinates;
 
   updated(changedProperties: Map<string, any>) {
     changedProperties.forEach((_, propName) => {
