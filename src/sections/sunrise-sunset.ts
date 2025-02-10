@@ -1,14 +1,61 @@
 import { css, html, LitElement } from 'lit';
 
-import '../common-components/smooth-expand';
-import '../common-components/svg-icon';
-import '../weather-section';
+import '../common-components/smooth-expand.js';
+import '../common-components/svg-icon.js';
+import '../weather-section.js';
 import { SunCalc } from '../data-helpers/suncalc-es6-fork.js';
+import { property, state } from 'lit/decorators.js';
+import { LocationCoordinates } from './forecast-header/station-map.js';
 
 class SunriseSunset extends LitElement {
   static get is() {
     return 'sunrise-sunset';
   }
+
+  @property({ type: Object })
+  location?: LocationCoordinates;
+
+  @state()
+  _darkestNight?: string;
+
+  @state()
+  _dawn?: string;
+
+  @state()
+  _dusk?: string;
+
+  @state()
+  _goldenHour?: string;
+
+  @state()
+  _goldenHourEnd?: string;
+
+  @state()
+  _expanded: boolean = false;
+
+  @state()
+  _nauticalDawn?: string;
+
+  @state()
+  _nauticalDusk?: string;
+
+  @state()
+  _night?: string;
+
+  @state()
+  _nightEnd?: string;
+
+  @state()
+  _sunrise?: string;
+
+  @state()
+  _sunset?: string;
+
+  @state()
+  _sunsetStart?: string;
+
+  @state()
+  _solarNoon?: string;
 
   static get styles() {
     return css`
@@ -173,25 +220,6 @@ class SunriseSunset extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      location: { type: Object },
-      _darkestNight: { type: String },
-      _dawn: { type: String },
-      _goldenHour: { type: String },
-      _goldenHourEnd: { type: String },
-      _expanded: { type: Boolean },
-      _nauticalDawn: { type: String },
-      _nauticalDusk: { type: String },
-      _night: { type: String },
-      _nightEnd: { type: String },
-      _sunrise: { type: String },
-      _sunset: { type: String },
-      _sunsetStart: { type: String },
-      _solarNoon: { type: String },
-    };
-  }
-
   updated() {
     if (this.location !== undefined) {
       this._updateSunsetSunrise();
@@ -204,6 +232,10 @@ class SunriseSunset extends LitElement {
   }
 
   _updateSunsetSunrise() {
+    if (!this.location) {
+      return;
+    }
+
     const times = SunCalc.getTimes(
       new Date(),
       this.location.lat,

@@ -69,7 +69,7 @@ type ForecastDay = {
 @customElement('forecast-data')
 class ForecastData extends LitElement {
   @property({ type: Object, reflect: true })
-  location?: { coordinates: any; lat: number; lon: number };
+  location?: Location;
 
   updated(changedProperties: Map<string, any>) {
     changedProperties.forEach((_, propName) => {

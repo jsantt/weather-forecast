@@ -12,10 +12,11 @@ import './weather-section.ts';
 import './sections/forecast-header/forecast-header.ts';
 
 import './sections/bottom-sheet/bottom-sheet.ts';
-import { property } from 'lit/decorators.js';
+import { state } from 'lit/decorators.js';
+import { LocationCoordinates } from './sections/forecast-header/station-map.ts';
 import('./sections/external-links.js');
 
-import('./sections/sunrise-sunset.js');
+import('./sections/sunrise-sunset');
 import('./sections/weather-info.ts');
 
 import('./sections/symbol-list.js');
@@ -29,43 +30,40 @@ class WeatherApp extends LitElement {
     return 'weather-app';
   }
 
-  @property({ type: Object })
-  _currentPlace?: object;
-
-  @property({ type: Boolean })
+  @state()
   _darkMode: boolean = false;
 
-  @property({ type: Boolean })
+  @state()
   _firstLoading: boolean = false;
 
-  @property({ type: Array })
+  @state()
   _forecastData?: any[];
 
-  @property({ type: Boolean })
+  @state()
   _forecastError: boolean = false;
 
-  @property({ type: Object })
+  @state()
   _forecastPlace?: { region: string };
 
-  @property({ type: Boolean, reflect: true })
+  @state()
   _largeMap: boolean = true;
 
-  @property({ type: Boolean, reflect: true })
+  @state()
   _loading: boolean = false;
 
-  @property({ type: Object, reflect: true })
-  _location?: object;
+  @state()
+  _location?: LocationCoordinates;
 
-  @property({ type: Boolean, reflect: true })
+  @state()
   _showFeelsLike: boolean = false;
 
-  @property({ type: Boolean, reflect: true })
+  @state()
   _showWind: boolean = false;
 
-  @property({ type: Array })
+  @state()
   _observationData?: any[];
 
-  @property({ type: Boolean })
+  @state()
   _observationError: boolean = false;
 
   static get styles() {
@@ -260,6 +258,10 @@ class WeatherApp extends LitElement {
         <symbol-list class="grid-item grid-symbols"></symbol-list>
 
         <app-copyright class="grid-item grid-copy"> </app-copyright>
+        <div>
+          ${this._location?.city} ${this._location?.coordinates} ${this._location
+            ?.lat} ${this._location?.lon}
+        </div>
       </div>
     `;
   }

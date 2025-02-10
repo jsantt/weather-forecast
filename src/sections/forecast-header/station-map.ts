@@ -8,7 +8,12 @@ import { property } from 'lit/decorators.js';
 import { Station } from '../../observation-data.ts';
 
 // TODO: move to source once it is converted into TS
-type LocationCoordinates = { lon: number; lat: number };
+type LocationCoordinates = {
+  lon: number;
+  lat: number;
+  city: string;
+  coordinates: string;
+};
 
 class StationMap extends LitElement {
   static get is() {

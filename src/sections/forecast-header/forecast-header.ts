@@ -141,11 +141,11 @@ class ForecastHeader extends LitElement {
         align-self: center;
         justify-self: end;
 
+        color: var(--color-light);
         height: 16px;
         width: 16px;
 
         margin-right: var(--space-m);
-
         transition: transform var(--transition-time) ease;
       }
 
