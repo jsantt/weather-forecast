@@ -1,14 +1,23 @@
 import { css, html, LitElement } from 'lit';
 
 import './combo-box';
-import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list.js';
+import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list';
 import { property } from 'lit/decorators.js';
-import { Place } from '../../observation-data.js';
+import { Place } from '../../observation-data';
 
 class LocationSelector extends LitElement {
   static get is() {
     return 'location-selector';
   }
+
+  @property({ type: Boolean, reflect: true })
+  loading: boolean = false;
+
+  @property({ type: Object })
+  place?: Place;
+
+  @property({ type: String, reflect: true })
+  city: string = DEFAULT_PLACE.city;
 
   static get styles() {
     return css`
@@ -28,30 +37,8 @@ class LocationSelector extends LitElement {
     ></combo-box>`;
   }
 
-  /**
-   * place example: {"geoid":"651436","name":"Korospohja","coordinates":"61.92410999999999,25.748151","region":"Jyväskylä"}
-   */
-  @property({ type: Object })
-  _defaultPlace: { city: string; coordinates: string };
-
-  @property({ type: Boolean, reflect: true })
-  loading: boolean = false;
-
-  @property({ type: Object })
-  place?: Place;
-
-  @property({ type: String, reflect: true })
-  city: string;
-
   constructor() {
     super();
-
-    this.city = DEFAULT_PLACE.city;
-
-    this._defaultPlace = {
-      city: 'Helsinki',
-      coordinates: '60.1698557,24.9383791',
-    };
 
     window.addEventListener('visibilitychange', () => {
       if (document.hidden === false) {
@@ -86,20 +73,31 @@ class LocationSelector extends LitElement {
         (item) => item.city === this.city
       );
 
+      if (!cityAndCoordinates?.coordinates) {
+        return;
+      }
+
       const latLon = LocationSelector._splitCoordinates(
         cityAndCoordinates.coordinates
       );
-      cityAndCoordinates.lat = parseFloat(latLon.lat);
-      cityAndCoordinates.lon = parseFloat(latLon.lon);
+
+      const cityAndCoordinates2: {
+        city: string;
+        coordinates: string;
+        lat?: number;
+        lon?: number;
+      } = cityAndCoordinates;
+      cityAndCoordinates2.lat = parseFloat(latLon.lat);
+      cityAndCoordinates2.lon = parseFloat(latLon.lon);
 
       this._dispatchEvent(
         'location-selector.location-changed',
-        cityAndCoordinates
+        cityAndCoordinates2
       );
     }) as EventListener);
   }
 
-  static _splitCoordinates(coordinateString) {
+  static _splitCoordinates(coordinateString: string) {
     const latLon = coordinateString.split(',');
     return { lat: latLon[0], lon: latLon[1] };
   }
@@ -151,10 +149,14 @@ class LocationSelector extends LitElement {
       // eslint-disable-next-line prefer-destructuring
       currentPlace = LocationSelector._placeList()[0];
     } else {
-      currentPlace = this._defaultPlace;
+      currentPlace = {
+        city: DEFAULT_PLACE.city,
+        coordinates: DEFAULT_PLACE.coordinates,
+      };
       LocationSelector._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
     const latLon = LocationSelector._splitCoordinates(currentPlace.coordinates);
+
     currentPlace.lat = parseFloat(latLon.lat);
     currentPlace.lon = parseFloat(latLon.lon);
 
@@ -163,7 +165,7 @@ class LocationSelector extends LitElement {
 
   static _placeList() {
     const previousLocations = LocationSelector._getFromLocalStorage('place');
-    if (previousLocations === null) {
+    if (previousLocations === undefined) {
       return CITIES;
     }
 
@@ -204,6 +206,11 @@ class LocationSelector extends LitElement {
     const newPlace = [LocationSelector._formPlaceObject(city, coordinates)];
     const previousPlaces = LocationSelector._getFromLocalStorage('place');
 
+    if (!previousPlaces || previousPlaces.length < 1) {
+      LocationSelector._storeIntoLocalStorage(key, newPlace);
+      return;
+    }
+
     const filtered10 = newPlace.concat(
       previousPlaces.filter((item) => item.city !== city).slice(0, 9)
     );
@@ -217,7 +224,12 @@ class LocationSelector extends LitElement {
     localStorage.setItem(key, JSON.stringify(valueObject));
   }
 
-  static _getFromLocalStorage(key: string) {
+  static _getFromLocalStorage(key: string):
+    | {
+        coordinates: string;
+        city: string;
+      }[]
+    | undefined {
     const item = localStorage.getItem(key);
     if (item === null) {
       return undefined;

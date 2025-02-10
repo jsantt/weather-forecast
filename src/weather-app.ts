@@ -6,6 +6,7 @@ import './forecast-data.ts';
 import './observation-data.ts';
 
 import './sections/forecast-header/top-bar.ts';
+import './sections/forecast-header/location-selector.ts';
 
 import './weather-section.ts';
 
@@ -182,13 +183,17 @@ class WeatherApp extends LitElement {
         ?showFeelsLike="${this._showFeelsLike}"
         ?showWind="${this._showWind}"
         ?darkMode="${this._darkMode}"
+        @location-selector.location-changed=${(ev: CustomEvent) =>
+          this.locationChanged(ev)}
       ></bottom-sheet>
 
-      <div class="grid-container" ?hidden="${this._firstLoading}">
+      <div class="grid-container">
         <location-selector
           class="grid-item grid-location"
           .loading="${this._loading}"
           .place="${this._forecastPlace}"
+          @location-selector.location-changed=${(ev: CustomEvent) =>
+            this.locationChanged(ev)}
         >
         </location-selector>
 
@@ -258,12 +263,12 @@ class WeatherApp extends LitElement {
         <symbol-list class="grid-item grid-symbols"></symbol-list>
 
         <app-copyright class="grid-item grid-copy"> </app-copyright>
-        <div>
-          ${this._location?.city} ${this._location?.coordinates} ${this._location
-            ?.lat} ${this._location?.lon}
-        </div>
       </div>
     `;
+  }
+
+  locationChanged(event: CustomEvent) {
+    this._location = { ...event.detail };
   }
 
   constructor() {
@@ -272,13 +277,6 @@ class WeatherApp extends LitElement {
     if (window.location.href.includes('beta')) {
       window.localStorage.setItem('beta', 'true');
     }
-
-    // user changes location
-    this.addEventListener('location-selector.location-changed', ((
-      event: CustomEvent
-    ) => {
-      this._location = { ...event.detail };
-    }) as EventListener);
 
     // forecast data
     this.addEventListener('forecast-data.fetching', () => {
