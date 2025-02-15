@@ -1,12 +1,15 @@
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
+import '../../common-components/svg-icon';
+
 @customElement('top-bar')
 class TopBar extends LitElement {
   static get styles() {
     return css`
       :host {
         display: block;
+        max-width: 1000px;
       }
 
       header {
@@ -16,9 +19,9 @@ class TopBar extends LitElement {
 
         display: grid;
         align-items: center;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: auto 1fr auto;
         grid-template-rows: 1fr;
-        grid-template-areas: 'icon heading';
+        grid-template-areas: 'icon heading language';
 
         gap: var(--space-m);
       }
@@ -28,12 +31,21 @@ class TopBar extends LitElement {
         background: var(--color-yellow);
         border-radius: 12px;
         padding: var(--space-m);
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
       }
 
       .heading {
         grid-area: heading;
+      }
+
+      .language {
+        grid-area: language;
+        align-self: self-start;
+
+        font-size: var(--font-size-s);
+        fill: var(--color-dark-and-light);
+        text-align: right;
       }
 
       h1 {
@@ -68,7 +80,8 @@ class TopBar extends LitElement {
         h1 {
           font-size: var(--font-size-xl);
         }
-        h2 {
+        h2,
+        .language {
           font-size: var(--font-size-m);
         }
       }
@@ -97,6 +110,10 @@ class TopBar extends LitElement {
         <h1>Saaennuste<span>.fi</span></h1>
         <h2>Nopein tapa tarkastaa Ilmatieteen laitoksen sää</h2>
       </div>
+      <!--div class="language">
+        <svg-icon small path="assets/image/icons.svg#caret-down"></svg-icon>
+        English
+      </div-->
     </header> `;
   }
 }
