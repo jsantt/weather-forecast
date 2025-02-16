@@ -1,3 +1,4 @@
+import { classMap } from 'lit/directives/class-map.js';
 import { css, html, LitElement } from 'lit';
 
 import { getTime } from './data-helpers/time.ts';
@@ -94,18 +95,11 @@ class WeatherApp extends LitElement {
       .grid-container {
         display: grid;
         gap: var(--space-xl) var(--space-l);
-        grid-template-columns: 1fr;
 
-        max-width: 600px;
-
+        max-width: 450px;
         padding-bottom: 5rem;
         padding-left: var(--margin);
         padding-right: var(--margin);
-      }
-
-      .grid-location {
-        grid-column-start: 1;
-        grid-column-end: -1;
       }
 
       .grid-item {
@@ -114,57 +108,73 @@ class WeatherApp extends LitElement {
 
       .grid-map {
         --padding-panel: 0;
-
-        grid-column-start: 1;
-        grid-column-end: -1;
-      }
-
-      .grid-forecast {
-        grid-column-start: 1;
-        grid-column-end: -1;
       }
 
       .grid-copy {
         text-align: center;
-        grid-column-start: 1;
-        grid-column-end: -1;
       }
 
-      .grid-symbols {
-        grid-column-start: 1;
-        grid-column-end: -1;
-      }
-
-      @media only screen and (min-width: 700px) {
-        .grid-container {
-          grid-template-columns: 1fr 1fr;
-          max-width: 600px;
-        }
-
-        .grid-info {
-          grid-column: span 2;
-        }
-      }
-
-      @media only screen and (min-width: 1000px) {
-        .grid-container {
-          grid-template-columns: 8fr 8fr 11fr;
-          max-width: 1000px;
-        }
-
+      @media only screen and (min-width: 800px) {
         .grid-location {
-          grid-column-start: 1;
-          grid-column-end: 3;
+          grid-area: location;
         }
 
         .grid-map {
-          grid-column-start: 1;
-          grid-column-end: 3;
+          grid-area: map;
         }
 
         .grid-forecast {
-          grid-column-start: 3;
-          grid-column-end: 4;
+          grid-area: forecast;
+        }
+
+        .grid-sun {
+          grid-area: sun;
+        }
+
+        .grid-links {
+          grid-area: links;
+        }
+
+        .grid-info {
+          grid-area: info;
+        }
+
+        .grid-share {
+          grid-area: share;
+        }
+
+        .grid-symbols {
+          grid-area: symbols;
+        }
+
+        .grid-copy {
+          grid-area: copy;
+        }
+
+        .grid-container {
+          max-width: 800px;
+          grid-template-columns: 1fr 1fr !important;
+          grid-template-areas:
+            'location location'
+            'map forecast'
+            'sun forecast'
+            'info links'
+            'info share'
+            'symbols symbols'
+            'copy copy';
+        }
+      }
+      @media only screen and (min-width: 1000px) {
+        .grid-container {
+          max-width: 1000px;
+          grid-template-columns: 3fr 3fr 2fr !important;
+          grid-template-areas:
+            'location location .'
+            'map forecast sun'
+            'info forecast links'
+            '. forecast share'
+            'symbols symbols symbols'
+            'copy copy copy';
         }
       }
     `;

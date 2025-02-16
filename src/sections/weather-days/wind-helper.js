@@ -28,7 +28,7 @@ function windClassification(windSpeed) {
   }
 
   const rows = _WIND_TABLE.filter(
-    item => item.min <= windSpeed && windSpeed < item.max
+    (item) => item.min <= windSpeed && windSpeed < item.max
   );
 
   return rows[0].rate;
@@ -41,7 +41,7 @@ function _max(forecastData, property) {
 
   let maxWind = 0;
 
-  forecastData.map(item => {
+  forecastData.map((item) => {
     maxWind = item[property] > maxWind ? item[property] : maxWind;
     return undefined;
   });
@@ -49,12 +49,39 @@ function _max(forecastData, property) {
   return maxWind;
 }
 
+function getHighestWindGustHour(dayData) {
+  const dayHighest = dayData.reduce((prev, current) =>
+    prev.windGust > current.windGust ? prev : current
+  );
+  return dayHighest.hour;
+}
+
 function isDayHighest(dayData, currentIndex) {
   const dayHighest = dayData.reduce((prev, current) =>
     prev.windGust > current.windGust ? prev : current
   );
 
+  console.log(dayData);
+  console.log(dayHighest.hour);
+
+  if (Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1) {
+    /*console.log(
+      'HIGHEST',
+      dayData[currentIndex].time,
+      dayHighest.windGust,
+      dayData[currentIndex].windGust
+    );*/
+  } else {
+    //console.log('NOT HIGHEST');
+  }
+  console.log(dayData[currentIndex]?.hour, dayHighest.hour);
+
   return Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1;
 }
 
-export { isDayHighest, windClassification, windWarning };
+export {
+  getHighestWindGustHour,
+  isDayHighest,
+  windClassification,
+  windWarning,
+};

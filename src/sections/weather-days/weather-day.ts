@@ -7,8 +7,8 @@ import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 import { isNight } from '../../data-helpers/sun-calculations.js';
-import { isDayHighest, windClassification } from './wind-helper.js';
-import { property } from 'lit/decorators.js';
+import { getHighestWindGustHour, windClassification } from './wind-helper.js';
+import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../forecast-data.js';
 import { getDayName, getDayNumber, getWeekday } from './time-texts.js';
 
@@ -37,6 +37,15 @@ class WeatherDay extends LitElement {
 
   @property({ type: Boolean, reflect: true })
   debug: boolean = false;
+
+  @state()
+  private highestWindGustHour: number = 0;
+
+  updated(changedProperties: Map<string, any>) {
+    if (changedProperties.has('dayData')) {
+      this.highestWindGustHour = getHighestWindGustHour(this.dayData);
+    }
+  }
 
   static get styles() {
     return css`
@@ -295,7 +304,6 @@ class WeatherDay extends LitElement {
                                 >`} `
                         : ''}
                     </div>
-
                     <wind-icon
                       class="symbol wind"
                       .degrees="${entry.windDirection}"
@@ -303,7 +311,9 @@ class WeatherDay extends LitElement {
                       .windSpeed="${entry.threeHourWindMax}"
                       .windGustSpeed="${entry.threeHourWindMaxGust}"
                       ?minimal="${this.showWind !== true}"
-                      ?isDayHighest="${isDayHighest(this.dayData, index)}"
+                      ?isDayHighest=${(entry.hour === 3 &&
+                        this.highestWindGustHour === 1) ||
+                      Math.abs(entry.hour - this.highestWindGustHour) <= 1}
                     >
                     </wind-icon>
                   `}

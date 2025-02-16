@@ -27,7 +27,7 @@ type HarmonieParams = {
   place?: string;
 };
 
-type ForecastDay = {
+type ForecastDayPartial = {
   humidity: number;
   time: number;
   threeHourWindMax: number;
@@ -52,6 +52,9 @@ type ForecastDay = {
   hour?: number;
   rainType?: number;
 };
+
+type ForecastDay = Required<ForecastDayPartial>;
+
 
 /**
  *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.
@@ -212,8 +215,8 @@ class ForecastData extends LitElement {
     return harmonieResponse;
   }
 
-  static _toJson(data) {
-    const weatherJson = [];
+  static _toJson(data): ForecastDay[] {
+    const forecastDays: ForecastDay[] = [];
 
     for (let i = 0; i < data.temperature.length; i += 1) {
       const temperatureValue = getValue(data.temperature[i]);
@@ -241,7 +244,7 @@ class ForecastData extends LitElement {
       const nextRoundWind = Math.round(nextWind);
       const nextRoundWindGust = Math.round(nextWindGust);
 
-      const forecastEntry: ForecastDay = {
+      const forecastEntry: ForecastDayPartial = {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
         rain,
@@ -262,13 +265,39 @@ class ForecastData extends LitElement {
         ),
       };
 
-      (weatherJson as any).push(forecastEntry);
+      const day: ForecastDay = {
+        humidity: forecastEntry.humidity,
+        time: forecastEntry.time,
+        threeHourWindMax: forecastEntry.threeHourWindMax,
+      
+        threeHourWindMaxGust: forecastEntry.threeHourWindMaxGust,
+        rain: forecastEntry.rain,
+        roundWind: forecastEntry.roundWind,
+      
+        roundWindGust: forecastEntry.roundWindGust,
+        snow: forecastEntry.snow,
+        wind: forecastEntry.wind,
+      
+        windGust: forecastEntry.windGust,
+        symbol: forecastEntry.symbol,
+        temperature: forecastEntry.temperature,
+      
+        symbolAggregate: forecastEntry.symbolAggregate ?? 0,
+        symbolCompactAggregate: forecastEntry.symbolCompactAggregate ?? 0,
+      
+        windDirection: forecastEntry.windDirection,
+        feelsLike: forecastEntry.feelsLike ?? Number.NaN,
+        hour: forecastEntry.hour ?? 0,
+        rainType: forecastEntry.rainType ?? 0
+      }
+
+      forecastDays.push(day);
 
       previousRoundWind = roundWind;
       previousRoundWindGust = roundWindGust;
     }
 
-    return weatherJson;
+    return forecastDays;
   }
 
   static _addFullHour(combinedData) {
