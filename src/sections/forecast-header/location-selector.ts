@@ -24,6 +24,7 @@ class LocationSelector extends LitElement {
       :host {
         display: inline-block;
         text-align: center;
+        max-width: 450px;
       }
     `;
   }

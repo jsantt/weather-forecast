@@ -23,7 +23,7 @@ class ExternalLinks extends LitElement {
 
       .icon-container {
         background: var(--color-green);
-        padding: var(--space-l);
+        padding: var(--space-m) var(--space-l);
         margin: auto;
       }
 
@@ -40,7 +40,7 @@ class ExternalLinks extends LitElement {
         display: grid;
         align-items: center;
 
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-s);
         height: 100%;
         width: 100%;
         padding: 0 var(--space-l);

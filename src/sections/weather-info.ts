@@ -49,7 +49,7 @@ class WeatherInfo extends LitElement {
 
         <p>
           Saaennuste.fi esittää Ilmatieteen laitoksen viralliset havainnot
-          paremmassa muodossa. Saat yleiskuvan ja tarpeelliset yksityiskohdat
+          paremmassa muodossa. Näet yleiskuvan ja tarpeelliset yksityiskohdat
           vähemmällä klikkailulla - myös kännykän pieneltä ruudulta.
         </p>
 

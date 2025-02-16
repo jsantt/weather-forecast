@@ -1,4 +1,3 @@
-import { classMap } from 'lit/directives/class-map.js';
 import { css, html, LitElement } from 'lit';
 
 import { getTime } from './data-helpers/time.ts';
@@ -73,7 +72,8 @@ class WeatherApp extends LitElement {
       :host {
         --header-background-expand: 1rem;
 
-        display: block;
+        display: flex;
+        justify-content: center;
       }
 
       error-notification {
@@ -94,19 +94,29 @@ class WeatherApp extends LitElement {
 
       .grid-container {
         display: grid;
-        gap: var(--space-xl) var(--space-l);
+        grid-template-columns: minmax(330px, 450px);
+        gap: var(--space-l);
 
-        max-width: 450px;
+        max-width: 1500px;
+
         padding-bottom: 5rem;
         padding-left: var(--margin);
         padding-right: var(--margin);
+
+        padding-top: 2.5rem;
+      }
+
+      .grid-header,
+      grid-location {
+        padding-bottom: var(--space-xl);
       }
 
       .grid-item {
         display: grid;
       }
 
-      .grid-map {
+      .grid-map,
+      .grid-forecast {
         --padding-panel: 0;
       }
 
@@ -115,8 +125,29 @@ class WeatherApp extends LitElement {
       }
 
       @media only screen and (min-width: 800px) {
+        .grid-container {
+          grid-template-columns: minmax(350px, 450px) minmax(200px, 250px) !important;
+          grid-template-areas:
+            'header header'
+            'location .'
+            'map sun'
+            'map sun'
+            'map links'
+            'map links'
+            'map share'
+            'forecast share'
+            'forecast info'
+            'symbols symbols'
+            'copy copy';
+        }
+
+        .grid-header {
+          grid-area: header;
+        }
+
         .grid-location {
           grid-area: location;
+          align-self: end;
         }
 
         .grid-map {
@@ -150,23 +181,31 @@ class WeatherApp extends LitElement {
         .grid-copy {
           grid-area: copy;
         }
-
+      }
+      @media only screen and (min-width: 1100px) {
         .grid-container {
-          max-width: 800px;
-          grid-template-columns: 1fr 1fr !important;
+          grid-template-columns: minmax(350px, 450px) minmax(200px, 250px) minmax(
+              200px,
+              250px
+            ) !important;
           grid-template-areas:
-            'location location'
-            'map forecast'
-            'sun forecast'
-            'info links'
-            'info share'
-            'symbols symbols'
-            'copy copy';
+            'header location location'
+            'map info sun'
+            'map info links'
+            'map info share'
+            'forecast forecast forecast'
+            'symbols symbols symbols'
+            'copy copy copy';
+        }
+        .grid-header,
+        .grid-location {
+          padding-bottom: 2rem;
+          padding-top: 2rem;
         }
       }
-      @media only screen and (min-width: 1000px) {
+      /*@media only screen and (min-width: 1000px) {
         .grid-container {
-          max-width: 1000px;
+          
           grid-template-columns: 3fr 3fr 2fr !important;
           grid-template-areas:
             'location location .'
@@ -177,6 +216,7 @@ class WeatherApp extends LitElement {
             'copy copy copy';
         }
       }
+        */
     `;
   }
 
@@ -185,8 +225,6 @@ class WeatherApp extends LitElement {
       <!-- Observation / weather station data -->
       <observation-data .place="${this._forecastPlace}"> </observation-data>
       <forecast-data .location="${this._location}"> </forecast-data>
-
-      <top-bar></top-bar>
 
       <bottom-sheet
         ?largeMap="${this._largeMap}"
@@ -198,6 +236,7 @@ class WeatherApp extends LitElement {
       ></bottom-sheet>
 
       <div class="grid-container">
+        <top-bar class="grid-item grid-header"></top-bar>
         <location-selector
           class="grid-item grid-location"
           .loading="${this._loading}"
@@ -230,8 +269,10 @@ class WeatherApp extends LitElement {
 
         <weather-section
           pink
+          transparent
           class="grid-item grid-forecast"
           liftedHeading="Ennuste"
+          ?padding=${false}
         >
           <!-- today, tomorrow and a day after tomorrow -->
           <slot name="header"></slot>

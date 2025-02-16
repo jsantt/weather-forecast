@@ -9,12 +9,9 @@ class TopBar extends LitElement {
     return css`
       :host {
         display: block;
-        max-width: 1000px;
       }
 
       header {
-        padding: 1.5rem var(--margin) calc(var(--space-xl) + var(--margin))
-          var(--margin);
         color: var(--color-dark-and-light);
 
         display: grid;
@@ -69,20 +66,10 @@ class TopBar extends LitElement {
         padding: 0;
       }
 
-      @media only screen and (min-width: 600px) {
-        header {
-          padding-top: var(--space-xl);
-        }
+      @media only screen and (min-width: 800px) {
         .icon {
           width: 44px;
           height: 44px;
-        }
-        h1 {
-          font-size: var(--font-size-xl);
-        }
-        h2,
-        .language {
-          font-size: var(--font-size-m);
         }
       }
     `;

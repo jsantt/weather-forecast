@@ -59,10 +59,10 @@ class WeatherDay extends LitElement {
 
         --color-toggle-background: var(--color-yellow-300);
 
+        background: var(--background-middle);
         color: var(--color-dark-and-light);
         display: block;
         padding: var(--space-m) 0;
-        border-bottom: 2px solid var(--background);
 
         opacity: 1;
       }
@@ -91,6 +91,8 @@ class WeatherDay extends LitElement {
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);
         grid-template-rows: minmax(0rem, auto);
+
+        padding-right: var(--space-m);
       }
 
       :host([daynumber='2']) day,

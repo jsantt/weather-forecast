@@ -72,7 +72,7 @@ class WeatherDay extends LitElement {
         gap: var(--space-m);
         grid-template-columns: 6rem 3rem 2fr 1fr;
 
-        border-bottom: 2px solid var(--background);
+        background: var(--background-middle);
       }
 
       :host([daynumber='10']) {

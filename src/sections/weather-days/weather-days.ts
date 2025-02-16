@@ -20,26 +20,76 @@ class WeatherDays extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-row-gap: 2px;
+      }
+
+      @media only screen and (min-width: 1100px) {
+        :host {
+          grid-template-columns: repeat(3, minmax(340px, 400px));
+          grid-row-gap: 2px;
+
+          grid-column-gap: 2px;
+        }
       }
     `;
   }
 
   @state()
-  days: DayState[] = [
-    { type: 'normal' },
-    { type: 'normal' },
-    { type: 'compact' },
-    { type: 'compact' },
-    { type: 'compact' },
-    { type: 'compact' },
-    { type: 'compact' },
-    { type: 'compact' },
-    { type: 'compact' },
-    { type: 'compact' },
-  ];
+  days: DayState[];
+
+  @state()
+  toggleDisabled: boolean = false;
+
+  constructor() {
+    super();
+
+    const mediaQueryList = window.matchMedia('(min-width: 1100px)');
+
+    this.days = this.check(mediaQueryList);
+
+    mediaQueryList.onchange = () => {
+      this.days = this.check(mediaQueryList);
+    };
+  }
+
+  private check(mediaQueryList: MediaQueryList): DayState[] {
+    if (mediaQueryList.matches) {
+      this.toggleDisabled = true;
+      return [
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'normal' },
+      ];
+    } else {
+      this.toggleDisabled = false;
+      return [
+        { type: 'normal' },
+        { type: 'normal' },
+        { type: 'compact' },
+        { type: 'compact' },
+        { type: 'compact' },
+        { type: 'compact' },
+        { type: 'compact' },
+        { type: 'compact' },
+        { type: 'compact' },
+        { type: 'compact' },
+      ];
+    }
+  }
 
   private toggle(index: number) {
+    if (this.toggleDisabled) {
+      return;
+    }
     const copy = [...this.days];
 
     copy[index].animation = 'fading';
