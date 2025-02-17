@@ -25,7 +25,7 @@ class TopBar extends LitElement {
 
       .icon {
         grid-area: icon;
-        background: var(--color-yellow);
+
         border-radius: 12px;
         padding: var(--space-m);
         width: 32px;

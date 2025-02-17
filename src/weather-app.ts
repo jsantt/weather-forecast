@@ -103,12 +103,11 @@ class WeatherApp extends LitElement {
         padding-left: var(--margin);
         padding-right: var(--margin);
 
-        padding-top: 1rem;
+        padding-top: var(--space-l);
       }
 
-      .grid-header,
-      grid-location {
-        padding-bottom: var(--space-xl);
+      .grid-header {
+        padding-bottom: var(--space-l);
       }
 
       .grid-item {
@@ -139,6 +138,8 @@ class WeatherApp extends LitElement {
             'forecast info'
             'symbols symbols'
             'copy copy';
+
+            padding-top: var(--space-xl);
         }
 
         .grid-header {
@@ -196,27 +197,16 @@ class WeatherApp extends LitElement {
             'forecast forecast forecast'
             'symbols symbols symbols'
             'copy copy copy';
+
+            padding-top: 3rem;
         }
         .grid-header,
         .grid-location {
-          padding-bottom: 2rem;
-          padding-top: 2rem;
+          padding-bottom: 3rem;
         }
+
+      
       }
-      /*@media only screen and (min-width: 1000px) {
-        .grid-container {
-          
-          grid-template-columns: 3fr 3fr 2fr !important;
-          grid-template-areas:
-            'location location .'
-            'map forecast sun'
-            'info forecast links'
-            '. forecast share'
-            'symbols symbols symbols'
-            'copy copy copy';
-        }
-      }
-        */
     `;
   }
 
