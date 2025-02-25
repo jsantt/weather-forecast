@@ -21,8 +21,14 @@ class SymbolList extends LitElement {
       section {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-        grid-gap: var(--space-l);
+        gap: var(--space-l);
         padding: 0 var(--space-l);
+      }
+
+      @media only screen and (min-width: 360px) {
+        section {
+          gap: var(--space-xl);
+        }
       }
 
       svg-icon {

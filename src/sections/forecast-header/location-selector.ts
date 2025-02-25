@@ -22,7 +22,7 @@ class LocationSelector extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: inline-block;
+        display: block;
         text-align: center;
         max-width: 450px;
       }

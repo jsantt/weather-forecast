@@ -26,7 +26,6 @@ class PublicHolidays extends LitElement {
 
       .today {
         background: var(--color-yellow-300);
-        font-weight: var(--font-weight-bold);
       }
 
       .date {

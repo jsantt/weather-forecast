@@ -27,9 +27,9 @@ class WeatherDays extends LitElement {
 
       @media only screen and (min-width: 1100px) {
         :host {
-          grid-template-columns: repeat(3, minmax(340px, 400px));
+          /* 3x325 = 975. It has to be smaller than the grid width = 982 */
+          grid-template-columns: repeat(3, minmax(325px, 400px));
           grid-row-gap: 2px;
-
           grid-column-gap: 2px;
         }
       }

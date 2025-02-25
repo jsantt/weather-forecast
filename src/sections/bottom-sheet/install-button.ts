@@ -21,7 +21,6 @@ class InstallButton extends LitElement {
         color: var(--color-dark);
         font-family: inherit;
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-boldest);
 
         margin: 0;
         padding: var(--space-m) var(--space-l);

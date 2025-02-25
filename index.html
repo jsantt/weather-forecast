@@ -13,25 +13,9 @@
  
     <link rel="icon" href="assets/image/favicon.svg">
     
-
-    <script>
-      window.WebFontConfig = {
-        google: {
-          families: ['Open Sans Condensed:300'],
-        },
-      };
-
-      ((d) => {
-        const wf = d.createElement('script');
-        const s = d.scripts[0];
-        wf.rel = 'preconnect';
-        wf.src =
-          'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js?display=swap';
-        wf.async = true;
-        s.parentNode.insertBefore(wf, s);
-      })(document);
-    </script>
-
+    <!-- link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,87.5,300..800;1,87.5,300..800&display=swap" rel="stylesheet">
+    
     <style>
       .loading-view {
         background-color: var(--background-middle);
@@ -63,7 +47,13 @@
         /* End of common CSS properties */
 
         box-sizing: border-box;
-        font-family: var(--font-family);
+
+        /* default font */
+        font-family: "Open Sans", serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+        font-variation-settings:"wdth" 87.5;
         font-size: 16px;
 
         margin: 0;
@@ -82,11 +72,6 @@
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
         --box-shadow-upwards: 0px -4px 6px -1px rgba(0, 0, 0, 0.1),
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-        /* Font */
-        --font-family: 'Open Sans Condensed', sans-serif;
-
-        --font-family-heading: 'Open Sans Condensed', sans-serif;
 
         /* Responsive  */
 
@@ -140,7 +125,6 @@
 
         --font-weight-normal: 300;
         --font-weight-bold: 500;
-        --font-weight-boldest: 700;
 
         --line-height-dense: 0.9;
 
@@ -225,7 +209,7 @@
         --color-snow: hsl(199, 85%, 71%);
 
         /* new colors */
-        --background: #dfe5e7;
+        --background: hsl(195, 14%, 80%);
         --background-middle: var(--color-gray-300);
         --background-topmost: var(--color-gray-200);
 

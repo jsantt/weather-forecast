@@ -85,7 +85,6 @@ class WeatherApp extends LitElement {
       }
 
       .by {
-        font-weight: var(--font-weight-bold);
         font-size: var(--font-size-s);
         border-radius: 0;
         text-align: center;
@@ -103,7 +102,7 @@ class WeatherApp extends LitElement {
         padding-left: var(--margin);
         padding-right: var(--margin);
 
-        padding-top: var(--space-l);
+        padding-top: 1.5rem;
       }
 
       .grid-header {
@@ -128,7 +127,7 @@ class WeatherApp extends LitElement {
           grid-template-columns: minmax(350px, 450px) minmax(200px, 250px) !important;
           grid-template-areas:
             'header header'
-            'location .'
+            'location location'
             'map sun'
             'map sun'
             'map links'
@@ -139,7 +138,7 @@ class WeatherApp extends LitElement {
             'symbols symbols'
             'copy copy';
 
-            padding-top: var(--space-xl);
+          padding-top: var(--space-xl);
         }
 
         .grid-header {
@@ -198,14 +197,12 @@ class WeatherApp extends LitElement {
             'symbols symbols symbols'
             'copy copy copy';
 
-            padding-top: 3rem;
+          padding-top: 3rem;
         }
         .grid-header,
         .grid-location {
           padding-bottom: 3rem;
         }
-
-      
       }
     `;
   }
@@ -241,7 +238,7 @@ class WeatherApp extends LitElement {
           blue
           class="grid-item grid-map"
           .padding=${false}
-          liftedHeading=${`Klo ${getTime(new Date())} havainnot "kartalla"`}
+          liftedHeading=${`Klo ${getTime(new Date())} havainnot`}
         >
           <slot name="place"></slot>
           <forecast-header
@@ -261,7 +258,7 @@ class WeatherApp extends LitElement {
           pink
           transparent
           class="grid-item grid-forecast"
-          liftedHeading="Ennuste"
+          liftedHeading="Ilmatieteen laitoksen ennuste"
           ?padding=${false}
         >
           <!-- today, tomorrow and a day after tomorrow -->
@@ -301,6 +298,7 @@ class WeatherApp extends LitElement {
         <share-app class="grid-item grid-share"></share-app>
 
         <weather-info class="grid-item grid-info"></weather-info>
+
         <symbol-list class="grid-item grid-symbols"></symbol-list>
 
         <app-copyright class="grid-item grid-copy"> </app-copyright>

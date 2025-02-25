@@ -122,7 +122,7 @@ class ForecastHeader extends LitElement {
         color: var(--color-light);
         grid-area: name;
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
+
       }
 
       .selected-details {

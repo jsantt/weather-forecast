@@ -106,14 +106,17 @@ class SunriseSunset extends LitElement {
 
       .grid {
         display: grid;
+        align-items: center;
         grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
 
         grid-template-areas:
-          'sunset-value   sunset-label'
-          'sunrise-value    sunrise-label';
+          'sunrise-label sunrise-label'
+          'sunrise-value   sunrise-value'
+          'sunset-label    sunset-label'
+          'sunset-value    sunset-value';
 
-        align-items: baseline;
+        gap: var(--space-s) var(--space-l);
 
         margin-bottom: 1.5rem;
       }
@@ -128,9 +131,7 @@ class SunriseSunset extends LitElement {
 
       .sunrise-label,
       .sunset-label {
-        font-size: var(--font-size-m);
-
-        padding-left: var(--space-m);
+        font-size: var(--font-size-s);
       }
 
       .sunrise-value {
@@ -144,8 +145,7 @@ class SunriseSunset extends LitElement {
       .sunrise-value,
       .sunset-value {
         font-size: var(--font-size-xl);
-
-        justify-self: end;
+        font-weight: var(--font-weight-bold);
       }
 
       .details {
@@ -166,11 +166,11 @@ class SunriseSunset extends LitElement {
     return html`
       <weather-section liftedHeading="Aurinko" padding yellow>
         <div class="grid">
-          <div class="sunset-value">${this._sunset}</div>
-          <div class="sunset-label">aurinko laskee</div>
-
           <div class="sunrise-value">${this._sunrise}</div>
-          <div class="sunrise-label">aurinko nousee</div>
+          <div class="sunrise-label">Aurinko nousee</div>
+       
+          <div class="sunset-value">${this._sunset}</div>
+          <div class="sunset-label">Aurinko laskee</div>
         </div>
           <smooth-expand ?expanded="${this._expanded}">
             <div class="details">

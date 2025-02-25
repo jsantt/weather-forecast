@@ -60,10 +60,10 @@ class BottomSheet extends LitElement {
         align-items: center;
         justify-content: flex-end;
 
+        font-family: inherit;
         fill: var(--color-dark-and-light);
-        font-family: var(--font-family-primary);
+
         font-size: var(--font-size-s);
-        font-weight: var(--font-weight-bold);
 
         height: 100%;
 
@@ -104,7 +104,6 @@ class BottomSheet extends LitElement {
       .locate-icon {
         position: absolute;
         bottom: 1.3rem;
-        left: 0;
 
         filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
         transition: all var(--transition-time) var(--transition-cubic-bezier);
@@ -127,6 +126,8 @@ class BottomSheet extends LitElement {
 
       .position-anchor {
         position: relative;
+        display: flex;
+        justify-content: center;
       }
 
       .notification {

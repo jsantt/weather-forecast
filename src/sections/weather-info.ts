@@ -21,6 +21,11 @@ class WeatherInfo extends LitElement {
         margin-top: var(--space-m);
       }
 
+      h3 {
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
+      }
+
       a:link {
         color: var(--color-dark-and-light);
       }
@@ -40,7 +45,7 @@ class WeatherInfo extends LitElement {
 
   render() {
     return html`
-      <weather-section green padding liftedHeading="Sääennuste.fi">
+      <weather-section gray padding liftedHeading="Sääennuste.fi">
         <svg-icon
           medium
           class="info-icon"
@@ -53,7 +58,7 @@ class WeatherInfo extends LitElement {
           vähemmällä klikkailulla - myös kännykän pieneltä ruudulta.
         </p>
 
-        <h3>Havainnot "kartalla"</h3>
+        <h3>Havainnot</h3>
         <p>
           Havainnot "kartalla" näyttää lähistön sääasemien tiedot "kartalla"
           oikeassa suunnassa siten, että päällekkäin meneviä asemia on siirretty

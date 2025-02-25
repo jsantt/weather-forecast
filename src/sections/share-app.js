@@ -14,6 +14,10 @@ class ShareApp extends LitElement {
         display: block;
       }
 
+      .content {
+        padding: var(--space-l) var(--space-l) 0 var(--space-l);
+      }
+
       button {
         background: transparent;
         border: 2px solid var(--color-dark-and-light);
@@ -22,8 +26,8 @@ class ShareApp extends LitElement {
 
         color: var(--color-dark-and-light);
         font-family: inherit;
-        font-size: var(--font-size-m);
-        font-weight: var(--font-weight-boldest);
+        font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
 
         margin: 0;
         padding: var(--space-m);
@@ -61,7 +65,7 @@ class ShareApp extends LitElement {
 
   render() {
     return html`
-      <weather-section padding liftedHeading="Jaa sovellus" pink>
+      <weather-section padding liftedHeading="Jaa sovellus" green>
         <div class="content">
           <div>
             <svg-icon

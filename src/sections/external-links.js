@@ -41,6 +41,7 @@ class ExternalLinks extends LitElement {
         align-items: center;
 
         font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
         height: 100%;
         width: 100%;
         padding: 0 var(--space-l);
@@ -73,7 +74,7 @@ class ExternalLinks extends LitElement {
 
   render() {
     return html`
-      <weather-section gray liftedHeading="Säätietoja muualla">
+      <weather-section pink liftedHeading="Säätietoja muualla">
         <nav>
           <div class="link">
             <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
@@ -98,25 +99,6 @@ class ExternalLinks extends LitElement {
 
           <div class="icon-container">
             <svg-icon medium path="assets/image/icons.svg#pollen"></svg-icon>
-          </div>
-
-          <div class="link">
-            <a
-              href="${this.region &&
-              this.region !== 'Finland' &&
-              this.region.split(' ').length <= 1
-                ? `https://www.ilmatieteenlaitos.fi/saa/${this.region}/`
-                : 'https://www.ilmatieteenlaitos.fi/paikallissaa'}"
-            >
-              <span>10&nbsp;vrk&nbsp;sää</span>
-            </a>
-          </div>
-
-          <div class="icon-container icon-container-weather">
-            <svg-icon
-              medium
-              path="assets/image/icons.svg#longTimeWeather"
-            ></svg-icon>
           </div>
 
           <div class="link">

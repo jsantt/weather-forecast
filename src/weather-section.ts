@@ -72,7 +72,6 @@ class WeatherSection extends LitElement {
       }
 
       .lifted-heading {
-        font-family: var(--font-family-heading);
         margin-bottom: 0;
         background-color: var(--color-blue);
         color: var(--color-light);
@@ -80,6 +79,7 @@ class WeatherSection extends LitElement {
         display: inline-block;
         padding: 0.16rem var(--space-l) var(--space-s) var(--space-l);
         font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
         border-radius: var(--border-radius);
 
         margin-bottom: var(--space-m);
@@ -90,8 +90,6 @@ class WeatherSection extends LitElement {
         font-size: var(--font-size-m);
         margin: 0;
         padding: 0;
-
-        font-weight: var(--font-weight-boldest);
       }
 
       footer {

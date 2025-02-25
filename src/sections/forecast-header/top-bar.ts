@@ -2,6 +2,8 @@ import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 import '../../common-components/svg-icon';
+import '../../common-components/weather-heading.ts';
+import '../../common-components/weather-paragraph.ts';
 
 @customElement('top-bar')
 class TopBar extends LitElement {
@@ -18,22 +20,22 @@ class TopBar extends LitElement {
         align-items: center;
         grid-template-columns: auto 1fr auto;
         grid-template-rows: 1fr;
-        grid-template-areas: 'icon heading language';
+        grid-template-areas:
+          'icon heading language'
+          'icon slogan language';
 
-        gap: var(--space-m);
+        column-gap: var(--space-s);
       }
 
-      .icon {
+      .logo {
         grid-area: icon;
+        /* background-image: linear-gradient(60deg, var(--color-green) 0%, var(--color-yellow) 100%);
+        */
         background: var(--color-yellow);
         border-radius: 12px;
         padding: var(--space-m);
         width: 32px;
         height: 32px;
-      }
-
-      .heading {
-        grid-area: heading;
       }
 
       .language {
@@ -45,25 +47,14 @@ class TopBar extends LitElement {
         text-align: right;
       }
 
-      h1 {
-        font-family: var(--font-family-heading);
-        text-align: left;
-        font-size: var(--font-size-l);
-        line-height: 1;
-        margin: 0;
-        padding: 0;
-
-        span {
-          font-weight: 400;
-        }
+      .heading {
+        grid-area: heading;
+        margin-bottom: -0.3rem;
       }
 
-      h2 {
-        font-weight: 400;
-        font-size: var(--font-size-s);
-        line-height: 1;
-        margin: 0;
-        padding: 0;
+      .slogan {
+        grid-area: slogan;
+        margin-top: -0.3rem;
       }
 
       @media only screen and (min-width: 800px) {
@@ -78,7 +69,7 @@ class TopBar extends LitElement {
   render() {
     return html`<header>
       <svg
-        class="icon"
+        class="logo"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 695 503"
       >
@@ -93,10 +84,12 @@ class TopBar extends LitElement {
         160,71.6 160,160 0,2.7 -0.1,5.4 -0.2,8.1 56,19.7 96.2,73.1 96.2,135.9 z"
         />
       </svg>
-      <div class="heading">
-        <h1>Saaennuste<span>.fi</span></h1>
-        <h2>Nopein tapa tarkastaa Ilmatieteen laitoksen sää</h2>
-      </div>
+
+      <weather-heading class="heading">Sääennuste</weather-heading>
+      <weather-paragraph class="slogan">
+        Nopein tapa tarkastaa sää
+      </weather-paragraph>
+
       <!--div class="language">
         <svg-icon small path="assets/image/icons.svg#caret-down"></svg-icon>
         English

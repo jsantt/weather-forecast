@@ -43,7 +43,7 @@ class BottomNotification extends LitElement {
       section {
         color: var(--color-dark-and-light);
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
+     
 
         padding: var(--space-l) 0 var(--space-l) var(--space-l);
       }
@@ -51,7 +51,7 @@ class BottomNotification extends LitElement {
       header {
         margin: 0;
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
+    
       }
 
       .close {
@@ -68,7 +68,7 @@ class BottomNotification extends LitElement {
       }
 
       ol {
-        font-weight: var(--font-weight-normal);
+
         line-height: 1.8;
         margin: var(--space-s) var(--space-l) var(--space-s) 0;
         padding: 0 0 0 var(--space-l);

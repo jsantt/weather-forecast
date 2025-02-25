@@ -67,19 +67,17 @@ class HolidayCalendar extends LitElement {
       }
 
       .date {
-        font-weight: var(--font-weight-bold);
         padding-bottom: var(--space-s);
       }
 
       .holiday .date {
-        font-weight: var(--font-weight-bold);
         text-decoration: underline;
       }
 
       .today {
         background: var(--color-blue-600);
         color: white;
-        font-weight: var(--font-weight-bold);
+
         margin-bottom: -3px;
       }
 
@@ -105,7 +103,6 @@ class HolidayCalendar extends LitElement {
       .day:hover,
       .day:focus-within,
       .day:focus-within {
-        font-weight: var(--font-weight-bold);
         z-index: 2;
       }
 

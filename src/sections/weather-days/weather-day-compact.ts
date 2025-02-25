@@ -70,7 +70,7 @@ class WeatherDay extends LitElement {
         display: grid;
         align-items: center;
         gap: var(--space-m);
-        grid-template-columns: 6rem 3rem 2fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr auto;
 
         background: var(--background-middle);
       }
@@ -80,7 +80,8 @@ class WeatherDay extends LitElement {
       }
 
       header {
-        font-size: var(--font-size-m);
+        font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
         text-transform: capitalize;
         color: var(--color-dark-and-light);
         padding: var(--space-l);
@@ -90,7 +91,17 @@ class WeatherDay extends LitElement {
       }
 
       .temperature {
-        font-size: var(--font-size-l);
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
+        padding: 1rem;
+      }
+
+      .temperature--min {
+        background: var(--color-blue-100);
+      }
+
+      .temperature--max {
+        background: #ffe5e8;
       }
 
       .temperature--negative {
@@ -105,7 +116,7 @@ class WeatherDay extends LitElement {
       </header>
 
       <div
-        class="temperature ${this.dayMin && this.dayMin < 0
+        class="temperature temperature--min ${this.dayMin && this.dayMin < 0
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >
@@ -113,7 +124,7 @@ class WeatherDay extends LitElement {
       </div>
 
       <div
-        class="temperature ${this.dayMax && this.dayMax < 0
+        class="temperature temperature--max ${this.dayMax && this.dayMax < 0
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >

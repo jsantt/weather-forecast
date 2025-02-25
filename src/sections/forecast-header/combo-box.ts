@@ -118,11 +118,10 @@ class ComboBox extends LitElement {
 
         color: var(--color-dark-and-light);
         font-size: var(--font-size-l);
-        font-family: var(--font-family-primary);
-        font-weight: var(--font-weight-boldest);
+        font-weight: var(--font-weight-bold);
 
         margin: 0;
-        min-width: 100%;
+        width: 100%;
         padding: 0.425rem var(--space-xl) 0.425rem var(--space-l);
         text-align: center;
 
@@ -179,7 +178,7 @@ class ComboBox extends LitElement {
       }
 
       strong {
-        font-weight: var(--font-weight-boldest);
+        font-weight: var(--font-weight-bold);
       }
     `;
   }

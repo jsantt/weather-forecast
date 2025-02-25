@@ -43,10 +43,10 @@ class ErrorNotification extends LitElement {
 
         <div>
           ${this.errorText}${navigator.onLine === false
-            ? html`, verkkoyhteydessäsi näyttää olevan ongelmia`
+            ? html` Verkkoyhteydessäsi näyttää olevan ongelmia.`
             : ''}
         </div>
-        <div><a href="">kokeile uudelleen</a></div>
+        <div><a href="">Kokeile uudelleen.</a></div>
       </section>
     `;
   }
