@@ -42,8 +42,7 @@ class BottomNotification extends LitElement {
 
       section {
         color: var(--color-dark-and-light);
-        font-size: var(--font-size-m);
-     
+        font-size: var(--font-size-s);
 
         padding: var(--space-l) 0 var(--space-l) var(--space-l);
       }
@@ -51,12 +50,16 @@ class BottomNotification extends LitElement {
       header {
         margin: 0;
         font-size: var(--font-size-m);
-    
+        font-weight: var(--font-weight-bold);
       }
 
       .close {
         margin-left: auto;
         padding: var(--space-l) var(--space-l) 0 var(--space-l);
+      }
+
+      .home-icon {
+        stroke: var(--color-dark-and-light);
       }
 
       svg-icon {
@@ -68,7 +71,6 @@ class BottomNotification extends LitElement {
       }
 
       ol {
-
         line-height: 1.8;
         margin: var(--space-s) var(--space-l) var(--space-s) 0;
         padding: 0 0 0 var(--space-l);
@@ -105,6 +107,7 @@ class BottomNotification extends LitElement {
                           <li>
                             Napauta sivun alalaidasta
                             <svg-icon
+                              class="home-icon"
                               path="assets/image/icons.svg#iosShare"
                               medium
                             ></svg-icon>

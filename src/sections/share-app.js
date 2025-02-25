@@ -25,7 +25,11 @@ class ShareApp extends LitElement {
         border-radius: 1.5rem;
 
         color: var(--color-dark-and-light);
+
         font-family: inherit;
+        font-optical-sizing: inherit;
+        font-style: inherit;
+        font-variation-settings: inherit;
         font-size: var(--font-size-s);
         font-weight: var(--font-weight-bold);
 

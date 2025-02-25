@@ -61,6 +61,11 @@ class BottomSheet extends LitElement {
         justify-content: flex-end;
 
         font-family: inherit;
+        font-optical-sizing: inherit;
+        font-weight: inherit;
+        font-style: inherit;
+        font-variation-settings: inherit;
+
         fill: var(--color-dark-and-light);
 
         font-size: var(--font-size-s);
@@ -185,8 +190,8 @@ class BottomSheet extends LitElement {
   @property({ type: String, reflect: true })
   _notification?: string;
 
-  _forceShowIos = false;
-  _forceShowOthers = false;
+  private _forceShowIos = true;
+  private _forceShowOthers = false;
 
   render() {
     return html`

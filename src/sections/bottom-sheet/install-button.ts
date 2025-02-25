@@ -14,19 +14,24 @@ class InstallButton extends LitElement {
       }
 
       button {
-        
         border: 2px solid var(--color-blue);
         border-radius: 3rem;
 
         color: var(--color-dark);
+        
+        
         font-family: inherit;
-        font-size: var(--font-size-m);
+        font-optical-sizing: inherit;
+        font-style: inherit;
+        font-variation-settings: inherit;
+
+        font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
 
         margin: 0;
         padding: var(--space-m) var(--space-l);
 
         text-align: center;
-        text-transform: uppercase;
         width: 100%;
       }
 
