@@ -38,9 +38,15 @@ class WeatherDay extends LitElement {
   @state()
   dayMax?: number;
 
+  @state()
+  dayMinFeelsLike?: number;
+
+  @state()
+  dayMaxFeelsLike?: number;
+
   willUpdate(changedProperties: Map<string, any>) {
     if (changedProperties.has('dayData') && this.dayData) {
-      this.dayMin = Math.round(
+      const roundedMin = Math.round(
         this.dayData.reduce((min, entry) => {
           if (!Number.isNaN(entry.temperature)) {
             return Math.min(min, entry.temperature);
@@ -49,7 +55,11 @@ class WeatherDay extends LitElement {
         }, Infinity)
       );
 
-      const rounded = Math.round(
+      if (!Number.isNaN(roundedMin)) {
+        this.dayMin = roundedMin;
+      }
+
+      const roundedMax = Math.round(
         this.dayData.reduce((max, entry) => {
           if (!Number.isNaN(entry.temperature)) {
             return Math.max(max, entry.temperature);
@@ -58,8 +68,35 @@ class WeatherDay extends LitElement {
         }, -Infinity)
       );
 
-      if (!Number.isNaN(rounded)) {
-        this.dayMax = rounded;
+      if (!Number.isNaN(roundedMax)) {
+        this.dayMax = roundedMax;
+      }
+
+      // feels like
+      const roundedMinFeelsLike = Math.round(
+        this.dayData.reduce((min, entry) => {
+          if (!Number.isNaN(entry.feelsLike)) {
+            return Math.min(min, entry.feelsLike);
+          }
+          return min;
+        }, Infinity)
+      );
+
+      if (!Number.isNaN(roundedMinFeelsLike)) {
+        this.dayMinFeelsLike = roundedMinFeelsLike;
+      }
+
+      const roundedMaxFeelsLike = Math.round(
+        this.dayData.reduce((max, entry) => {
+          if (!Number.isNaN(entry.feelsLike)) {
+            return Math.max(max, entry.feelsLike);
+          }
+          return max;
+        }, -Infinity)
+      );
+
+      if (!Number.isNaN(roundedMaxFeelsLike)) {
+        this.dayMaxFeelsLike = roundedMaxFeelsLike;
       }
     }
   }
@@ -70,7 +107,9 @@ class WeatherDay extends LitElement {
         display: grid;
         align-items: center;
         gap: var(--space-m);
-        grid-template-columns: 2fr 1fr 1fr auto;
+        grid-template-columns:
+          minmax(1rem, 2fr) minmax(2rem, 4rem) minmax(2rem, 4rem)
+          5fr;
 
         background: var(--background-middle);
       }
@@ -87,6 +126,7 @@ class WeatherDay extends LitElement {
         padding: var(--space-l);
       }
       .symbols {
+        justify-self: center;
         display: flex;
       }
 
@@ -107,6 +147,10 @@ class WeatherDay extends LitElement {
       .temperature--negative {
         color: var(--color-temperature-negative);
       }
+
+      .feels-like {
+        font-style: italic;
+      }
     `;
   }
 
@@ -120,7 +164,9 @@ class WeatherDay extends LitElement {
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >
-        ${this.dayMin}°
+        ${this.showFeelsLike === true
+          ? html`<span class="feels-like">${this.dayMinFeelsLike}°</span>`
+          : html`${this.dayMin}°`}
       </div>
 
       <div
@@ -128,7 +174,9 @@ class WeatherDay extends LitElement {
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >
-        ${this.dayMax}°
+        ${this.showFeelsLike === true
+          ? html`<span class="feels-like">${this.dayMaxFeelsLike}°</span>`
+          : html`${this.dayMax}°`}
       </div>
 
       <div class="symbols fade">

@@ -190,7 +190,7 @@ class BottomSheet extends LitElement {
   @property({ type: String, reflect: true })
   _notification?: string;
 
-  private _forceShowIos = true;
+  private _forceShowIos = false;
   private _forceShowOthers = false;
 
   render() {
