@@ -45,7 +45,7 @@ class StationMap extends LitElement {
 
       .temperature {
         font-size: 0.13px;
-
+        font-weight: 500;
         text-rendering: optimizeLegibility;
       }
       .temperature.home-station {
@@ -170,12 +170,12 @@ class StationMap extends LitElement {
                   text-anchor="end" 
                   x="${
                     observation.calculated
-                      ? observation.lonForMap + 0.17
+                      ? observation.lonForMap + 0.19
                       : observation.lonForMap + 0.07
                   }"
                     y="${
                       observation.calculated
-                        ? -1 * observation.latForMap + 0.06
+                        ? -1 * observation.latForMap + 0.04
                         : -1 * observation.latForMap - 0
                     }">${
                       this.showFeelsLike === true
