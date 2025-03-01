@@ -131,9 +131,15 @@ class WeatherDay extends LitElement {
       }
 
       .temperature {
+        justify-self: center;
+
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
-        padding: 1rem;
+
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+        border-radius: 32px;
+        margin: var(--space-l) 0;
       }
 
       .temperature--min {
