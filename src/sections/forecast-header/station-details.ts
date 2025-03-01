@@ -27,7 +27,7 @@ class StationDetails extends LitElement {
 
       .value {
         font-size: var(--font-size-m);
-  
+        font-weight: 400;
       }
 
       .explanation,

@@ -45,11 +45,11 @@ class StationMap extends LitElement {
 
       .temperature {
         font-size: 0.13px;
-        font-weight: 500;
+      
         text-rendering: optimizeLegibility;
       }
       .temperature.home-station {
-        font-size: 0.34px;
+        font-size: 0.3px;
       }
 
       circle {
@@ -68,6 +68,7 @@ class StationMap extends LitElement {
 
       text.selected-station {
         fill: var(--color-gray-800);
+        font-weight: 600;
       }
 
       circle.selected-station {
@@ -175,7 +176,7 @@ class StationMap extends LitElement {
                   }"
                     y="${
                       observation.calculated
-                        ? -1 * observation.latForMap + 0.04
+                        ? -1 * observation.latForMap + 0.0
                         : -1 * observation.latForMap - 0
                     }">${
                       this.showFeelsLike === true

@@ -137,11 +137,11 @@ class WeatherDay extends LitElement {
       }
 
       .temperature--min {
-        background: var(--color-blue-100);
+        background: var(--background-min);
       }
 
       .temperature--max {
-        background: #ffe5e8;
+        background: var(--background-max);
       }
 
       .temperature--negative {
