@@ -119,7 +119,7 @@ class WindIcon extends LitElement {
       <text text-anchor="middle" x="49" y="79" class="windSpeed">
         ${WindIcon._round(this.windSpeed)}
       </text>
-      <text text-anchor="middle" x="96" y="38" stroke="0" class="windGustSpeed">
+      <text text-anchor="middle" x="93" y="38" stroke="0" class="windGustSpeed">
         ${WindIcon._round(this.windGustSpeed)}
       </text>
     </svg>`;
