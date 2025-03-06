@@ -20,15 +20,9 @@ class SymbolList extends LitElement {
 
       section {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: var(--space-l);
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--space-xl);
         padding: 0 var(--space-l);
-      }
-
-      @media only screen and (min-width: 360px) {
-        section {
-          gap: var(--space-xl);
-        }
       }
 
       svg-icon {
@@ -53,7 +47,7 @@ class SymbolList extends LitElement {
             <img
               src="${`assets/image/smart/light/${Number(key) + 100}.svg`}"
             ></img
-            >${value} ${key}
+            ><div>${value}</div>
           </div>`;
         })}
         <div>
