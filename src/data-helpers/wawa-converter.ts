@@ -1,4 +1,4 @@
-function wawaToSymbol3(wawa, cloudiness) {
+function wawaToSymbol3(wawa: number, cloudiness: number) {
   if (wawa === undefined || cloudiness === undefined) {
     return undefined;
   }

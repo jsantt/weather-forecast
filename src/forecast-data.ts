@@ -41,9 +41,9 @@ type ForecastDayPartial = {
   wind: number;
 
   windGust: number;
-  symbol: number;
   temperature: number;
 
+  symbol: number;
   symbolAggregate?: number;
   symbolCompactAggregate?: number;
 
@@ -53,8 +53,13 @@ type ForecastDayPartial = {
   rainType?: number;
 };
 
-type ForecastDay = Required<ForecastDayPartial>;
+type ForecastDayOptional = {
+  smartSymbol?: number;
+  smartSymbolAggregate?: number;
+  smartSymbolCompactAggregate?: number;
+};
 
+type ForecastDay = Required<ForecastDayPartial> & ForecastDayOptional;
 
 /**
  *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.
@@ -124,7 +129,13 @@ class ForecastData extends LitElement {
         const forecastData =
           ForecastData._addSymbolAggregateForCompactMode(symbolAggregateAdded);
 
-        this.dispatch('forecast-data.new-data', forecastData);
+        const forecastDataWithSmartSymbolAggregate =
+          ForecastData._addSmartSymbolAggregateForCompactMode(forecastData);
+
+        this.dispatch(
+          'forecast-data.new-data',
+          forecastDataWithSmartSymbolAggregate
+        );
       })
       .catch((rejected) => {
         raiseEvent(this, 'forecast-data.fetch-error', {
@@ -146,7 +157,7 @@ class ForecastData extends LitElement {
     params.storedquery_id =
       'fmi::forecast::edited::weather::scandinavia::point::timevaluepair';
     params.parameters =
-      'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,WeatherSymbol3';
+      'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,WeatherSymbol3,SmartSymbol';
 
     return params;
   }
@@ -206,6 +217,7 @@ class ForecastData extends LitElement {
       humidity: getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity'),
       rain: getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h'),
       symbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3'),
+      smartSymbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-SmartSymbol'),
       temperature: getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature'),
       wind: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS'),
       windDirection: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection'),
@@ -227,6 +239,7 @@ class ForecastData extends LitElement {
       const roundWindGust = Math.round(windGustValue);
       const rain = getValue(data.rain[i]);
       const symbol = getValue(data.symbol[i]);
+      const smartSymbol = getValue(data.smartSymbol[i]);
 
       // previous wind and wind gust
       let previousRoundWind = 0;
@@ -244,12 +257,13 @@ class ForecastData extends LitElement {
       const nextRoundWind = Math.round(nextWind);
       const nextRoundWindGust = Math.round(nextWindGust);
 
-      const forecastEntry: ForecastDayPartial = {
+      const forecastEntry: ForecastDayPartial & ForecastDayOptional = {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
         rain,
         snow: snowAmount(temperatureValue, rain, symbol),
         symbol,
+        smartSymbol: smartSymbol || undefined,
         time: getTime(data.temperature[i]),
         temperature: temperatureValue,
         wind: windValue,
@@ -269,27 +283,32 @@ class ForecastData extends LitElement {
         humidity: forecastEntry.humidity,
         time: forecastEntry.time,
         threeHourWindMax: forecastEntry.threeHourWindMax,
-      
+
         threeHourWindMaxGust: forecastEntry.threeHourWindMaxGust,
         rain: forecastEntry.rain,
         roundWind: forecastEntry.roundWind,
-      
+
         roundWindGust: forecastEntry.roundWindGust,
         snow: forecastEntry.snow,
         wind: forecastEntry.wind,
-      
+
         windGust: forecastEntry.windGust,
+        smartSymbol: forecastEntry.smartSymbol || undefined,
         symbol: forecastEntry.symbol,
         temperature: forecastEntry.temperature,
-      
+
         symbolAggregate: forecastEntry.symbolAggregate ?? 0,
         symbolCompactAggregate: forecastEntry.symbolCompactAggregate ?? 0,
-      
+
+        smartSymbolAggregate: forecastEntry.smartSymbolAggregate || undefined,
+        smartSymbolCompactAggregate:
+          forecastEntry.smartSymbolCompactAggregate || undefined,
+
         windDirection: forecastEntry.windDirection,
         feelsLike: forecastEntry.feelsLike ?? Number.NaN,
         hour: forecastEntry.hour ?? 0,
-        rainType: forecastEntry.rainType ?? 0
-      }
+        rainType: forecastEntry.rainType ?? 0,
+      };
 
       forecastDays.push(day);
 
@@ -318,6 +337,25 @@ class ForecastData extends LitElement {
     });
 
     return result;
+  }
+
+  static _addSmartSymbolAggregateForCompactMode(forecastData: any[]) {
+    let previousItem = { smartSymbol: -Infinity };
+    const forecast = forecastData.map((item, index) => {
+      const newItem = { ...item };
+
+      const max = Math.max(previousItem.smartSymbol, item.smartSymbol);
+
+      newItem.smartSymbolCompactAggregate = max || undefined;
+
+      if (index === 8 || index === 15 || index === 24) {
+        previousItem = { smartSymbol: -Infinity };
+      } else {
+        previousItem = newItem;
+      }
+      return newItem;
+    });
+    return forecast;
   }
 
   static _addSymbolAggregateForCompactMode(forecastData: any[]) {

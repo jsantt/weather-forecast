@@ -10,7 +10,6 @@ import '../../common-components/wind-icon.js';
 import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../forecast-data.js';
 import { getWeekdayShort } from './time-texts.js';
-import { isNight } from '../../data-helpers/sun-calculations.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -30,7 +29,7 @@ class WeatherDay extends LitElement {
   showFeelsLike: boolean = false;
 
   @property({ type: Array })
-  dayData: ForecastDay[] = [];
+  dayData?: ForecastDay[] = [];
 
   @state()
   dayMin?: number;
@@ -161,6 +160,9 @@ class WeatherDay extends LitElement {
   }
 
   render() {
+    if (!this.dayData) {
+      return;
+    }
     return html` <header>
         ${this.dayNumber === 1 ? 'Tänään' : getWeekdayShort(this.dayNumber)}
       </header>
@@ -186,21 +188,22 @@ class WeatherDay extends LitElement {
       </div>
 
       <div class="symbols fade">
-        <svg-icon
-          path="${`assets/image/weather-symbols.svg#weatherSymbol${
-            this.dayData[8].symbolCompactAggregate
-          }${isNight(this.dayData[9].time, this.location) ? '-night' : ''}`}"
-        ></svg-icon>
-        <svg-icon
-          path="${`assets/image/weather-symbols.svg#weatherSymbol${
-            this.dayData[15].symbolCompactAggregate
-          }${isNight(this.dayData[14].time, this.location) ? '-night' : ''}`}"
-        ></svg-icon>
-        <svg-icon
-          path="${`assets/image/weather-symbols.svg#weatherSymbol${
-            this.dayData[23].symbolCompactAggregate
-          }${isNight(this.dayData[23].time, this.location) ? '-night' : ''}`}"
-        ></svg-icon>
+        ${this.dayData[8]?.smartSymbolCompactAggregate
+          ? html`
+        <img
+          src="${`assets/image/smart/light/${this.dayData[8]?.smartSymbolCompactAggregate}.svg`}"
+        ></img>`
+          : ''}
+        ${this.dayData[15]?.smartSymbolCompactAggregate
+          ? html`<img
+          src="${`assets/image/smart/light/${this.dayData[15]?.smartSymbolCompactAggregate}.svg`}"
+        ></img>`
+          : ''}
+        ${this.dayData[23]?.smartSymbolCompactAggregate
+          ? html`<img
+          src="${`assets/image/smart/light/${this.dayData[23]?.smartSymbolCompactAggregate}.svg`}"
+        ></img>`
+          : ''}
       </div>`;
   }
 }

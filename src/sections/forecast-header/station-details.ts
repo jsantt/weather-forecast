@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
+import { Station } from '../../observation-data.ts';
 
 class StationDetails extends LitElement {
   static get is() {
@@ -7,7 +8,7 @@ class StationDetails extends LitElement {
   }
 
   @property({ type: Object })
-  station: any;
+  station?: Station;
 
   @property({ type: Boolean, reflect: true })
   showFeelsLike?: boolean;
@@ -53,6 +54,10 @@ class StationDetails extends LitElement {
   }
 
   render() {
+    if (!this.station) {
+      return;
+    }
+
     return html`
       ${this.station.humidity
         ? html`
@@ -119,6 +124,24 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
+      <!--
+      ${this.station.wawaCode !== undefined
+        ? html`
+            <div class="item">
+              <div class="value">${this.station.wawaCode}</div>
+              <div class="explanation">wawa</div>
+            </div>
+          `
+        : ``}
+      ${this.station.smartSymbol !== undefined
+        ? html`
+            <div class="item">
+              <div class="value">${this.station.smartSymbol}</div>
+              <div class="explanation">symbol</div>
+            </div>
+          `
+        : ``}
+      -->
 
       <div class="item updated-time"></div>
     `;

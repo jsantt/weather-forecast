@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import '../../common-components/error-notification';
 import '../../common-components/wind-icon';
 import { isNight } from '../../data-helpers/sun-calculations';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { Station } from '../../observation-data.ts';
 
 // TODO: move to source once it is converted into TS
@@ -35,6 +35,9 @@ class StationMap extends LitElement {
   @property({ type: Boolean, reflect: true })
   showWind: boolean = false;
 
+  @state()
+  hundredIfNight: number = 0;
+
   static get styles() {
     return css`
       :host {
@@ -45,7 +48,7 @@ class StationMap extends LitElement {
 
       .temperature {
         font-size: 0.13px;
-      
+
         text-rendering: optimizeLegibility;
       }
       .temperature.home-station {
@@ -100,7 +103,14 @@ class StationMap extends LitElement {
     `;
   }
 
+  connectedCallback(): void {
+    super.connectedCallback();
+  }
+
   render() {
+    if (isNight(new Date(), this.location)) {
+      this.hundredIfNight = 100;
+    }
     if (this.observationError) {
       return html`<error-notification
         errorText="Sääasemien tietojen haku epäonnistui."
@@ -109,7 +119,9 @@ class StationMap extends LitElement {
     }
 
     return svg`
-      <svg viewBox="${StationMap._viewBox(this.location)}">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${StationMap._viewBox(
+        this.location
+      )}">
         <!-- paint in "z-index" order, because
               svg does not have z-index --> 
 
@@ -138,6 +150,7 @@ class StationMap extends LitElement {
                 stroke="transparent"
               ></circle>
 
+              
               <use
                 x="${
                   observation.calculated
@@ -151,10 +164,15 @@ class StationMap extends LitElement {
                 }"
                 width="${observation.calculated ? 0.4 : 0.2}"
                 height="${observation.calculated ? 0.4 : 0.2}"
-                href="assets/image/weather-symbols.svg#weatherSymbol${
-                  observation.weatherCode3
-                }${isNight(new Date(), this.location) ? '-night' : ''}"
+                href=${`assets/image/smart/light/${
+                  (observation.smartSymbol || 0) + this.hundredIfNight
+                }.svg#smartSymbol${
+                  (observation.smartSymbol || 0) + this.hundredIfNight
+                }`}
               ></use>
+
+
+
               ${
                 this.showFeelsLike === true &&
                 (observation.feelsLike === undefined ||
@@ -171,7 +189,7 @@ class StationMap extends LitElement {
                   text-anchor="end" 
                   x="${
                     observation.calculated
-                      ? observation.lonForMap + 0.19
+                      ? observation.lonForMap + 0.16
                       : observation.lonForMap + 0.07
                   }"
                     y="${

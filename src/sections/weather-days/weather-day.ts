@@ -6,7 +6,6 @@ import './weather-description.js';
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
-import { isNight } from '../../data-helpers/sun-calculations.js';
 import { getHighestWindGustHour, windClassification } from './wind-helper.js';
 import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../forecast-data.js';
@@ -33,7 +32,7 @@ class WeatherDay extends LitElement {
   showWind: boolean = false;
 
   @property({ type: Array })
-  dayData: ForecastDay[] = [];
+  dayData?: ForecastDay[] = [];
 
   @property({ type: Boolean, reflect: true })
   debug: boolean = false;
@@ -115,7 +114,7 @@ class WeatherDay extends LitElement {
       .day-name {
         grid-column: span 25;
         font-size: var(--font-size-s);
-    
+
         margin: 0;
         padding-right: var(--space-l);
         padding-left: var(--space-l);
@@ -132,7 +131,6 @@ class WeatherDay extends LitElement {
       .hour,
       .hour--empty {
         font-size: var(--font-size-s);
-    
 
         grid-row: 3;
         grid-column: span 1;
@@ -167,7 +165,6 @@ class WeatherDay extends LitElement {
 
       .temperature,
       .temperature--empty {
-
         grid-column: span 3;
         grid-row: 6;
 
@@ -263,7 +260,7 @@ class WeatherDay extends LitElement {
           <weather-description .dayData="${this.dayData}">
           </weather-description>
 
-          ${this.dayData.map((entry, index) => {
+          ${this.dayData?.map((entry, index) => {
             return html`
               ${index === 0 && this.debug !== true
                 ? html`
@@ -281,13 +278,12 @@ class WeatherDay extends LitElement {
                 ? ''
                 : html`
                     <div class="symbol">
-                      <svg-icon
-                        path="${`assets/image/weather-symbols.svg#weatherSymbol${
-                          entry.symbol
-                        }${
-                          isNight(entry.time, this.location) ? '-night' : ''
-                        }`}"
-                      ></svg-icon>
+                      ${entry.smartSymbol
+                        ? html`
+                      <img
+                        src="${`assets/image/smart/light/${entry.smartSymbol}.svg`}"
+                      ></img>`
+                        : ''}
                     </div>
 
                     <div

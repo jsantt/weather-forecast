@@ -11,6 +11,7 @@ import {
   resolveCollisions,
 } from './sections/observation-helpers';
 import { property } from 'lit/decorators.js';
+import { wawaToSmartSymbol } from './wawa-to-smart-symbols.ts';
 
 type Station = {
   cloudiness: number;
@@ -37,6 +38,7 @@ type Station = {
   feelsLike?: number;
   name?: string;
   weatherCode3?: number;
+  smartSymbol?: number;
 
   latForMap?: number;
   lonForMap?: number;
@@ -205,6 +207,13 @@ class ObservationData extends LitElement {
         return item.weatherCode3 !== undefined;
       })
       .at(0).weatherCode3;
+
+    // use nearest smart code, average hard to calculate
+    calculatedItem.smartSymbol = formattedObservations
+      .filter((item) => {
+        return item.smartSymbol !== undefined;
+      })
+      .at(0).smartSymbol;
 
     calculatedItem.cloudiness = ObservationData.calculateWeights(
       formattedObservations,
@@ -498,6 +507,11 @@ class ObservationData extends LitElement {
         station.cloudiness
       );
 
+      station.smartSymbol = wawaToSmartSymbol(
+        station.wawaCode,
+        station.cloudiness
+      );
+
       station.feelsLike = feelsLike(
         station.temperature,
         station.wind,
@@ -506,6 +520,8 @@ class ObservationData extends LitElement {
 
       formattedObservations.push(station);
     });
+
+    console.log(formattedObservations);
 
     return formattedObservations;
   }

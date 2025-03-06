@@ -20,7 +20,7 @@ class SymbolList extends LitElement {
 
       section {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: var(--space-l);
         padding: 0 var(--space-l);
       }
@@ -46,13 +46,14 @@ class SymbolList extends LitElement {
       <section>
         ${Object.entries(symbolName).map(([key, value]) => {
           return html`<div>
-            <svg-icon
-              path="${`assets/image/weather-symbols.svg#weatherSymbol${key}`}"
-            ></svg-icon>
-            <svg-icon
-              path="${`assets/image/weather-symbols.svg#weatherSymbol${key}-night`}"
-            ></svg-icon
-            >${value}
+            
+            <img
+              src="${`assets/image/smart/light/${key}.svg`}"
+            ></img>
+            <img
+              src="${`assets/image/smart/light/${Number(key) + 100}.svg`}"
+            ></img
+            >${value} ${key}
           </div>`;
         })}
         <div>
