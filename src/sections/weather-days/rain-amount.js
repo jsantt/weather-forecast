@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { roundRain } from './rain-helper';
-import { property } from 'lit/decorators.js';
 
 class RainAmount extends LitElement {
   static get is() {

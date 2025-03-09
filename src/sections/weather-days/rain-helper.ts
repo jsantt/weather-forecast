@@ -32,7 +32,7 @@ function totalRain(dayData: ForecastDay[]) {
     rain = 0;
 
     if (
-      item.rain > 0.0 &&
+      item.rain > 0.1 &&
       (item.smartSymbol === undefined || !isSnow(item.smartSymbol))
     ) {
       rain = item.rain || 0;
