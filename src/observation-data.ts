@@ -200,6 +200,13 @@ class ObservationData extends LitElement {
       0
     );
 
+    // use nearest wawa code, average hard to calculate
+    calculatedItem.wawaCode = formattedObservations
+      .filter((item) => {
+        return item.wawaCode !== undefined && isFinite(item.wawaCode);
+      })
+      .at(0).wawaCode;
+
     // use nearest smart code, average hard to calculate
     calculatedItem.smartSymbol = formattedObservations
       .filter((item) => {
@@ -476,6 +483,7 @@ class ObservationData extends LitElement {
 
     observationArray.forEach((observationLine) => {
       const singleValues = observationLine.trim().split(' ');
+      const cloudiness = window.parseFloat(singleValues[11]); // n_man
 
       const station: Station = {
         temperature: window.parseFloat(singleValues[0]), // t2m
@@ -489,7 +497,7 @@ class ObservationData extends LitElement {
         snow: window.parseFloat(singleValues[8]), // snow_aws
         pressure: window.parseFloat(singleValues[9]), // p_sea
         visibility: Math.round(window.parseFloat(singleValues[10]) / 1000), // vis
-        cloudiness: window.parseFloat(singleValues[11]), // n_man
+        cloudiness: cloudiness,
         wawaCode: window.parseFloat(singleValues[12]), // wawa
         detailsVisible: false,
       };

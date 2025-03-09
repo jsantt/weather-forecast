@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Station } from '../../observation-data.ts';
+import { getWeatherObservationName } from '../../data-helpers/weather-observation-name.ts';
 
 class StationDetails extends LitElement {
   static get is() {
@@ -31,15 +32,23 @@ class StationDetails extends LitElement {
         font-weight: 400;
       }
 
-      .explanation,
+      .explanation {
+        color: var(--color-gray-500);
+      }
+
       .value {
         color: var(--color-light);
       }
 
-      weather-name-wawa {
+      .description {
         grid-column: span 3;
         text-align: left;
+        margin-top: var(--space-m);
         margin-bottom: var(--space-s);
+      }
+
+      .description .value {
+        font-weight: 300;
       }
 
       .updated-time {
@@ -83,6 +92,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
+      <!--
       ${Number.isInteger(this.station.cloudiness)
         ? html`
             <div class="item">
@@ -91,6 +101,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
+      -->
       ${this.station.visibility
         ? html`
             <div class="item">
@@ -124,6 +135,15 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
+      <div class="item description">
+        <div class="value">
+          ${getWeatherObservationName(
+            this.station.wawaCode,
+            this.station.cloudiness
+          )}
+        </div>
+        <div class="explanation"></div>
+      </div>
       <!--
       ${this.station.wawaCode !== undefined
         ? html`
@@ -141,8 +161,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      -->
-
+        -->
       <div class="item updated-time"></div>
     `;
   }

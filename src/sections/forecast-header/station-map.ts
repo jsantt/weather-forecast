@@ -214,10 +214,6 @@ class StationMap extends LitElement {
     `;
   }
 
-  constructor() {
-    super();
-  }
-
   /**
    * Negative latitude (y) to flip coordinates
    * @param { Object } location

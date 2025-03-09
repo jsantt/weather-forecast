@@ -1,6 +1,6 @@
 const cloudinessTable = {
   0: 1,
-  1: 2,
+  1: 1,
 
   2: 2,
   3: 4,
@@ -8,7 +8,7 @@ const cloudinessTable = {
 
   5: 4,
   6: 6,
-  7: 6,
+  7: 7,
   8: 7,
 };
 
@@ -83,10 +83,7 @@ const wawaTable = {
   89: 64, // 'raekuuroja',
 };
 
-function wawaToSmartSymbol(
-  wawaSymbol: number,
-  cloudiness: number
-): number | undefined {
+function wawaToSmartSymbol(wawaSymbol: number, cloudiness: number): number {
   let wawa = wawaSymbol;
 
   if (wawa === 0 && Number.isFinite(cloudiness)) {
