@@ -10,7 +10,7 @@ import {
   value,
   parseRegion,
 } from './data-helpers/xml-parser';
-import { snowAmount } from './sections/weather-days/rain-helper';
+import { snowAmount } from './sections/weather-days/rain-helper.ts';
 
 import { feelsLike } from './data-helpers/feels-like';
 import { rainType } from './data-helpers/rain-type';
@@ -42,10 +42,6 @@ type ForecastDayPartial = {
 
   windGust: number;
   temperature: number;
-
-  symbol: number;
-  symbolAggregate?: number;
-  symbolCompactAggregate?: number;
 
   windDirection: number;
   feelsLike?: number;
@@ -123,14 +119,9 @@ class ForecastData extends LitElement {
         // enrich data here to keep logic inside components simple
         const hourAdded = ForecastData._addFullHour(json);
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
-        const symbolAggregateAdded =
-          ForecastData._addSymbolAggregate(rainTypeAdded);
-
-        const forecastData =
-          ForecastData._addSymbolAggregateForCompactMode(symbolAggregateAdded);
 
         const forecastDataWithSmartSymbolAggregate =
-          ForecastData._addSmartSymbolAggregateForCompactMode(forecastData);
+          ForecastData._addSmartSymbolAggregateForCompactMode(rainTypeAdded);
 
         this.dispatch(
           'forecast-data.new-data',
@@ -157,7 +148,7 @@ class ForecastData extends LitElement {
     params.storedquery_id =
       'fmi::forecast::edited::weather::scandinavia::point::timevaluepair';
     params.parameters =
-      'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,WeatherSymbol3,SmartSymbol';
+      'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol';
 
     return params;
   }
@@ -189,8 +180,6 @@ class ForecastData extends LitElement {
    *			<wml2:MeasurementTVP>
    *				<wml2:time>2018-01-09T20:00:00Z</wml2:time>
    *				<wml2:value>-2.41</wml2:value>
-   *  ...
-   * <wml2:MeasurementTimeseries gml:id="mts-1-1-WeatherSymbol3">
    *		...
    * <wml2:MeasurementTimeseries gml:id="mts-1-1-Precipitation1h">
    *    ...
@@ -216,7 +205,6 @@ class ForecastData extends LitElement {
     const harmonieResponse = {
       humidity: getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity'),
       rain: getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h'),
-      symbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3'),
       smartSymbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-SmartSymbol'),
       temperature: getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature'),
       wind: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS'),
@@ -238,7 +226,6 @@ class ForecastData extends LitElement {
       const roundWind = Math.round(windValue);
       const roundWindGust = Math.round(windGustValue);
       const rain = getValue(data.rain[i]);
-      const symbol = getValue(data.symbol[i]);
       const smartSymbol = getValue(data.smartSymbol[i]);
 
       // previous wind and wind gust
@@ -261,8 +248,7 @@ class ForecastData extends LitElement {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
         rain,
-        snow: snowAmount(temperatureValue, rain, symbol),
-        symbol,
+        snow: snowAmount(temperatureValue, rain, smartSymbol),
         smartSymbol: smartSymbol || undefined,
         time: getTime(data.temperature[i]),
         temperature: temperatureValue,
@@ -294,11 +280,7 @@ class ForecastData extends LitElement {
 
         windGust: forecastEntry.windGust,
         smartSymbol: forecastEntry.smartSymbol || undefined,
-        symbol: forecastEntry.symbol,
         temperature: forecastEntry.temperature,
-
-        symbolAggregate: forecastEntry.symbolAggregate ?? 0,
-        symbolCompactAggregate: forecastEntry.symbolCompactAggregate ?? 0,
 
         smartSymbolAggregate: forecastEntry.smartSymbolAggregate || undefined,
         smartSymbolCompactAggregate:
@@ -356,55 +338,6 @@ class ForecastData extends LitElement {
       return newItem;
     });
     return forecast;
-  }
-
-  static _addSymbolAggregateForCompactMode(forecastData: any[]) {
-    let previousItem = { symbol: -Infinity };
-    const forecast = forecastData.map((item, index) => {
-      const newItem = { ...item };
-
-      newItem.symbolCompactAggregate = Math.max(
-        previousItem.symbol,
-        item.symbol
-      );
-
-      if (index === 8 || index === 15 || index === 24) {
-        previousItem = { symbol: -Infinity };
-      } else {
-        previousItem = newItem;
-      }
-      return newItem;
-    });
-    return forecast;
-  }
-
-  static _addSymbolAggregate(forecastData) {
-    let previousItem: ForecastDay;
-    let currentItem: ForecastDay;
-
-    forecastData.forEach((item) => {
-      previousItem = currentItem;
-      currentItem = item;
-
-      if (currentItem.hour && currentItem.hour % 3 === 0) {
-        currentItem.symbolAggregate = Math.max(
-          previousItem.symbol,
-          currentItem.symbol
-        );
-      }
-
-      if (
-        currentItem.hour &&
-        currentItem.hour % 4 === 0 &&
-        previousItem.symbolAggregate
-      ) {
-        previousItem.symbolAggregate = Math.max(
-          previousItem.symbolAggregate,
-          currentItem.symbol
-        );
-      }
-    });
-    return forecastData;
   }
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 

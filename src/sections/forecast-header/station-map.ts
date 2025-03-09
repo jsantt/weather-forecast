@@ -108,8 +108,13 @@ class StationMap extends LitElement {
   }
 
   render() {
+    if (!this.location) {
+      return;
+    }
     if (isNight(new Date(), this.location)) {
       this.hundredIfNight = 100;
+    } else {
+      this.hundredIfNight = 0;
     }
     if (this.observationError) {
       return html`<error-notification

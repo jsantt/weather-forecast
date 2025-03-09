@@ -3,7 +3,6 @@ import { LitElement } from 'lit';
 import { distance } from './data-helpers/distance';
 import { feelsLike } from './data-helpers/feels-like';
 
-import { wawaToSymbol3 } from './data-helpers/wawa-converter';
 import { raiseEvent } from './data-helpers/xml-parser';
 
 import {
@@ -200,13 +199,6 @@ class ObservationData extends LitElement {
       },
       0
     );
-
-    // use nearest weather code, average hard to calculate
-    calculatedItem.weatherCode3 = formattedObservations
-      .filter((item) => {
-        return item.weatherCode3 !== undefined;
-      })
-      .at(0).weatherCode3;
 
     // use nearest smart code, average hard to calculate
     calculatedItem.smartSymbol = formattedObservations
@@ -502,11 +494,6 @@ class ObservationData extends LitElement {
         detailsVisible: false,
       };
 
-      station.weatherCode3 = wawaToSymbol3(
-        station.wawaCode,
-        station.cloudiness
-      );
-
       station.smartSymbol = wawaToSmartSymbol(
         station.wawaCode,
         station.cloudiness
@@ -520,8 +507,6 @@ class ObservationData extends LitElement {
 
       formattedObservations.push(station);
     });
-
-    console.log(formattedObservations);
 
     return formattedObservations;
   }

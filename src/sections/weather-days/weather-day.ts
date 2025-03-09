@@ -41,7 +41,7 @@ class WeatherDay extends LitElement {
   private highestWindGustHour: number = 0;
 
   updated(changedProperties: Map<string, any>) {
-    if (changedProperties.has('dayData')) {
+    if (changedProperties.has('dayData') && this.dayData !== undefined) {
       this.highestWindGustHour = getHighestWindGustHour(this.dayData);
     }
   }

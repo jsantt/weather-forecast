@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import './rain-amount.js';
 import './max-wind.js';
 
-import { rainStartTime, totalRain, totalSnow } from './rain-helper.js';
+import { rainStartTime, totalRain, totalSnow } from './rain-helper';
 
 class WeatherDescription extends LitElement {
   static get is() {

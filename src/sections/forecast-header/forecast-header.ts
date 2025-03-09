@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 
-import { windClassification } from '../weather-days/wind-helper';
+import { windClassification } from '../weather-days/wind-helper.ts';
 
 import '../../common-components/smooth-expand';
 import '../../common-components/svg-icon';

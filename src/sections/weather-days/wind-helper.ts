@@ -11,17 +11,6 @@ const _WIND_TABLE = [
   { min: 32, max: 99, rate: 4, description: 'hirmumyrskyä' },
 ];
 
-function windWarning(forecastData) {
-  if (forecastData === undefined || forecastData.length < 1) {
-    return '';
-  }
-
-  const maxWind = _max(forecastData, 'roundWind');
-  const rating = windClassification(maxWind);
-
-  return { rating, maxWind };
-}
-
 function windClassification(windSpeed) {
   if (Number.isNaN(windSpeed) || windSpeed < 8) {
     return 0;
@@ -32,21 +21,6 @@ function windClassification(windSpeed) {
   );
 
   return rows[0].rate;
-}
-
-function _max(forecastData, property) {
-  if (forecastData === undefined || forecastData.length < 1) {
-    return undefined;
-  }
-
-  let maxWind = 0;
-
-  forecastData.map((item) => {
-    maxWind = item[property] > maxWind ? item[property] : maxWind;
-    return undefined;
-  });
-
-  return maxWind;
 }
 
 function getHighestWindGustHour(dayData) {
@@ -79,9 +53,4 @@ function isDayHighest(dayData, currentIndex) {
   return Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1;
 }
 
-export {
-  getHighestWindGustHour,
-  isDayHighest,
-  windClassification,
-  windWarning,
-};
+export { getHighestWindGustHour, isDayHighest, windClassification };

@@ -8,34 +8,18 @@
     />
     <title>Sääennuste - Nopein tapa tarkastaa Ilmatieteen laitoksen sää</title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
- 
-    <link rel="icon" href="assets/image/favicon.svg">
-    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+
+    <link rel="icon" href="assets/image/favicon.svg" />
+
     <!-- link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,87.5,300..800;1,87.5,300..800&display=swap" rel="stylesheet">
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,87.5,300..800;1,87.5,300..800&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-      .loading-view {
-        background-color: var(--background-middle);
-        height: 100vh;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-
-      html.wf-loading weather-app {
-        visibility: hidden;
-      }
-
       html {
         margin: 0;
         padding: 0;
@@ -49,11 +33,11 @@
         box-sizing: border-box;
 
         /* default font */
-        font-family: "Open Sans", serif;
+        font-family: 'Open Sans', serif;
         font-optical-sizing: auto;
         font-weight: 300;
         font-style: normal;
-        font-variation-settings:"wdth" 87.5;
+        font-variation-settings: 'wdth' 87.5;
         font-size: 16px;
 
         margin: 0;
@@ -87,9 +71,7 @@
           --border-radius: 4px;
         }
 
-
         @media only screen and (min-width: 400px) {
-
           --margin: var(--space-m);
           --padding-panel: var(--space-m) var(--space-m);
 
@@ -105,8 +87,6 @@
 
         @media only screen and (min-width: 1200px) {
         }
-
-        
 
         /*
        * Modular scale base 1.1em, ratio 1.25 (modularscale.com)
@@ -170,10 +150,10 @@
           - more left / right padding at 1200px 
       */
 
-      /* Colors */
-       
-      --color-gray-hue: 213;
-        
+        /* Colors */
+
+        --color-gray-hue: 213;
+
         --color-gray-100: hsl(var(--gray-hue), 3%, 99%);
         --color-gray-200: hsl(var(--color-gray-hue), 3%, 98%);
         --color-gray-300: hsl(var(--color-gray-hue), 3%, 96%);
@@ -184,14 +164,14 @@
         --color-gray-800: hsl(var(--color-gray-hue), 3%, 27%);
         --color-gray-900: hsl(var(--color-gray-hue), 3%, 20%);
         --color-gray-1000: hsl(var(--color-gray-hue), 3%, 16%);
-        
+
         --color-red-hue: 2;
 
         --color-red-300: hsl(var(--color-red-hue), 65%, 67%);
         --color-red-500: hsl(var(--color-red-hue), 84%, 55%);
 
         --color-blue-hue: 213; /* originally 207 */
-        
+
         --color-blue-100: hsl(var(--color-blue-hue), 54%, 95%);
         --color-blue-400: hsl(var(--color-blue-hue), 62%, 81%);
         --color-blue-500: hsl(var(--color-blue-hue), 66%, 37%);
@@ -235,11 +215,9 @@
         --background-wind-warning2: var(--color-red-500);
         --color--wind-warning: var(--color-light);
 
-
         --background-selected-station: var(--color-gray-300);
         --background-station: var(--color-blue-800);
         --background-map: var(--color-blue-600);
-
 
         --background-min: var(--color-blue-100);
         --background-max: #ffebed;
@@ -247,12 +225,11 @@
 
       /* DARK THEME */
       body.force-dark-mode {
-  
         /* new colors, dark mode */
         --background: var(--color-gray-1000);
         --background-middle: var(--color-gray-900);
         --background-topmost: var(--color-gray-800);
-      
+
         --color-light: var(--color-gray-400);
         --color-dark: var(--color-blue-800);
         --color-dark-and-light: var(--color-gray-400);
@@ -261,10 +238,10 @@
         --color-pink: #ffd0d5;
         --color-yellow: var(--color-yellow-300);
         --color-gray: var(--color-gray-400);
-        
+
         --color-blue: var(--color-blue-800);
 
-        --color-blue-800: 	hsl(var(--color-blue-hue), 28%, 20%);
+        --color-blue-800: hsl(var(--color-blue-hue), 28%, 20%);
 
         /* Component specific colors, dark mode */
 
@@ -279,14 +256,12 @@
         --background-wind-warning2: var(--color-red-500);
         --color-wind-warning2: var(--color-light);
 
-
         --background-selected-station: var(--color-gray-400);
         --background-station: var(--background);
         --background-map: var(--background-middle);
 
         --background-min: transparent;
         --background-max: transparent;
-        
       }
 
       weather-app {
@@ -320,7 +295,7 @@
         to {
           -webkit-transform: rotate(359deg);
         }
-    }
+      }
     </style>
 
     <script defer type="module" src="./src/weather-app"></script>
@@ -369,45 +344,9 @@
     ></script>
   </head>
   <body>
-    <!-- show sun icon before loaded -->
-    <weather-app>
-    <div id="loading-view" class="loading-view" aria-label="ladataan">
-      <svg
-        class="sun-icon"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 37 37"
-      >
-        <g>
-          <polygon
-            fill="#ffa800"
-            points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
-              30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
-              11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237"
-          ></polygon>
-          <circle
-            fill="#ffa800"
-            stroke="#FFFFFF"
-            stroke-width="1.3028"
-            cx="18.499"
-            cy="18.363"
-            r="6.362"
-          ></circle>
-        </g>
-      </svg>
-    </div>
-
-    
+    <weather-app></weather-app>
 
     <script>
-
-      document.addEventListener('forecast-data.fetch-done', () => {
-        const loadingView = document.getElementById('loading-view');
-        if (loadingView) {
-          loadingView.parentNode.removeChild(loadingView);
-        }
-      });
-
       document.addEventListener('bottom-sheet.toggle-darkmode', () => {
         document.body.classList.toggle('force-dark-mode');
       });
@@ -484,6 +423,5 @@
     </script>
 
     <noscript>Please enable JavaScript to view this website</noscript>
-    
   </body>
 </html>

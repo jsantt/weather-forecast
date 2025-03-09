@@ -124,7 +124,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      <!--
+      
       ${this.station.wawaCode !== undefined
         ? html`
             <div class="item">
@@ -141,7 +141,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      -->
+      
 
       <div class="item updated-time"></div>
     `;

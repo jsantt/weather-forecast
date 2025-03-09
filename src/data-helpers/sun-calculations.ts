@@ -1,6 +1,7 @@
+import { LocationCoordinates } from '../sections/forecast-header/station-map.js';
 import { SunCalc } from './suncalc-es6-fork.js';
 
-function isNight(time, location) {
+function isNight(time: Date, location: LocationCoordinates): boolean {
   const dateTime = new Date(time);
   const times = SunCalc.getTimes(dateTime, location.lat, location.lon);
 

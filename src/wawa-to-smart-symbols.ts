@@ -93,7 +93,7 @@ function wawaToSmartSymbol(
     // 'ei merkittäviä sääilmiöitä',
     return cloudinessTable[cloudiness];
   } else if (wawa === 0) {
-    return undefined;
+    return 0;
   } else if (wawa <= 20 && wawa <= 25) {
     wawa = 0;
   }

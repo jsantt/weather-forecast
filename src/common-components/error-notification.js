@@ -27,7 +27,7 @@ class ErrorNotification extends LitElement {
         color: var(--color-light);
       }
 
-      svg-icon {
+      img {
         height: 124px;
         width: 124px;
       }
@@ -37,14 +37,16 @@ class ErrorNotification extends LitElement {
   render() {
     return html`
       <section>
-        <svg-icon
-          path="assets/image/weather-symbols.svg#weatherSymbol64"
-        ></svg-icon>
+        <img
+          src="assets/image/smart/light/77.svg"
+        ></img>
 
         <div>
-          ${this.errorText}${navigator.onLine === false
-            ? html` Verkkoyhteydessäsi näyttää olevan ongelmia.`
-            : ''}
+          ${this.errorText}${
+      navigator.onLine === false
+        ? html` Verkkoyhteydessäsi näyttää olevan ongelmia.`
+        : ''
+    }
         </div>
         <div><a href="">Kokeile uudelleen.</a></div>
       </section>
