@@ -47,7 +47,7 @@ class SymbolList extends LitElement {
             <img
               src="${`assets/image/smart/light/${Number(key) + 100}.svg`}"
             ></img
-            ><div>${value} ${key}</div>
+            ><div>${value}</div>
           </div>`;
         })}
         <div>

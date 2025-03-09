@@ -135,18 +135,16 @@ class WeatherDay extends LitElement {
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
 
-        border-radius: 4px;
         padding: 0.25rem 0.5rem;
-        border-radius: 32px;
         margin: var(--space-l) 0;
       }
 
       .temperature--min {
-        background: var(--background-min);
+        border-bottom: 2px solid var(--background-min);
       }
 
       .temperature--max {
-        background: var(--background-max);
+        border-top: 2px solid var(--background-max);
       }
 
       .temperature--negative {
