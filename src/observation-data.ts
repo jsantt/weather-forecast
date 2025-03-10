@@ -25,7 +25,7 @@ type Station = {
 
   temperature: number;
   visibility: number;
-  wawaCode: number;
+  wawaCode: number; // this can be NaN
   wind: number;
 
   windDirection: any;

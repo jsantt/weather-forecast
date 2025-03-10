@@ -3,8 +3,9 @@ import { css, html, LitElement } from 'lit';
 import '../weather-section';
 import '../common-components/svg-icon';
 import '../common-components/wind-icon';
-
-import { symbolName } from '../data-helpers/weather-symbol-name';
+import {
+  weatherSymbols,
+} from '../data-helpers/weather-symbol-name.ts';
 
 class SymbolList extends LitElement {
   static get is() {
@@ -38,16 +39,21 @@ class SymbolList extends LitElement {
   render() {
     return html`<weather-section padding liftedHeading="Symbolien selitykset">
       <section>
-        ${Object.entries(symbolName).map(([key, value]) => {
+        ${weatherSymbols.map((symbol) => {
           return html`<div>
             
             <img
-              src="${`assets/image/smart/light/${key}.svg`}"
+              alt=${symbol.fi}
+              src="${`assets/image/smart/light/${symbol.smartSymbol}.svg`}"
+             
             ></img>
             <img
-              src="${`assets/image/smart/light/${Number(key) + 100}.svg`}"
+              alt=${symbol.fi}
+              src="${`assets/image/smart/light/${
+                Number(symbol.smartSymbol) + 100
+              }.svg`}"
             ></img
-            ><div>${value}</div>
+            ><div>${symbol.fi}</div>
           </div>`;
         })}
         <div>

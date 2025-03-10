@@ -152,10 +152,6 @@ class ForecastHeader extends LitElement {
         transform: scaleY(-1);
       }
 
-      weather-name-wawa {
-        padding-bottom: 0.15rem;
-      }
-
       station-details {
         margin: var(--space-l) 0 var(--space-l) 0;
         padding: 0;
@@ -192,10 +188,7 @@ class ForecastHeader extends LitElement {
                   : this._selectedStation.name
               }
                </span>
-               <weather-name-wawa
-                .wawaId="${this._selectedStation.wawaCode}"
-                .cloudiness="${this._selectedStation.cloudiness}"
-              ></weather-name-wawa>      
+              
                </div>
                <div class="selected-details">
                 <smooth-expand ?expanded="${this.largeMap}">

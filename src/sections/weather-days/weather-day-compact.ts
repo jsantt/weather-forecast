@@ -10,6 +10,7 @@ import '../../common-components/wind-icon.js';
 import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../forecast-data.js';
 import { getWeekdayShort } from './time-texts.js';
+import { getSymbolName } from '../../data-helpers/weather-symbol-name.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -190,16 +191,19 @@ class WeatherDay extends LitElement {
           ? html`
         <img
           src="${`assets/image/smart/light/${this.dayData[8]?.smartSymbolCompactAggregate}.svg`}"
+          alt="${getSymbolName(this.dayData[8].smartSymbol) || 'sääsymboli'}"
         ></img>`
           : ''}
         ${this.dayData[15]?.smartSymbolCompactAggregate
           ? html`<img
           src="${`assets/image/smart/light/${this.dayData[15]?.smartSymbolCompactAggregate}.svg`}"
+          alt="${getSymbolName(this.dayData[15].smartSymbol) || 'sääsymboli'}"
         ></img>`
           : ''}
         ${this.dayData[23]?.smartSymbolCompactAggregate
           ? html`<img
-          src="${`assets/image/smart/light/${this.dayData[23]?.smartSymbolCompactAggregate}.svg`}"
+            src="${`assets/image/smart/light/${this.dayData[23]?.smartSymbolCompactAggregate}.svg`}"
+            alt="${getSymbolName(this.dayData[23].smartSymbol) || 'sääsymboli'}"
         ></img>`
           : ''}
       </div>`;

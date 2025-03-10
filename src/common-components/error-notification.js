@@ -39,6 +39,7 @@ class ErrorNotification extends LitElement {
       <section>
         <img
           src="assets/image/smart/light/77.svg"
+          alt="Kuva ukkospilvestä ja salamasta"
         ></img>
 
         <div>

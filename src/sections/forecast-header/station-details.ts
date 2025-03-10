@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Station } from '../../observation-data.ts';
-import { getWeatherObservationName } from '../../data-helpers/weather-observation-name.ts';
+import { getWeatherObservation } from '../../data-helpers/weather-symbol-name.ts';
 
 class StationDetails extends LitElement {
   static get is() {
@@ -137,7 +137,7 @@ class StationDetails extends LitElement {
         : ``}
       <div class="item description">
         <div class="value">
-          ${getWeatherObservationName(
+          ${getWeatherObservation(
             this.station.wawaCode,
             this.station.cloudiness
           )}

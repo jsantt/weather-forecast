@@ -20,11 +20,11 @@ import('./sections/external-links.js');
 import('./sections/sunrise-sunset');
 import('./sections/weather-info.ts');
 
-import('./sections/symbol-list.js');
-import('./sections/weather-days/weather-days.ts');
-import('./sections/share-app.js');
-import('./common-components/error-notification.js');
-import('./sections/app-copyright.ts');
+import('./sections/symbol-list');
+import('./sections/weather-days/weather-days');
+import('./sections/share-app');
+import('./common-components/error-notification');
+import('./sections/app-copyright');
 
 class WeatherApp extends LitElement {
   static get is() {
@@ -277,7 +277,9 @@ class WeatherApp extends LitElement {
               data="./assets/image/il-avoin-data-logo-rgb.svg"
               width="100"
               height="30"
-            ></object>
+            >
+              Ilmatieteen laitoksen avoin data logo
+            </object>
           </div>
           <div slot="footer-left"></div>
           <div slot="footer-right"></div>

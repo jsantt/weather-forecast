@@ -10,6 +10,7 @@ import { getHighestWindGustHour, windClassification } from './wind-helper.js';
 import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../forecast-data.js';
 import { getDayName, getDayNumber, getWeekday } from './time-texts.js';
+import { getSymbolName } from '../../data-helpers/weather-symbol-name.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -282,6 +283,9 @@ class WeatherDay extends LitElement {
                         ? html`
                       <img
                         src="${`assets/image/smart/light/${entry.smartSymbol}.svg`}"
+                         alt="${
+                           getSymbolName(entry.smartSymbol) || 'sääsymboli'
+                         }"
                       ></img>`
                         : ''}
                     </div>
