@@ -92,16 +92,6 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      <!--
-      ${Number.isInteger(this.station.cloudiness)
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.cloudiness} / 8</div>
-              <div class="explanation">pilvisyys</div>
-            </div>
-          `
-        : ``}
-      -->
       ${this.station.visibility
         ? html`
             <div class="item">
@@ -144,25 +134,25 @@ class StationDetails extends LitElement {
         </div>
         <div class="explanation"></div>
       </div>
+
       <!--
-      ${this.station.wawaCode !== undefined
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.wawaCode}</div>
-              <div class="explanation">wawa</div>
-            </div>
-          `
-        : ``}
-      ${this.station.smartSymbol !== undefined
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.smartSymbol}</div>
-              <div class="explanation">symbol</div>
-            </div>
-          `
-        : ``}-->
+      <div class="item">
+        <div class="value">${this.station.wawaCode}</div>
+        <div class="explanation">wawa</div>
+      </div>
+
+      <div class="item">
+        <div class="value">${this.station.cloudiness} / 8</div>
+        <div class="explanation">pilvisyys</div>
+      </div>
+
+      <div class="item">
+        <div class="value">${this.station.smartSymbol}</div>
+        <div class="explanation">symbol</div>
+      </div>
 
       <div class="item updated-time"></div>
+        -->
     `;
   }
 

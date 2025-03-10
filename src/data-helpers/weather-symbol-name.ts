@@ -116,16 +116,20 @@ const weatherSymbols: WeatherSymbol[] = [
   { smartSymbol: 77, fi: 'ukkoskuuroja' },
 ];
 
+/**
+ * if !wawa --> undefined
+ * if wawa === 0 --> symbol from cloudiness table
+ * if 20 <= wawa <= 25 --> undefined (but description)
+ * else return from symbol list
+ */
 function getSymbolName(smartSymbol: number | undefined): string | undefined {
   return weatherSymbols.find((symbol) => symbol.smartSymbol === smartSymbol)
     ?.fi;
 }
 
 function getWeatherObservation(wawaCode: number, cloudiness: number): string {
-  const notAvailable = 'Sääasemalta ei saada pilvisyys- ja sadetietoja';
-
-  if (isNaN(cloudiness) || isNaN(wawaCode)) {
-    return notAvailable;
+  if (isNaN(wawaCode)) {
+    return 'Sääasemalta ei saada sadetietoja';
   }
 
   const lastHourDescription = lastHourWawa[wawaCode];
@@ -133,50 +137,41 @@ function getWeatherObservation(wawaCode: number, cloudiness: number): string {
     return lastHourDescription;
   }
 
-  const weatherSymbol = weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
-    weatherSymbol.wawa?.includes(wawaCode)
-  );
+  const weatherSymbol = resolveWawa(wawaCode);
 
   if (weatherSymbol !== undefined && weatherSymbol.smartSymbol !== 0) {
     return weatherSymbol.fi;
   }
 
-  const description = weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
-    weatherSymbol.cloudiness?.includes(cloudiness)
-  )?.fi;
+  const description = resolveCloudiness(cloudiness)?.fi;
 
-  return description ?? notAvailable;
+  return description ?? 'Sääasemalta ei saada pilvisyys- ja sadetietoja';
 }
 
 function getSmartSymbol(
   wawaCode: number,
   cloudiness: number
 ): number | undefined {
-  if (isNaN(cloudiness) || isNaN(wawaCode)) {
+  if (isNaN(wawaCode)) {
     return undefined;
   }
 
   const lastHourDescription = lastHourWawa[wawaCode];
 
-  const cloudinessSmartSymbol = weatherSymbols.find(
-    (weatherSymbol: WeatherSymbol) =>
-      weatherSymbol.cloudiness?.includes(cloudiness)
-  )?.smartSymbol;
+  const cloudinessSmartSymbol = resolveCloudiness(cloudiness);
 
-  const smartSymbol = weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
-    weatherSymbol.wawa?.includes(wawaCode)
-  )?.smartSymbol;
+  const smartSymbol = resolveWawa(wawaCode);
 
   if (lastHourDescription) {
-    return cloudinessSmartSymbol;
+    return cloudinessSmartSymbol?.smartSymbol;
   }
 
   if (smartSymbol !== undefined) {
-    return smartSymbol;
+    return smartSymbol.smartSymbol;
   }
 
   if (cloudiness !== undefined) {
-    return cloudinessSmartSymbol;
+    return cloudinessSmartSymbol?.smartSymbol;
   }
 
   return undefined;
@@ -189,3 +184,14 @@ export {
   getWeatherObservation,
   type WeatherSymbol,
 };
+function resolveWawa(wawaCode: number) {
+  return weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
+    weatherSymbol.wawa?.includes(wawaCode)
+  );
+}
+
+function resolveCloudiness(cloudiness: number) {
+  return weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
+    weatherSymbol.cloudiness?.includes(cloudiness)
+  );
+}
