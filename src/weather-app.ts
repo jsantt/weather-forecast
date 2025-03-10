@@ -277,9 +277,8 @@ class WeatherApp extends LitElement {
               data="./assets/image/il-avoin-data-logo-rgb.svg"
               width="100"
               height="30"
-            >
-              Ilmatieteen laitoksen avoin data logo
-            </object>
+              aria-label="Ilmatieteen laitoksen avoin data logo"
+            ></object>
           </div>
           <div slot="footer-left"></div>
           <div slot="footer-right"></div>
