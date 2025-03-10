@@ -10,7 +10,7 @@ import {
   resolveCollisions,
 } from './sections/observation-helpers';
 import { property } from 'lit/decorators.js';
-import { wawaToSmartSymbol } from './wawa-to-smart-symbols.ts';
+import { getSmartSymbol } from './data-helpers/weather-symbol-name.ts';
 
 type Station = {
   cloudiness: number;
@@ -502,7 +502,7 @@ class ObservationData extends LitElement {
         detailsVisible: false,
       };
 
-      station.smartSymbol = wawaToSmartSymbol(
+      station.smartSymbol = getSmartSymbol(
         station.wawaCode,
         station.cloudiness
       );

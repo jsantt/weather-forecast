@@ -5,6 +5,20 @@ type WeatherSymbol = {
   wawa?: number[];
 };
 
+/**
+ * wawa codes:
+ * Koodeja 20-25 käytetään, kun on ollut sadetta tai sumua edellisen tunnin aikana mutta ei enää havaintohetkellä.
+ * See https://www.ilmatieteenlaitos.fi/latauspalvelun-pikaohje
+ */
+const lastHourWawa = {
+  20: 'Sumua edellisen tunnin aikana',
+  21: 'Sadetta edellisen tunnin aikana',
+  22: 'Tihkusadetta edellisen tunnin aikana',
+  23: 'Vesisadetta edellisen tunnin aikana',
+  24: 'Lumisadetta edellisen tunnin aikana',
+  25: 'Jäätävää vesisadetta edellisen tunnin aikana',
+};
+
 const weatherSymbols: WeatherSymbol[] = [
   { smartSymbol: 1, fi: 'selkeää', cloudiness: [0, 1] },
   { smartSymbol: 2, fi: 'enimmäkseen selkeää', cloudiness: [2] },
@@ -107,12 +121,16 @@ function getSymbolName(smartSymbol: number | undefined): string | undefined {
     ?.fi;
 }
 
-function getWeatherObservation(
-  wawaCode: number,
-  cloudiness: number
-): string | undefined {
+function getWeatherObservation(wawaCode: number, cloudiness: number): string {
+  const notAvailable = 'Sääasemalta ei saada pilvisyys- ja sadetietoja';
+
   if (isNaN(cloudiness) || isNaN(wawaCode)) {
-    return undefined; // 'Pilvisyys- ja sadetiedot eivät saatavilla';
+    return notAvailable;
+  }
+
+  const lastHourDescription = lastHourWawa[wawaCode];
+  if (lastHourDescription) {
+    return lastHourDescription;
   }
 
   const weatherSymbol = weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
@@ -123,13 +141,50 @@ function getWeatherObservation(
     return weatherSymbol.fi;
   }
 
-  return weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
+  const description = weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
     weatherSymbol.cloudiness?.includes(cloudiness)
   )?.fi;
+
+  return description ?? notAvailable;
+}
+
+function getSmartSymbol(
+  wawaCode: number,
+  cloudiness: number
+): number | undefined {
+  if (isNaN(cloudiness) || isNaN(wawaCode)) {
+    return undefined;
+  }
+
+  const lastHourDescription = lastHourWawa[wawaCode];
+
+  const cloudinessSmartSymbol = weatherSymbols.find(
+    (weatherSymbol: WeatherSymbol) =>
+      weatherSymbol.cloudiness?.includes(cloudiness)
+  )?.smartSymbol;
+
+  const smartSymbol = weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
+    weatherSymbol.wawa?.includes(wawaCode)
+  )?.smartSymbol;
+
+  if (lastHourDescription) {
+    return cloudinessSmartSymbol;
+  }
+
+  if (smartSymbol !== undefined) {
+    return smartSymbol;
+  }
+
+  if (cloudiness !== undefined) {
+    return cloudinessSmartSymbol;
+  }
+
+  return undefined;
 }
 
 export {
   weatherSymbols,
+  getSmartSymbol,
   getSymbolName,
   getWeatherObservation,
   type WeatherSymbol,
