@@ -25,10 +25,10 @@ class WindIcon extends LitElement {
   whiteGust!: boolean;
 
   @property({ type: Number, reflect: true })
-  windGustSpeed!: number;
+  windGustSpeed?: number;
 
   @property({ type: Number, reflect: true })
-  windSpeed!: number;
+  windSpeed?: number;
 
   static get styles() {
     return css`
@@ -92,7 +92,12 @@ class WindIcon extends LitElement {
       return html``;
     }
 
-    if (Number.isNaN(this.windSpeed)) {
+    if (
+      !this.windSpeed ||
+      Number.isNaN(this.windSpeed) ||
+      !this.windGustSpeed ||
+      Number.isNaN(this.windGustSpeed)
+    ) {
       return html``;
     }
     return html`<svg
@@ -125,7 +130,7 @@ class WindIcon extends LitElement {
     </svg>`;
   }
 
-  static _rotate(degrees) {
+  static _rotate(degrees: number) {
     let transform = 0;
 
     if (Number.isFinite(degrees)) {
@@ -135,7 +140,7 @@ class WindIcon extends LitElement {
     return `rotate(${transform}, 50, 60)`;
   }
 
-  static _round(value) {
+  static _round(value: number) {
     if (Number.isNaN(value)) {
       return '';
     }

@@ -170,22 +170,30 @@ class ForecastHeader extends LitElement {
           ?showFeelsLike="${this.showFeelsLike}"
           ?showWind="${this.showWind}"
         ></station-map>
-        ${this._selectedStation !== undefined
-          ? html`
             <div class="selected" @click="${this._expand}">
-            <div class="selected-label">${
-              this._selectedStation.calculated
-                ? 'LASKENNALLINEN'
-                : html`SÄÄASEMA ${this._selectedStation.distance} km`
-            }</div>
-            <svg-icon class="expand-icon" path="assets/image/icons.svg#caret-down"></svg-icon>  
+            ${
+              this._selectedStation
+                ? html`
+                    <div class="selected-label">
+                      ${this._selectedStation?.calculated
+                        ? 'LASKENNALLINEN'
+                        : html`SÄÄASEMA ${this._selectedStation?.distance} km`}
+                    </div>
+
+                    <svg-icon
+                      class="expand-icon"
+                      path="assets/image/icons.svg#caret-down"
+                    ></svg-icon>
+                  `
+                : null
+            }
             <div class="selected-name">
               
               <span class="selected-text">
               ${
-                this._selectedStation.calculated
+                this._selectedStation?.calculated
                   ? this._selectedStation.name
-                  : this._selectedStation.name
+                  : this._selectedStation?.name
               }
                </span>
               
@@ -199,22 +207,25 @@ class ForecastHeader extends LitElement {
 
                 
                </div>
-                <wind-icon
-                  .degrees="${this._selectedStation.windDirection}"
-                  large
-                  .rating="${windClassification(
-                    this._selectedStation.windGust
-                  )}"
-                  whiteGust
-                  .windSpeed="${this._selectedStation.wind}"
-                  .windGustSpeed="${this._selectedStation.windGust}"
-                >
-                </wind-icon>
+                ${
+                  this._selectedStation
+                    ? html` <wind-icon
+                        .degrees="${this._selectedStation.windDirection}"
+                        large
+                        .rating="${windClassification(
+                          this._selectedStation.windGust
+                        )}"
+                        whiteGust
+                        .windSpeed="${this._selectedStation?.wind}"
+                        .windGustSpeed="${this._selectedStation?.windGust}"
+                      >
+                      </wind-icon>`
+                    : null
+                }
                       
               </div>
             </div>
-            `
-          : ''}
+            
       </header>
     `;
   }
@@ -255,7 +266,7 @@ class ForecastHeader extends LitElement {
     return Math.round(value);
   }
 
-  static _time(dateTime) {
+  static _time(dateTime: Date) {
     const minutes = dateTime.getMinutes();
 
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;

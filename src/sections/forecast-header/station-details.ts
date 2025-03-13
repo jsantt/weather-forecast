@@ -21,6 +21,7 @@ class StationDetails extends LitElement {
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: auto;
         grid-gap: var(--space-l);
+        min-height: 10rem;
       }
 
       .item {
@@ -63,12 +64,8 @@ class StationDetails extends LitElement {
   }
 
   render() {
-    if (!this.station) {
-      return;
-    }
-
     return html`
-      ${this.station.humidity
+      ${this.station?.humidity
         ? html`
             <div class="item">
               <div class="value">${this.station.humidity} %</div>
@@ -76,7 +73,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${this.station.pressure
+      ${this.station?.pressure
         ? html`
             <div class="item">
               <div class="value">${Math.round(this.station.pressure)} hPa</div>
@@ -84,7 +81,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${this.station.dewPoint
+      ${this.station?.dewPoint
         ? html`
             <div class="item">
               <div class="value">${this.station.dewPoint} °C</div>
@@ -92,7 +89,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${this.station.visibility
+      ${this.station?.visibility
         ? html`
             <div class="item">
               <div class="value">${this.station.visibility} km</div>
@@ -100,7 +97,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${StationDetails._snow(this.station.snow)
+      ${this.station && StationDetails._snow(this.station.snow)
         ? html`
             <div class="item">
               <div class="value">${this.station.snow} cm</div>
@@ -108,7 +105,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${this.station.rainExplanation
+      ${this.station?.rainExplanation
         ? html`
             <div class="item">
               <div class="value">${this.station.rainExplanation} mm/h</div>
@@ -117,7 +114,7 @@ class StationDetails extends LitElement {
             </div>
           `
         : ``}
-      ${this.station.rain
+      ${this.station?.rain
         ? html`
             <div class="item">
               <div class="value">${this.station.rain} mm</div>
@@ -127,27 +124,29 @@ class StationDetails extends LitElement {
         : ``}
       <div class="item description">
         <div class="value">
-          ${getWeatherObservation(
-            this.station.wawaCode,
-            this.station.cloudiness
-          )}
+          ${this.station
+            ? getWeatherObservation(
+                this.station.wawaCode,
+                this.station.cloudiness
+              )
+            : ''}
         </div>
         <div class="explanation"></div>
       </div>
 
       <!--
       <div class="item">
-        <div class="value">${this.station.wawaCode}</div>
+        <div class="value">${this.station?.wawaCode}</div>
         <div class="explanation">wawa</div>
       </div>
 
       <div class="item">
-        <div class="value">${this.station.cloudiness} / 8</div>
+        <div class="value">${this.station?.cloudiness} / 8</div>
         <div class="explanation">pilvisyys</div>
       </div>
 
       <div class="item">
-        <div class="value">${this.station.smartSymbol}</div>
+        <div class="value">${this.station?.smartSymbol}</div>
         <div class="explanation">symbol</div>
       </div>
 

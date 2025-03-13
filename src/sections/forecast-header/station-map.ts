@@ -103,10 +103,6 @@ class StationMap extends LitElement {
     `;
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-  }
-
   render() {
     if (!this.location) {
       return;

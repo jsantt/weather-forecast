@@ -11,7 +11,7 @@ const _WIND_TABLE = [
   { min: 32, max: 99, rate: 4, description: 'hirmumyrskyä' },
 ];
 
-function windClassification(windSpeed) {
+function windClassification(windSpeed: number) {
   if (Number.isNaN(windSpeed) || windSpeed < 8) {
     return 0;
   }
