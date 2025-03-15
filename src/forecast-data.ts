@@ -17,14 +17,14 @@ import { rainType } from './data-helpers/rain-type';
 import { customElement, property } from 'lit/decorators.js';
 import { LocationCoordinates } from './sections/forecast-header/station-map.ts';
 
-type HarmonieParams = {
-  request: string;
-  starttime: string;
-  endtime: string;
-  parameters?: string;
-  storedquery_id?: string;
-  latlon?: string;
-  place?: string;
+type ForecastResponse = {
+  humidity: HTMLCollection;
+  rain: HTMLCollection;
+  smartSymbol: HTMLCollection;
+  temperature: HTMLCollection;
+  wind: HTMLCollection;
+  windDirection: HTMLCollection;
+  windGust: HTMLCollection;
 };
 
 type ForecastDayPartial = {
@@ -58,7 +58,7 @@ type ForecastDayOptional = {
 type ForecastDay = Required<ForecastDayPartial> & ForecastDayOptional;
 
 /**
- *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.
+ *  Fetches weather forecast from Ilmatieteenlaitos API.
  *
  *  Exposes the data in forecastData property in the following format:
  * [{ hour: 1
@@ -88,13 +88,23 @@ class ForecastData extends LitElement {
    * Fetches the data from the backend
    */
   _newLocation() {
+    if (!this.location) {
+      return;
+    }
+
     this.dispatch('forecast-data.fetching');
 
-    const params = ForecastData._getHarmonieParams(this.location);
-
-    const queryParams = Object.keys(params)
-      .map((key) => `${key}=${params[key]}`)
-      .join('&');
+    const params = {
+      request: 'getFeature',
+      storedquery_id:
+        'fmi::forecast::edited::weather::scandinavia::point::timevaluepair',
+      parameters:
+        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol',
+      starttime: ForecastData._todayFirstHour(),
+      endtime: ForecastData._endTime(),
+      latlon: this.location.coordinates,
+    };
+    const queryParams = new URLSearchParams(params).toString();
 
     fetch(`https://opendata.fmi.fi/wfs?${queryParams}`, {
       headers: {
@@ -120,13 +130,10 @@ class ForecastData extends LitElement {
         const hourAdded = ForecastData._addFullHour(json);
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
 
-        const forecastDataWithSmartSymbolAggregate =
+        const smartSymbolAggregateAdded =
           ForecastData._addSmartSymbolAggregateForCompactMode(rainTypeAdded);
 
-        this.dispatch(
-          'forecast-data.new-data',
-          forecastDataWithSmartSymbolAggregate
-        );
+        this.dispatch('forecast-data.new-data', smartSymbolAggregateAdded);
       })
       .catch((rejected) => {
         raiseEvent(this, 'forecast-data.fetch-error', {
@@ -142,67 +149,12 @@ class ForecastData extends LitElement {
       });
   }
 
-  static _getHarmonieParams(location): HarmonieParams {
-    const params = ForecastData._commonParams(location);
-
-    params.storedquery_id =
-      'fmi::forecast::edited::weather::scandinavia::point::timevaluepair';
-    params.parameters =
-      'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol';
-
-    return params;
-  }
-
-  static _commonParams(location): HarmonieParams {
-    const params: HarmonieParams = {
-      request: 'getFeature',
-      starttime: ForecastData._todayFirstHour(),
-      endtime: ForecastData._endTime(),
-      parameters: undefined,
-      storedquery_id: undefined,
-    };
-    if (location.coordinates) {
-      params.latlon = location.coordinates;
-    } else {
-      // TODO: remove this branch if unused?
-      params.place = location.city;
-    }
-
-    return params;
-  }
-
-  /**
-   * Data comes from the following format from FMI open API
-   *
-   *	...
-   * <wml2:MeasurementTimeseries gml:id="mts-1-1-Temperature">
-   *		<wml2:point>
-   *			<wml2:MeasurementTVP>
-   *				<wml2:time>2018-01-09T20:00:00Z</wml2:time>
-   *				<wml2:value>-2.41</wml2:value>
-   *		...
-   * <wml2:MeasurementTimeseries gml:id="mts-1-1-Precipitation1h">
-   *    ...
-   * <wml2:MeasurementTimeseries gml:id="mts-1-1-WindSpeedMS">
-   *    ...
-   * <wml2:MeasurementTimeseries gml:id="mts-1-1-WindDirection">
-   *    ...
-   * <wml2:MeasurementTimeseries gml:id="mts-1-1-Humidity">
-   *
-   *
-   * And it is converted to the following JSON and stored into this.forecastData
-   *
-   * [
-   *    {hour:1, rain: NaN, symbol: NaN, temperature: NaN, time: "2018-03-02T23:00:00Z", wind: NaN, windDirection: NaN}
-   *    {hour:2, ...}
-   * ]
-   */
-  static _filterResponse(response) {
+  static _filterResponse(response: Document): ForecastResponse {
     const timeSeries = response.getElementsByTagName(
       'wml2:MeasurementTimeseries'
     );
 
-    const harmonieResponse = {
+    return {
       humidity: getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity'),
       rain: getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h'),
       smartSymbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-SmartSymbol'),
@@ -211,35 +163,34 @@ class ForecastData extends LitElement {
       windDirection: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection'),
       windGust: getTimeAndValuePairs(timeSeries, 'mts-1-1-HourlyMaximumGust'),
     };
-
-    return harmonieResponse;
   }
 
-  static _toJson(data): ForecastDay[] {
+  static _toJson(response: ForecastResponse): ForecastDay[] {
     const forecastDays: ForecastDay[] = [];
 
-    for (let i = 0; i < data.temperature.length; i += 1) {
-      const temperatureValue = getValue(data.temperature[i]);
-      const windValue = getValue(data.wind[i]);
-      const windGustValue = getValue(data.windGust[i]);
-      const humidityValue = getValue(data.humidity[i]);
+    for (let i = 0; i < response.temperature.length; i += 1) {
+      const temperatureValue = getValue(response.temperature[i]);
+      const windValue = getValue(response.wind[i]);
+      const windGustValue = getValue(response.windGust[i]);
+      const humidityValue = getValue(response.humidity[i]);
       const roundWind = Math.round(windValue);
       const roundWindGust = Math.round(windGustValue);
-      const rain = getValue(data.rain[i]);
-      const smartSymbol = getValue(data.smartSymbol[i]);
+      const rain = getValue(response.rain[i]);
+      const smartSymbol = getValue(response.smartSymbol[i]);
 
       // previous wind and wind gust
       let previousRoundWind = 0;
       let previousRoundWindGust = 0;
 
       if (i > 0) {
-        previousRoundWind = Math.round(getValue(data.wind[i - 1])) || 0;
-        previousRoundWindGust = Math.round(getValue(data.windGust[i - 1])) || 0;
+        previousRoundWind = Math.round(getValue(response.wind[i - 1])) || 0;
+        previousRoundWindGust =
+          Math.round(getValue(response.windGust[i - 1])) || 0;
       }
 
       // next wind and wind gust
-      const nextWind = getValue(data.wind[i + 1]) || 0;
-      const nextWindGust = getValue(data.windGust[i + 1]) || 0;
+      const nextWind = getValue(response.wind[i + 1]) || 0;
+      const nextWindGust = getValue(response.windGust[i + 1]) || 0;
 
       const nextRoundWind = Math.round(nextWind);
       const nextRoundWindGust = Math.round(nextWindGust);
@@ -250,12 +201,12 @@ class ForecastData extends LitElement {
         rain,
         snow: snowAmount(temperatureValue, rain, smartSymbol),
         smartSymbol: smartSymbol || undefined,
-        time: getTime(data.temperature[i]),
+        time: getTime(response.temperature[i]),
         temperature: temperatureValue,
         wind: windValue,
         roundWind,
         threeHourWindMax: Math.max(roundWind, previousRoundWind, nextRoundWind),
-        windDirection: getValue(data.windDirection[i]),
+        windDirection: getValue(response.windDirection[i]),
         windGust: windGustValue,
         roundWindGust,
         threeHourWindMaxGust: Math.max(
@@ -265,34 +216,7 @@ class ForecastData extends LitElement {
         ),
       };
 
-      const day: ForecastDay = {
-        humidity: forecastEntry.humidity,
-        time: forecastEntry.time,
-        threeHourWindMax: forecastEntry.threeHourWindMax,
-
-        threeHourWindMaxGust: forecastEntry.threeHourWindMaxGust,
-        rain: forecastEntry.rain,
-        roundWind: forecastEntry.roundWind,
-
-        roundWindGust: forecastEntry.roundWindGust,
-        snow: forecastEntry.snow,
-        wind: forecastEntry.wind,
-
-        windGust: forecastEntry.windGust,
-        smartSymbol: forecastEntry.smartSymbol || undefined,
-        temperature: forecastEntry.temperature,
-
-        smartSymbolAggregate: forecastEntry.smartSymbolAggregate || undefined,
-        smartSymbolCompactAggregate:
-          forecastEntry.smartSymbolCompactAggregate || undefined,
-
-        windDirection: forecastEntry.windDirection,
-        feelsLike: forecastEntry.feelsLike ?? Number.NaN,
-        hour: forecastEntry.hour ?? 0,
-        rainType: forecastEntry.rainType ?? 0,
-      };
-
-      forecastDays.push(day);
+      forecastDays.push(forecastEntry as ForecastDay);
 
       previousRoundWind = roundWind;
       previousRoundWindGust = roundWindGust;
@@ -321,28 +245,34 @@ class ForecastData extends LitElement {
     return result;
   }
 
-  static _addSmartSymbolAggregateForCompactMode(forecastData: any[]) {
-    let previousItem = { smartSymbol: -Infinity };
+  static _addSmartSymbolAggregateForCompactMode(
+    forecastData: ForecastDay[]
+  ): ForecastDay[] {
+    let previousSmartSymbol = -Infinity;
     const forecast = forecastData.map((item, index) => {
       const newItem = { ...item };
 
-      const max = Math.max(previousItem.smartSymbol, item.smartSymbol);
+      const max = item.smartSymbol
+        ? Math.max(previousSmartSymbol, item.smartSymbol)
+        : previousSmartSymbol;
 
       newItem.smartSymbolCompactAggregate = max || undefined;
 
+      //day is divided into 3 sections, and we are calculating aggregate for each
       if (index === 8 || index === 15 || index === 24) {
-        previousItem = { smartSymbol: -Infinity };
+        previousSmartSymbol = -Infinity;
       } else {
-        previousItem = newItem;
+        previousSmartSymbol = newItem.smartSymbol || previousSmartSymbol;
       }
       return newItem;
     });
+
     return forecast;
   }
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 
   <gml:identifier codeSpace="http://xml.fmi.fi/namespace/stationcode/geoid">7521689</gml:identifier> */
-  static _parseLocationGeoid(response) {
+  static _parseLocationGeoid(response: Document): string {
     const locations = response.getElementsByTagName('gml:identifier');
     const locationRow = getByAttributeValue(
       locations,
