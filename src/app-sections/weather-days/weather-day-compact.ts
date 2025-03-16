@@ -23,14 +23,11 @@ class WeatherDay extends LitElement {
   @property({ type: Object })
   location?: object;
 
-  @property({ type: Number, reflect: true })
-  minTemperature?: number;
-
   @property({ type: Boolean, reflect: true })
   showFeelsLike: boolean = false;
 
   @property({ type: Array })
-  dayData?: ForecastDay[] = [];
+  dayData?: ForecastDay = [];
 
   @state()
   dayMin?: number;

@@ -53,11 +53,6 @@ class RainBars extends LitElement {
         type: Array,
       },
 
-      minTemperature: {
-        type: Number,
-        reflect: true,
-      },
-
       _chartHeight: {
         type: Number,
         reflect: true,

@@ -27,7 +27,9 @@ type ForecastResponse = {
   windGust: HTMLCollection;
 };
 
-type ForecastDayPartial = {
+type ForecastDay = ForecastHour[];
+
+type ForecastHourPartial = {
   humidity: number;
   time: number;
   threeHourWindMax: number;
@@ -48,14 +50,14 @@ type ForecastDayPartial = {
   hour?: number;
 };
 
-type ForecastDayOptional = {
+type ForecastHourOptional = {
   smartSymbol?: number;
   smartSymbolAggregate?: number;
   smartSymbolCompactAggregate?: number;
   rainType?: string;
 };
 
-type ForecastDay = Required<ForecastDayPartial> & ForecastDayOptional;
+type ForecastHour = Required<ForecastHourPartial> & ForecastHourOptional;
 
 /**
  *  Fetches weather forecast from Ilmatieteen laitos API.
@@ -122,8 +124,32 @@ class ForecastData extends LitElement {
         const smartSymbolAggregateAdded =
           ForecastData._addSmartSymbolAggregateForCompactMode(rainTypeAdded);
 
-        console.log(smartSymbolAggregateAdded);
-        this.dispatch('forecast-data.new-data', smartSymbolAggregateAdded);
+        const day1Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 1);
+        const day2Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 2);
+        const day3Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 3);
+        const day4Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 4);
+        const day5Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 5);
+        const day6Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 6);
+        const day7Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 7);
+        const day8Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 8);
+        const day9Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 9);
+        const day10Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 10);
+
+        const forecastDays: ForecastDay[] = [];
+        forecastDays.push(
+          day1Data,
+          day2Data,
+          day3Data,
+          day4Data,
+          day5Data,
+          day6Data,
+          day7Data,
+          day8Data,
+          day9Data,
+          day10Data
+        );
+
+        this.dispatch('forecast-data.new-data', forecastDays);
       })
       .catch((rejected) => {
         raiseEvent(this, 'forecast-data.fetch-error', {
@@ -155,8 +181,24 @@ class ForecastData extends LitElement {
     };
   }
 
-  static _toJson(response: ForecastResponse): ForecastDay[] {
-    const forecastDays: ForecastDay[] = [];
+  static _sliceDay(data: ForecastHour[], dayNumber: number): ForecastDay {
+    if (data === undefined) {
+      return [];
+    }
+
+    try {
+      data[(dayNumber - 1) * 24];
+      data[dayNumber * 24];
+    } catch (e) {
+      console.log('cannot slice', data, dayNumber);
+      return [];
+    }
+
+    return data.slice((dayNumber - 1) * 24, dayNumber * 24);
+  }
+
+  static _toJson(response: ForecastResponse): ForecastHour[] {
+    const forecastDays: ForecastHour[] = [];
 
     for (let i = 0; i < response.temperature.length; i += 1) {
       const temperatureValue = getValue(response.temperature[i]);
@@ -185,7 +227,7 @@ class ForecastData extends LitElement {
       const nextRoundWind = Math.round(nextWind);
       const nextRoundWindGust = Math.round(nextWindGust);
 
-      const forecastEntry: ForecastDayPartial & ForecastDayOptional = {
+      const forecastEntry: ForecastHourPartial & ForecastHourOptional = {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
         rain,
@@ -206,7 +248,7 @@ class ForecastData extends LitElement {
         ),
       };
 
-      forecastDays.push(forecastEntry as ForecastDay);
+      forecastDays.push(forecastEntry as ForecastHour);
 
       previousRoundWind = roundWind;
       previousRoundWindGust = roundWindGust;
@@ -215,7 +257,7 @@ class ForecastData extends LitElement {
     return forecastDays;
   }
 
-  static _addFullHour(forecastDays: ForecastDay[]): ForecastDay[] {
+  static _addFullHour(forecastDays: ForecastHour[]): ForecastHour[] {
     const combined = forecastDays.map((element) => {
       const copy = { ...element };
       copy.hour = ForecastData._toHour(copy.time);
@@ -225,7 +267,7 @@ class ForecastData extends LitElement {
     return combined;
   }
 
-  static _addRainType(forecastDays: ForecastDay[]): ForecastDay[] {
+  static _addRainType(forecastDays: ForecastHour[]): ForecastHour[] {
     const result = forecastDays.map((item) => {
       const copy = { ...item };
       copy.rainType = rainType(copy.smartSymbol);
@@ -236,8 +278,8 @@ class ForecastData extends LitElement {
   }
 
   static _addSmartSymbolAggregateForCompactMode(
-    forecastData: ForecastDay[]
-  ): ForecastDay[] {
+    forecastData: ForecastHour[]
+  ): ForecastHour[] {
     let previousSmartSymbol = -Infinity;
     const forecast = forecastData.map((item, index) => {
       const newItem = { ...item };
@@ -328,4 +370,4 @@ class ForecastData extends LitElement {
   }
 }
 
-export { ForecastData, type ForecastDay };
+export { ForecastData, type ForecastDay, type ForecastHour };

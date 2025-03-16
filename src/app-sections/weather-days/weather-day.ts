@@ -23,9 +23,6 @@ class WeatherDay extends LitElement {
   @property({ type: Object })
   location?: object;
 
-  @property({ type: Number, reflect: true })
-  minTemperature?: number;
-
   @property({ type: Boolean, reflect: true })
   showFeelsLike: boolean = false;
 
@@ -33,7 +30,7 @@ class WeatherDay extends LitElement {
   showWind: boolean = false;
 
   @property({ type: Array })
-  dayData?: ForecastDay[] = [];
+  dayData?: ForecastDay = [];
 
   @property({ type: Boolean, reflect: true })
   debug: boolean = false;
@@ -335,7 +332,6 @@ class WeatherDay extends LitElement {
           <div class="hour hour--empty"></div>
 
           <rain-bars
-            .minTemperature="${this.minTemperature}"
             .dayData="${this.dayData}"
           >
           </rain-bars>

@@ -185,24 +185,22 @@ class WeatherApp extends LitElement {
       }
       @media only screen and (min-width: 1100px) {
         .grid-container {
-          grid-template-columns: minmax(350px, 450px) minmax(200px, 250px) minmax(
-              200px,
-              250px
-            ) !important;
+          max-width: 1000px;
+          grid-template-columns: 6fr 4fr 4fr !important;
           grid-template-areas:
-            'header location location'
-            'map info sun'
-            'map info links'
-            'map info share'
-            'forecast forecast forecast'
-            'symbols symbols symbols'
-            'copy copy copy';
-
-          padding-top: 3rem;
+            'header header header '
+            'location . . '
+            'map links sun'
+            'map share sun  '
+            'map . . '
+            'forecast info info '
+            'forecast info info '
+            'symbols symbols symbols '
+            'copy copy copy ';
         }
         .grid-header,
         .grid-location {
-          padding-bottom: 3rem;
+          padding-bottom: 1rem;
         }
       }
     `;
@@ -333,6 +331,7 @@ class WeatherApp extends LitElement {
     this.addEventListener('forecast-data.new-data', ((event: CustomEvent) => {
       this._forecastError = false;
       this._forecastData = event.detail;
+      console.log(event.detail);
     }) as EventListener);
 
     this.addEventListener('forecast-data.new-place', ((event: CustomEvent) => {
