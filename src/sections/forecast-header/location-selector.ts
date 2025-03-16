@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import './combo-box';
 import { CITIES, DEFAULT_PLACE, TOP_10_CITIES } from './city-list';
 import { property } from 'lit/decorators.js';
-import { Place } from '../../observation-data';
+import { Place } from '../../common-components/data/observation-data/observation-data';
 
 class LocationSelector extends LitElement {
   static get is() {

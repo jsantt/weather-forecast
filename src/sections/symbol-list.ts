@@ -3,9 +3,7 @@ import { css, html, LitElement } from 'lit';
 import '../weather-section';
 import '../common-components/svg-icon';
 import '../common-components/wind-icon';
-import {
-  weatherSymbols,
-} from '../data-helpers/weather-symbol-name.ts';
+import { weatherSymbols } from '../data-helpers/weather-symbol-name.ts';
 
 class SymbolList extends LitElement {
   static get is() {

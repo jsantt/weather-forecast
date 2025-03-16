@@ -1,16 +1,16 @@
 import { LitElement } from 'lit';
 
-import { distance } from './data-helpers/distance';
-import { feelsLike } from './data-helpers/feels-like';
+import { distance } from './distance.ts';
+import { feelsLike } from '../feels-like.ts';
 
-import { raiseEvent } from './data-helpers/xml-parser';
+import { raiseEvent } from '../xml-parser.ts';
 
 import {
   addCoordinatesForMap,
   resolveCollisions,
-} from './sections/observation-helpers';
+} from '../../../sections/observation-helpers.js';
 import { property } from 'lit/decorators.js';
-import { getSmartSymbol } from './data-helpers/weather-symbol-name.ts';
+import { getSmartSymbol } from '../../../data-helpers/weather-symbol-name.ts';
 
 type Station = {
   cloudiness: number;

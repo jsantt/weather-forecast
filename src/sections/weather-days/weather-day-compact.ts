@@ -8,7 +8,7 @@ import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 
 import { property, state } from 'lit/decorators.js';
-import { ForecastDay } from '../../forecast-data.js';
+import { ForecastDay } from '../../common-components/data/forecast-data/forecast-data.js';
 import { getWeekdayShort } from './time-texts.js';
 import { getSymbolName } from '../../data-helpers/weather-symbol-name.js';
 

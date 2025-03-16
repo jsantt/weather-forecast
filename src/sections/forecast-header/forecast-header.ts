@@ -10,7 +10,7 @@ import './location-selector.ts';
 import './station-map';
 import './station-details';
 import { property } from 'lit/decorators.js';
-import { Station } from '../../observation-data.ts';
+import { Station } from '../../common-components/data/observation-data/observation-data.ts';
 import { LocationCoordinates } from './station-map';
 
 class ForecastHeader extends LitElement {

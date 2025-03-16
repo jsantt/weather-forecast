@@ -1,7 +1,7 @@
 /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates */
 
 // Converts numeric degrees to radians
-function _toRadian(degrees) {
+function _toRadian(degrees: number) {
   return (degrees * Math.PI) / 180;
 }
 

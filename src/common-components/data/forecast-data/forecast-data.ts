@@ -9,13 +9,13 @@ import {
   raiseEvent,
   value,
   parseRegion,
-} from './data-helpers/xml-parser';
-import { snowAmount } from './sections/weather-days/rain-helper.ts';
+} from '../xml-parser.ts';
+import { snowAmount } from '../../../sections/weather-days/rain-helper.ts';
 
-import { feelsLike } from './data-helpers/feels-like';
-import { rainType } from './data-helpers/rain-type';
+import { feelsLike } from '../feels-like.ts';
+import { rainType } from './rain-type.ts';
 import { customElement, property } from 'lit/decorators.js';
-import { LocationCoordinates } from './sections/forecast-header/station-map.ts';
+import { LocationCoordinates } from '../../../sections/forecast-header/station-map.ts';
 
 type ForecastResponse = {
   humidity: HTMLCollection;
@@ -58,18 +58,7 @@ type ForecastDayOptional = {
 type ForecastDay = Required<ForecastDayPartial> & ForecastDayOptional;
 
 /**
- *  Fetches weather forecast from Ilmatieteenlaitos API.
- *
- *  Exposes the data in forecastData property in the following format:
- * [{ hour: 1
- *    humidity: 50
- *    past: true|false
- *    rain: 0 | NAN
- *    symbol: 1
- *    temperature: 11.3
- *    time: "2018-09-26T22:00:00Z"
- *    wind: 7.6
- *    windDirection: 296 }, {...}]
+ *  Fetches weather forecast from Ilmatieteen laitos API.
  */
 @customElement('forecast-data')
 class ForecastData extends LitElement {
@@ -133,6 +122,7 @@ class ForecastData extends LitElement {
         const smartSymbolAggregateAdded =
           ForecastData._addSmartSymbolAggregateForCompactMode(rainTypeAdded);
 
+        console.log(smartSymbolAggregateAdded);
         this.dispatch('forecast-data.new-data', smartSymbolAggregateAdded);
       })
       .catch((rejected) => {
@@ -225,8 +215,8 @@ class ForecastData extends LitElement {
     return forecastDays;
   }
 
-  static _addFullHour(combinedData) {
-    const combined = combinedData.map((element) => {
+  static _addFullHour(forecastDays: ForecastDay[]): ForecastDay[] {
+    const combined = forecastDays.map((element) => {
       const copy = { ...element };
       copy.hour = ForecastData._toHour(copy.time);
       return copy;
@@ -235,10 +225,10 @@ class ForecastData extends LitElement {
     return combined;
   }
 
-  static _addRainType(data) {
-    const result = data.map((item) => {
+  static _addRainType(forecastDays: ForecastDay[]): ForecastDay[] {
+    const result = forecastDays.map((item) => {
       const copy = { ...item };
-      copy.rainType = rainType(copy.symbol);
+      copy.rainType = rainType(copy.smartSymbol);
       return copy;
     });
 
@@ -338,5 +328,4 @@ class ForecastData extends LitElement {
   }
 }
 
-export { ForecastData };
-export type { ForecastDay };
+export { ForecastData, type ForecastDay };

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Station } from '../../observation-data.ts';
+import { Station } from '../../common-components/data/observation-data/observation-data.ts';
 import { getWeatherObservation } from '../../data-helpers/weather-symbol-name.ts';
 
 class StationDetails extends LitElement {

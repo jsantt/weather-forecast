@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import './weather-day';
 import './weather-day-compact';
 
-import { ForecastDay } from '../../forecast-data.ts';
+import { ForecastDay } from '../../common-components/data/forecast-data/forecast-data.ts';
 import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -72,8 +72,8 @@ class WeatherDays extends LitElement {
     } else {
       this.toggleDisabled = false;
       return [
-        { type: 'normal' },
-        { type: 'normal' },
+        { type: 'compact' },
+        { type: 'compact' },
         { type: 'compact' },
         { type: 'compact' },
         { type: 'compact' },
@@ -161,16 +161,16 @@ class WeatherDays extends LitElement {
   showWind: boolean = false;
 
   @state()
-  _day1Data = [];
-  _day2Data = [];
-  _day3Data = [];
-  _day4Data = [];
-  _day5Data = [];
-  _day6Data = [];
-  _day7Data = [];
-  _day8Data = [];
-  _day9Data = [];
-  _day10Data = [];
+  _day1Data: ForecastDay[] = [];
+  _day2Data: ForecastDay[] = [];
+  _day3Data: ForecastDay[] = [];
+  _day4Data: ForecastDay[] = [];
+  _day5Data: ForecastDay[] = [];
+  _day6Data: ForecastDay[] = [];
+  _day7Data: ForecastDay[] = [];
+  _day8Data: ForecastDay[] = [];
+  _day9Data: ForecastDay[] = [];
+  _day10Data: ForecastDay[] = [];
 
   _minTemperature?: number;
 
@@ -195,7 +195,7 @@ class WeatherDays extends LitElement {
 
   // for computed properties
 
-  static _sliceDay(data, dayNumber) {
+  static _sliceDay(data, dayNumber: number) {
     if (data === undefined) {
       return;
     }
@@ -211,7 +211,7 @@ class WeatherDays extends LitElement {
     return data.slice((dayNumber - 1) * 24, dayNumber * 24);
   }
 
-  static _minTemp(data) {
+  static _minTemp(data: ForecastDay[]): number {
     const min = data.reduce((previous, current) => {
       const currentTemp = Number.isNaN(current.temperature)
         ? Number.MAX_VALUE

@@ -5,7 +5,7 @@ import '../../common-components/error-notification';
 import '../../common-components/wind-icon';
 import { isNight } from '../../data-helpers/sun-calculations';
 import { property, state } from 'lit/decorators.js';
-import { Station } from '../../observation-data.ts';
+import { Station } from '../../common-components/data/observation-data/observation-data.ts';
 
 // TODO: move to source once it is converted into TS
 type LocationCoordinates = {

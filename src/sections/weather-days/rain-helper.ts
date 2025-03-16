@@ -1,4 +1,4 @@
-import { ForecastDay } from '../../forecast-data.ts';
+import { ForecastDay } from '../../common-components/data/forecast-data/forecast-data.ts';
 
 function roundRain(total: number) {
   let roundedTotal: number;

@@ -35,8 +35,6 @@ function isDayHighest(dayData, currentIndex) {
     prev.windGust > current.windGust ? prev : current
   );
 
-  console.log(dayData);
-  console.log(dayHighest.hour);
 
   if (Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1) {
     /*console.log(

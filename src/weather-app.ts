@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
 
-import { getTime } from './data-helpers/time.ts';
+import { getTime } from './weather-app-time.ts';
 
-import './forecast-data.ts';
-import './observation-data.ts';
+import './common-components/data/forecast-data/forecast-data.ts';
+import './common-components/data/observation-data/observation-data.ts';
 
 import './sections/forecast-header/top-bar.ts';
 import './sections/forecast-header/location-selector.ts';
@@ -15,6 +15,7 @@ import './sections/forecast-header/forecast-header.ts';
 import './sections/bottom-sheet/bottom-sheet.ts';
 import { state } from 'lit/decorators.js';
 import { LocationCoordinates } from './sections/forecast-header/station-map.ts';
+import { ForecastDay } from './common-components/data/forecast-data/forecast-data.ts';
 import('./sections/external-links.js');
 
 import('./sections/sunrise-sunset');
@@ -38,7 +39,7 @@ class WeatherApp extends LitElement {
   _firstLoading: boolean = false;
 
   @state()
-  _forecastData?: any[];
+  _forecastData?: ForecastDay[];
 
   @state()
   _forecastError: boolean = false;
