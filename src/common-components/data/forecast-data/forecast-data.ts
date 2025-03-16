@@ -46,13 +46,13 @@ type ForecastDayPartial = {
   windDirection: number;
   feelsLike?: number;
   hour?: number;
-  rainType?: number;
 };
 
 type ForecastDayOptional = {
   smartSymbol?: number;
   smartSymbolAggregate?: number;
   smartSymbolCompactAggregate?: number;
+  rainType?: string;
 };
 
 type ForecastDay = Required<ForecastDayPartial> & ForecastDayOptional;

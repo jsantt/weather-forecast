@@ -8,7 +8,11 @@ const icons = [
 /**
  * Resolves rain type
  */
-function rainType(smartSymbol: number) {
+function rainType(smartSymbol?: number): string | undefined {
+  if (smartSymbol == undefined) {
+    return undefined;
+  }
+
   const symbol = smartSymbol % 100;
 
   for (const item of icons) {
