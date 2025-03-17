@@ -12,8 +12,8 @@ function roundRain(total: number) {
   return roundedTotal;
 }
 
-function rainStartTime(dayData: ForecastDay[]) {
-  const rainStartItem = dayData.find((item) => item.rain > 0);
+function rainStartTime(dayData: ForecastDay) {
+  const rainStartItem = dayData.hours.find((item) => item.rain > 0);
 
   return rainStartItem === undefined ? undefined : rainStartItem.hour;
 }
@@ -21,14 +21,14 @@ function rainStartTime(dayData: ForecastDay[]) {
 /**
  * Sleet is counted as rain
  */
-function totalRain(dayData: ForecastDay[]) {
+function totalRain(dayData: ForecastDay) {
   if (dayData === undefined) {
     return 0;
   }
 
   let rain: number;
 
-  const total = dayData.reduce((previous, item) => {
+  const total = dayData.hours.reduce((previous, item) => {
     rain = 0;
 
     if (
@@ -44,10 +44,10 @@ function totalRain(dayData: ForecastDay[]) {
   return total;
 }
 
-function totalSnow(weatherDay: ForecastDay[]) {
+function totalSnow(weatherDay: ForecastDay) {
   let snow: number;
 
-  const total = weatherDay.reduce((previous, item) => {
+  const total = weatherDay.hours.reduce((previous, item) => {
     if (item.smartSymbol === undefined) {
       return previous;
     }

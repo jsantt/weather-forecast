@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import './weather-day.ts';
 import './weather-day-compact.ts';
 
-import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.ts';
+import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
 import { property, state } from 'lit/decorators.js';
 
 class WeatherDays extends LitElement {
@@ -11,8 +11,8 @@ class WeatherDays extends LitElement {
     return 'weather-days';
   }
 
-  @property({ type: Array })
-  forecastData: ForecastDay[] = [];
+  @property({ type: Object })
+  forecastData?: Forecast;
 
   @property({ type: Object })
   location?: object;
@@ -44,7 +44,7 @@ class WeatherDays extends LitElement {
 
   render() {
     return html`
-      ${this.forecastData.map((_, index) => {
+      ${this.forecastData?.days.map((day, index) => {
         if (this.expanded[index]) {
           return html`<weather-day
             @click=${() => this.toggle(index)}
@@ -52,7 +52,7 @@ class WeatherDays extends LitElement {
             .location="${this.location}"
             .showFeelsLike="${this.showFeelsLike}"
             .showWind="${this.showWind}"
-            .dayData="${this.forecastData[index]}"
+            .dayData="${day}"
           ></weather-day> `;
         } else {
           return html`<weather-day-compact
@@ -60,7 +60,7 @@ class WeatherDays extends LitElement {
             dayNumber=${index + 1}
             .location="${this.location}"
             .showFeelsLike="${this.showFeelsLike}"
-            .dayData="${this.forecastData[index]}"
+            .dayData="${day}"
           ></weather-day-compact> `;
         }
       })}

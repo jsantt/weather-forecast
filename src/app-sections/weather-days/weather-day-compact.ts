@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 
-import './rain-bars.js';
 import './weather-description.js';
 
 import '../../common-components/smooth-expand.js';
@@ -26,8 +25,8 @@ class WeatherDay extends LitElement {
   @property({ type: Boolean, reflect: true })
   showFeelsLike: boolean = false;
 
-  @property({ type: Array })
-  dayData?: ForecastDay = [];
+  @property({ type: Object })
+  dayData?: ForecastDay;
 
   @state()
   dayMin?: number;
@@ -42,9 +41,9 @@ class WeatherDay extends LitElement {
   dayMaxFeelsLike?: number;
 
   willUpdate(changedProperties: Map<string, any>) {
-    if (changedProperties.has('dayData') && this.dayData) {
+    if (changedProperties.has('dayData') && this.dayData?.hours) {
       const roundedMin = Math.round(
-        this.dayData.reduce((min, entry) => {
+        this.dayData.hours.reduce((min, entry) => {
           if (!Number.isNaN(entry.temperature)) {
             return Math.min(min, entry.temperature);
           }
@@ -57,7 +56,7 @@ class WeatherDay extends LitElement {
       }
 
       const roundedMax = Math.round(
-        this.dayData.reduce((max, entry) => {
+        this.dayData.hours.reduce((max, entry) => {
           if (!Number.isNaN(entry.temperature)) {
             return Math.max(max, entry.temperature);
           }
@@ -71,7 +70,7 @@ class WeatherDay extends LitElement {
 
       // feels like
       const roundedMinFeelsLike = Math.round(
-        this.dayData.reduce((min, entry) => {
+        this.dayData.hours.reduce((min, entry) => {
           if (!Number.isNaN(entry.feelsLike)) {
             return Math.min(min, entry.feelsLike);
           }
@@ -84,7 +83,7 @@ class WeatherDay extends LitElement {
       }
 
       const roundedMaxFeelsLike = Math.round(
-        this.dayData.reduce((max, entry) => {
+        this.dayData.hours.reduce((max, entry) => {
           if (!Number.isNaN(entry.feelsLike)) {
             return Math.max(max, entry.feelsLike);
           }
@@ -184,23 +183,29 @@ class WeatherDay extends LitElement {
       </div>
 
       <div class="symbols fade">
-        ${this.dayData[8]?.smartSymbolCompactAggregate
+        ${this.dayData.hours[8]?.smartSymbolCompactAggregate
           ? html`
         <img
-          src="${`assets/image/smart/light/${this.dayData[8]?.smartSymbolCompactAggregate}.svg`}"
-          alt="${getSymbolName(this.dayData[8].smartSymbol) || 'sääsymboli'}"
+          src="${`assets/image/smart/light/${this.dayData.hours[8]?.smartSymbolCompactAggregate}.svg`}"
+          alt="${
+            getSymbolName(this.dayData.hours[8].smartSymbol) || 'sääsymboli'
+          }"
         ></img>`
           : ''}
-        ${this.dayData[15]?.smartSymbolCompactAggregate
+        ${this.dayData.hours[15]?.smartSymbolCompactAggregate
           ? html`<img
-          src="${`assets/image/smart/light/${this.dayData[15]?.smartSymbolCompactAggregate}.svg`}"
-          alt="${getSymbolName(this.dayData[15].smartSymbol) || 'sääsymboli'}"
+          src="${`assets/image/smart/light/${this.dayData.hours[15]?.smartSymbolCompactAggregate}.svg`}"
+          alt="${
+            getSymbolName(this.dayData.hours[15].smartSymbol) || 'sääsymboli'
+          }"
         ></img>`
           : ''}
-        ${this.dayData[23]?.smartSymbolCompactAggregate
+        ${this.dayData.hours[23]?.smartSymbolCompactAggregate
           ? html`<img
-            src="${`assets/image/smart/light/${this.dayData[23]?.smartSymbolCompactAggregate}.svg`}"
-            alt="${getSymbolName(this.dayData[23].smartSymbol) || 'sääsymboli'}"
+            src="${`assets/image/smart/light/${this.dayData.hours[23]?.smartSymbolCompactAggregate}.svg`}"
+            alt="${
+              getSymbolName(this.dayData.hours[23].smartSymbol) || 'sääsymboli'
+            }"
         ></img>`
           : ''}
       </div>`;

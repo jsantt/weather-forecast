@@ -1,3 +1,5 @@
+import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.ts';
+
 /**
  * 8–13 m/s	navakkaa tuulta
  * 14–20 m/s	kovaa tuulta
@@ -11,7 +13,7 @@ const _WIND_TABLE = [
   { min: 32, max: 99, rate: 4, description: 'hirmumyrskyä' },
 ];
 
-function windClassification(windSpeed: number) {
+function windClassification(windSpeed: number): number {
   if (Number.isNaN(windSpeed) || windSpeed < 8) {
     return 0;
   }
@@ -23,18 +25,17 @@ function windClassification(windSpeed: number) {
   return rows[0].rate;
 }
 
-function getHighestWindGustHour(dayData) {
-  const dayHighest = dayData.reduce((prev, current) =>
+function getHighestWindGustHour(dayData: ForecastDay): number {
+  const dayHighest = dayData.hours.reduce((prev, current) =>
     prev.windGust > current.windGust ? prev : current
   );
   return dayHighest.hour;
 }
 
-function isDayHighest(dayData, currentIndex) {
-  const dayHighest = dayData.reduce((prev, current) =>
+function isDayHighest(dayData: ForecastDay, currentIndex: number): boolean {
+  const dayHighest = dayData.hours.reduce((prev, current) =>
     prev.windGust > current.windGust ? prev : current
   );
-
 
   if (Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1) {
     /*console.log(
@@ -46,7 +47,6 @@ function isDayHighest(dayData, currentIndex) {
   } else {
     //console.log('NOT HIGHEST');
   }
-  console.log(dayData[currentIndex]?.hour, dayHighest.hour);
 
   return Math.abs(dayData[currentIndex]?.hour - dayHighest.hour) <= 1;
 }

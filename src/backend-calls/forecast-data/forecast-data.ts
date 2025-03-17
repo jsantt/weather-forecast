@@ -27,7 +27,34 @@ type ForecastResponse = {
   windGust: HTMLCollection;
 };
 
-type ForecastDay = ForecastHour[];
+/**
+example data structure:
+ForecastData =
+  location: {
+    geoid: '840741', name: 'Latokaski', coordinates: '60.1762468,24.6488656', lat: 60.1762468, lon: 24.6488656, region: 'Espoo',
+  },
+  days: [
+    {
+      minTemperature: 4.23, maxTemperature: 14.54,
+      hours: [
+        {
+          humidity: 77.34, time: 1,
+        }, ...
+      ],
+    }, ...
+  ],
+};
+*/
+type Forecast = {
+  location?: { name: string; coordinates: string };
+  days: ForecastDay[];
+};
+
+type ForecastDay = {
+  minTemperature: number;
+  maxTemperature: number;
+  hours: ForecastHour[];
+};
 
 type ForecastHourPartial = {
   humidity: number;
@@ -115,41 +142,33 @@ class ForecastData extends LitElement {
         );
 
         const filteredResponse = ForecastData._filterResponse(data);
-        const json = ForecastData._toJson(filteredResponse);
+
+        // turn data to json hours
+        const hours = ForecastData._toJsonHours(filteredResponse);
 
         // enrich data here to keep logic inside components simple
-        const hourAdded = ForecastData._addFullHour(json);
+        const hourAdded = ForecastData._addFullHour(hours);
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
-
         const smartSymbolAggregateAdded =
           ForecastData._addSmartSymbolAggregateForCompactMode(rainTypeAdded);
 
-        const day1Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 1);
-        const day2Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 2);
-        const day3Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 3);
-        const day4Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 4);
-        const day5Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 5);
-        const day6Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 6);
-        const day7Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 7);
-        const day8Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 8);
-        const day9Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 9);
-        const day10Data = ForecastData._sliceDay(smartSymbolAggregateAdded, 10);
+        // from one array to have the days separated
+        const days: ForecastDay[] = [];
+        for (let i = 1; i <= 10; i++) {
+          const minTemperature = -8;
+          const maxTemperature = 8;
+          const hours = ForecastData._sliceDay(smartSymbolAggregateAdded, i);
+          days.push({ minTemperature, maxTemperature, hours });
+        }
 
-        const forecastDays: ForecastDay[] = [];
-        forecastDays.push(
-          day1Data,
-          day2Data,
-          day3Data,
-          day4Data,
-          day5Data,
-          day6Data,
-          day7Data,
-          day8Data,
-          day9Data,
-          day10Data
-        );
+        //daysAndMinAndMax = ForecastData._addDayMaxAndMinTemperatures(days);
 
-        this.dispatch('forecast-data.new-data', forecastDays);
+        const forecast: Forecast = {
+          location: undefined,
+          days,
+        };
+
+        this.dispatch('forecast-data.new-data', forecast);
       })
       .catch((rejected) => {
         raiseEvent(this, 'forecast-data.fetch-error', {
@@ -181,7 +200,7 @@ class ForecastData extends LitElement {
     };
   }
 
-  static _sliceDay(data: ForecastHour[], dayNumber: number): ForecastDay {
+  static _sliceDay(data: ForecastHour[], dayNumber: number): ForecastHour[] {
     if (data === undefined) {
       return [];
     }
@@ -197,7 +216,7 @@ class ForecastData extends LitElement {
     return data.slice((dayNumber - 1) * 24, dayNumber * 24);
   }
 
-  static _toJson(response: ForecastResponse): ForecastHour[] {
+  static _toJsonHours(response: ForecastResponse): ForecastHour[] {
     const forecastDays: ForecastHour[] = [];
 
     for (let i = 0; i < response.temperature.length; i += 1) {
@@ -266,6 +285,47 @@ class ForecastData extends LitElement {
 
     return combined;
   }
+
+  /*static _addDayMaxAndMinTemperatures(
+    forecastDays: ForecastDay[]
+  ): ForecastDay[] {
+    const processedForecastDays = forecastDays.map((day: ForecastDay) => {
+      let dayMaxTemp = -Infinity;
+      let dayMinTemp = Infinity;
+
+      // First pass: find max and min temperatures for the day
+      day.forEach((hour) => {
+        dayMaxTemp = Math.max(dayMaxTemp, hour.temperature);
+        dayMinTemp = Math.min(dayMinTemp, hour.temperature);
+      });
+    });
+    return processedForecastDays;
+  }
+*/
+
+  /* static _addDayMaxAndMinTemperatures(
+    forecastDays: ForecastDay[]
+  ): ForecastDay[] {
+    const processedForecastDays = forecastDays.map((day: ForecastDay) => {
+      let dayMaxTemp = -Infinity;
+      let dayMinTemp = Infinity;
+
+      // First pass: find max and min temperatures for the day
+      day.forEach((hour) => {
+        dayMaxTemp = Math.max(dayMaxTemp, hour.temperature);
+        dayMinTemp = Math.min(dayMinTemp, hour.temperature);
+      });
+
+      // Second pass: mark isDayMaxTemperature and isDayMinTemperature
+      return day.map((hour) => ({
+        ...hour,
+        isDayMaxTemperature: hour.temperature === dayMaxTemp,
+        isDayMinTemperature: hour.temperature === dayMinTemp,
+      }));
+    });
+    return processedForecastDays;
+  }
+    */
 
   static _addRainType(forecastDays: ForecastHour[]): ForecastHour[] {
     const result = forecastDays.map((item) => {
@@ -370,4 +430,4 @@ class ForecastData extends LitElement {
   }
 }
 
-export { ForecastData, type ForecastDay, type ForecastHour };
+export { ForecastData, type ForecastDay, type ForecastHour, type Forecast };

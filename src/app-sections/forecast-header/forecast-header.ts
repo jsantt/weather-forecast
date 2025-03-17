@@ -27,9 +27,6 @@ class ForecastHeader extends LitElement {
   @property({ type: Object, reflect: true })
   location?: LocationCoordinates;
 
-  @property({ type: Object, reflect: true })
-  place?: object;
-
   @property({ type: Array })
   observationData?: [];
 

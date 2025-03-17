@@ -29,8 +29,8 @@ class WeatherDay extends LitElement {
   @property({ type: Boolean, reflect: true })
   showWind: boolean = false;
 
-  @property({ type: Array })
-  dayData?: ForecastDay = [];
+  @property({ type: Object })
+  dayData?: ForecastDay;
 
   @property({ type: Boolean, reflect: true })
   debug: boolean = false;
@@ -258,7 +258,7 @@ class WeatherDay extends LitElement {
           <weather-description .dayData="${this.dayData}">
           </weather-description>
 
-          ${this.dayData?.map((entry, index) => {
+          ${this.dayData?.hours.map((hour, index) => {
             return html`
               ${index === 0 && this.debug !== true
                 ? html`
@@ -269,35 +269,35 @@ class WeatherDay extends LitElement {
                 : ''}
 
               <div class="hour">
-                ${this._isThird(index) === true ? html`${entry.hour}` : ''}
+                ${this._isThird(index) === true ? html`${hour.hour}` : ''}
               </div>
 
               ${this._isThird(index) === false
                 ? ''
                 : html`
                     <div class="symbol">
-                      ${entry.smartSymbol
+                      ${hour.smartSymbol
                         ? html`
                       <img
-                        src="${`assets/image/smart/light/${entry.smartSymbol}.svg`}"
+                        src="${`assets/image/smart/light/${hour.smartSymbol}.svg`}"
                          alt="${
-                           getSymbolName(entry.smartSymbol) || 'sääsymboli'
+                           getSymbolName(hour.smartSymbol) || 'sääsymboli'
                          }"
                       ></img>`
                         : ''}
                     </div>
 
                     <div
-                      class="temperature ${entry.temperature < 0
+                      class="temperature ${hour.temperature < 0
                         ? 'temperature--negative'
                         : 'temperature--positive'}"
                     >
-                      ${Number.isFinite(entry.temperature) === true
+                      ${Number.isFinite(hour.temperature) === true
                         ? html`${this.showFeelsLike === true
                             ? html`<span class="feels-like"
-                                >${entry.feelsLike}°</span
+                                >${hour.feelsLike}°</span
                               >`
-                            : html`${WeatherDay.round(entry.temperature)}<span
+                            : html`${WeatherDay.round(hour.temperature)}<span
                                   class="celcius"
                                   >°</span
                                 >`} `
@@ -305,25 +305,25 @@ class WeatherDay extends LitElement {
                     </div>
                     <wind-icon
                       class="symbol wind"
-                      .degrees="${entry.windDirection}"
-                      .rating="${windClassification(entry.threeHourWindMax)}"
-                      .windSpeed="${entry.threeHourWindMax}"
-                      .windGustSpeed="${entry.threeHourWindMaxGust}"
+                      .degrees="${hour.windDirection}"
+                      .rating="${windClassification(hour.threeHourWindMax)}"
+                      .windSpeed="${hour.threeHourWindMax}"
+                      .windGustSpeed="${hour.threeHourWindMaxGust}"
                       ?minimal="${this.showWind !== true}"
-                      ?isDayHighest=${(entry.hour === 3 &&
+                      ?isDayHighest=${(hour.hour === 3 &&
                         this.highestWindGustHour === 1) ||
-                      Math.abs(entry.hour - this.highestWindGustHour) <= 1}
+                      Math.abs(hour.hour - this.highestWindGustHour) <= 1}
                     >
                     </wind-icon>
                   `}
               <div class="hourly-symbols">
                 <weather-symbol-small
                   class="tiny-symbol"
-                  .rainType="${entry.rainType}"
+                  .rainType="${hour.rainType}"
                 >
                 </weather-symbol-small>
                 ${this.debug === true
-                  ? html`${entry.wind}<br />${entry.windGust}<br />${entry.threeHourWindMax}<br />${entry.threeHourWindMaxGust}<br />`
+                  ? html`${hour.wind}<br />${hour.windGust}<br />${hour.threeHourWindMax}<br />${hour.threeHourWindMaxGust}<br />`
                   : null}
               </div>
             `;

@@ -15,7 +15,7 @@ import '../forecast-header/forecast-header.ts';
 import '../bottom-sheet/bottom-sheet.ts';
 import { state } from 'lit/decorators.js';
 import { LocationCoordinates } from '../forecast-header/station-map.ts';
-import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.ts';
+import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
 import('../external-links/external-links.js');
 
 import('../sunrise-sunset/sunrise-sunset.ts');
@@ -39,7 +39,7 @@ class WeatherApp extends LitElement {
   _firstLoading: boolean = false;
 
   @state()
-  _forecastData?: ForecastDay[];
+  _forecastData?: Forecast[];
 
   @state()
   _forecastError: boolean = false;
@@ -244,7 +244,6 @@ class WeatherApp extends LitElement {
             ?largeMap="${this._largeMap}"
             ?loading="${this._loading}"
             .location="${this._location}"
-            .place="${this._forecastPlace}"
             .observationData="${this._observationData}"
             ?observationError="${this._observationError}"
             ?showFeelsLike="${this._showFeelsLike}"
@@ -328,10 +327,9 @@ class WeatherApp extends LitElement {
       this._firstLoading = false;
     });
 
-    this.addEventListener('forecast-data.new-data', ((event: CustomEvent) => {
+    this.addEventListener('forecast-data.new-data', ((event: CustomEvent<Forecast[]>) => {
       this._forecastError = false;
       this._forecastData = event.detail;
-      console.log(event.detail);
     }) as EventListener);
 
     this.addEventListener('forecast-data.new-place', ((event: CustomEvent) => {

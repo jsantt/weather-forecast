@@ -1,4 +1,9 @@
 import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
+import {
+  ForecastDay,
+  ForecastHour,
+} from '../../backend-calls/forecast-data/forecast-data.ts';
 
 class RainBars extends LitElement {
   static get is() {
@@ -47,18 +52,11 @@ class RainBars extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      dayData: {
-        type: Array,
-      },
+  @property({ type: Object })
+  dayData?: ForecastDay;
 
-      _chartHeight: {
-        type: Number,
-        reflect: true,
-      },
-    };
-  }
+  @property({ type: Number, reflect: true })
+  _chartHeight: number;
 
   constructor() {
     super();
@@ -66,13 +64,17 @@ class RainBars extends LitElement {
   }
 
   updated() {
-    this._createChart(this.dayData);
+    if (!this.dayData) {
+      return;
+    }
+
+    this._createChart(this.dayData.hours);
   }
 
   /**
    * Chart containing rain bars
    */
-  _createChart(dayData) {
+  _createChart(dayData: ForecastHour[]) {
     const svg = this._svg();
 
     this._rainBars(svg, dayData);
@@ -94,46 +96,46 @@ class RainBars extends LitElement {
     svg.setAttribute('viewBox', `0 0 240 ${this._chartHeight}`);
     svg.setAttribute('id', 'chartsvg');
     svg.setAttribute('width', '100%');
-    svg.setAttribute('height', this._chartHeight);
+    svg.setAttribute('height', this._chartHeight.toString());
 
     svg.setAttribute('preserveAspectRatio', 'none');
     svg.setAttribute('class', 'svg');
     return svg;
   }
 
-  _rainBars(svg, data) {
-    for (let i = 0; i < data.length; i += 1) {
-      if (!Number.isNaN([i].rain)) {
+  _rainBars(svg: SVGSVGElement, hours: ForecastHour[]) {
+    hours.map((hour, index) => {
+      if (!Number.isNaN(hour.rain)) {
         const bar = document.createElementNS(
           'http://www.w3.org/2000/svg',
           'rect'
         );
 
-        bar.setAttribute('class', `rainBar ${data[i].rainType}`);
+        bar.setAttribute('class', `rainBar ${hour.rainType}`);
         bar.setAttribute('width', '9');
 
         const rectHeight = RainBars._rectHeight(
-          data[i].rain,
-          data[i].rainType,
-          data[i].snow
+          hour.rain,
+          hour.snow,
+          hour.rainType
         );
 
-        bar.setAttribute('height', rectHeight);
+        bar.setAttribute('height', rectHeight.toString());
 
         // define top left corner of rectangle
-        bar.setAttribute('y', this._chartHeight - rectHeight);
-        bar.setAttribute('x', i * 9.6);
+        bar.setAttribute('y', `${this._chartHeight - rectHeight}`);
+        bar.setAttribute('x', `${index * 9.6}`);
 
         svg.appendChild(bar);
       }
-    }
+    });
   }
 
   /**
    *  draw rectangle of height 10 x rain amount, 107 being maximum height
    * @param {v} rainAmount
    */
-  static _rectHeight(rainAmount, rainType, snow) {
+  static _rectHeight(rainAmount: number, snow: number, rainType?: string) {
     if (Number.isNaN(rainAmount)) {
       return 0;
     }
@@ -151,7 +153,7 @@ class RainBars extends LitElement {
   }
 
   get _chart() {
-    return this.shadowRoot.querySelector('#chart');
+    return this.shadowRoot?.querySelector('#chart');
   }
 }
 
