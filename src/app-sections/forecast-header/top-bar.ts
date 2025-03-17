@@ -49,7 +49,7 @@ class TopBar extends LitElement {
 
       .heading {
         grid-area: heading;
-        margin-bottom: -0.3rem;
+        line-height: 1;
       }
 
       .slogan {
