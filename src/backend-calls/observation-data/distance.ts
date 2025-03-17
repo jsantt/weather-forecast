@@ -5,7 +5,11 @@ function _toRadian(degrees: number) {
   return (degrees * Math.PI) / 180;
 }
 
-function distance(lat1, lon1, lat2, lon2) {
+function distance(lat1?: number, lon1?: number, lat2?: number, lon2?: number) {
+  if (!lat1 || !lon1 || !lat2 || !lon2) {
+    return 0;
+  }
+
   const R = 6371; // km
   const dLat = _toRadian(lat2 - lat1);
   const dLon = _toRadian(lon2 - lon1);

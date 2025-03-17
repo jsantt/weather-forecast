@@ -6,7 +6,7 @@ import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.js';
 import { getWeekdayShort } from './time-texts.js';
 import { getSymbolName } from '../../backend-calls/observation-data/weather-symbol-name.js';
@@ -19,51 +19,11 @@ class WeatherDay extends LitElement {
   @property({ type: Number, reflect: true })
   dayNumber: number = 0;
 
-  @property({ type: Object })
-  location?: object;
-
   @property({ type: Boolean, reflect: true })
   showFeelsLike: boolean = false;
 
   @property({ type: Object })
   forecastDay?: ForecastDay;
-
-  @state()
-  dayMinFeelsLike?: number;
-
-  @state()
-  dayMaxFeelsLike?: number;
-
-  willUpdate(changedProperties: Map<string, any>) {
-    if (changedProperties.has('dayData') && this.forecastDay?.hours) {
-      // feels like
-      const roundedMinFeelsLike = Math.round(
-        this.forecastDay.hours.reduce((min, entry) => {
-          if (!Number.isNaN(entry.feelsLike)) {
-            return Math.min(min, entry.feelsLike);
-          }
-          return min;
-        }, Infinity)
-      );
-
-      if (!Number.isNaN(roundedMinFeelsLike)) {
-        this.dayMinFeelsLike = roundedMinFeelsLike;
-      }
-
-      const roundedMaxFeelsLike = Math.round(
-        this.forecastDay.hours.reduce((max, entry) => {
-          if (!Number.isNaN(entry.feelsLike)) {
-            return Math.max(max, entry.feelsLike);
-          }
-          return max;
-        }, -Infinity)
-      );
-
-      if (!Number.isNaN(roundedMaxFeelsLike)) {
-        this.dayMaxFeelsLike = roundedMaxFeelsLike;
-      }
-    }
-  }
 
   static get styles() {
     return css`
@@ -126,7 +86,6 @@ class WeatherDay extends LitElement {
     if (!this.forecastDay) {
       return;
     }
-
     return html` <header>
         ${this.dayNumber === 1 ? 'Tänään' : getWeekdayShort(this.dayNumber)}
       </header>
@@ -138,7 +97,9 @@ class WeatherDay extends LitElement {
           : 'temperature--positive'}"
       >
         ${this.showFeelsLike === true
-          ? html`<span class="feels-like">${this.dayMinFeelsLike}°</span>`
+          ? html`<span class="feels-like"
+              >${this.forecastDay.dayMinFeels}°</span
+            >`
           : html`${this.forecastDay.dayMinTemp !== undefined &&
             Math.round(this.forecastDay.dayMinTemp)}°`}
       </div>
@@ -150,7 +111,9 @@ class WeatherDay extends LitElement {
           : 'temperature--positive'}"
       >
         ${this.showFeelsLike === true
-          ? html`<span class="feels-like">${this.dayMaxFeelsLike}°</span>`
+          ? html`<span class="feels-like"
+              >${this.forecastDay.dayMaxFeels}°</span
+            >`
           : html`${this.forecastDay.dayMaxTemp !== undefined &&
             Math.round(this.forecastDay.dayMaxTemp)}°`}
       </div>

@@ -12,10 +12,7 @@ class WeatherDays extends LitElement {
   }
 
   @property({ type: Object })
-  forecastData?: Forecast;
-
-  @property({ type: Object })
-  location?: object;
+  forecast?: Forecast;
 
   @property({ type: Boolean, reflect: true })
   showFeelsLike: boolean = false;
@@ -44,23 +41,21 @@ class WeatherDays extends LitElement {
 
   render() {
     return html`
-      ${this.forecastData?.days.map((day, index) => {
+      ${this.forecast?.days.map((forecastDay, index) => {
         if (this.expanded[index]) {
           return html`<weather-day
             @click=${() => this.toggle(index)}
             dayNumber=${index + 1}
-            .location="${this.location}"
             .showFeelsLike="${this.showFeelsLike}"
             .showWind="${this.showWind}"
-            .forecastDay="${day}"
+            .forecastDay="${forecastDay}"
           ></weather-day> `;
         } else {
           return html`<weather-day-compact
             @click=${() => this.toggle(index)}
             dayNumber=${index + 1}
-            .location="${this.location}"
             .showFeelsLike="${this.showFeelsLike}"
-            .forecastDay="${day}"
+            .forecastDay="${forecastDay}"
           ></weather-day-compact> `;
         }
       })}

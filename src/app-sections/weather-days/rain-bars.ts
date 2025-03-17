@@ -53,7 +53,7 @@ class RainBars extends LitElement {
   }
 
   @property({ type: Object })
-  dayData?: ForecastDay;
+  forecastDay?: ForecastDay;
 
   @property({ type: Number, reflect: true })
   _chartHeight: number;
@@ -64,11 +64,11 @@ class RainBars extends LitElement {
   }
 
   updated() {
-    if (!this.dayData) {
+    if (!this.forecastDay) {
       return;
     }
 
-    this._createChart(this.dayData.hours);
+    this._createChart(this.forecastDay.hours);
   }
 
   /**

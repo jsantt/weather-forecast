@@ -20,9 +20,6 @@ class WeatherDay extends LitElement {
   @property({ type: Number, reflect: true })
   dayNumber: number = 0;
 
-  @property({ type: Object })
-  location?: object;
-
   @property({ type: Boolean, reflect: true })
   showFeelsLike: boolean = false;
 
@@ -331,7 +328,7 @@ class WeatherDay extends LitElement {
 
           <div class="hour hour--empty"></div>
 
-          <rain-bars .dayData="${this.forecastDay}"> </rain-bars>
+          <rain-bars .forecastDay="${this.forecastDay}"> </rain-bars>
         </div>
       </div>
     `;

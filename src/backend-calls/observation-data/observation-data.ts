@@ -64,7 +64,7 @@ class ObservationData extends LitElement {
 
   // location object, e.g {geoid: "7521614", name: "Kattilalaakso"}
   @property({ type: Object, reflect: true })
-  place!: Place;
+  place?: Place;
 
   updated(changedProperties: Map<string, any>) {
     changedProperties.forEach((_, propName) => {
@@ -122,7 +122,7 @@ class ObservationData extends LitElement {
    * @returns
    */
   calculateStationDetails(formattedObservations: any[]) {
-    if (!formattedObservations) {
+    if (!formattedObservations || !this.place) {
       return undefined;
     }
 
@@ -561,7 +561,7 @@ class ObservationData extends LitElement {
     const observations9 = temperatureRemoved.map((item) => {
       const copy = { ...item };
       copy.distance = Math.round(
-        distance(copy.lat, copy.lon, this.place.lat, this.place.lon)
+        distance(copy.lat, copy.lon, this.place?.lat, this.place?.lon)
       );
       return copy;
     });

@@ -52,7 +52,9 @@ type Forecast = {
 
 type ForecastDay = {
   dayMinTemp?: number;
+  dayMinFeels?: number;
   dayMaxTemp?: number;
+  dayMaxFeels?: number;
   hours: ForecastHour[];
 };
 
@@ -293,17 +295,24 @@ class ForecastData extends LitElement {
         let dayMaxTemp = -Infinity;
         let dayMinTemp = Infinity;
 
+        let dayMaxFeels = -Infinity;
+        let dayMinFeels = Infinity;
+
         day.hours.forEach((hour) => {
           if (!isNaN(hour.temperature)) {
             dayMaxTemp = Math.max(dayMaxTemp, hour.temperature);
             dayMinTemp = Math.min(dayMinTemp, hour.temperature);
+            dayMaxFeels = Math.max(dayMaxFeels, hour.feelsLike);
+            dayMinFeels = Math.min(dayMinFeels, hour.feelsLike);
           }
         });
 
         return {
           ...day,
           dayMaxTemp,
+          dayMaxFeels,
           dayMinTemp,
+          dayMinFeels,
         };
       }
     );

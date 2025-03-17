@@ -16,6 +16,7 @@ import '../bottom-sheet/bottom-sheet.ts';
 import { state } from 'lit/decorators.js';
 import { LocationCoordinates } from '../forecast-header/station-map.ts';
 import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
+import { Place } from '../../backend-calls/observation-data/observation-data.ts';
 import('../external-links/external-links.js');
 
 import('../sunrise-sunset/sunrise-sunset.ts');
@@ -39,13 +40,13 @@ class WeatherApp extends LitElement {
   _firstLoading: boolean = false;
 
   @state()
-  _forecastData?: Forecast[];
+  _forecast?: Forecast[];
 
   @state()
   _forecastError: boolean = false;
 
   @state()
-  _forecastPlace?: { region: string };
+  _forecastPlace?: Place;
 
   @state()
   _largeMap: boolean = true;
@@ -192,7 +193,7 @@ class WeatherApp extends LitElement {
             'location . . '
             'map links sun'
             'map share sun  '
-            'map . . '
+            'map info info '
             'forecast info info '
             'forecast info info '
             'symbols symbols symbols '
@@ -263,8 +264,7 @@ class WeatherApp extends LitElement {
           <slot name="header"></slot>
 
           <weather-days
-            .forecastData="${this._forecastData}"
-            .location="${this._location}"
+            .forecast="${this._forecast}"
             ?showFeelsLike="${this._showFeelsLike}"
             ?showWind="${this._showWind}"
           >
@@ -327,9 +327,11 @@ class WeatherApp extends LitElement {
       this._firstLoading = false;
     });
 
-    this.addEventListener('forecast-data.new-data', ((event: CustomEvent<Forecast[]>) => {
+    this.addEventListener('forecast-data.new-data', ((
+      event: CustomEvent<Forecast[]>
+    ) => {
       this._forecastError = false;
-      this._forecastData = event.detail;
+      this._forecast = event.detail;
     }) as EventListener);
 
     this.addEventListener('forecast-data.new-place', ((event: CustomEvent) => {
