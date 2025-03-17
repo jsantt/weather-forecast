@@ -35,7 +35,7 @@ ForecastData =
   },
   days: [
     {
-      minTemperature: 4.23, maxTemperature: 14.54,
+      dayMinTemp: 4.23, dayMaxTemp: 14.54,
       hours: [
         {
           humidity: 77.34, time: 1,
@@ -51,8 +51,8 @@ type Forecast = {
 };
 
 type ForecastDay = {
-  minTemperature: number;
-  maxTemperature: number;
+  dayMinTemp?: number;
+  dayMaxTemp?: number;
   hours: ForecastHour[];
 };
 
@@ -155,17 +155,16 @@ class ForecastData extends LitElement {
         // from one array to have the days separated
         const days: ForecastDay[] = [];
         for (let i = 1; i <= 10; i++) {
-          const minTemperature = -8;
-          const maxTemperature = 8;
           const hours = ForecastData._sliceDay(smartSymbolAggregateAdded, i);
-          days.push({ minTemperature, maxTemperature, hours });
+          days.push({ hours });
         }
 
-        //daysAndMinAndMax = ForecastData._addDayMaxAndMinTemperatures(days);
+        const daysWithMinAndMax =
+          ForecastData._addDayMaxAndMinTemperatures(days);
 
         const forecast: Forecast = {
           location: undefined,
-          days,
+          days: daysWithMinAndMax,
         };
 
         this.dispatch('forecast-data.new-data', forecast);
@@ -286,22 +285,30 @@ class ForecastData extends LitElement {
     return combined;
   }
 
-  /*static _addDayMaxAndMinTemperatures(
+  static _addDayMaxAndMinTemperatures(
     forecastDays: ForecastDay[]
   ): ForecastDay[] {
-    const processedForecastDays = forecastDays.map((day: ForecastDay) => {
-      let dayMaxTemp = -Infinity;
-      let dayMinTemp = Infinity;
+    const processedForecastDays = forecastDays.map(
+      (day: ForecastDay): ForecastDay => {
+        let dayMaxTemp = -Infinity;
+        let dayMinTemp = Infinity;
 
-      // First pass: find max and min temperatures for the day
-      day.forEach((hour) => {
-        dayMaxTemp = Math.max(dayMaxTemp, hour.temperature);
-        dayMinTemp = Math.min(dayMinTemp, hour.temperature);
-      });
-    });
+        day.hours.forEach((hour) => {
+          if (!isNaN(hour.temperature)) {
+            dayMaxTemp = Math.max(dayMaxTemp, hour.temperature);
+            dayMinTemp = Math.min(dayMinTemp, hour.temperature);
+          }
+        });
+
+        return {
+          ...day,
+          dayMaxTemp,
+          dayMinTemp,
+        };
+      }
+    );
     return processedForecastDays;
   }
-*/
 
   /* static _addDayMaxAndMinTemperatures(
     forecastDays: ForecastDay[]

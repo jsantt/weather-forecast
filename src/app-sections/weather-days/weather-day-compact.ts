@@ -26,13 +26,7 @@ class WeatherDay extends LitElement {
   showFeelsLike: boolean = false;
 
   @property({ type: Object })
-  dayData?: ForecastDay;
-
-  @state()
-  dayMin?: number;
-
-  @state()
-  dayMax?: number;
+  forecastDay?: ForecastDay;
 
   @state()
   dayMinFeelsLike?: number;
@@ -41,36 +35,10 @@ class WeatherDay extends LitElement {
   dayMaxFeelsLike?: number;
 
   willUpdate(changedProperties: Map<string, any>) {
-    if (changedProperties.has('dayData') && this.dayData?.hours) {
-      const roundedMin = Math.round(
-        this.dayData.hours.reduce((min, entry) => {
-          if (!Number.isNaN(entry.temperature)) {
-            return Math.min(min, entry.temperature);
-          }
-          return min;
-        }, Infinity)
-      );
-
-      if (!Number.isNaN(roundedMin)) {
-        this.dayMin = roundedMin;
-      }
-
-      const roundedMax = Math.round(
-        this.dayData.hours.reduce((max, entry) => {
-          if (!Number.isNaN(entry.temperature)) {
-            return Math.max(max, entry.temperature);
-          }
-          return max;
-        }, -Infinity)
-      );
-
-      if (!Number.isNaN(roundedMax)) {
-        this.dayMax = roundedMax;
-      }
-
+    if (changedProperties.has('dayData') && this.forecastDay?.hours) {
       // feels like
       const roundedMinFeelsLike = Math.round(
-        this.dayData.hours.reduce((min, entry) => {
+        this.forecastDay.hours.reduce((min, entry) => {
           if (!Number.isNaN(entry.feelsLike)) {
             return Math.min(min, entry.feelsLike);
           }
@@ -83,7 +51,7 @@ class WeatherDay extends LitElement {
       }
 
       const roundedMaxFeelsLike = Math.round(
-        this.dayData.hours.reduce((max, entry) => {
+        this.forecastDay.hours.reduce((max, entry) => {
           if (!Number.isNaN(entry.feelsLike)) {
             return Math.max(max, entry.feelsLike);
           }
@@ -155,56 +123,63 @@ class WeatherDay extends LitElement {
   }
 
   render() {
-    if (!this.dayData) {
+    if (!this.forecastDay) {
       return;
     }
+
     return html` <header>
         ${this.dayNumber === 1 ? 'Tänään' : getWeekdayShort(this.dayNumber)}
       </header>
 
       <div
-        class="temperature temperature--min ${this.dayMin && this.dayMin < 0
+        class="temperature temperature--min ${this.forecastDay.dayMinTemp &&
+        this.forecastDay.dayMinTemp < 0
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >
         ${this.showFeelsLike === true
           ? html`<span class="feels-like">${this.dayMinFeelsLike}°</span>`
-          : html`${this.dayMin}°`}
+          : html`${this.forecastDay.dayMinTemp !== undefined &&
+            Math.round(this.forecastDay.dayMinTemp)}°`}
       </div>
 
       <div
-        class="temperature temperature--max ${this.dayMax && this.dayMax < 0
+        class="temperature temperature--max ${this.forecastDay.dayMaxTemp &&
+        this.forecastDay.dayMaxTemp < 0
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >
         ${this.showFeelsLike === true
           ? html`<span class="feels-like">${this.dayMaxFeelsLike}°</span>`
-          : html`${this.dayMax}°`}
+          : html`${this.forecastDay.dayMaxTemp !== undefined &&
+            Math.round(this.forecastDay.dayMaxTemp)}°`}
       </div>
 
       <div class="symbols fade">
-        ${this.dayData.hours[8]?.smartSymbolCompactAggregate
+        ${this.forecastDay.hours[8]?.smartSymbolCompactAggregate
           ? html`
         <img
-          src="${`assets/image/smart/light/${this.dayData.hours[8]?.smartSymbolCompactAggregate}.svg`}"
+          src="${`assets/image/smart/light/${this.forecastDay.hours[8]?.smartSymbolCompactAggregate}.svg`}"
           alt="${
-            getSymbolName(this.dayData.hours[8].smartSymbol) || 'sääsymboli'
+            getSymbolName(this.forecastDay.hours[8].smartSymbol) || 'sääsymboli'
           }"
         ></img>`
           : ''}
-        ${this.dayData.hours[15]?.smartSymbolCompactAggregate
+        ${this.forecastDay.hours[15]?.smartSymbolCompactAggregate
           ? html`<img
-          src="${`assets/image/smart/light/${this.dayData.hours[15]?.smartSymbolCompactAggregate}.svg`}"
+          src="${`assets/image/smart/light/${this.forecastDay.hours[15]?.smartSymbolCompactAggregate}.svg`}"
           alt="${
-            getSymbolName(this.dayData.hours[15].smartSymbol) || 'sääsymboli'
+            getSymbolName(this.forecastDay.hours[15].smartSymbol) ||
+            'sääsymboli'
           }"
         ></img>`
           : ''}
-        ${this.dayData.hours[23]?.smartSymbolCompactAggregate
+        ${this.forecastDay.hours[23]?.smartSymbolCompactAggregate
           ? html`<img
-            src="${`assets/image/smart/light/${this.dayData.hours[23]?.smartSymbolCompactAggregate}.svg`}"
+            src="${`assets/image/smart/light/${this.forecastDay.hours[23]?.smartSymbolCompactAggregate}.svg`}"
             alt="${
-              getSymbolName(this.dayData.hours[23].smartSymbol) || 'sääsymboli'
+              getSymbolName(this.forecastDay.hours[23].smartSymbol) ||
+              'sääsymboli'
             }"
         ></img>`
           : ''}

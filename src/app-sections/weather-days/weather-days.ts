@@ -52,7 +52,7 @@ class WeatherDays extends LitElement {
             .location="${this.location}"
             .showFeelsLike="${this.showFeelsLike}"
             .showWind="${this.showWind}"
-            .dayData="${day}"
+            .forecastDay="${day}"
           ></weather-day> `;
         } else {
           return html`<weather-day-compact
@@ -60,7 +60,7 @@ class WeatherDays extends LitElement {
             dayNumber=${index + 1}
             .location="${this.location}"
             .showFeelsLike="${this.showFeelsLike}"
-            .dayData="${day}"
+            .forecastDay="${day}"
           ></weather-day-compact> `;
         }
       })}

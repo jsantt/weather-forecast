@@ -30,7 +30,7 @@ class WeatherDay extends LitElement {
   showWind: boolean = false;
 
   @property({ type: Object })
-  dayData?: ForecastDay;
+  forecastDay?: ForecastDay;
 
   @property({ type: Boolean, reflect: true })
   debug: boolean = false;
@@ -39,8 +39,8 @@ class WeatherDay extends LitElement {
   private highestWindGustHour: number = 0;
 
   updated(changedProperties: Map<string, any>) {
-    if (changedProperties.has('dayData') && this.dayData !== undefined) {
-      this.highestWindGustHour = getHighestWindGustHour(this.dayData);
+    if (changedProperties.has('dayData') && this.forecastDay !== undefined) {
+      this.highestWindGustHour = getHighestWindGustHour(this.forecastDay);
     }
   }
 
@@ -255,10 +255,10 @@ class WeatherDay extends LitElement {
             </span>
           </h3>
 
-          <weather-description .dayData="${this.dayData}">
+          <weather-description .dayData="${this.forecastDay}">
           </weather-description>
 
-          ${this.dayData?.hours.map((hour, index) => {
+          ${this.forecastDay?.hours.map((hour, index) => {
             return html`
               ${index === 0 && this.debug !== true
                 ? html`
@@ -331,10 +331,7 @@ class WeatherDay extends LitElement {
 
           <div class="hour hour--empty"></div>
 
-          <rain-bars
-            .dayData="${this.dayData}"
-          >
-          </rain-bars>
+          <rain-bars .dayData="${this.forecastDay}"> </rain-bars>
         </div>
       </div>
     `;
