@@ -11,6 +11,7 @@ import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.js';
 import { getDayName, getDayNumber, getWeekday } from './time-texts.js';
 import { getSymbolName } from '../../backend-calls/observation-data/weather-symbol-name.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -178,6 +179,14 @@ class WeatherDay extends LitElement {
         color: var(--color-dark-and-light);
       }
 
+      .temperature--min span {
+        border-bottom: 2px solid var(--background-min);
+      }
+
+      .temperature--max span {
+        border-top: 2px solid var(--background-max);
+      }
+
       .temperature_line {
         grid-column: span 25;
         grid-row: 7;
@@ -285,20 +294,34 @@ class WeatherDay extends LitElement {
                     </div>
 
                     <div
-                      class="temperature ${hour.temperature < 0
-                        ? 'temperature--negative'
-                        : 'temperature--positive'}"
+                      class=${classMap({
+                        temperature: true,
+                        'temperature--negative': hour.temperature < 0,
+                        'temperature--positive': hour.temperature >= 0,
+                        'temperature--max': this.showFeelsLike
+                          ? hour.feelsLike ===
+                            this.forecastDay?.dayMaxFeelsVisible
+                          : hour.temperature ===
+                            this.forecastDay?.dayMaxTempVisible,
+                        'temperature--min': this.showFeelsLike
+                          ? hour.feelsLike ===
+                            this.forecastDay?.dayMaxFeelsVisible
+                          : hour.temperature ===
+                            this.forecastDay?.dayMinTempVisible,
+                      })}
                     >
-                      ${Number.isFinite(hour.temperature) === true
-                        ? html`${this.showFeelsLike === true
-                            ? html`<span class="feels-like"
-                                >${hour.feelsLike}°</span
-                              >`
-                            : html`${WeatherDay.round(hour.temperature)}<span
-                                  class="celcius"
-                                  >°</span
-                                >`} `
-                        : ''}
+                      <span>
+                        ${Number.isFinite(hour.temperature) === true
+                          ? html`${this.showFeelsLike === true
+                              ? html`<span class="feels-like"
+                                  >${hour.feelsLike}°</span
+                                >`
+                              : html`${WeatherDay.round(hour.temperature)}<span
+                                    class="celcius"
+                                    >°</span
+                                  >`} `
+                          : ''}
+                      </span>
                     </div>
                     <wind-icon
                       class="symbol wind"

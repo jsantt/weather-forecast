@@ -14,7 +14,7 @@ class RainAmount extends LitElement {
       }
 
       :host([empty]) {
-        padding: 0;
+        padding-bottom: var(--space-m);
       }
       .rain {
         fill: var(--color-rain);

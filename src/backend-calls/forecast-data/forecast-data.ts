@@ -29,13 +29,20 @@ type ForecastResponse = {
 
 /**
 example data structure:
-ForecastData =
+const forecast: Forecast =
   location: {
     geoid: '840741', name: 'Latokaski', coordinates: '60.1762468,24.6488656', lat: 60.1762468, lon: 24.6488656, region: 'Espoo',
   },
   days: [
     {
-      dayMinTemp: 4.23, dayMaxTemp: 14.54,
+      dayMaxFeels: -1,
+      dayMaxFeelsVisible: -1,
+      dayMaxTemp: 5.18,
+      dayMaxTempVisible: 5.12,
+      dayMinFeels: -12,
+      dayMinFeelsVisible: -12,
+      dayMinTemp: -6.04,
+      dayMinTempVisible: -6.04,
       hours: [
         {
           humidity: 77.34, time: 1,
@@ -53,8 +60,12 @@ type Forecast = {
 type ForecastDay = {
   dayMinTemp?: number;
   dayMinFeels?: number;
+  dayMinTempVisible?: number;
+  dayMinFeelsVisible?: number;
   dayMaxTemp?: number;
   dayMaxFeels?: number;
+  dayMaxTempVisible?: number;
+  dayMaxFeelsVisible?: number;
   hours: ForecastHour[];
 };
 
@@ -169,6 +180,7 @@ class ForecastData extends LitElement {
           days: daysWithMinAndMax,
         };
 
+        console.log(forecast);
         this.dispatch('forecast-data.new-data', forecast);
       })
       .catch((rejected) => {
@@ -294,9 +306,13 @@ class ForecastData extends LitElement {
       (day: ForecastDay): ForecastDay => {
         let dayMaxTemp = -Infinity;
         let dayMinTemp = Infinity;
+        let dayMaxTempVisible = -Infinity;
+        let dayMinTempVisible = Infinity;
 
         let dayMaxFeels = -Infinity;
         let dayMinFeels = Infinity;
+        let dayMaxFeelsVisible = -Infinity;
+        let dayMinFeelsVisible = Infinity;
 
         day.hours.forEach((hour) => {
           if (!isNaN(hour.temperature)) {
@@ -304,6 +320,13 @@ class ForecastData extends LitElement {
             dayMinTemp = Math.min(dayMinTemp, hour.temperature);
             dayMaxFeels = Math.max(dayMaxFeels, hour.feelsLike);
             dayMinFeels = Math.min(dayMinFeels, hour.feelsLike);
+
+            if (hour.hour % 3 === 0) {
+              dayMaxTempVisible = Math.max(dayMaxTempVisible, hour.temperature);
+              dayMinTempVisible = Math.min(dayMinTempVisible, hour.temperature);
+              dayMaxFeelsVisible = Math.max(dayMaxFeelsVisible, hour.feelsLike);
+              dayMinFeelsVisible = Math.min(dayMinFeelsVisible, hour.feelsLike);
+            }
           }
         });
 
@@ -311,8 +334,12 @@ class ForecastData extends LitElement {
           ...day,
           dayMaxTemp,
           dayMaxFeels,
+          dayMaxTempVisible,
+          dayMaxFeelsVisible,
           dayMinTemp,
           dayMinFeels,
+          dayMinTempVisible,
+          dayMinFeelsVisible,
         };
       }
     );
