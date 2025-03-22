@@ -32,7 +32,7 @@ class WeatherDay extends LitElement {
         align-items: center;
         gap: var(--space-m);
         grid-template-columns:
-          minmax(1rem, 2fr) minmax(2rem, 4rem) minmax(2rem, 4rem)
+          minmax(1rem, 2fr) minmax(2rem, 3rem) minmax(2rem, 3rem)
           5fr;
 
         background: var(--background-middle);
@@ -64,11 +64,11 @@ class WeatherDay extends LitElement {
         margin: var(--space-l) 0;
       }
 
-      .temperature--min {
+      .temperature--min span {
         border-bottom: 2px solid var(--background-min);
       }
 
-      .temperature--max {
+      .temperature--max span {
         border-top: 2px solid var(--background-max);
       }
 
@@ -96,12 +96,14 @@ class WeatherDay extends LitElement {
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >
-        ${this.showFeelsLike === true
-          ? html`<span class="feels-like"
-              >${this.forecastDay.dayMinFeels}°</span
-            >`
-          : html`${this.forecastDay.dayMinTemp !== undefined &&
-            Math.round(this.forecastDay.dayMinTemp)}°`}
+        <span>
+          ${this.showFeelsLike === true
+            ? html`<span class="feels-like"
+                >${this.forecastDay.dayMinFeels}°</span
+              >`
+            : html`${this.forecastDay.dayMinTemp !== undefined &&
+              Math.round(this.forecastDay.dayMinTemp)}°`}
+        </span>
       </div>
 
       <div
@@ -110,12 +112,14 @@ class WeatherDay extends LitElement {
           ? 'temperature--negative'
           : 'temperature--positive'}"
       >
-        ${this.showFeelsLike === true
-          ? html`<span class="feels-like"
-              >${this.forecastDay.dayMaxFeels}°</span
-            >`
-          : html`${this.forecastDay.dayMaxTemp !== undefined &&
-            Math.round(this.forecastDay.dayMaxTemp)}°`}
+        <span>
+          ${this.showFeelsLike === true
+            ? html`<span class="feels-like"
+                >${this.forecastDay.dayMaxFeels}°</span
+              >`
+            : html`${this.forecastDay.dayMaxTemp !== undefined &&
+              Math.round(this.forecastDay.dayMaxTemp)}°`}
+        </span>
       </div>
 
       <div class="symbols fade">
