@@ -49,8 +49,8 @@ type Place = {
   name: string;
   coordinates: string;
   region: string;
-  lat: string;
-  lon: string;
+  lat: number;
+  lon: number;
 };
 
 /**
@@ -261,10 +261,15 @@ class ObservationData extends LitElement {
 
     const totalWeight = observationsWithWeights.reduce(
       (accumulator, current) => {
-        return accumulator + current.weight;
+        const weight = current.weight || 0;
+        return accumulator + weight;
       },
       0
     );
+
+    if (totalWeight === 0 || isNaN(totalWeight)) {
+      return 0;
+    }
 
     const observationsWithNormalizedWeights = observationsWithWeights.map(
       (observation) => {

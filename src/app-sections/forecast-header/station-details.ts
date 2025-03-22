@@ -151,7 +151,7 @@ class StationDetails extends LitElement {
       </div>
 
       <div class="item updated-time"></div>
-        -->
+      -->
     `;
   }
 
