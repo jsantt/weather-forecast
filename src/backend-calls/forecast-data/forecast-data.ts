@@ -71,7 +71,7 @@ type ForecastDay = {
 
 type ForecastHourPartial = {
   humidity: number;
-  time: number;
+  time: Date;
   threeHourWindMax: number;
 
   threeHourWindMaxGust: number;
@@ -84,6 +84,7 @@ type ForecastHourPartial = {
 
   windGust: number;
   temperature: number;
+  summerTimeStarts: boolean;
 
   windDirection: number;
   feelsLike?: number;
@@ -166,21 +167,57 @@ class ForecastData extends LitElement {
           ForecastData._addSmartSymbolAggregateForCompactMode(rainTypeAdded);
 
         // from one array to have the days separated
-        const days: ForecastDay[] = [];
-        for (let i = 1; i <= 10; i++) {
-          const hours = ForecastData._sliceDay(smartSymbolAggregateAdded, i);
-          days.push({ hours });
+        //const days = ForecastData._splitIntoDays(smartSymbolAggregateAdded);
+
+        const days: ForecastDay[] = ForecastData.splitToDays(
+          smartSymbolAggregateAdded
+        );
+
+        let lastRemoved = [...days];
+        const lastDayEvening = days.at(-1)?.hours.at(23)?.temperature;
+        if (!lastDayEvening) {
+          lastRemoved = days.slice(0, -1);
+        }
+
+        console.log(days);
+
+        // find daylight saving time change. The third hour is normally 3rd, not 4rd
+        const index = days.findIndex((day) => {
+          if (day.hours.at(2)?.hour === 4) {
+            return true;
+          }
+          return false;
+        });
+
+        // add extra array item for the missing 3rd hour
+        if (index >= 0) {
+          days.at(index)?.hours.splice(2, 0, {
+            hour: 3,
+            feelsLike: NaN,
+            humidity: NaN,
+            rain: NaN,
+            roundWind: NaN,
+            roundWindGust: NaN,
+            snow: NaN,
+            temperature: NaN,
+            threeHourWindMax: NaN,
+            threeHourWindMaxGust: NaN,
+            time: new Date(),
+            wind: NaN,
+            windDirection: NaN,
+            windGust: NaN,
+            summerTimeStarts: true
+          });
         }
 
         const daysWithMinAndMax =
-          ForecastData._addDayMaxAndMinTemperatures(days);
+          ForecastData._addDayMaxAndMinTemperatures(lastRemoved);
 
         const forecast: Forecast = {
           location: undefined,
           days: daysWithMinAndMax,
         };
 
-        console.log(forecast);
         this.dispatch('forecast-data.new-data', forecast);
       })
       .catch((rejected) => {
@@ -195,6 +232,25 @@ class ForecastData extends LitElement {
           text: 'Fetch data done',
         });
       });
+  }
+
+  private static splitToDays(smartSymbolAggregateAdded: ForecastHour[]) {
+    let dayIndex: number = -1;
+    const days: ForecastDay[] = [];
+    smartSymbolAggregateAdded.forEach((hour) => {
+      if (hour.hour <= 1) {
+        dayIndex++;
+      }
+
+      if (!isNaN(hour.temperature)) {
+        const hourCopy = { ...hour };
+        if (!days[dayIndex]) {
+          days[dayIndex] = { hours: [] };
+        }
+        days[dayIndex].hours.push(hourCopy);
+      }
+    });
+    return days;
   }
 
   static _filterResponse(response: Document): ForecastResponse {
@@ -290,10 +346,10 @@ class ForecastData extends LitElement {
   }
 
   static _addFullHour(forecastDays: ForecastHour[]): ForecastHour[] {
-    const combined = forecastDays.map((element) => {
-      const copy = { ...element };
-      copy.hour = ForecastData._toHour(copy.time);
-      return copy;
+    const combined = forecastDays.map((day) => {
+      const dayCopy = { ...day };
+      dayCopy.hour = ForecastData._toHour(dayCopy.time);
+      return dayCopy;
     });
 
     return combined;
@@ -380,6 +436,21 @@ class ForecastData extends LitElement {
     return result;
   }
 
+  /*static _splitIntoDays(forecastHours: ForecastHour[]): Forecast {
+ 
+
+    const groupedByDay = hours.reduce((daysArray, curr, index) => {
+      const dayIndex = Math.floor(index / 24);
+      if (!daysArray[dayIndex]) {
+        daysArray[dayIndex] = [];
+      }
+      daysArray[dayIndex].push(curr);
+      return daysArray;
+    }, [] as Array<Array<{hour: number}>>);
+
+    return {location: undefined,days: days}
+  }*/
+
   static _addSmartSymbolAggregateForCompactMode(
     forecastData: ForecastHour[]
   ): ForecastHour[] {
@@ -442,15 +513,10 @@ class ForecastData extends LitElement {
     return firstHour.toISOString();
   }
 
-  static _toHour(time) {
-    if (typeof time === 'number') {
-      return time;
-    }
+  static _toHour(time: Date) {
+    const hour = time.getHours();
 
-    const dateObject = new Date(time);
-    const hour = dateObject.getHours();
-
-    return hour === 0 ? 24 : dateObject.getHours();
+    return hour === 0 ? 24 : hour;
   }
 
   static _endTime() {

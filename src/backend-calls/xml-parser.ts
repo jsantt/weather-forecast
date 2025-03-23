@@ -7,8 +7,9 @@ function getByAttributeValue(collection, attribute, attrValue) {
   return undefined;
 }
 
-function getTime(item) {
-  return value(item.children[0]);
+function getTime(item: Element): Date {
+  const time = value(item.children[0]);
+  return new Date(time)
 }
 
 function getTimeAndValuePairs(sourceXml: any, attributeName:string) {
