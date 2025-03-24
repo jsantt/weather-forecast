@@ -214,10 +214,11 @@ class ObservationData extends LitElement {
       })
       .at(0).smartSymbol;
 
-    calculatedItem.cloudiness = ObservationData.calculateWeights(
-      formattedObservations,
-      'cloudiness'
-    );
+    calculatedItem.cloudiness = formattedObservations
+      .filter((item) => {
+        return item.cloudiness !== undefined && isFinite(item.cloudiness);
+      })
+      .at(0).cloudiness;
 
     calculatedItem.feelsLike = feelsLike(
       calculatedItem.temperature,

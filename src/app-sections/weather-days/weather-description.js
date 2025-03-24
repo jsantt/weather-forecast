@@ -29,7 +29,6 @@ class WeatherDescription extends LitElement {
       <wind-helper></wind-helper>
 
       <rain-amount
-        .rainStartTime="${rainStartTime(this.dayData)}"
         .rainAmount="${totalRain(this.dayData)}"
         .snowAmount="${totalSnow(this.dayData)}"
       ></rain-amount>

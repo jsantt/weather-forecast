@@ -84,7 +84,6 @@ type ForecastHourPartial = {
 
   windGust: number;
   temperature: number;
-  summerTimeStarts: boolean;
 
   windDirection: number;
   feelsLike?: number;
@@ -96,6 +95,7 @@ type ForecastHourOptional = {
   smartSymbolAggregate?: number;
   smartSymbolCompactAggregate?: number;
   rainType?: string;
+  summerTimeStarts?: boolean;
 };
 
 type ForecastHour = Required<ForecastHourPartial> & ForecastHourOptional;
@@ -206,7 +206,7 @@ class ForecastData extends LitElement {
             wind: NaN,
             windDirection: NaN,
             windGust: NaN,
-            summerTimeStarts: true
+            summerTimeStarts: true,
           });
         }
 

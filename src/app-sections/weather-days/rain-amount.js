@@ -77,9 +77,6 @@ class RainAmount extends LitElement {
       rainAmount: {
         type: Number,
       },
-      rainStartTime: {
-        type: String,
-      },
       snowAmount: {
         type: Number,
       },
