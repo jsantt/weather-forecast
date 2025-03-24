@@ -39,9 +39,12 @@ type Station = {
   weatherCode3?: number;
   smartSymbol?: number;
 
+  lat: number;
   latForMap?: number;
+  lon: number;
   lonForMap?: number;
   selectedStation?: boolean;
+  timestamp: Date;
 };
 
 type Place = {
@@ -229,7 +232,10 @@ class ObservationData extends LitElement {
     return calculatedItem;
   }
 
-  static weightedSum(observationsWithNormalizedWeights, property) {
+  static weightedSum(
+    observationsWithNormalizedWeights: any[],
+    property: string
+  ) {
     return observationsWithNormalizedWeights.reduce((accumulator, current) => {
       if (Number.isNaN(current[property])) {
         return accumulator;
@@ -244,11 +250,11 @@ class ObservationData extends LitElement {
    * TODO: Ignore stations, where the data is not available
    *
    */
-  static calculateWeights(observations, property) {
+  static calculateWeights(observations, property: string) {
     const pow = 2;
 
     const observationsWithWeights = observations.map((observation) => {
-      let weight;
+      let weight: number;
       if (!observation[property]) {
         weight = 0;
       } else if (observation.distance === 0) {
@@ -491,7 +497,25 @@ class ObservationData extends LitElement {
       const singleValues = observationLine.trim().split(' ');
       const cloudiness = window.parseFloat(singleValues[11]); // n_man
 
-      const station: Station = {
+      const station: Pick<
+        Station,
+        | 'temperature'
+        | 'wind'
+        | 'windGust'
+        | 'windDirection'
+        | 'humidity'
+        | 'dewPoint'
+        | 'rain'
+        | 'rainExplanation'
+        | 'snow'
+        | 'pressure'
+        | 'visibility'
+        | 'cloudiness'
+        | 'wawaCode'
+        | 'detailsVisible'
+        | 'smartSymbol'
+        | 'feelsLike'
+      > = {
         temperature: window.parseFloat(singleValues[0]), // t2m
         wind: window.parseFloat(singleValues[1]), // ws_10min
         windGust: window.parseFloat(singleValues[2]), // wg_10min
@@ -531,19 +555,22 @@ class ObservationData extends LitElement {
     );
   }
 
-  static _removeDuplicates(observations) {
+  static _removeDuplicates(observations: Station[]) {
     return observations.filter((observation, index) => {
       const next = observations[index + 1];
       // hack to remove harmaja for now
-      if (observation.latLon === '60.10512 24.97539') {
+      if (observation.lat === 60.10512 && observation.lon === 24.97539) {
         return false;
       }
 
-      return next === undefined || observation.latLon !== next.latLon;
+      return (
+        next === undefined ||
+        (observation.lat !== next.lat && observation.lon !== next.lon)
+      );
     });
   }
 
-  _formatObservations(rawResponse) {
+  _formatObservations(rawResponse: Document): Station[] {
     const positions = ObservationData._parsePositions(rawResponse);
     const stations = ObservationData._parseStations(rawResponse);
     const observations = ObservationData._parseObservations(rawResponse);
@@ -561,8 +588,10 @@ class ObservationData extends LitElement {
 
     const filteredObservations =
       ObservationData._removeWithoutTemperature(combined);
+    console.log('before', filteredObservations);
     const temperatureRemoved =
       ObservationData._removeDuplicates(filteredObservations);
+    console.log('after', temperatureRemoved);
 
     const observations9 = temperatureRemoved.map((item) => {
       const copy = { ...item };
@@ -573,7 +602,7 @@ class ObservationData extends LitElement {
     });
 
     const observations10 = observations9.sort((item, next) => {
-      if (item.distance < next.distance) {
+      if (item.distance && next.distance && item.distance < next.distance) {
         return -1;
       }
       return 1;
@@ -582,7 +611,7 @@ class ObservationData extends LitElement {
     return observations10;
   }
 
-  static _roundDownToFullMinutes(minutes) {
+  static _roundDownToFullMinutes(minutes: number) {
     const timeNow = new Date();
 
     timeNow.setMinutes(timeNow.getMinutes() + minutes);
@@ -591,9 +620,9 @@ class ObservationData extends LitElement {
     return timeNow.toISOString();
   }
 
-  _dispatch(eventName, message) {
+  _dispatch(eventName: string, detail: object) {
     const event = new CustomEvent(eventName, {
-      detail: message,
+      detail: detail,
       bubbles: true,
       composed: true,
     });

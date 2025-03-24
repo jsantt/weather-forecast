@@ -6,10 +6,10 @@ function addCoordinatesForMap(observations) {
   return moved;
 }
 
-function resolveCollisions(observations) {
+function resolveCollisions(observations: any[]) {
   const stationRadius = 0.099;
 
-  const adjustedObs = [];
+  const adjustedObs: any[] = [];
   observations.map((observation) => {
     const copy = { ...observation };
     // console.log('OUTER', observation.name);
@@ -89,7 +89,7 @@ function moveIntoRightDistance(obs) {
   const stationRadius = 0.099;
   const calculatedStationRadius = 0.3;
 
-  const adjustedObs = [];
+  const adjustedObs: any[] = [];
 
   const result2 = obs.map((station) => {
     if (station.calculated) {
