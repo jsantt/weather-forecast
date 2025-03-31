@@ -45,6 +45,8 @@ type Station = {
   lonForMap?: number;
   selectedStation?: boolean;
   timestamp: Date;
+
+  normalizedWeight?: number;
 };
 
 type Place = {
@@ -223,6 +225,12 @@ class ObservationData extends LitElement {
       })
       .at(0).cloudiness;
 
+    /*
+    calculatedItem.cloudiness = ObservationData.calculateWeights(
+      formattedObservations,
+      'cloudiness'
+    );
+*/
     calculatedItem.feelsLike = feelsLike(
       calculatedItem.temperature,
       calculatedItem.wind,
@@ -233,11 +241,11 @@ class ObservationData extends LitElement {
   }
 
   static weightedSum(
-    observationsWithNormalizedWeights: any[],
+    observationsWithNormalizedWeights: Station[],
     property: string
   ) {
     return observationsWithNormalizedWeights.reduce((accumulator, current) => {
-      if (Number.isNaN(current[property])) {
+      if (Number.isNaN(current[property]) || !current.normalizedWeight) {
         return accumulator;
       }
 
@@ -250,12 +258,12 @@ class ObservationData extends LitElement {
    * TODO: Ignore stations, where the data is not available
    *
    */
-  static calculateWeights(observations, property: string) {
+  static calculateWeights(observations: Station[], property: string) {
     const pow = 2;
 
     const observationsWithWeights = observations.map((observation) => {
       let weight: number;
-      if (!observation[property]) {
+      if (!observation[property] || observation.distance === undefined) {
         weight = 0;
       } else if (observation.distance === 0) {
         weight = 1;
@@ -588,10 +596,9 @@ class ObservationData extends LitElement {
 
     const filteredObservations =
       ObservationData._removeWithoutTemperature(combined);
-    console.log('before', filteredObservations);
+
     const temperatureRemoved =
       ObservationData._removeDuplicates(filteredObservations);
-    console.log('after', temperatureRemoved);
 
     const observations9 = temperatureRemoved.map((item) => {
       const copy = { ...item };

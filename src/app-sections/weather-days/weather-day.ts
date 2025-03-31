@@ -55,16 +55,21 @@ class WeatherDay extends LitElement {
         --color-toggle-background: var(--color-yellow-300);
 
         background: var(--background-middle);
-        border-radius: var(--border-radius);
         color: var(--color-dark-and-light);
         display: block;
-        padding: var(--space-m) 0;
+        padding: 0.75rem 0;
 
         opacity: 1;
       }
 
       :host([daynumber='10']) {
         border-bottom: none;
+      }
+
+      h3 {
+        margin: 0;
+        padding: 0;
+        font-weight: var(--font-weight-bold);
       }
 
       .visually-hidden {
@@ -247,6 +252,12 @@ class WeatherDay extends LitElement {
       .tiny-symbol {
         position: absolute;
       }
+
+      expand-icon {
+        color: var(--color-secondary-dark-and-light);
+        padding-left: var(--space-l);
+        padding-right: var(--space-s);
+      }
     `;
   }
 
@@ -256,8 +267,9 @@ class WeatherDay extends LitElement {
         <div class="weatherDay_grid">
           <h3 class="day day-name">
             ${getDayName(this.dayNumber)} ${getWeekday(this.dayNumber)}
+            ${getDayNumber(this.dayNumber)}
             <span class="day-name--date">
-              ${getDayNumber(this.dayNumber)}
+              <expand-icon ?open=${true}></expand-icon>
             </span>
           </h3>
 

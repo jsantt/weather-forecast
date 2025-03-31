@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { SunCalc } from './suncalc-es6-fork.js';
-import { LocationCoordinates } from '../forecast-header/station-map.ts';
+import { LocationCoordinates } from '../forecast-header/station-map.js';
+import '../../common-components/expand-icon.js';
+
 import { property, state } from 'lit/decorators.js';
 
 class SunriseSunset extends LitElement {
@@ -80,15 +82,16 @@ class SunriseSunset extends LitElement {
         text-decoration: none;
       }
 
-      .expand-icon {
-        height: 16px;
-        width: 16px;
-        margin-right: var(--space-m);
-        transition: transform var(--transition-time) ease;
+      .expand {
+        display: flex;
+        justify-items: center;
+        padding: var(--space-m) 0;
       }
 
-      .expand-icon--open {
-        transform: scaleY(-1);
+      expand-icon {
+        color: var(--color-secondary-dark-and-light);
+        padding-right: 0.75rem;
+        margin-left: auto;
       }
 
       a:visited,
@@ -108,13 +111,14 @@ class SunriseSunset extends LitElement {
 
         grid-template-areas:
           'sunrise-label sunrise-label'
-          'sunrise-value   sunrise-value'
-          'sunset-label    sunset-label'
-          'sunset-value    sunset-value';
+          'sunrise-value sunrise-value'
+           'sunset-label  sunset-label'
+          'sunset-value  sunset-value'
+          'expand        expand';
 
         gap: var(--space-s) var(--space-l);
 
-        margin-bottom: 1.5rem;
+        margin-bottom: var(--space-m);
       }
 
       .sunrise-label {
@@ -144,6 +148,10 @@ class SunriseSunset extends LitElement {
         font-weight: var(--font-weight-bold);
       }
 
+      .expand {
+        grid-area: expand;
+      }
+
       .details {
         display: grid;
         grid-template-columns: auto 1fr;
@@ -167,7 +175,13 @@ class SunriseSunset extends LitElement {
        
           <div class="sunset-value">${this._sunset}</div>
           <div class="sunset-label">Aurinko laskee</div>
+          <a href="#" class="expand" @click="${(e) => this._toggleDetails(e)}">
+           ${this._expanded ? `Näytä vähemmän` : `Näytä lisää`}<expand-icon
+            ?open="${this._expanded}"
+          ></expand-icon>
+        </a> 
         </div>
+        
           <smooth-expand ?expanded="${this._expanded}">
             <div class="details">
               <div>${this._nightEnd}</div>
@@ -202,13 +216,6 @@ class SunriseSunset extends LitElement {
             </div>
           </smooth-expand>
         </div>
-        <a href="#" @click="${(e) => this._toggleDetails(e)}">
-          <svg-icon
-            class="expand-icon ${this._expanded ? 'expand-icon--open' : ''}"
-            path="assets/image/icons.svg#caret-down"
-          ></svg-icon>
-          ${this._expanded ? `Näytä vähemmän` : `Näytä lisää`}
-        </a>
       </weather-section>
     `;
   }

@@ -1,10 +1,11 @@
 import { css, html, LitElement } from 'lit';
 
-import { windClassification } from '../weather-days/wind-helper.ts';
+import { windClassification } from '../weather-days/wind-helper.js';
 
 import '../../common-components/smooth-expand.js';
 import '../../common-components/svg-icon.js';
-import '../../common-components/wind-icon.ts';
+import '../../common-components/wind-icon.js';
+import '../../common-components/expand-icon.js';
 
 import './location-selector.ts';
 import './station-map.ts';
@@ -132,21 +133,13 @@ class ForecastHeader extends LitElement {
         padding-left: var(--space-l);
       }
 
-      .expand-icon {
+      expand-icon {
+        color: var(--color-light);
+        padding-right: 0.75rem;
+
         grid-area: expand;
         align-self: center;
         justify-self: end;
-
-        color: var(--color-light);
-        height: 16px;
-        width: 16px;
-
-        margin-right: var(--space-m);
-        transition: transform var(--transition-time) ease;
-      }
-
-      :host([largeMap]) .expand-icon {
-        transform: scaleY(-1);
       }
 
       station-details {
@@ -177,10 +170,10 @@ class ForecastHeader extends LitElement {
                         : html`SÄÄASEMA ${this._selectedStation?.distance} km`}
                     </div>
 
-                    <svg-icon
+                    <expand-icon
+                      ?open=${this.largeMap}
                       class="expand-icon"
-                      path="assets/image/icons.svg#caret-down"
-                    ></svg-icon>
+                    ></expand-icon>
                   `
                 : null
             }

@@ -179,8 +179,6 @@ class ForecastData extends LitElement {
           lastRemoved = days.slice(0, -1);
         }
 
-        console.log(days);
-
         // find daylight saving time change. The third hour is normally 3rd, not 4rd
         const index = days.findIndex((day) => {
           if (day.hours.at(2)?.hour === 4) {
@@ -267,22 +265,6 @@ class ForecastData extends LitElement {
       windDirection: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection'),
       windGust: getTimeAndValuePairs(timeSeries, 'mts-1-1-HourlyMaximumGust'),
     };
-  }
-
-  static _sliceDay(data: ForecastHour[], dayNumber: number): ForecastHour[] {
-    if (data === undefined) {
-      return [];
-    }
-
-    try {
-      data[(dayNumber - 1) * 24];
-      data[dayNumber * 24];
-    } catch (e) {
-      console.log('cannot slice', data, dayNumber);
-      return [];
-    }
-
-    return data.slice((dayNumber - 1) * 24, dayNumber * 24);
   }
 
   static _toJsonHours(response: ForecastResponse): ForecastHour[] {

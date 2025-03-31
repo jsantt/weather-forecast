@@ -6,6 +6,8 @@ import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 
+import '../../common-components/expand-icon.js';
+
 import { property } from 'lit/decorators.js';
 import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.js';
 import { getWeekdayShort } from './time-texts.js';
@@ -33,7 +35,9 @@ class WeatherDay extends LitElement {
         gap: var(--space-m);
         grid-template-columns:
           minmax(1rem, 2fr) minmax(2rem, 3rem) minmax(2rem, 3rem)
-          5fr;
+          5fr auto;
+
+        grid-template-rows: 4rem;
 
         background: var(--background-middle);
       }
@@ -78,6 +82,11 @@ class WeatherDay extends LitElement {
 
       .feels-like {
         font-style: italic;
+      }
+
+      expand-icon {
+        color: var(--color-secondary-dark-and-light);
+        padding-right: 1.75rem;
       }
     `;
   }
@@ -150,7 +159,8 @@ class WeatherDay extends LitElement {
             }"
         ></img>`
           : ''}
-      </div>`;
+      </div>
+      <expand-icon></expand-icon>`;
   }
 }
 
