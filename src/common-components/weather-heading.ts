@@ -18,7 +18,7 @@ class WeatherHeading extends LitElement {
       h1,
       h2 {
         font-family: 'Open sans', serif;
-        font-weight: 700;
+        font-weight: 600;
         font-style: normal;
 
         padding: 0;
@@ -26,11 +26,8 @@ class WeatherHeading extends LitElement {
       }
 
       h1 {
-        font-size: var(--font-size-xl);
-      }
-
-      h2 {
-        font-size: var(--font-size-m);
+        font-family: var(--font-family-secondary);
+        font-size: 1.89rem;
       }
     `;
   }

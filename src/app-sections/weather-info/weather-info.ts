@@ -17,8 +17,12 @@ class WeatherInfo extends LitElement {
         margin: 0;
       }
 
-      p + p {
+      p {
         margin-top: var(--space-m);
+      }
+
+      p:last-of-type {
+        margin-bottom: var(--space-m);
       }
 
       h3 {

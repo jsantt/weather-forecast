@@ -199,10 +199,6 @@ class WeatherApp extends LitElement {
             'symbols symbols symbols '
             'copy copy copy ';
         }
-        .grid-header,
-        .grid-location {
-          padding-bottom: 1rem;
-        }
       }
     `;
   }

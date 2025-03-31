@@ -24,7 +24,7 @@ class TopBar extends LitElement {
           'icon heading language'
           'icon slogan language';
 
-        column-gap: var(--space-s);
+        column-gap: var(--space-m);
       }
 
       .logo {
