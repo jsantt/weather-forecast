@@ -247,6 +247,14 @@ class WeatherApp extends LitElement {
             ?showWind="${this._showWind}"
           >
           </forecast-header>
+          <div class="by">
+            <object
+              data="./assets/image/il-avoin-data-logo-rgb.svg"
+              width="100"
+              height="30"
+              aria-label="Ilmatieteen laitoksen avoin data logo"
+            ></object>
+          </div>
         </weather-section>
 
         <weather-section
@@ -265,17 +273,6 @@ class WeatherApp extends LitElement {
             ?showWind="${this._showWind}"
           >
           </weather-days>
-
-          <div class="by">
-            <object
-              data="./assets/image/il-avoin-data-logo-rgb.svg"
-              width="100"
-              height="30"
-              aria-label="Ilmatieteen laitoksen avoin data logo"
-            ></object>
-          </div>
-          <div slot="footer-left"></div>
-          <div slot="footer-right"></div>
         </weather-section>
 
         <sunrise-sunset
