@@ -6,6 +6,7 @@ import '../../common-components/wind-icon.ts';
 import { isNight } from './sun-calculations.ts';
 import { property, state } from 'lit/decorators.js';
 import { Station } from '../../backend-calls/observation-data/observation-data.ts';
+import { getWeatherObservation } from '../../backend-calls/observation-data/weather-symbol-name.ts';
 
 // TODO: move to source once it is converted into TS
 type LocationCoordinates = {
@@ -36,6 +37,9 @@ class StationMap extends LitElement {
   showWind: boolean = false;
 
   @state()
+  selectedIndex: number = 0;
+
+  @state()
   hundredIfNight: number = 0;
 
   static get styles() {
@@ -44,6 +48,16 @@ class StationMap extends LitElement {
         display: block;
 
         min-height: 275px;
+      }
+
+      .heading {
+        font-size: var(--font-size-m);
+        text-wrap: pretty;
+        font-weight: 400;
+        color: var(--color-gray-500);
+        text-align: center;
+        margin: 0;
+        padding: var(--space-xl) var(--space-l) 0 var(--space-l);
       }
 
       .temperature {
@@ -120,6 +134,14 @@ class StationMap extends LitElement {
     }
 
     return svg`
+      <h3 class="heading">${
+        this.observationData?.at(this.selectedIndex)?.wawaCode !== undefined
+          ? getWeatherObservation(
+              this.observationData?.at(this.selectedIndex)?.wawaCode,
+              this.observationData?.at(this.selectedIndex)?.cloudiness
+            )
+          : ''
+      }</h3>
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${StationMap._viewBox(
         this.location
       )}">
@@ -231,6 +253,7 @@ class StationMap extends LitElement {
   }
 
   _stationClicked(index) {
+    this.selectedIndex = index;
     this._dispatch('station-map.selected', index);
   }
 

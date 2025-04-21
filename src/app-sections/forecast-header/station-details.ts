@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Station } from '../../backend-calls/observation-data/observation-data.ts';
 import { getWeatherObservation } from '../../backend-calls/observation-data/weather-symbol-name.ts';
+import { getTime } from '../weather-app/weather-app-time.ts';
 
 class StationDetails extends LitElement {
   static get is() {
@@ -21,7 +22,6 @@ class StationDetails extends LitElement {
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: auto;
         grid-gap: var(--space-l);
-        min-height: 10rem;
       }
 
       .item {
@@ -55,7 +55,7 @@ class StationDetails extends LitElement {
       .updated-time {
         grid-column: 1 / -1;
 
-        color: var(--color-gray-500);
+        color: var(--color-light);
         font-size: var(--font-size-s);
 
         text-align: right;
@@ -65,73 +65,79 @@ class StationDetails extends LitElement {
 
   render() {
     return html`
-      ${this.station?.humidity
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.humidity} %</div>
-              <div class="explanation">ilmankosteus</div>
-            </div>
-          `
-        : ``}
-      ${this.station?.pressure
-        ? html`
-            <div class="item">
-              <div class="value">${Math.round(this.station.pressure)} hPa</div>
-              <div class="explanation">ilmanpaine</div>
-            </div>
-          `
-        : ``}
-      ${this.station?.dewPoint
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.dewPoint} °C</div>
-              <div class="explanation">kastepiste</div>
-            </div>
-          `
-        : ``}
-      ${this.station?.visibility
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.visibility} km</div>
-              <div class="explanation">näkyvyys</div>
-            </div>
-          `
-        : ``}
-      ${this.station && StationDetails._snow(this.station.snow)
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.snow} cm</div>
-              <div class="explanation">lumen syvyys</div>
-            </div>
-          `
-        : ``}
-      ${this.station?.rainExplanation
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.rainExplanation} mm/h</div>
-              <div class="explanation">sateen rankkuus</div>
-              <div></div>
-            </div>
-          `
-        : ``}
-      ${this.station?.rain
-        ? html`
-            <div class="item">
-              <div class="value">${this.station.rain} mm</div>
-              <div class="explanation">sade / edeltävä h</div>
-            </div>
-          `
-        : ``}
-      <div class="item description">
-        <div class="value">
-          ${this.station
-            ? getWeatherObservation(
-                this.station.wawaCode,
-                this.station.cloudiness
-              )
-            : ''}
-        </div>
-        <div class="explanation"></div>
+      ${
+        this.station?.humidity
+          ? html`
+              <div class="item">
+                <div class="value">${this.station.humidity} %</div>
+                <div class="explanation">ilmankosteus</div>
+              </div>
+            `
+          : ``
+      }
+      ${
+        this.station?.pressure
+          ? html`
+              <div class="item">
+                <div class="value">
+                  ${Math.round(this.station.pressure)} hPa
+                </div>
+                <div class="explanation">ilmanpaine</div>
+              </div>
+            `
+          : ``
+      }
+      ${
+        this.station?.dewPoint
+          ? html`
+              <div class="item">
+                <div class="value">${this.station.dewPoint} °C</div>
+                <div class="explanation">kastepiste</div>
+              </div>
+            `
+          : ``
+      }
+      ${
+        this.station?.visibility
+          ? html`
+              <div class="item">
+                <div class="value">${this.station.visibility} km</div>
+                <div class="explanation">näkyvyys</div>
+              </div>
+            `
+          : ``
+      }
+      ${
+        this.station && StationDetails._snow(this.station.snow)
+          ? html`
+              <div class="item">
+                <div class="value">${this.station.snow} cm</div>
+                <div class="explanation">lumen syvyys</div>
+              </div>
+            `
+          : ``
+      }
+      ${
+        this.station?.rainExplanation
+          ? html`
+              <div class="item">
+                <div class="value">${this.station.rainExplanation} mm/h</div>
+                <div class="explanation">sateen rankkuus</div>
+                <div></div>
+              </div>
+            `
+          : ``
+      }
+      ${
+        this.station?.rain
+          ? html`
+              <div class="item">
+                <div class="value">${this.station.rain} mm</div>
+                <div class="explanation">sade / edeltävä h</div>
+              </div>
+            `
+          : ``
+      }
       </div>
 
       <!--
@@ -149,9 +155,11 @@ class StationDetails extends LitElement {
         <div class="value">${this.station?.smartSymbol}</div>
         <div class="explanation">symbol</div>
       </div>
-
-      <div class="item updated-time"></div>
-      -->
+    -->
+      <div class="item updated-time">
+      ${`havainnot klo ${StationDetails._time(this.station?.timestamp)}` }
+      </div>
+      
     `;
   }
 
@@ -159,7 +167,10 @@ class StationDetails extends LitElement {
     return centimeters > -1;
   }
 
-  static _time(dateTime: Date) {
+  static _time(dateTime?: Date) {
+    if (dateTime === undefined) {
+      return '';
+    }
     const minutes = dateTime.getMinutes();
 
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;

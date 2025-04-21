@@ -143,7 +143,7 @@ class ForecastHeader extends LitElement {
       }
 
       station-details {
-        margin: var(--space-l) 0 var(--space-l) 0;
+        margin: var(--space-l) 0 0 0;
         padding: 0;
       }
     `;

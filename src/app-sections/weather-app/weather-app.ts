@@ -72,7 +72,7 @@ class WeatherApp extends LitElement {
   static get styles() {
     return css`
       :host {
-        --header-background-expand: 1rem;
+        --header-background-expand: var(--space-l);
 
         display: flex;
         justify-content: center;
@@ -234,7 +234,6 @@ class WeatherApp extends LitElement {
           blue
           class="grid-item grid-map"
           .padding=${false}
-          liftedHeading=${`Klo ${getTime(new Date())} havainnot`}
         >
           <slot name="place"></slot>
           <forecast-header
