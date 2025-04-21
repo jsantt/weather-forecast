@@ -1,25 +1,21 @@
 import { css, html, LitElement } from 'lit';
 
-import '../../backend-calls/forecast-data/forecast-data.ts';
-import '../../backend-calls/observation-data/observation-data.ts';
-
-import '../forecast-header/top-bar.ts';
-import '../forecast-header/location-selector.ts';
-
-import '../weather-section/weather-section.ts';
-
-import '../forecast-header/forecast-header.ts';
-
-import '../bottom-sheet/bottom-sheet.ts';
 import { state } from 'lit/decorators.js';
 import { LocationCoordinates } from '../forecast-header/station-map.ts';
 import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
 import { Place } from '../../backend-calls/observation-data/observation-data.ts';
-import('../external-links/external-links.js');
 
+import '../../backend-calls/forecast-data/forecast-data.ts';
+import '../../backend-calls/observation-data/observation-data.ts';
+import '../forecast-header/top-bar.ts';
+import '../forecast-header/location-selector.ts';
+import '../weather-section/weather-section.ts';
+import '../forecast-header/forecast-header.ts';
+import '../bottom-sheet/bottom-sheet.ts';
+
+import('../external-links/external-links.js');
 import('../sunrise-sunset/sunrise-sunset.ts');
 import('../weather-info/weather-info.ts');
-
 import('../../app-sections/symbol-list/symbol-list.ts');
 import('../weather-days/weather-days.ts');
 import('../share-app/share-app.js');

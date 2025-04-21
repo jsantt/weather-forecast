@@ -140,7 +140,7 @@ class StationMap extends LitElement {
             )
           : ''
       }</h3>
-      <svg width="450" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${StationMap._viewBox(
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${StationMap._viewBox(
         this.location
       )}">
         <!-- paint in "z-index" order, because
