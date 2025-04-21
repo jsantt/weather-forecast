@@ -1,8 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Station } from '../../backend-calls/observation-data/observation-data.ts';
-import { getWeatherObservation } from '../../backend-calls/observation-data/weather-symbol-name.ts';
-import { getTime } from '../weather-app/weather-app-time.ts';
 
 class StationDetails extends LitElement {
   static get is() {
@@ -157,8 +155,9 @@ class StationDetails extends LitElement {
       </div>
     -->
       <div class="item updated-time">
-      ${`havainnot klo ${StationDetails._time(this.station?.timestamp)}` }
+      ${`havainnot klo ${StationDetails._time(this.station?.timestamp)}`}
       </div>
+      <div class="item updated-time"></div>
       
     `;
   }

@@ -1,7 +1,5 @@
 import { css, html, LitElement } from 'lit';
 
-import { getTime } from './weather-app-time.ts';
-
 import '../../backend-calls/forecast-data/forecast-data.ts';
 import '../../backend-calls/observation-data/observation-data.ts';
 
@@ -129,7 +127,7 @@ class WeatherApp extends LitElement {
           grid-template-columns: minmax(350px, 450px) minmax(200px, 250px) !important;
           grid-template-areas:
             'header header'
-            'location location'
+            'location sun'
             'map sun'
             'map sun'
             'map links'
@@ -190,7 +188,7 @@ class WeatherApp extends LitElement {
           grid-template-columns: 6fr 4fr 4fr !important;
           grid-template-areas:
             'header header header '
-            'location . . '
+            'location links sun '
             'map links sun'
             'map share sun  '
             'map info info '
@@ -248,9 +246,9 @@ class WeatherApp extends LitElement {
           </forecast-header>
           <div class="by">
             <object
-              data="./assets/image/il-avoin-data-logo-rgb.svg"
               width="100"
               height="30"
+              data="./assets/image/il-avoin-data-logo-rgb.svg"
               aria-label="Ilmatieteen laitoksen avoin data logo"
             ></object>
           </div>

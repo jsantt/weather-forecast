@@ -125,10 +125,6 @@ class WeatherDay extends LitElement {
         float: right;
       }
 
-      .symbol_svg {
-        width: 32px;
-      }
-
       .hour,
       .hour--empty {
         font-size: var(--font-size-s);
@@ -297,6 +293,8 @@ class WeatherDay extends LitElement {
                       ${hour.smartSymbol
                         ? html`
                       <img
+                        width="40"
+                        height="40"
                         src="${`assets/image/smart/light/${hour.smartSymbol}.svg`}"
                          alt="${
                            getSymbolName(hour.smartSymbol) || 'sääsymboli'

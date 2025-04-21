@@ -41,12 +41,16 @@ class SymbolList extends LitElement {
           return html`<div>
             
             <img
+              width="40"
+              height="40"
               alt=${symbol.fi}
               src="${`assets/image/smart/light/${symbol.smartSymbol}.svg`}"
              
             ></img>
             <img
               alt=${symbol.fi}
+              width="40"
+              height="40"
               src="${`assets/image/smart/light/${
                 Number(symbol.smartSymbol) + 100
               }.svg`}"

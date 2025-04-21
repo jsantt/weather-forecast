@@ -58,6 +58,8 @@ class WeatherDay extends LitElement {
         display: flex;
       }
 
+  
+
       .temperature {
         justify-self: center;
 
@@ -136,6 +138,8 @@ class WeatherDay extends LitElement {
           ? html`
         <img
           src="${`assets/image/smart/light/${this.forecastDay.hours[8]?.smartSymbolCompactAggregate}.svg`}"
+          width="40"
+          height="40"
           alt="${
             getSymbolName(this.forecastDay.hours[8].smartSymbol) || 'sääsymboli'
           }"
