@@ -9,7 +9,6 @@ import '../../common-components/wind-icon.js';
 import { getHighestWindGustHour, windClassification } from './wind-helper.js';
 import { property, state } from 'lit/decorators.js';
 import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.js';
-import { getDayName, getDayNumber, getWeekday } from './time-texts.js';
 import { getSymbolName } from '../../backend-calls/observation-data/weather-symbol-name.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -32,6 +31,9 @@ class WeatherDay extends LitElement {
 
   @property({ type: Boolean, reflect: true })
   debug: boolean = false;
+
+  @property({ type: Boolean })
+  expanded: boolean = false;
 
   @state()
   private highestWindGustHour: number = 0;
@@ -57,7 +59,7 @@ class WeatherDay extends LitElement {
         background: var(--background-middle);
         color: var(--color-dark-and-light);
         display: block;
-        padding: 0.75rem 0;
+        padding-bottom: 0.75rem;
 
         opacity: 1;
       }
@@ -105,7 +107,7 @@ class WeatherDay extends LitElement {
       }
 
       .day {
-        padding: var(--space-m) 0;
+        padding-bottom: var(--space-m);
       }
 
       .day::first-letter {
@@ -135,7 +137,7 @@ class WeatherDay extends LitElement {
         text-align: center;
 
         color: var(--color-dark-and-light);
-        margin: var(--space-l) 0 var(--space-s) 0;
+        margin-bottom: var(--space-s);
       }
 
       .hour--empty {
@@ -261,14 +263,6 @@ class WeatherDay extends LitElement {
     return html`
       <div class="weatherDay">
         <div class="weatherDay_grid">
-          <h3 class="day day-name">
-            ${getDayName(this.dayNumber)} ${getWeekday(this.dayNumber)}
-            ${getDayNumber(this.dayNumber)}
-            <span class="day-name--date">
-              <expand-icon ?open=${true}></expand-icon>
-            </span>
-          </h3>
-
           <weather-description .dayData="${this.forecastDay}">
           </weather-description>
 

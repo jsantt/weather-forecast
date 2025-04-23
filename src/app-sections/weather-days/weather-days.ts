@@ -42,22 +42,25 @@ class WeatherDays extends LitElement {
   render() {
     return html`
       ${this.forecast?.days.map((forecastDay, index) => {
-        if (this.expanded[index]) {
-          return html`<weather-day
-            @click=${() => this.toggle(index)}
-            dayNumber=${index + 1}
-            .showFeelsLike="${this.showFeelsLike}"
-            .showWind="${this.showWind}"
-            .forecastDay="${forecastDay}"
-          ></weather-day> `;
-        } else {
-          return html`<weather-day-compact
+        return html`<div>
+          <weather-day-compact
             @click=${() => this.toggle(index)}
             dayNumber=${index + 1}
             .showFeelsLike="${this.showFeelsLike}"
             .forecastDay="${forecastDay}"
-          ></weather-day-compact> `;
-        }
+            ?expanded="${this.expanded[index]}"
+          ></weather-day-compact>
+          ${this.expanded[index]
+            ? html` <weather-day
+                @click=${() => this.toggle(index)}
+                dayNumber=${index + 1}
+                .showFeelsLike="${this.showFeelsLike}"
+                .showWind="${this.showWind}"
+                .forecastDay="${forecastDay}"
+                ?expanded="${this.expanded[index]}"
+              ></weather-day>`
+            : null}
+        </div>`;
       })}
     `;
   }

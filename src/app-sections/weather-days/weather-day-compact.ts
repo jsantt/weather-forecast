@@ -10,8 +10,12 @@ import '../../common-components/expand-icon.js';
 
 import { property } from 'lit/decorators.js';
 import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.js';
-import { getWeekdayShort } from './time-texts.js';
+import {
+  getDayNumber,
+  getWeekdayShort,
+} from './time-texts.js';
 import { getSymbolName } from '../../backend-calls/observation-data/weather-symbol-name.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 class WeatherDay extends LitElement {
   static get is() {
@@ -27,6 +31,9 @@ class WeatherDay extends LitElement {
   @property({ type: Object })
   forecastDay?: ForecastDay;
 
+  @property({ type: Boolean, reflect: true })
+  expanded: boolean = false;
+
   static get styles() {
     return css`
       :host {
@@ -34,12 +41,16 @@ class WeatherDay extends LitElement {
         align-items: center;
         gap: var(--space-m);
         grid-template-columns:
-          minmax(1rem, 2fr) minmax(2rem, 3rem) minmax(2rem, 3rem)
+          minmax(1rem, 3fr) minmax(2rem, 3rem) minmax(2rem, 3rem)
           5fr auto;
 
         grid-template-rows: 4rem;
 
         background: var(--background-middle);
+      }
+
+      :host([expanded]) {
+        grid-template-columns: minmax(1rem, 3fr) 0 0 0 auto;
       }
 
       :host([daynumber='10']) {
@@ -57,8 +68,6 @@ class WeatherDay extends LitElement {
         justify-self: center;
         display: flex;
       }
-
-  
 
       .temperature {
         justify-self: center;
@@ -90,22 +99,45 @@ class WeatherDay extends LitElement {
         color: var(--color-secondary-dark-and-light);
         padding-right: 1.75rem;
       }
+
+      .hide span {
+        display: none;
+      }
     `;
+  }
+
+  private dayText() {
+    let text;
+    if (this.dayNumber === 1) {
+      text = 'Tänään';
+    } else {
+      text = getWeekdayShort(this.dayNumber);
+    }
+
+    if (this.expanded) {
+      text += ` ${getDayNumber(this.dayNumber)}`;
+    }
+    return text;
   }
 
   render() {
     if (!this.forecastDay) {
       return;
     }
-    return html` <header>
-        ${this.dayNumber === 1 ? 'Tänään' : getWeekdayShort(this.dayNumber)}
-      </header>
+    return html` <header>${this.dayText()}</header>
 
       <div
-        class="temperature temperature--min ${this.forecastDay.dayMinTemp &&
-        this.forecastDay.dayMinTemp < 0
-          ? 'temperature--negative'
-          : 'temperature--positive'}"
+        class=${classMap({
+          temperature: true,
+          'temperature--min': true,
+          'temperature--negative':
+            this.forecastDay.dayMinTemp !== undefined &&
+            this.forecastDay.dayMinTemp < 0,
+          'temperature--positive':
+            this.forecastDay.dayMinTemp !== undefined &&
+            this.forecastDay.dayMinTemp >= 0,
+          hide: this.expanded,
+        })}
       >
         <span>
           ${this.showFeelsLike === true
@@ -118,10 +150,17 @@ class WeatherDay extends LitElement {
       </div>
 
       <div
-        class="temperature temperature--max ${this.forecastDay.dayMaxTemp &&
-        this.forecastDay.dayMaxTemp < 0
-          ? 'temperature--negative'
-          : 'temperature--positive'}"
+        class=${classMap({
+          temperature: true,
+          'temperature--max': true,
+          'temperature--negative':
+            this.forecastDay.dayMaxTemp !== undefined &&
+            this.forecastDay.dayMaxTemp < 0,
+          'temperature--positive':
+            this.forecastDay.dayMaxTemp !== undefined &&
+            this.forecastDay.dayMaxTemp >= 0,
+          hide: this.expanded,
+        })}
       >
         <span>
           ${this.showFeelsLike === true
@@ -134,8 +173,10 @@ class WeatherDay extends LitElement {
       </div>
 
       <div class="symbols fade">
-        ${this.forecastDay.hours[8]?.smartSymbolCompactAggregate
-          ? html`
+        ${this.expanded
+          ? null
+          : html` ${this.forecastDay.hours[8]?.smartSymbolCompactAggregate
+              ? html`
         <img
           src="${`assets/image/smart/light/${this.forecastDay.hours[8]?.smartSymbolCompactAggregate}.svg`}"
           width="40"
@@ -144,27 +185,28 @@ class WeatherDay extends LitElement {
             getSymbolName(this.forecastDay.hours[8].smartSymbol) || 'sääsymboli'
           }"
         ></img>`
-          : ''}
-        ${this.forecastDay.hours[15]?.smartSymbolCompactAggregate
-          ? html`<img
+              : ''}
+            ${this.forecastDay.hours[15]?.smartSymbolCompactAggregate
+              ? html`<img
           src="${`assets/image/smart/light/${this.forecastDay.hours[15]?.smartSymbolCompactAggregate}.svg`}"
           alt="${
             getSymbolName(this.forecastDay.hours[15].smartSymbol) ||
             'sääsymboli'
           }"
         ></img>`
-          : ''}
-        ${this.forecastDay.hours[23]?.smartSymbolCompactAggregate
-          ? html`<img
+              : ''}
+            ${this.forecastDay.hours[23]?.smartSymbolCompactAggregate
+              ? html`<img
             src="${`assets/image/smart/light/${this.forecastDay.hours[23]?.smartSymbolCompactAggregate}.svg`}"
             alt="${
               getSymbolName(this.forecastDay.hours[23].smartSymbol) ||
               'sääsymboli'
             }"
         ></img>`
-          : ''}
+              : ''}`}
       </div>
-      <expand-icon></expand-icon>`;
+
+      <expand-icon ?open=${this.expanded}></expand-icon>`;
   }
 }
 
