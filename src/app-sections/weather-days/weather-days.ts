@@ -1,7 +1,8 @@
 import { css, html, LitElement } from 'lit';
 
 import './weather-day.ts';
-import './weather-day-compact.ts';
+import './weather-day-header.ts';
+import '../../common-components/smooth-expand.js';
 
 import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
 import { property, state } from 'lit/decorators.js';
@@ -43,23 +44,23 @@ class WeatherDays extends LitElement {
     return html`
       ${this.forecast?.days.map((forecastDay, index) => {
         return html`<div>
-          <weather-day-compact
+          <weather-day-header
             @click=${() => this.toggle(index)}
             dayNumber=${index + 1}
             .showFeelsLike="${this.showFeelsLike}"
             .forecastDay="${forecastDay}"
             ?expanded="${this.expanded[index]}"
-          ></weather-day-compact>
-          ${this.expanded[index]
-            ? html` <weather-day
-                @click=${() => this.toggle(index)}
-                dayNumber=${index + 1}
-                .showFeelsLike="${this.showFeelsLike}"
-                .showWind="${this.showWind}"
-                .forecastDay="${forecastDay}"
-                ?expanded="${this.expanded[index]}"
-              ></weather-day>`
-            : null}
+          ></weather-day-header>
+          <smooth-expand ?expanded=${this.expanded[index]}>
+            <weather-day
+              @click=${() => this.toggle(index)}
+              dayNumber=${index + 1}
+              .showFeelsLike="${this.showFeelsLike}"
+              .showWind="${this.showWind}"
+              .forecastDay="${forecastDay}"
+              ?expanded="${this.expanded[index]}"
+            ></weather-day
+          ></smooth-expand>
         </div>`;
       })}
     `;

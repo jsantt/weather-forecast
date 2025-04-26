@@ -10,16 +10,13 @@ import '../../common-components/expand-icon.js';
 
 import { property } from 'lit/decorators.js';
 import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.js';
-import {
-  getDayNumber,
-  getWeekdayShort,
-} from './time-texts.js';
+import { getDayNumber, getWeekdayShort } from './time-texts.js';
 import { getSymbolName } from '../../backend-calls/observation-data/weather-symbol-name.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-class WeatherDay extends LitElement {
+class WeatherDayHeader extends LitElement {
   static get is() {
-    return 'weather-day-compact';
+    return 'weather-day-header';
   }
 
   @property({ type: Number, reflect: true })
@@ -210,4 +207,4 @@ class WeatherDay extends LitElement {
   }
 }
 
-window.customElements.define(WeatherDay.is, WeatherDay);
+window.customElements.define(WeatherDayHeader.is, WeatherDayHeader);

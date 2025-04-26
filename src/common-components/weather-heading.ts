@@ -27,7 +27,7 @@ class WeatherHeading extends LitElement {
 
       h1 {
         font-family: var(--font-family-secondary);
-        font-size: 1.89rem;
+        font-size: 1.52rem;
       }
     `;
   }

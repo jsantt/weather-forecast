@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 /**
  * Expand component including smooth transition (animation)
@@ -29,14 +30,11 @@ class SmoothExpand extends LitElement {
     `;
   }
 
+  @property({ type: Boolean, reflect: true })
+  expanded: boolean = false;
+
   render() {
     return html`<slot aria-hidden="${this.expanded === true}"></slot>`;
-  }
-
-  static get properties() {
-    return {
-      expanded: { type: Boolean, reflect: true },
-    };
   }
 
   updated() {
@@ -50,11 +48,11 @@ class SmoothExpand extends LitElement {
     }
   }
 
-  _setMaxHeight(maxHeight) {
+  private _setMaxHeight(maxHeight: number) {
     this.style.maxHeight = `${maxHeight}px`;
   }
 
-  _getHiddenHeight() {
+  private _getHiddenHeight() {
     const innerElement = this.querySelector('*');
     if (innerElement === null) {
       throw new Error(
