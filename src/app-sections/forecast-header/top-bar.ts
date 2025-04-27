@@ -33,7 +33,7 @@ class TopBar extends LitElement {
         */
         background: var(--color-yellow);
         border-radius: 12px;
-        padding: var(--space-m);
+        padding: var(--space-s);
         width: 32px;
         height: 32px;
       }
