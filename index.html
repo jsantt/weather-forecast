@@ -346,7 +346,7 @@
           "luotettavin sääennuste",
           "ilmatieteen laitos sää",
           "ilmanpaine nyt",
-          "ilmankosteus nyt"
+          "ilmankosteus nyt",
           "sää",
           "ilmatieteen sää"
         ],
@@ -368,6 +368,10 @@
     <script>
       document.addEventListener('bottom-sheet.toggle-darkmode', () => {
         document.body.classList.toggle('force-dark-mode');
+      });
+
+      document.addEventListener('observation-data.new-data', (e) => {
+        // updateJsonLd(observationJsonLd(e.detail))
       });
 
       /* A fix for the iOS orientationchange zoom bug.

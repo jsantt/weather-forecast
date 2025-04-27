@@ -112,13 +112,11 @@ class SunriseSunset extends LitElement {
         grid-template-areas:
           'sunrise-label sunrise-label'
           'sunrise-value sunrise-value'
-           'sunset-label  sunset-label'
+          'sunset-label  sunset-label'
           'sunset-value  sunset-value'
           'expand        expand';
 
         gap: var(--space-s) var(--space-l);
-
-        margin-bottom: var(--space-m);
       }
 
       .sunrise-label {
@@ -157,11 +155,10 @@ class SunriseSunset extends LitElement {
         grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
         grid-gap: var(--space-s);
-        margin-bottom: var(--space-l);
       }
 
       .more-space {
-        margin-bottom: var(--space-m);
+        margin-bottom: var(--space-l);
       }
     `;
   }
@@ -169,52 +166,51 @@ class SunriseSunset extends LitElement {
   render() {
     return html`
       <weather-section liftedHeading="Aurinko" padding yellow>
+      <smooth-expand ?expanded="${!this._expanded}">
+      <div class="details">
         <div class="grid">
           <div class="sunrise-value">${this._sunrise}</div>
           <div class="sunrise-label">Aurinko nousee</div>
        
           <div class="sunset-value">${this._sunset}</div>
           <div class="sunset-label">Aurinko laskee</div>
-          <a href="#" class="expand" @click="${(e) => this._toggleDetails(e)}">
-           ${this._expanded ? `Näytä vähemmän` : `Näytä lisää`}<expand-icon
-            ?open="${this._expanded}"
-          ></expand-icon>
-        </a> 
+           
         </div>
-        
+        </div></smooth-expand>
           <smooth-expand ?expanded="${this._expanded}">
             <div class="details">
-              <div>${this._nightEnd}</div>
-              <div>yö loppuu</div>
+
+              <div>${this._darkestNight}</div>
+              <div>aurinko matalimmillaan (pimeintä)</div>
 
               <div>${this._dawn}</div>
               <div>hämärä loppuu</div>
 
               <div>${this._sunrise}</div>
-              <div>aurinko nousee</div>
+              <div class="more-space">aurinko nousee</div>
 
-              <div>${this._goldenHourEnd}</div>
-              <div class="more-space">kultainen hetki päättyy</div>
+              
 
               <div>${this._solarNoon}</div>
               <div class="more-space">aurinko korkeimmillaan</div>
 
-              <div>${this._goldenHour}</div>
-              <div>kultainen hetki alkaa</div>
-
+             
               <div>${this._sunset}</div>
               <div>aurinko laskee</div>
 
               <div>${this._dusk}</div>
-              <div>hämärä alkaa</div>
+              <div class="more-space">hämärä alkaa</div>
 
-              <div>${this._night}</div>
-              <div class="more-space">yö alkaa</div>
-
-              <div>${this._darkestNight}</div>
-              <div>aurinko matalimmillaan (pimeintä)</div>
+       
             </div>
           </smooth-expand>
+
+          <a href="#" class="expand" @click="${(e) => this._toggleDetails(e)}">
+           ${this._expanded ? `Näytä vähemmän` : `Näytä lisää`}<expand-icon
+            ?open="${this._expanded}"
+          ></expand-icon>
+          </a>
+
         </div>
       </weather-section>
     `;

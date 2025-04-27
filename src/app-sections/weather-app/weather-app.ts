@@ -101,10 +101,6 @@ class WeatherApp extends LitElement {
         padding-top: 1.5rem;
       }
 
-      .grid-header {
-        padding-bottom: var(--space-l);
-      }
-
       .grid-item {
         display: grid;
       }
@@ -139,6 +135,7 @@ class WeatherApp extends LitElement {
 
         .grid-header {
           grid-area: header;
+          padding-bottom: var(--space-m);
         }
 
         .grid-location {
