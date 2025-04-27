@@ -59,7 +59,7 @@ class WeatherDay extends LitElement {
         background: var(--background-middle);
         color: var(--color-dark-and-light);
         display: block;
-        padding-bottom: 0.75rem;
+        padding-bottom: var(--space-s);
 
         opacity: 1;
       }

@@ -11,7 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 
-    <link rel="icon" href="assets/image/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link
+      rel="icon"
+      href="assets/image/favicon.svg"
+      type="image/svg+xml"
+      sizes="any"
+    />
 
     <link
       href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@600&family=Open+Sans:ital,wdth,wght@0,87.5,300..800;1,87.5,300..800&display=swap"
@@ -308,17 +313,6 @@
 
     <base href="/" />
 
-    <!--json-ld></json-ld-->
-    <!-- script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "webSite",
-        "name": "saaennuste.fi",
-        "url": "https://saaennuste.fi",
-        "sameAs": ["https://www.facebook.com/saaennuste.fi"]
-      }
-    </script -->
-
     <meta name="author" content="saaennuste.fi" />
     <meta
       name="description"
@@ -337,21 +331,29 @@
     <meta property="og:site_name" content="Sääennuste" />
     <meta
       property="og:description"
-      content="Paras, yksinkertaisin ja nopein sääennuste sovellus. Perustuu Ilmatieteen laitoksen avoimeen dataan."
+      content="Nopein tapa tarkastaa Ilmatieteen laitoksen sääennuste. Palvelu tarjoaa ajantasaisen säätiedon ja 10 päivän ennusteen."
     />
 
     <script type="application/ld+json">
       {
-        "@context": "https://schema.org",
+        "@context": "https://schema.org/",
         "@type": "WebSite",
         "name": "Saaennuste.fi",
+        "description": "Nopein tapa tarkastaa Ilmatieteen laitoksen sääennuste. Palvelu tarjoaa ajantasaisen säätiedon ja 10 päivän ennusteen.",
         "url": "https://saaennuste.fi",
-        "description": "Nopein tapa tarkastaa Ilmatieteen laitoksen sääennusteet. Palvelu tarjoaa ajantasaisen säätiedon ja 10 päivän ennusteen.",
-        "keywords": ["sääennuste", "ilmatieteenlaitos", "sää", "ilmatieteen sää"],
+        "keywords": [
+          "sääennuste",
+          "luotettavin sääennuste",
+          "ilmatieteen laitos sää",
+          "ilmanpaine nyt",
+          "ilmankosteus nyt"
+          "sää",
+          "ilmatieteen sää"
+        ],
         "publisher": {
           "@type": "Organization",
           "name": "Saaennuste.fi"
-        },
+        }
       }
     </script>
 
@@ -359,7 +361,6 @@
       async
       src="https://app.tinyanalytics.io/pixel/DkbjgLE6S883ZSdF"
     ></script>
-
   </head>
   <body>
     <weather-app></weather-app>
