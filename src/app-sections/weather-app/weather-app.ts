@@ -18,7 +18,7 @@ import('../sunrise-sunset/sunrise-sunset.ts');
 import('../weather-info/weather-info.ts');
 import('../../app-sections/symbol-list/symbol-list.ts');
 import('../weather-days/weather-days.ts');
-import('../share-app/share-app.js');
+
 import('../../common-components/error-notification.js');
 import('../app-copyright/app-copyright.ts');
 
@@ -116,16 +116,15 @@ class WeatherApp extends LitElement {
 
       @media only screen and (min-width: 800px) {
         .grid-container {
-          grid-template-columns: minmax(350px, 450px) minmax(200px, 250px) !important;
           grid-template-areas:
             'header header'
             'location sun'
             'map sun'
-            'map sun'
             'map links'
-            'map links'
-            'map share'
-            'forecast share'
+            'map info'
+            'map info'
+            'forecast info'
+            'forecast info'
             'forecast info'
             'symbols symbols'
             'copy copy';
@@ -163,10 +162,6 @@ class WeatherApp extends LitElement {
           grid-area: info;
         }
 
-        .grid-share {
-          grid-area: share;
-        }
-
         .grid-symbols {
           grid-area: symbols;
         }
@@ -183,7 +178,7 @@ class WeatherApp extends LitElement {
             'header header header '
             'location links sun '
             'map links sun'
-            'map share sun  '
+            'map info info  '
             'map info info '
             'forecast info info '
             'forecast info info '
@@ -276,8 +271,6 @@ class WeatherApp extends LitElement {
             ? this._forecastPlace.region
             : undefined}"
         ></external-links>
-
-        <share-app class="grid-item grid-share"></share-app>
 
         <weather-info class="grid-item grid-info"></weather-info>
 
