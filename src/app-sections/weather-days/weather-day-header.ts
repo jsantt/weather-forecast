@@ -1,7 +1,5 @@
 import { css, html, LitElement } from 'lit';
 
-import './weather-description.js';
-
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';

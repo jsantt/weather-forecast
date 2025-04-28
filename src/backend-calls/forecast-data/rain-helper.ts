@@ -1,16 +1,4 @@
-import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.ts';
-
-function roundRain(total: number) {
-  let roundedTotal: number;
-
-  if (total > 0 && total < 0.5) {
-    roundedTotal = 0;
-  } else {
-    roundedTotal = total === 0 ? 0 : Math.round(total);
-  }
-
-  return roundedTotal;
-}
+import { ForecastDay } from './forecast-data.ts';
 
 function rainStartTime(dayData: ForecastDay) {
   const rainStartItem = dayData.hours.find((item) => item.rain > 0);
@@ -72,4 +60,4 @@ function isSnow(symbol: number) {
   return (50 <= symbol && symbol <= 59) || (150 <= symbol && symbol <= 159);
 }
 
-export { totalRain, totalSnow, rainStartTime, roundRain, snowAmount };
+export { totalRain, totalSnow, rainStartTime, snowAmount };

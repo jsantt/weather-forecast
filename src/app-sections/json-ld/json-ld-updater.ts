@@ -5,16 +5,16 @@ function updateJsonLdObservations(observation: Station[]) {
     '@type': 'WeatherMeasurement',
     location: {
       '@type': 'Place',
-      name: 'Helsinki',
+      name: observation.at(0)?.selectedStation,
       geo: {
         '@type': 'GeoCoordinates',
-        latitude: 60.1699,
-        longitude: 24.9384,
+        latitude: observation.at(0)?.lat,
+        longitude: observation.at(0)?.lon,
       },
     },
     airPressure: {
       '@type': 'QuantitativeValue',
-      value: 1015,
+      value: observation.at(0)?.pressure,
       unitCode: 'hPa',
     },
   };

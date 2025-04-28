@@ -10,7 +10,7 @@ import {
   value,
   parseRegion,
 } from '../xml-parser.ts';
-import { snowAmount } from '../../app-sections/weather-days/rain-helper.ts';
+import { snowAmount, totalRain, totalSnow } from './rain-helper.ts';
 
 import { feelsLike } from '../feels-like.ts';
 import { rainType } from './rain-type.ts';
@@ -66,6 +66,8 @@ type ForecastDay = {
   dayMaxFeels?: number;
   dayMaxTempVisible?: number;
   dayMaxFeelsVisible?: number;
+  dayRainAmount: number;
+  daySnowAmount: number;
   hours: ForecastHour[];
 };
 
@@ -211,9 +213,12 @@ class ForecastData extends LitElement {
         const daysWithMinAndMax =
           ForecastData._addDayMaxAndMinTemperatures(lastRemoved);
 
+        const daysWithRainAmount =
+          ForecastData._addRainAmount(daysWithMinAndMax);
+
         const forecast: Forecast = {
           location: undefined,
-          days: daysWithMinAndMax,
+          days: daysWithRainAmount,
         };
 
         this.dispatch('forecast-data.new-data', forecast);
@@ -243,7 +248,7 @@ class ForecastData extends LitElement {
       if (!isNaN(hour.temperature)) {
         const hourCopy = { ...hour };
         if (!days[dayIndex]) {
-          days[dayIndex] = { hours: [] };
+          days[dayIndex] = { hours: [], dayRainAmount: 0, daySnowAmount: 0 };
         }
         days[dayIndex].hours.push(hourCopy);
       }
@@ -384,29 +389,19 @@ class ForecastData extends LitElement {
     return processedForecastDays;
   }
 
-  /* static _addDayMaxAndMinTemperatures(
-    forecastDays: ForecastDay[]
-  ): ForecastDay[] {
-    const processedForecastDays = forecastDays.map((day: ForecastDay) => {
-      let dayMaxTemp = -Infinity;
-      let dayMinTemp = Infinity;
+  static _addRainAmount(forecastDays: ForecastDay[]): ForecastDay[] {
+    const daysWithRain = forecastDays.map((day: ForecastDay): ForecastDay => {
+      const dayRainAmount = totalRain(day);
+      const daySnowAmount = totalSnow(day);
 
-      // First pass: find max and min temperatures for the day
-      day.forEach((hour) => {
-        dayMaxTemp = Math.max(dayMaxTemp, hour.temperature);
-        dayMinTemp = Math.min(dayMinTemp, hour.temperature);
-      });
-
-      // Second pass: mark isDayMaxTemperature and isDayMinTemperature
-      return day.map((hour) => ({
-        ...hour,
-        isDayMaxTemperature: hour.temperature === dayMaxTemp,
-        isDayMinTemperature: hour.temperature === dayMinTemp,
-      }));
+      return {
+        ...day,
+        dayRainAmount,
+        daySnowAmount,
+      };
     });
-    return processedForecastDays;
+    return daysWithRain;
   }
-    */
 
   static _addRainType(forecastDays: ForecastHour[]): ForecastHour[] {
     const result = forecastDays.map((item) => {
