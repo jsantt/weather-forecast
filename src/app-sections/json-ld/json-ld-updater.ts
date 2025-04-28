@@ -1,11 +1,13 @@
 import { Station } from '../../backend-calls/observation-data/observation-data.ts';
 
-function updateJsonLdObservations(observation: Station[]) {
-  const json = {
+function updateJsonLdObservations(observation: Station[]): void {
+  console.log(observation);
+  const weatherJsonLd = {
+    ...getJsonLd(),
     '@type': 'WeatherMeasurement',
     location: {
       '@type': 'Place',
-      name: observation.at(0)?.selectedStation,
+      name: observation.at(0)?.region,
       geo: {
         '@type': 'GeoCoordinates',
         latitude: observation.at(0)?.lat,
@@ -17,19 +19,52 @@ function updateJsonLdObservations(observation: Station[]) {
       value: observation.at(0)?.pressure,
       unitCode: 'hPa',
     },
+    temperature: {
+      '@type': 'QuantitativeValue',
+      value: observation.at(0)?.temperature,
+      unitCode: 'CEL',
+    },
+    visibility: {
+      '@type': 'QuantitativeValue',
+      value: observation.at(0)?.visibility,
+      unitCode: 'KM',
+    },
+    dewPoint: {
+      '@type': 'QuantitativeValue',
+      value: observation.at(0)?.dewPoint,
+      unitCode: 'CEL',
+    },
+    snowDepth: {
+      '@type': 'QuantitativeValue',
+      value: observation.at(0)?.snow,
+      unitCode: 'CM',
+    },
+    humidity: {
+      '@type': 'QuantitativeValue',
+      value: observation.at(0)?.humidity,
+      unitCode: 'P1',
+    },
   };
-  return { weather: json };
+
+  updateJsonLd(weatherJsonLd);
 }
 
-function updateJsonLd(value: JSON): void {
+function getJsonLd(): Object {
   const script = document.querySelector('script[type="application/ld+json"]');
   if (!script?.textContent) {
-    return;
+    return {};
   }
 
   const jsonLd = JSON.parse(script.textContent);
-  jsonLd.push(value);
-  script.textContent = JSON.stringify(jsonLd, null, 2);
+  return jsonLd;
 }
 
-export { updateJsonLd, updateJsonLdObservations };
+function updateJsonLd(value: Object) {
+  const script = document.querySelector('script[type="application/ld+json"]');
+  if (!script) {
+    return;
+  }
+  script.textContent = JSON.stringify(value, null, 2);
+}
+
+export { updateJsonLdObservations };

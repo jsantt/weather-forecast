@@ -27,6 +27,7 @@ type Station = {
   visibility: number;
   wawaCode: number; // this can be NaN
   wind: number;
+  region: string;
 
   windDirection: any;
   windGust: number;

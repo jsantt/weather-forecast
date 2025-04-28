@@ -30,7 +30,7 @@ class WeatherDescription extends LitElement {
   render() {
     return html`${this.dayData.dayRainAmount <= 0 &&
     this.dayData.daySnowAmount <= 0
-      ? html`Ei sadetta`
+      ? html`Poutaa`
       : ''}
     ${this.dayData.dayRainAmount > 0
       ? html`

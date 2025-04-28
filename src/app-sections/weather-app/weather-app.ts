@@ -3,7 +3,11 @@ import { css, html, LitElement } from 'lit';
 import { state } from 'lit/decorators.js';
 import { LocationCoordinates } from '../forecast-header/station-map.ts';
 import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
-import { Place } from '../../backend-calls/observation-data/observation-data.ts';
+import {
+  Place,
+  Station,
+} from '../../backend-calls/observation-data/observation-data.ts';
+import { updateJsonLdObservations } from '../json-ld/json-ld-updater.ts';
 
 import '../../backend-calls/forecast-data/forecast-data.ts';
 import '../../backend-calls/observation-data/observation-data.ts';
@@ -321,15 +325,16 @@ class WeatherApp extends LitElement {
     // observation data
 
     this.addEventListener('observation-data.new-data', ((
-      event: CustomEvent
+      event: CustomEvent<Station[]>
     ) => {
       this._observationError = false;
       this._observationData = event.detail;
+      updateJsonLdObservations(event.detail);
     }) as EventListener);
 
-    this.addEventListener('observation-data.fetch-error', () => {
+    this.addEventListener('observation-data.fetch-error', (() => {
       this._observationError = true;
-    });
+    }) as EventListener);
 
     this.addEventListener('forecast-header.toggle-wind', () => {
       this._showWind = !this._showWind;
