@@ -36,7 +36,7 @@ class WeatherDayHeader extends LitElement {
         align-items: center;
         gap: var(--space-m);
         grid-template-columns:
-          minmax(1rem, 3fr) minmax(2rem, 3rem) minmax(2rem, 3rem)
+          minmax(1rem, 3fr) minmax(2rem, auto) auto minmax(2rem, auto)
           5fr auto;
 
         grid-template-rows: 4rem;
@@ -45,7 +45,7 @@ class WeatherDayHeader extends LitElement {
       }
 
       :host([expanded]) {
-        grid-template-columns: minmax(1rem, 3fr) 0 0 0 auto;
+        grid-template-columns: minmax(1rem, 3fr) 0 0 0 0 auto;
       }
 
       :host([daynumber='10']) {
@@ -70,16 +70,13 @@ class WeatherDayHeader extends LitElement {
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
 
-        padding: 0.25rem 0.5rem;
         margin: var(--space-l) 0;
       }
 
       .temperature--min span {
-        border-bottom: 2px solid var(--background-min);
       }
 
       .temperature--max span {
-        border-top: 2px solid var(--background-max);
       }
 
       .temperature--negative {
@@ -97,6 +94,10 @@ class WeatherDayHeader extends LitElement {
 
       .hide span {
         display: none;
+      }
+      .divider {
+        font-size: var(--font-size-l);
+        color: var(--color-gray-500);
       }
     `;
   }
@@ -124,29 +125,6 @@ class WeatherDayHeader extends LitElement {
       <div
         class=${classMap({
           temperature: true,
-          'temperature--min': true,
-          'temperature--negative':
-            this.forecastDay.dayMinTemp !== undefined &&
-            this.forecastDay.dayMinTemp < 0,
-          'temperature--positive':
-            this.forecastDay.dayMinTemp !== undefined &&
-            this.forecastDay.dayMinTemp >= 0,
-          hide: this.expanded,
-        })}
-      >
-        <span>
-          ${this.showFeelsLike === true
-            ? html`<span class="feels-like"
-                >${this.forecastDay.dayMinFeels}°</span
-              >`
-            : html`${this.forecastDay.dayMinTemp !== undefined &&
-              Math.round(this.forecastDay.dayMinTemp)}°`}
-        </span>
-      </div>
-
-      <div
-        class=${classMap({
-          temperature: true,
           'temperature--max': true,
           'temperature--negative':
             this.forecastDay.dayMaxTemp !== undefined &&
@@ -164,6 +142,37 @@ class WeatherDayHeader extends LitElement {
               >`
             : html`${this.forecastDay.dayMaxTemp !== undefined &&
               Math.round(this.forecastDay.dayMaxTemp)}°`}
+        </span>
+      </div>
+      <div
+        class=${classMap({
+          divider: true,
+          hide: this.expanded,
+        })}
+      >
+        <span>/</span>
+      </div>
+
+      <div
+        class=${classMap({
+          temperature: true,
+          'temperature--min': true,
+          'temperature--negative':
+            this.forecastDay.dayMinTemp !== undefined &&
+            this.forecastDay.dayMinTemp < 0,
+          'temperature--positive':
+            this.forecastDay.dayMinTemp !== undefined &&
+            this.forecastDay.dayMinTemp >= 0,
+          hide: this.expanded,
+        })}
+      >
+        <span>
+          ${this.showFeelsLike === true
+            ? html`<span class="feels-like"
+                >${this.forecastDay.dayMinFeels}°</span
+              >`
+            : html`${this.forecastDay.dayMinTemp !== undefined &&
+              Math.round(this.forecastDay.dayMinTemp)}°`}
         </span>
       </div>
 

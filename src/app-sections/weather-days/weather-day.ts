@@ -182,11 +182,9 @@ class WeatherDay extends LitElement {
       }
 
       .temperature--min span {
-        border-bottom: 2px solid var(--background-min);
       }
 
       .temperature--max span {
-        border-top: 2px solid var(--background-max);
       }
 
       .temperature_line {
