@@ -181,12 +181,13 @@ class WeatherDayHeader extends LitElement {
           ? null
           : html` ${this.forecastDay.hours[8]?.smartSymbolAggregate
               ? html`
-        <img
+          <img
           src="${`assets/image/smart/light/${this.forecastDay.hours[8]?.smartSymbolAggregate}.svg`}"
           width="40"
           height="40"
           alt="${
-            getSymbolName(this.forecastDay.hours[8].smartSymbolAggregate) || 'sääsymboli'
+            getSymbolName(this.forecastDay.hours[8].smartSymbolAggregate) ||
+            'sääsymboli'
           }"
         ></img>`
               : ''}

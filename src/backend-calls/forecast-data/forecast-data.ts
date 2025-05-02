@@ -95,7 +95,6 @@ type ForecastHourPartial = {
 type ForecastHourOptional = {
   smartSymbol?: number;
   smartSymbolAggregate?: number;
-  smartSymbolCompactAggregate?: number;
   rainType?: string;
   summerTimeStarts?: boolean;
 };
@@ -167,15 +166,10 @@ class ForecastData extends LitElement {
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
         const aggregateAdded = ForecastData._addSymbolAggregate(rainTypeAdded);
 
-        const smartSymbolAggregateAdded =
-          ForecastData._addSmartSymbolAggregateForCompactMode(aggregateAdded);
-
         // from one array to have the days separated
         //const days = ForecastData._splitIntoDays(smartSymbolAggregateAdded);
 
-        const days: ForecastDay[] = ForecastData.splitToDays(
-          smartSymbolAggregateAdded
-        );
+        const days: ForecastDay[] = ForecastData.splitToDays(aggregateAdded);
 
         let lastRemoved = [...days];
         const lastDayEvening = days.at(-1)?.hours.at(23)?.temperature;
@@ -464,37 +458,6 @@ class ForecastData extends LitElement {
     const max = Math.max(previous, current, next);
 
     return currentSymbol >= 100 ? max + 100 : max;
-  }
-
-  static _addSmartSymbolAggregateForCompactMode(
-    forecastData: ForecastHour[]
-  ): ForecastHour[] {
-    let previousSmartSymbol = -Infinity;
-    const forecast = forecastData.map((item, index) => {
-      const newItem = { ...item };
-
-      let symbol = item.smartSymbol;
-      if (!symbol) {
-        symbol = 0;
-      } else if (symbol >= 100) {
-        symbol = symbol - 100;
-      }
-      const max = item.smartSymbol
-        ? Math.max(previousSmartSymbol, symbol)
-        : previousSmartSymbol;
-
-      newItem.smartSymbolCompactAggregate = max || undefined;
-
-      //day is divided into 3 sections, and we are calculating aggregate for each
-      if (index === 8 || index === 15 || index === 24) {
-        previousSmartSymbol = -Infinity;
-      } else {
-        previousSmartSymbol = newItem.smartSymbol || previousSmartSymbol;
-      }
-      return newItem;
-    });
-
-    return forecast;
   }
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 
