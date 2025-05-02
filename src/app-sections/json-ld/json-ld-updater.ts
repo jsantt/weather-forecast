@@ -1,7 +1,6 @@
 import { Station } from '../../backend-calls/observation-data/observation-data.ts';
 
 function updateJsonLdObservations(observation: Station[]): void {
-  console.log(observation);
   const weatherJsonLd = {
     ...getJsonLd(),
     '@type': 'WeatherMeasurement',

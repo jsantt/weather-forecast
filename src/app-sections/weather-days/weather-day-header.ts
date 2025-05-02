@@ -96,14 +96,14 @@ class WeatherDayHeader extends LitElement {
         display: none;
       }
       .divider {
-        font-size: var(--font-size-l);
-        color: var(--color-gray-500);
+        font-size: var(--font-size-s);
+        opacity: 0.6;
       }
     `;
   }
 
   private dayText() {
-    let text;
+    let text: string;
     if (this.dayNumber === 1) {
       text = 'Tänään';
     } else {
@@ -179,22 +179,22 @@ class WeatherDayHeader extends LitElement {
       <div class="symbols fade">
         ${this.expanded
           ? null
-          : html` ${this.forecastDay.hours[8]?.smartSymbolCompactAggregate
+          : html` ${this.forecastDay.hours[7]?.smartSymbolCompactAggregate
               ? html`
         <img
-          src="${`assets/image/smart/light/${this.forecastDay.hours[8]?.smartSymbolCompactAggregate}.svg`}"
+          src="${`assets/image/smart/light/${this.forecastDay.hours[7]?.smartSymbolCompactAggregate}.svg`}"
           width="40"
           height="40"
           alt="${
-            getSymbolName(this.forecastDay.hours[8].smartSymbol) || 'sääsymboli'
+            getSymbolName(this.forecastDay.hours[7].smartSymbol) || 'sääsymboli'
           }"
         ></img>`
               : ''}
-            ${this.forecastDay.hours[15]?.smartSymbolCompactAggregate
+            ${this.forecastDay.hours[14]?.smartSymbolCompactAggregate
               ? html`<img
-          src="${`assets/image/smart/light/${this.forecastDay.hours[15]?.smartSymbolCompactAggregate}.svg`}"
+          src="${`assets/image/smart/light/${this.forecastDay.hours[14]?.smartSymbolCompactAggregate}.svg`}"
           alt="${
-            getSymbolName(this.forecastDay.hours[15].smartSymbol) ||
+            getSymbolName(this.forecastDay.hours[14].smartSymbol) ||
             'sääsymboli'
           }"
         ></img>`

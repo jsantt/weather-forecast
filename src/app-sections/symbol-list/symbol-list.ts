@@ -4,11 +4,15 @@ import '../weather-section/weather-section.ts';
 import '../../common-components/svg-icon.js';
 import '../../common-components/wind-icon.ts';
 import { weatherSymbols } from '../../backend-calls/observation-data/weather-symbol-name.ts';
+import { property } from 'lit/decorators.js';
 
 class SymbolList extends LitElement {
   static get is() {
     return 'symbol-list';
   }
+
+  @property({ type: Boolean, reflect: true })
+  debug: boolean = false;
 
   static get styles() {
     return css`
@@ -55,7 +59,9 @@ class SymbolList extends LitElement {
                 Number(symbol.smartSymbol) + 100
               }.svg`}"
             ></img
-            ><div>${symbol.fi}</div>
+            ><div>${this.debug ? html`${symbol.smartSymbol} ` : null}${
+            symbol.fi
+          }</div>
           </div>`;
         })}
         <div>

@@ -281,15 +281,24 @@ class WeatherDay extends LitElement {
                 ? ''
                 : html`
                     <div class="symbol">
-                      ${hour.smartSymbol
+                      ${hour.smartSymbolAggregate
                         ? html`
                       <img
                         width="40"
                         height="40"
-                        src="${`assets/image/smart/light/${hour.smartSymbol}.svg`}"
+                        src="${`assets/image/smart/light/${hour.smartSymbolAggregate}.svg`}"
                          alt="${
-                           getSymbolName(hour.smartSymbol) || 'sääsymboli'
+                           getSymbolName(hour.smartSymbolAggregate) ||
+                           'sääsymboli'
                          }"
+                      ></img>`
+                        : ''}
+                      ${this.debug && hour.smartSymbol
+                        ? html`
+                      <img
+                        width="20"
+                        height="20"
+                        src="${`assets/image/smart/light/${hour.smartSymbol}.svg`}"
                       ></img>`
                         : ''}
                     </div>

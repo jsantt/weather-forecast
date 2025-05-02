@@ -640,4 +640,10 @@ class ObservationData extends LitElement {
 
 window.customElements.define(ObservationData.is, ObservationData);
 
+declare global {
+  interface CustomEventMap {
+    'observation-data.new-data': CustomEvent<Station[]>;
+  }
+}
+
 export type { Place, Station };

@@ -165,8 +165,10 @@ class ForecastData extends LitElement {
         // enrich data here to keep logic inside components simple
         const hourAdded = ForecastData._addFullHour(hours);
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
+        const aggregateAdded = ForecastData._addSymbolAggregate(rainTypeAdded);
+
         const smartSymbolAggregateAdded =
-          ForecastData._addSmartSymbolAggregateForCompactMode(rainTypeAdded);
+          ForecastData._addSmartSymbolAggregateForCompactMode(aggregateAdded);
 
         // from one array to have the days separated
         //const days = ForecastData._splitIntoDays(smartSymbolAggregateAdded);
@@ -428,6 +430,42 @@ class ForecastData extends LitElement {
     return {location: undefined,days: days}
   }*/
 
+  static _addSymbolAggregate(forecastData: ForecastHour[]): ForecastHour[] {
+    return forecastData.map((item, index) => {
+      const newItem = { ...item };
+      if ((index + 1) % 3 === 0) {
+        newItem.smartSymbolAggregate = ForecastData.infer3HourAggregate(
+          forecastData.at(index - 1)?.smartSymbol,
+          item.smartSymbol,
+          forecastData.at(index + 1)?.smartSymbol
+        );
+      }
+      return newItem;
+    });
+  }
+
+  static infer3HourAggregate(
+    prevSymbol?: number,
+    currentSymbol?: number,
+    nextSymbol?: number
+  ): number {
+    if (
+      prevSymbol === undefined ||
+      currentSymbol === undefined ||
+      nextSymbol === undefined
+    ) {
+      return 0;
+    }
+
+    const previous = prevSymbol % 100;
+    const current = currentSymbol % 100;
+    const next = nextSymbol % 100;
+
+    const max = Math.max(previous, current, next);
+
+    return currentSymbol >= 100 ? max + 100 : max;
+  }
+
   static _addSmartSymbolAggregateForCompactMode(
     forecastData: ForecastHour[]
   ): ForecastHour[] {
@@ -435,8 +473,14 @@ class ForecastData extends LitElement {
     const forecast = forecastData.map((item, index) => {
       const newItem = { ...item };
 
+      let symbol = item.smartSymbol;
+      if (!symbol) {
+        symbol = 0;
+      } else if (symbol >= 100) {
+        symbol = symbol - 100;
+      }
       const max = item.smartSymbol
-        ? Math.max(previousSmartSymbol, item.smartSymbol)
+        ? Math.max(previousSmartSymbol, symbol)
         : previousSmartSymbol;
 
       newItem.smartSymbolCompactAggregate = max || undefined;
@@ -513,6 +557,13 @@ class ForecastData extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+  }
+}
+
+declare global {
+  interface CustomEventMap {
+    'forecast-data.fetching': CustomEvent;
+    'forecast-data.new-data': CustomEvent<Forecast>;
   }
 }
 
