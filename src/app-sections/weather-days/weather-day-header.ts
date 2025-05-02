@@ -179,31 +179,31 @@ class WeatherDayHeader extends LitElement {
       <div class="symbols fade">
         ${this.expanded
           ? null
-          : html` ${this.forecastDay.hours[7]?.smartSymbolCompactAggregate
+          : html` ${this.forecastDay.hours[8]?.smartSymbolAggregate
               ? html`
         <img
-          src="${`assets/image/smart/light/${this.forecastDay.hours[7]?.smartSymbolCompactAggregate}.svg`}"
+          src="${`assets/image/smart/light/${this.forecastDay.hours[8]?.smartSymbolAggregate}.svg`}"
           width="40"
           height="40"
           alt="${
-            getSymbolName(this.forecastDay.hours[7].smartSymbol) || 'sääsymboli'
+            getSymbolName(this.forecastDay.hours[8].smartSymbolAggregate) || 'sääsymboli'
           }"
         ></img>`
               : ''}
-            ${this.forecastDay.hours[14]?.smartSymbolCompactAggregate
+            ${this.forecastDay.hours[14]?.smartSymbolAggregate
               ? html`<img
-          src="${`assets/image/smart/light/${this.forecastDay.hours[14]?.smartSymbolCompactAggregate}.svg`}"
+          src="${`assets/image/smart/light/${this.forecastDay.hours[14]?.smartSymbolAggregate}.svg`}"
           alt="${
-            getSymbolName(this.forecastDay.hours[14].smartSymbol) ||
+            getSymbolName(this.forecastDay.hours[14].smartSymbolAggregate) ||
             'sääsymboli'
           }"
         ></img>`
               : ''}
-            ${this.forecastDay.hours[23]?.smartSymbolCompactAggregate
+            ${this.forecastDay.hours[20]?.smartSymbolAggregate
               ? html`<img
-            src="${`assets/image/smart/light/${this.forecastDay.hours[23]?.smartSymbolCompactAggregate}.svg`}"
+            src="${`assets/image/smart/light/${this.forecastDay.hours[20]?.smartSymbolAggregate}.svg`}"
             alt="${
-              getSymbolName(this.forecastDay.hours[23].smartSymbol) ||
+              getSymbolName(this.forecastDay.hours[20].smartSymbolAggregate) ||
               'sääsymboli'
             }"
         ></img>`
