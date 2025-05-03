@@ -18,7 +18,7 @@ class WeatherParagraph extends LitElement {
         font-style: normal;
         font-variation-settings: 'wdth' 75;
 
-        font-size: var(--font-size-xs);
+        font-size: var(--font-size-s);
 
         margin: 0;
         padding: 0;

@@ -48,6 +48,16 @@ class WeatherDayHeader extends LitElement {
         grid-template-columns: minmax(1rem, 3fr) 0 0 0 0 auto;
       }
 
+      :host([daynumber='1']) {
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+      }
+
+      :host([daynumber='10']) {
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+      }
+
       :host([daynumber='10']) {
         border-bottom: none;
       }

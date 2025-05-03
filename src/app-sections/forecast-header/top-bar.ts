@@ -85,7 +85,7 @@ class TopBar extends LitElement {
         />
       </svg>
 
-      <weather-heading class="heading">Sääennuste</weather-heading>
+      <weather-heading class="heading">Saaennuste.fi</weather-heading>
       <weather-paragraph class="slogan">
         Nopein tapa tarkastaa sää
       </weather-paragraph>
