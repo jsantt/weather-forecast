@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["lookalikes/allowlist"],
+    "target": { "namespace": "web", "site": "https://saaennuste.fi" }
+  },
+  {
+    "relation": ["lookalikes/allowlist"],
+    "target": { "namespace": "web", "site": "https://sääennuste.fi" }
+  }
+]
