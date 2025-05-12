@@ -59,7 +59,7 @@ class WeatherInfo extends LitElement {
         ></svg-icon>
 
         <p>
-          Saaennuste.fi esittää Ilmatieteen laitoksen havainnot ja meteorologin
+          Sääennuste.fi esittää Ilmatieteen laitoksen havainnot ja meteorologin
           virallisen ennusteen paremmassa muodossa. Näet yleiskuvan ja
           tarpeelliset yksityiskohdat vähemmällä klikkailulla - myös kännykän
           pieneltä ruudulta.

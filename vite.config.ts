@@ -6,9 +6,9 @@ export default {
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        id: 'saaennuste',
-        name: 'saaennuste.fi',
-        short_name: 'saaennuste.fi',
+        id: 'sääennuste',
+        name: 'sääennuste.fi',
+        short_name: 'sääennuste.fi',
         orientation: 'portrait-primary',
         start_url: '/index.html',
         display: 'standalone',

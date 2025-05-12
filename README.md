@@ -1,4 +1,4 @@
-# Saaennuste.fi
+# Sääennuste.fi
 
 Weather forecast application
 

@@ -1,7 +1,7 @@
 {
   "name": "weather-forecast",
   "version": "0.0.0",
-  "description": "saaennuste.fi",
+  "description": "sääennuste.fi",
   "author": "weather-forecast",
   "license": "MIT",
   "scripts": {

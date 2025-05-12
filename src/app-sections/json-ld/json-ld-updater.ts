@@ -5,13 +5,13 @@ function updateJsonSiteInfo() {
     '@context': 'https://schema.org/',
     '@type': ['WebSite'],
     inLanguage: 'fi',
-    image: 'https://saaennuste.fi/ios/512.png',
-    name: 'Saaennuste.fi',
+    image: 'https://sääennuste.fi/ios/512.png',
+    name: 'Sääennuste.fi',
     sameAs: ['https://www.facebook.com/saaennuste.fi'],
     headline: 'Sää nyt ja 10 päivän ennuste',
     description:
       'Nopein tapa tarkastaa Ilmatieteen laitoksen sääennuste. Palvelu tarjoaa ajantasaisen säätiedon ja 10 päivän ennusteen.',
-    url: 'https://saaennuste.fi',
+    url: 'https://sääennuste.fi',
     keywords: [
       'sääennuste',
       'sää',
@@ -19,11 +19,11 @@ function updateJsonSiteInfo() {
       'ilmatieteen sää',
       'ilmanpaine',
       'ilmankosteus',
-      'lumitilanne',
+      'lumen syvyys',
     ],
     publisher: {
       '@type': 'Organization',
-      name: 'Saaennuste.fi',
+      name: 'Sääennuste.fi',
     },
   };
 

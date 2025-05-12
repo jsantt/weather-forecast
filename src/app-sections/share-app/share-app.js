@@ -143,7 +143,7 @@ class ShareApp extends LitElement {
       navigator.share({
         title: 'Uusi sääsovellus',
         text: 'Hei, ajattelin että saattaisit tykätä tästä sovelluksesta, joka näyttää Ilmatieteen laitoksen sään.',
-        url: 'https://saaennuste.fi',
+        url: 'https://sääennuste.fi',
       });
     }
   }

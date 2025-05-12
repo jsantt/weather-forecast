@@ -13,7 +13,7 @@ class JsonLd extends LitElement {
 
   static data() {
     return {
-      '@id': 'https://saaennuste.fi/',
+      '@id': 'https://sääennuste.fi/',
       '@context': 'https://schema.org',
       '@type': 'WeatherForecast',
       address: {

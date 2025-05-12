@@ -1,0 +1,3 @@
+Sitemap: https://sääennuste.fi/sitemap.xml
+User-agent: *
+Allow: /
