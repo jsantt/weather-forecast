@@ -132,7 +132,7 @@ class ForecastData extends LitElement {
       storedquery_id:
         'fmi::forecast::edited::weather::scandinavia::point::timevaluepair',
       parameters:
-        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol',
+        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol,FrostProbability,ProbabilityThunderstorm',
       starttime: ForecastData._todayFirstHour(),
       endtime: ForecastData._endTime(),
       latlon: this.location.coordinates,
@@ -475,7 +475,14 @@ class ForecastData extends LitElement {
     return location;
   }
 
-  _sendNotification(geoid, name, coordinates, lat, lon, region) {
+  _sendNotification(
+    geoid: string,
+    name: any,
+    coordinates: string | undefined,
+    lat: number | undefined,
+    lon: number | undefined,
+    region: any
+  ) {
     const details = {
       location: {
         geoid,

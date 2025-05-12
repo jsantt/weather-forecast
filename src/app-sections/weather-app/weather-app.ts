@@ -301,7 +301,6 @@ class WeatherApp extends LitElement {
 
     if (this._location) {
       this._radiation = await getRadiationData(this._location);
-      console.log(this._radiation);
     }
   }
 

@@ -184,7 +184,6 @@ class SunriseSunset extends LitElement {
       }
 
       .hide {
-        display: none;
       }
     `;
   }
