@@ -4,6 +4,8 @@ import { LocationCoordinates } from '../forecast-header/station-map.js';
 import '../../common-components/expand-icon.js';
 
 import { property, state } from 'lit/decorators.js';
+import { Radiation } from '../../backend-calls/observation-data/radiation-data.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 class SunriseSunset extends LitElement {
   static get is() {
@@ -12,6 +14,9 @@ class SunriseSunset extends LitElement {
 
   @property({ type: Object })
   location?: LocationCoordinates;
+
+  @property({ type: Object })
+  radiation?: Radiation;
 
   @state()
   _darkestNight?: string;
@@ -127,8 +132,7 @@ class SunriseSunset extends LitElement {
         grid-area: sunset-label;
       }
 
-      .sunrise-label,
-      .sunset-label {
+      .label {
         font-size: var(--font-size-s);
       }
 
@@ -140,8 +144,8 @@ class SunriseSunset extends LitElement {
         grid-area: sunset-value;
       }
 
-      .sunrise-value,
-      .sunset-value {
+      .value,
+      .value {
         font-size: var(--font-size-xl);
         font-weight: var(--font-weight-bold);
       }
@@ -157,8 +161,30 @@ class SunriseSunset extends LitElement {
         grid-gap: var(--space-s);
       }
 
+      .uv-value {
+        display: inline-block;
+        margin: var(--space-s) 0;
+        padding: var(--space-s);
+        border-radius: 0.5rem;
+      }
+
+      .uv-low {
+        background-color: var(--color-green);
+      }
+      .uv-medium {
+        background-color: var(--color-yellow);
+      }
+
+      .uv-high {
+        background-color: var(--color-pink);
+      }
+
       .more-space {
         margin-bottom: var(--space-l);
+      }
+
+      .hide {
+        display: none;
       }
     `;
   }
@@ -166,14 +192,24 @@ class SunriseSunset extends LitElement {
   render() {
     return html`
       <weather-section liftedHeading="Aurinko" padding yellow>
+      <div class="label hide">UV-indeksi (${this.radiation?.place})</div>
+      <div class="${classMap({
+        hide: true,
+        value: true,
+        'uv-value': true,
+        'uv-low': (this.radiation?.uvi ?? 0) < 3,
+        'uv-medium':
+          (this.radiation?.uvi ?? 0) >= 3 && (this.radiation?.uvi ?? 0) < 4,
+        'uv-high': (this.radiation?.uvi ?? 0) >= 5,
+      })}">${this.radiation?.uvi}</div>
       <smooth-expand ?expanded="${!this._expanded}">
       <div class="details">
         <div class="grid">
-          <div class="sunrise-value">${this._sunrise}</div>
-          <div class="sunrise-label">Aurinko nousee</div>
+          <div class="value sunrise-value">${this._sunrise}</div>
+          <div class="label sunrise-label">Aurinko nousee</div>
        
-          <div class="sunset-value">${this._sunset}</div>
-          <div class="sunset-label">Aurinko laskee</div>
+          <div class="value sunset-value">${this._sunset}</div>
+          <div class="label sunset-label">Aurinko laskee</div>
            
         </div>
         </div></smooth-expand>
@@ -216,7 +252,7 @@ class SunriseSunset extends LitElement {
     `;
   }
 
-  updated() {
+  async updated() {
     if (this.location !== undefined) {
       this._updateSunsetSunrise();
     }

@@ -1,69 +1,105 @@
 import { Station } from '../../backend-calls/observation-data/observation-data.ts';
 
-function updateJsonLdObservations(observation: Station[]): void {
+function updateJsonSiteInfo() {
   const weatherJsonLd = {
-    ...getJsonLd(),
-    '@type': 'WeatherMeasurement',
-    location: {
-      '@type': 'Place',
-      name: observation.at(0)?.region,
-      geo: {
-        '@type': 'GeoCoordinates',
-        latitude: observation.at(0)?.lat,
-        longitude: observation.at(0)?.lon,
-      },
-    },
-    airPressure: {
-      '@type': 'QuantitativeValue',
-      value: observation.at(0)?.pressure,
-      unitCode: 'hPa',
-    },
-    temperature: {
-      '@type': 'QuantitativeValue',
-      value: observation.at(0)?.temperature,
-      unitCode: 'CEL',
-    },
-    visibility: {
-      '@type': 'QuantitativeValue',
-      value: observation.at(0)?.visibility,
-      unitCode: 'KM',
-    },
-    dewPoint: {
-      '@type': 'QuantitativeValue',
-      value: observation.at(0)?.dewPoint,
-      unitCode: 'CEL',
-    },
-    snowDepth: {
-      '@type': 'QuantitativeValue',
-      value: observation.at(0)?.snow,
-      unitCode: 'CM',
-    },
-    humidity: {
-      '@type': 'QuantitativeValue',
-      value: observation.at(0)?.humidity,
-      unitCode: 'P1',
+    '@context': 'https://schema.org/',
+    '@type': ['WebSite'],
+    inLanguage: 'fi',
+    image: 'https://saaennuste.fi/ios/512.png',
+    name: 'Saaennuste.fi',
+    sameAs: ['https://www.facebook.com/saaennuste.fi'],
+    headline: 'Sää nyt ja 10 päivän ennuste',
+    description:
+      'Nopein tapa tarkastaa Ilmatieteen laitoksen sääennuste. Palvelu tarjoaa ajantasaisen säätiedon ja 10 päivän ennusteen.',
+    url: 'https://saaennuste.fi',
+    keywords: [
+      'sääennuste',
+      'sää',
+      'luotettavin sääennuste',
+      'ilmatieteen sää',
+      'ilmanpaine',
+      'ilmankosteus',
+      'lumitilanne',
+    ],
+    publisher: {
+      '@type': 'Organization',
+      name: 'Saaennuste.fi',
     },
   };
 
-  updateJsonLd(weatherJsonLd);
+  setJsonLd('website-ld', weatherJsonLd);
 }
 
-function getJsonLd(): Object {
-  const script = document.querySelector('script[type="application/ld+json"]');
-  if (!script?.textContent) {
-    return {};
-  }
+function updateJsonLdObservations(observation: Station[]): void {
+  const about = {
+    '@type': 'Place',
+    name: observation.at(0)?.region,
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: observation.at(0)?.lat,
+      longitude: observation.at(0)?.lon,
+    },
+  };
 
-  const jsonLd = JSON.parse(script.textContent);
-  return jsonLd;
+  const observationsJsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Observation',
+      name: 'Lämpötila',
+      value: observation.at(0)?.temperature,
+      unitCode: 'CEL',
+      observationAbout: about,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Observation',
+      name: 'Ilmanpaine',
+      value: observation.at(0)?.pressure,
+      unitCode: 'hPa',
+      observationAbout: about,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Observation',
+      name: 'Näkyvyys',
+      value: observation.at(0)?.visibility,
+      unitCode: 'KM',
+      observationAbout: about,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Observation',
+      name: 'Kastepiste',
+      value: observation.at(0)?.dewPoint,
+      unitCode: 'CEL',
+      observationAbout: about,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Observation',
+      name: 'Lumen syvyys',
+      value: observation.at(0)?.snow,
+      unitCode: 'CM',
+      observationAbout: about,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Observation',
+      name: 'Ilmankosteus',
+      value: observation.at(0)?.humidity,
+      unitCode: 'PI',
+      observationAbout: about,
+    },
+  ];
+  setJsonLd('observations-ld', observationsJsonLd);
 }
 
-function updateJsonLd(value: Object) {
-  const script = document.querySelector('script[type="application/ld+json"]');
+function setJsonLd(elementId: string, value: Object) {
+  const script = document.getElementById(elementId);
   if (!script) {
     return;
   }
   script.textContent = JSON.stringify(value, null, 2);
 }
 
-export { updateJsonLdObservations };
+export { updateJsonSiteInfo, updateJsonLdObservations };

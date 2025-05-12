@@ -1,5 +1,14 @@
 /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates */
 
+function splitLatLon(coordinateString: string): { lat: number; lon: number } {
+  if (!coordinateString.trim().includes(' ')) {
+    throw new Error('Trying to slit coordinates, which is of wrong type');
+  }
+  const latLon = coordinateString.trim().split(' ');
+
+  return { lat: Number(latLon[0]), lon: Number(latLon[1]) };
+}
+
 // Converts numeric degrees to radians
 function _toRadian(degrees: number) {
   return (degrees * Math.PI) / 180;
@@ -27,4 +36,4 @@ function distance(lat1?: number, lon1?: number, lat2?: number, lon2?: number) {
   return d;
 }
 
-export { distance };
+export { distance, splitLatLon };

@@ -22,14 +22,14 @@ function getTimeAndValuePairs(sourceXml: any, attributeName:string) {
   return measurementTVPs;
 }
 
-function getValue(item) {
+function getValue(item: Element) {
   if (item?.children[1] === undefined) {
     return Number.NaN;
   }
   return parseFloat(value(item.children[1]));
 }
 
-function parseLocationName(response) {
+function parseLocationName(response: Document | Element) {
   const locations = response.getElementsByTagName('gml:name');
   const locationRow = getByAttributeValue(
     locations,

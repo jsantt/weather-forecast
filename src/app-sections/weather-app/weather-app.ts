@@ -7,7 +7,10 @@ import {
   Place,
   Station,
 } from '../../backend-calls/observation-data/observation-data.ts';
-import { updateJsonLdObservations } from '../json-ld/json-ld-updater.ts';
+import {
+  updateJsonLdObservations,
+  updateJsonSiteInfo,
+} from '../json-ld/json-ld-updater.ts';
 
 import '../../backend-calls/forecast-data/forecast-data.ts';
 import '../../backend-calls/observation-data/observation-data.ts';
@@ -16,6 +19,10 @@ import '../forecast-header/location-selector.ts';
 import '../weather-section/weather-section.ts';
 import '../forecast-header/forecast-header.ts';
 import '../bottom-sheet/bottom-sheet.ts';
+import {
+  getRadiationData,
+  Radiation,
+} from '../../backend-calls/observation-data/radiation-data.ts';
 
 import('../external-links/external-links.js');
 import('../sunrise-sunset/sunrise-sunset.ts');
@@ -66,6 +73,9 @@ class WeatherApp extends LitElement {
 
   @state()
   _observationError: boolean = false;
+
+  @state()
+  _radiation?: Radiation;
 
   static get styles() {
     return css`
@@ -267,6 +277,7 @@ class WeatherApp extends LitElement {
         <sunrise-sunset
           class="grid-item grid-sun"
           .location="${this._location}"
+          .radiation=${this._radiation}
         ></sunrise-sunset>
 
         <external-links
@@ -285,8 +296,13 @@ class WeatherApp extends LitElement {
     `;
   }
 
-  locationChanged(event: CustomEvent) {
+  async locationChanged(event: CustomEvent) {
     this._location = { ...event.detail };
+
+    if (this._location) {
+      this._radiation = await getRadiationData(this._location);
+      console.log(this._radiation);
+    }
   }
 
   constructor() {
@@ -329,6 +345,7 @@ class WeatherApp extends LitElement {
     ) => {
       this._observationError = false;
       this._observationData = event.detail;
+      updateJsonSiteInfo();
       updateJsonLdObservations(event.detail);
     }) as EventListener);
 
