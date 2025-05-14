@@ -83,10 +83,12 @@ class WeatherDayHeader extends LitElement {
         margin: var(--space-l) 0;
       }
 
-      .temperature--min span {
+      .temperature--min {
+        justify-self: right;
       }
 
-      .temperature--max span {
+      .temperature--max {
+        justify-self: left;
       }
 
       .temperature--negative {
@@ -106,7 +108,7 @@ class WeatherDayHeader extends LitElement {
         display: none;
       }
       .divider {
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-l);
         opacity: 0.6;
       }
     `;
@@ -131,6 +133,37 @@ class WeatherDayHeader extends LitElement {
       return;
     }
     return html` <header>${this.dayText()}</header>
+      <div
+        class=${classMap({
+          temperature: true,
+          'temperature--min': true,
+          'temperature--negative':
+            this.forecastDay.dayMinTemp !== undefined &&
+            this.forecastDay.dayMinTemp < 0,
+          'temperature--positive':
+            this.forecastDay.dayMinTemp !== undefined &&
+            this.forecastDay.dayMinTemp >= 0,
+          hide: this.expanded,
+        })}
+      >
+        <span>
+          ${this.showFeelsLike === true
+            ? html`<span class="feels-like"
+                >${this.forecastDay.dayMinFeels}°</span
+              >`
+            : html`${this.forecastDay.dayMinTemp !== undefined &&
+              Math.round(this.forecastDay.dayMinTemp)}°`}
+        </span>
+      </div>
+
+      <div
+        class=${classMap({
+          divider: true,
+          hide: this.expanded,
+        })}
+      >
+        <span>...</span>
+      </div>
 
       <div
         class=${classMap({
@@ -152,37 +185,6 @@ class WeatherDayHeader extends LitElement {
               >`
             : html`${this.forecastDay.dayMaxTemp !== undefined &&
               Math.round(this.forecastDay.dayMaxTemp)}°`}
-        </span>
-      </div>
-      <div
-        class=${classMap({
-          divider: true,
-          hide: this.expanded,
-        })}
-      >
-        <span>/</span>
-      </div>
-
-      <div
-        class=${classMap({
-          temperature: true,
-          'temperature--min': true,
-          'temperature--negative':
-            this.forecastDay.dayMinTemp !== undefined &&
-            this.forecastDay.dayMinTemp < 0,
-          'temperature--positive':
-            this.forecastDay.dayMinTemp !== undefined &&
-            this.forecastDay.dayMinTemp >= 0,
-          hide: this.expanded,
-        })}
-      >
-        <span>
-          ${this.showFeelsLike === true
-            ? html`<span class="feels-like"
-                >${this.forecastDay.dayMinFeels}°</span
-              >`
-            : html`${this.forecastDay.dayMinTemp !== undefined &&
-              Math.round(this.forecastDay.dayMinTemp)}°`}
         </span>
       </div>
 

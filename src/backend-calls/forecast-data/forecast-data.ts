@@ -10,7 +10,7 @@ import {
   value,
   parseRegion,
 } from '../xml-parser.ts';
-import { snowAmount, totalRain, totalSnow } from './rain-helper.ts';
+import { dayRainProbability, snowAmount, totalRain, totalSnow } from './rain-helper.ts';
 
 import { feelsLike } from '../feels-like.ts';
 import { rainType } from './rain-type.ts';
@@ -20,6 +20,7 @@ import { LocationCoordinates } from '../../app-sections/forecast-header/station-
 type ForecastResponse = {
   humidity: HTMLCollection;
   rain: HTMLCollection;
+  rainProbability: HTMLCollection;
   smartSymbol: HTMLCollection;
   temperature: HTMLCollection;
   wind: HTMLCollection;
@@ -67,6 +68,7 @@ type ForecastDay = {
   dayMaxTempVisible?: number;
   dayMaxFeelsVisible?: number;
   dayRainAmount: number;
+  dayRainProbability: number;
   daySnowAmount: number;
   hours: ForecastHour[];
 };
@@ -78,6 +80,7 @@ type ForecastHourPartial = {
 
   threeHourWindMaxGust: number;
   rain: number;
+  rainProbability: number;
   roundWind: number;
 
   roundWindGust: number;
@@ -127,12 +130,14 @@ class ForecastData extends LitElement {
 
     this.dispatch('forecast-data.fetching');
 
+    // 'Humidity,ProbabilityThunderstorm,PrecipitationType,TotalCloudCover,PoP,RadiationLW,RadiationGlobal,WeatherNumber,Pressure',
+
     const params = {
       request: 'getFeature',
       storedquery_id:
         'fmi::forecast::edited::weather::scandinavia::point::timevaluepair',
       parameters:
-        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol,FrostProbability,ProbabilityThunderstorm',
+        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol,PoP',
       starttime: ForecastData._todayFirstHour(),
       endtime: ForecastData._endTime(),
       latlon: this.location.coordinates,
@@ -166,9 +171,6 @@ class ForecastData extends LitElement {
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
         const aggregateAdded = ForecastData._addSymbolAggregate(rainTypeAdded);
 
-        // from one array to have the days separated
-        //const days = ForecastData._splitIntoDays(smartSymbolAggregateAdded);
-
         const days: ForecastDay[] = ForecastData.splitToDays(aggregateAdded);
 
         let lastRemoved = [...days];
@@ -192,6 +194,7 @@ class ForecastData extends LitElement {
             feelsLike: NaN,
             humidity: NaN,
             rain: NaN,
+            rainProbability: NaN,
             roundWind: NaN,
             roundWindGust: NaN,
             snow: NaN,
@@ -212,9 +215,13 @@ class ForecastData extends LitElement {
         const daysWithRainAmount =
           ForecastData._addRainAmount(daysWithMinAndMax);
 
+          const daysWithRainProbability =
+          ForecastData._addRainProbability(daysWithRainAmount);
+
+
         const forecast: Forecast = {
           location: undefined,
-          days: daysWithRainAmount,
+          days: daysWithRainProbability,
         };
 
         this.dispatch('forecast-data.new-data', forecast);
@@ -260,6 +267,7 @@ class ForecastData extends LitElement {
     return {
       humidity: getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity'),
       rain: getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h'),
+      rainProbability: getTimeAndValuePairs(timeSeries, 'mts-1-1-PoP'),
       smartSymbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-SmartSymbol'),
       temperature: getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature'),
       wind: getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS'),
@@ -279,6 +287,7 @@ class ForecastData extends LitElement {
       const roundWind = Math.round(windValue);
       const roundWindGust = Math.round(windGustValue);
       const rain = getValue(response.rain[i]);
+      const rainProbability = getValue(response.rainProbability[i]);
       const smartSymbol = getValue(response.smartSymbol[i]);
 
       // previous wind and wind gust
@@ -302,6 +311,7 @@ class ForecastData extends LitElement {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
         humidity: humidityValue,
         rain,
+        rainProbability,
         snow: snowAmount(temperatureValue, rain, smartSymbol),
         smartSymbol: smartSymbol || undefined,
         time: getTime(response.temperature[i]),
@@ -398,6 +408,19 @@ class ForecastData extends LitElement {
     });
     return daysWithRain;
   }
+
+  static _addRainProbability(forecastDays: ForecastDay[]): ForecastDay[] {
+    const daysWithRain = forecastDays.map((day: ForecastDay): ForecastDay => {
+      const rainProbability = dayRainProbability(day);
+      
+      return {
+        ...day,
+        dayRainProbability: rainProbability,
+      };
+    });
+    return daysWithRain;
+  }
+
 
   static _addRainType(forecastDays: ForecastHour[]): ForecastHour[] {
     const result = forecastDays.map((item) => {

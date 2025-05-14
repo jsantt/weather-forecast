@@ -6,6 +6,25 @@ function rainStartTime(dayData: ForecastDay) {
   return rainStartItem === undefined ? undefined : rainStartItem.hour;
 }
 
+function dayRainProbability(dayData: ForecastDay) {
+  if (!dayData) {
+    return 0;
+  }
+
+  // given h = hour
+  // probability that it does not rain for the whole day is 1 - (not raining for hour 1 * not raining for hour 2*...)
+  // 1 - (1-h1)*(1-h2)*...(1-h24)
+  const total = dayData.hours.reduce((previousHour, currentHour) => {
+    const probability = currentHour.rainProbability
+      ? currentHour.rainProbability / 100
+      : 0;
+
+    return previousHour * (1 - probability || 0);
+  }, 1);
+
+  return Math.round((1 - total) * 100);
+}
+
 /**
  * Sleet is counted as rain
  */
@@ -60,4 +79,4 @@ function isSnow(symbol: number) {
   return (50 <= symbol && symbol <= 59) || (150 <= symbol && symbol <= 159);
 }
 
-export { totalRain, totalSnow, rainStartTime, snowAmount };
+export { totalRain, totalSnow, rainStartTime, snowAmount, dayRainProbability };

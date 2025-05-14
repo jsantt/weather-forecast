@@ -182,18 +182,14 @@ class SunriseSunset extends LitElement {
       .more-space {
         margin-bottom: var(--space-l);
       }
-
-      .hide {
-      }
     `;
   }
 
   render() {
     return html`
       <weather-section liftedHeading="Aurinko" padding yellow>
-      <div class="label hide">UV-indeksi (${this.radiation?.place})</div>
+      <div class="label">UV-indeksi (${this.radiation?.place})</div>
       <div class="${classMap({
-        hide: true,
         value: true,
         'uv-value': true,
         'uv-low': (this.radiation?.uvi ?? 0) < 3,

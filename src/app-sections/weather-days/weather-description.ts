@@ -47,6 +47,7 @@ class WeatherDescription extends LitElement {
             ? 'alle 1 mm'
             : html` ${WeatherDescription.roundRain(this.dayData.dayRainAmount)}
               mm`}
+          
         `
       : ''}
     ${this.dayData.daySnowAmount > 0
