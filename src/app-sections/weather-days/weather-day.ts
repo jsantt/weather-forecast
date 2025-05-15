@@ -253,6 +253,13 @@ class WeatherDay extends LitElement {
         padding-left: var(--space-l);
         padding-right: var(--space-s);
       }
+
+      .probability {
+        font-size: var(--font-size-xs);
+        margin-top: -0.7rem;
+        color: #0a95d7;
+        font-weight: 600;
+      }
     `;
   }
 
@@ -291,7 +298,11 @@ class WeatherDay extends LitElement {
                            getSymbolName(hour.smartSymbolAggregate) ||
                            'sääsymboli'
                          }"
-                      ></img>`
+                      ></img><div class="probability">${
+                        hour.smartSymbolAggregate % 100 >= 10
+                          ? html`${Math.round(hour.rainProbabilityAggregate || 0)}%`
+                          : ''
+                      }</div>`
                         : ''}
                       ${this.debug && hour.smartSymbol
                         ? html`

@@ -10,7 +10,12 @@ import {
   value,
   parseRegion,
 } from '../xml-parser.ts';
-import { dayRainProbability, snowAmount, totalRain, totalSnow } from './rain-helper.ts';
+import {
+  dayRainProbability,
+  snowAmount,
+  totalRain,
+  totalSnow,
+} from './rain-helper.ts';
 
 import { feelsLike } from '../feels-like.ts';
 import { rainType } from './rain-type.ts';
@@ -98,6 +103,7 @@ type ForecastHourPartial = {
 type ForecastHourOptional = {
   smartSymbol?: number;
   smartSymbolAggregate?: number;
+  rainProbabilityAggregate?: number;
   rainType?: string;
   summerTimeStarts?: boolean;
 };
@@ -171,7 +177,12 @@ class ForecastData extends LitElement {
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
         const aggregateAdded = ForecastData._addSymbolAggregate(rainTypeAdded);
 
-        const days: ForecastDay[] = ForecastData.splitToDays(aggregateAdded);
+        const probabilityAggregateAdded =
+          ForecastData._addProbabilityAggregate(aggregateAdded);
+
+        const days: ForecastDay[] = ForecastData.splitToDays(
+          probabilityAggregateAdded
+        );
 
         let lastRemoved = [...days];
         const lastDayEvening = days.at(-1)?.hours.at(23)?.temperature;
@@ -195,6 +206,7 @@ class ForecastData extends LitElement {
             humidity: NaN,
             rain: NaN,
             rainProbability: NaN,
+            rainProbabilityAggregate: NaN,
             roundWind: NaN,
             roundWindGust: NaN,
             snow: NaN,
@@ -215,9 +227,8 @@ class ForecastData extends LitElement {
         const daysWithRainAmount =
           ForecastData._addRainAmount(daysWithMinAndMax);
 
-          const daysWithRainProbability =
+        const daysWithRainProbability =
           ForecastData._addRainProbability(daysWithRainAmount);
-
 
         const forecast: Forecast = {
           location: undefined,
@@ -251,7 +262,7 @@ class ForecastData extends LitElement {
       if (!isNaN(hour.temperature)) {
         const hourCopy = { ...hour };
         if (!days[dayIndex]) {
-          days[dayIndex] = { hours: [], dayRainAmount: 0, daySnowAmount: 0 };
+          days[dayIndex] = { hours: [], dayRainAmount: 0, daySnowAmount: 0, dayRainProbability: 0};
         }
         days[dayIndex].hours.push(hourCopy);
       }
@@ -412,7 +423,7 @@ class ForecastData extends LitElement {
   static _addRainProbability(forecastDays: ForecastDay[]): ForecastDay[] {
     const daysWithRain = forecastDays.map((day: ForecastDay): ForecastDay => {
       const rainProbability = dayRainProbability(day);
-      
+
       return {
         ...day,
         dayRainProbability: rainProbability,
@@ -420,7 +431,6 @@ class ForecastData extends LitElement {
     });
     return daysWithRain;
   }
-
 
   static _addRainType(forecastDays: ForecastHour[]): ForecastHour[] {
     const result = forecastDays.map((item) => {
@@ -432,20 +442,21 @@ class ForecastData extends LitElement {
     return result;
   }
 
-  /*static _splitIntoDays(forecastHours: ForecastHour[]): Forecast {
- 
-
-    const groupedByDay = hours.reduce((daysArray, curr, index) => {
-      const dayIndex = Math.floor(index / 24);
-      if (!daysArray[dayIndex]) {
-        daysArray[dayIndex] = [];
+  static _addProbabilityAggregate(
+    forecastData: ForecastHour[]
+  ): ForecastHour[] {
+    return forecastData.map((item, index) => {
+      const newItem = { ...item };
+      if ((index + 1) % 3 === 0) {
+        newItem.rainProbabilityAggregate = Math.max(
+          forecastData.at(index - 1)?.rainProbability ?? 0,
+          item.rainProbability,
+          forecastData.at(index + 1)?.rainProbability ?? 0
+        );
       }
-      daysArray[dayIndex].push(curr);
-      return daysArray;
-    }, [] as Array<Array<{hour: number}>>);
-
-    return {location: undefined,days: days}
-  }*/
+      return newItem;
+    });
+  }
 
   static _addSymbolAggregate(forecastData: ForecastHour[]): ForecastHour[] {
     return forecastData.map((item, index) => {
