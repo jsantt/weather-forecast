@@ -63,9 +63,47 @@ class SunriseSunset extends LitElement {
   static get styles() {
     return css`
       :host {
-        /* to stretch inside grid */
-        display: grid;
         font-size: var(--font-size-m);
+      }
+
+      section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr auto;
+      }
+
+      .uv {
+        border-radius: var(--border-radius);
+        text-align: center;
+        padding: var(--space-l);
+      }
+
+      .uv-label {
+        font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-m);
+      }
+
+      .uv-value {
+        font-size: var(--font-size-xxl);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .times {
+        padding: var(--space-l);
+      }
+
+      .uv-low {
+        border-radius: 0;
+        background-color: transparent;
+        border-right: 2px solid var(--color-gray-400);
+      }
+      .uv-medium {
+        background-color: rgb(250, 228, 179);
+      }
+
+      .uv-high {
+        background-color: rgb(245, 211, 199);
       }
 
       .arrow-svg {
@@ -159,90 +197,85 @@ class SunriseSunset extends LitElement {
         grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
         grid-gap: var(--space-s);
+        font-size: var(--font-size-xs);
       }
 
-      .uv-value {
-        display: inline-block;
-        margin: var(--space-s) 0;
-        padding: var(--space-s);
-        border-radius: 0.5rem;
+      .show-more,
+      .show-less {
+        font-size: var(--font-size-xs);
+      }
+      .show-less {
+        display: block;
+        margin-top: var(--space-l);
       }
 
-      .uv-low {
-        background-color: var(--color-green);
-      }
-      .uv-medium {
-        background-color: var(--color-yellow);
-      }
-
-      .uv-high {
-        background-color: var(--color-pink);
-      }
-
-      .more-space {
-        margin-bottom: var(--space-l);
+      .bold {
+        font-weight: var(--font-weight-bold);
       }
     `;
   }
 
   render() {
+    if (this.radiation) {
+      this.radiation.uvi = 4.1;
+    }
     return html`
       <weather-section liftedHeading="Aurinko" padding yellow>
-      <div class="label">UV-indeksi (${this.radiation?.place})</div>
-      <div class="${classMap({
-        value: true,
-        'uv-value': true,
-        'uv-low': (this.radiation?.uvi ?? 0) < 3,
-        'uv-medium':
-          (this.radiation?.uvi ?? 0) >= 3 && (this.radiation?.uvi ?? 0) < 4,
-        'uv-high': (this.radiation?.uvi ?? 0) >= 5,
-      })}">${this.radiation?.uvi}</div>
-      <smooth-expand ?expanded="${!this._expanded}">
-      <div class="details">
-        <div class="grid">
-          <div class="value sunrise-value">${this._sunrise}</div>
-          <div class="label sunrise-label">Aurinko nousee</div>
-       
-          <div class="value sunset-value">${this._sunset}</div>
-          <div class="label sunset-label">Aurinko laskee</div>
-           
-        </div>
-        </div></smooth-expand>
-          <smooth-expand ?expanded="${this._expanded}">
-            <div class="details">
+        <section>
+          <div
+            class="${classMap({
+              uv: true,
+              'uv-low': (this.radiation?.uvi ?? 0) < 3,
+              'uv-medium':
+                (this.radiation?.uvi ?? 0) >= 3 &&
+                (this.radiation?.uvi ?? 0) < 5,
+              'uv-high': (this.radiation?.uvi ?? 0) >= 5,
+            })}"
+          >
+            <div class="uv-label">UV-Indeksi</div>
+            <div class="uv-value">${this.radiation?.uvi}</div>
+            <div class="uv-place">${this.radiation?.place}</div>
+          </div>
+          <div class="times">
+            ${this._expanded === false
+              ? html`
+                  <div class="grid">
+                    <div class="value sunrise-value">${this._sunrise}</div>
+                    <div class="label sunrise-label">Aurinko nousee</div>
 
-              <div>${this._darkestNight}</div>
-              <div>aurinko matalimmillaan (pimeintä)</div>
+                    <div class="value sunset-value">${this._sunset}</div>
+                    <div class="label sunset-label">Aurinko laskee</div>
+                  </div>
+                  <a href="#" class="show-more" @click=${this._toggleDetails}
+                    >Näytä enemmän</a
+                  >
+                `
+              : html`
+                  <div class="details">
+                    <div>${this._darkestNight}</div>
+                    <div>Pimeintä</div>
 
-              <div>${this._dawn}</div>
-              <div>hämärä loppuu</div>
+                    <div>${this._dawn}</div>
+                    <div>Hämärä loppuu</div>
 
-              <div>${this._sunrise}</div>
-              <div class="more-space">aurinko nousee</div>
+                    <div class="bold">${this._sunrise}</div>
+                    <div class="bold">Aurinko nousee</div>
 
-              
+                    <div>${this._solarNoon}</div>
+                    <div>Aurinko korkeimmillaan</div>
 
-              <div>${this._solarNoon}</div>
-              <div class="more-space">aurinko korkeimmillaan</div>
+                    <div class="bold">${this._sunset}</div>
+                    <div class="bold">Aurinko laskee</div>
 
-             
-              <div>${this._sunset}</div>
-              <div>aurinko laskee</div>
-
-              <div>${this._dusk}</div>
-              <div class="more-space">hämärä alkaa</div>
-
-       
-            </div>
-          </smooth-expand>
-
-          <a href="#" class="expand" @click="${(e) => this._toggleDetails(e)}">
-           ${this._expanded ? `Näytä vähemmän` : `Näytä lisää`}<expand-icon
-            ?open="${this._expanded}"
-          ></expand-icon>
-          </a>
-
-        </div>
+                    <div>${this._dusk}</div>
+                    <div>Hämärä alkaa</div>
+                  </div>
+                  <a href="#" class="show-less" @click=${this._toggleDetails}
+                    >Näytä vähemmän
+                  </a>
+                `}
+          </div>
+        </section>
       </weather-section>
     `;
   }
@@ -253,7 +286,7 @@ class SunriseSunset extends LitElement {
     }
   }
 
-  _toggleDetails(e) {
+  _toggleDetails(e: Event) {
     e.preventDefault();
     this._expanded = !this._expanded;
   }

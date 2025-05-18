@@ -258,7 +258,7 @@ class WeatherDay extends LitElement {
         font-size: var(--font-size-xs);
         margin-top: -0.7rem;
         color: #0a95d7;
-        font-weight: 600;
+        font-weight: 400;
       }
     `;
   }
@@ -300,7 +300,9 @@ class WeatherDay extends LitElement {
                          }"
                       ></img><div class="probability">${
                         hour.smartSymbolAggregate % 100 >= 10
-                          ? html`${Math.round(hour.rainProbabilityAggregate || 0)}%`
+                          ? html`${Math.round(
+                              hour.rainProbabilityAggregate || 0
+                            )}%`
                           : ''
                       }</div>`
                         : ''}

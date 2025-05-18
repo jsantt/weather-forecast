@@ -9,6 +9,19 @@ class WeatherDescription extends LitElement {
     return 'weather-description';
   }
 
+  static #rainTable = [
+    { max: 0.1, description: 'Poutaa' },
+    { max: 0.9, description: 'Vähän sadetta' },
+    { max: 4.4, description: 'Sadetta' },
+    { max: 19.9, description: 'Runsasta sadetta' },
+    { max: 99999, description: 'Rankkasadetta' },
+  ];
+
+  static #getDescription(rainAmount: number): string {
+    const hit = this.#rainTable.find((row) => rainAmount < row.max);
+    return hit?.description ?? '';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -42,12 +55,12 @@ class WeatherDescription extends LitElement {
               />
             </g>
           </svg>
-          Sadetta
+
+          ${WeatherDescription.#getDescription(this.dayData.dayRainAmount)}
           ${this.dayData.dayRainAmount < 0.5
-            ? 'alle 1 mm'
+            ? '< 1 mm'
             : html` ${WeatherDescription.roundRain(this.dayData.dayRainAmount)}
               mm`}
-          
         `
       : ''}
     ${this.dayData.daySnowAmount > 0
@@ -64,7 +77,7 @@ class WeatherDescription extends LitElement {
           </svg>
           Lumisadetta
           ${this.dayData.daySnowAmount < 0.5
-            ? 'alle 1 cm'
+            ? '< 1 cm'
             : html`Lumisadetta
               ${WeatherDescription.roundRain(this.dayData.daySnowAmount)} cm`}
         `

@@ -25,13 +25,13 @@ class BottomSheet extends LitElement {
         display: block;
         background: var(--background-topmost);
 
-        border-top-left-radius: 0.75rem;
+        /*border-top-left-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
-
+*/
         box-shadow: var(--box-shadow-upwards);
 
-        margin-left: var(--space-m);
-        margin-right: var(--space-m);
+        /*       margin-left: var(--space-m);
+        margin-right: var(--space-m);*/
 
         position: fixed;
         bottom: 0;
