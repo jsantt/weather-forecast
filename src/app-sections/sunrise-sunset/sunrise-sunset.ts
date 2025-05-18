@@ -70,13 +70,16 @@ class SunriseSunset extends LitElement {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-columns: 1fr 1fr auto;
-        align-items: center;
+        align-items: stretch;
+        padding: var(--space-s);
       }
 
       .uv {
         border-radius: var(--border-radius);
         text-align: center;
         padding: var(--space-l);
+        display: grid;
+        align-items: center;
       }
 
       .uv-label {
@@ -223,7 +226,7 @@ class SunriseSunset extends LitElement {
 
   render() {
     return html`
-      <weather-section liftedHeading="Aurinko" padding yellow>
+      <weather-section liftedHeading="Aurinko" yellow>
         <section>
           <div
             class="${classMap({
