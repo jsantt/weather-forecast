@@ -70,6 +70,7 @@ class SunriseSunset extends LitElement {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-columns: 1fr 1fr auto;
+        align-items: center;
       }
 
       .uv {
@@ -200,6 +201,11 @@ class SunriseSunset extends LitElement {
         font-size: var(--font-size-xs);
       }
 
+      .uv-place {
+        margin-top: var(--space-m);
+        margin-bottom: var(--space-m);
+      }
+
       .show-more,
       .show-less {
         font-size: var(--font-size-xs);
@@ -216,9 +222,6 @@ class SunriseSunset extends LitElement {
   }
 
   render() {
-    if (this.radiation) {
-      this.radiation.uvi = 4.1;
-    }
     return html`
       <weather-section liftedHeading="Aurinko" padding yellow>
         <section>
