@@ -98,16 +98,16 @@ class SunriseSunset extends LitElement {
       }
 
       .uv-low {
-        border-radius: 0;
-        background-color: transparent;
-        border-right: 2px solid var(--color-gray-400);
+        background-color: var(--color-green);
       }
       .uv-medium {
         background-color: rgb(250, 228, 179);
+        color: var(--color-dark);
       }
 
       .uv-high {
         background-color: rgb(245, 211, 199);
+        color: var(--color-dark);
       }
 
       .arrow-svg {
