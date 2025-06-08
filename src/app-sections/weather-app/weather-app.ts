@@ -54,7 +54,7 @@ class WeatherApp extends LitElement {
   _forecastPlace?: Place;
 
   @state()
-  _largeMap: boolean = true;
+  _showDetails: boolean = false;
 
   @state()
   _loading: boolean = false;
@@ -208,7 +208,7 @@ class WeatherApp extends LitElement {
       <forecast-data .location="${this._location}"> </forecast-data>
 
       <bottom-sheet
-        ?largeMap="${this._largeMap}"
+        ?showDetails="${this._showDetails}"
         ?showFeelsLike="${this._showFeelsLike}"
         ?showWind="${this._showWind}"
         ?darkMode="${this._darkMode}"
@@ -235,7 +235,7 @@ class WeatherApp extends LitElement {
         >
           <slot name="place"></slot>
           <forecast-header
-            ?largeMap="${this._largeMap}"
+            ?showDetails="${this._showDetails}"
             ?loading="${this._loading}"
             .location="${this._location}"
             .observationData="${this._observationData}"
@@ -409,7 +409,7 @@ class WeatherApp extends LitElement {
   }
 
   _toggleMapSize() {
-    this._largeMap = !this._largeMap;
+    this._showDetails = !this._showDetails;
   }
 
   static _getWeatherNow(data) {

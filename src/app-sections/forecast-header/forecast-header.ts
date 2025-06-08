@@ -20,7 +20,7 @@ class ForecastHeader extends LitElement {
   }
 
   @property({ type: Boolean, reflect: true })
-  largeMap?: boolean;
+  showDetails?: boolean;
 
   @property({ type: Boolean, reflect: true })
   loading?: boolean;
@@ -65,6 +65,10 @@ class ForecastHeader extends LitElement {
         background-position: center;
 
         padding-bottom: var(--space-xl);
+      }
+
+      :host([showDetails]) header {
+        padding-bottom: var(--space-l);
       }
 
       h2 {
@@ -151,7 +155,7 @@ class ForecastHeader extends LitElement {
     return html`
       <header>
         <station-map
-          ?largeMap="${this.largeMap}"
+          ?showDetails="${this.showDetails}"
           .location="${this.location}"
           .observationData=${this.observationData}
           ?observationError=${this.observationError}
@@ -169,7 +173,7 @@ class ForecastHeader extends LitElement {
                     </div>
 
                     <expand-icon
-                      ?open=${this.largeMap}
+                      ?open=${this.showDetails}
                       class="expand-icon"
                     ></expand-icon>
                   `
@@ -187,7 +191,7 @@ class ForecastHeader extends LitElement {
               
                </div>
                <div class="selected-details">
-                <smooth-expand ?expanded="${this.largeMap}">
+                <smooth-expand ?expanded="${this.showDetails}">
                   <station-details
                       .station="${this._selectedStation}"
                     ></station-details>
@@ -228,10 +232,10 @@ class ForecastHeader extends LitElement {
       }
 
       // hack to fix expand issue with smooth expand
-      if (this.largeMap) {
-        this.largeMap = false;
+      if (this.showDetails) {
+        this.showDetails = false;
         setTimeout(() => {
-          this.largeMap = true;
+          this.showDetails = true;
         }, 0);
       }
 
@@ -243,7 +247,7 @@ class ForecastHeader extends LitElement {
   }
 
   _expand() {
-    this.largeMap = !this.largeMap;
+    this.showDetails = !this.showDetails;
   }
 
   static _round(value: number) {

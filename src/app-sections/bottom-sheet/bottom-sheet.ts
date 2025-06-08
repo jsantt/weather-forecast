@@ -155,7 +155,7 @@ class BottomSheet extends LitElement {
   }
 
   @property({ type: Boolean })
-  largeMap?: boolean;
+  showDetails?: boolean;
 
   @property({ type: Boolean, reflect: true })
   showFeelsLike?: boolean;
