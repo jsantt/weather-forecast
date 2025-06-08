@@ -80,8 +80,6 @@ class WeatherApp extends LitElement {
   static get styles() {
     return css`
       :host {
-        --header-background-expand: var(--space-l);
-
         display: flex;
         justify-content: center;
       }

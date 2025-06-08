@@ -51,14 +51,10 @@ class ForecastHeader extends LitElement {
 
       :host {
         display: block;
-
-        padding-bottom: var(--header-background-expand);
       }
 
       header {
         border-radius: var(--border-radius);
-        margin-bottom: calc(-1 * (var(--header-background-expand)));
-        padding-bottom: var(--header-background-expand);
 
         /* anchor for h2 */
         position: relative;
@@ -67,6 +63,8 @@ class ForecastHeader extends LitElement {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
+
+        padding-bottom: var(--space-xl);
       }
 
       h2 {

@@ -157,8 +157,6 @@ class StationDetails extends LitElement {
       <div class="item updated-time">
       ${`havainnot klo ${StationDetails._time(this.station?.timestamp)}`}
       </div>
-      <div class="item updated-time"></div>
-      
     `;
   }
 
