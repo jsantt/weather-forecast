@@ -72,6 +72,7 @@ class TopBar extends LitElement {
         class="logo"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 695 503"
+        alt="sääennuste logo"
       >
         <path
           stroke-width="55"
