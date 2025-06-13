@@ -59,10 +59,9 @@ class WeatherInfo extends LitElement {
         ></svg-icon>
 
         <p>
-          Sääennuste.fi esittää Ilmatieteen laitoksen havainnot ja meteorologin
-          virallisen ennusteen paremmassa muodossa. Näet yleiskuvan ja
-          tarpeelliset yksityiskohdat vähemmällä klikkailulla - myös kännykän
-          pieneltä ruudulta.
+          Sääennuste.fi - Luotettava Ilmatieteen laitoksen sää nopeasti. Näet
+          virallisen sääennusteen, ilmanpaineen, ilmankosteuden ja
+          tuntiennusteet helposti yhdellä silmäyksellä.
         </p>
 
         <h3>Havainnot</h3>

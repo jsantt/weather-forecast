@@ -99,6 +99,7 @@ class SunriseSunset extends LitElement {
 
       .uv-low {
         background-color: var(--color-green);
+        color: var(--color-dark);
       }
       .uv-medium {
         background-color: rgb(250, 228, 179);
