@@ -69,7 +69,7 @@ class ExternalLinks extends LitElement {
 
   render() {
     return html`
-      <weather-section gray liftedHeading="Säätietoja muualla">
+      <weather-section gray padding liftedHeading="Säätietoja muualla">
         <nav>
           <div class="icon-container icon-container--sun">
             <svg-icon medium path="assets/image/icons.svg#uvIndex"></svg-icon>
