@@ -51,7 +51,7 @@ class WeatherInfo extends LitElement {
 
   render() {
     return html`
-      <weather-section gray padding liftedHeading="Sääennuste.fi">
+      <weather-section pink padding liftedHeading="Sääennuste.fi">
         <svg-icon
           medium
           class="info-icon"

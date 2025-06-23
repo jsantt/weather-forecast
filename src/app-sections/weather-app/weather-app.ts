@@ -191,8 +191,8 @@ class WeatherApp extends LitElement {
           grid-template-columns: 6fr 4fr 4fr !important;
           grid-template-areas:
             'header header header '
-            'location links sun '
-            'map links sun'
+            'location sun links'
+            'map sun links'
             'map info info  '
             'map info info '
             'forecast info info '

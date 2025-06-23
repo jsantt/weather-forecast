@@ -17,13 +17,12 @@ class ExternalLinks extends LitElement {
 
       nav {
         display: grid;
-        grid-template-columns: auto 4rem;
+        grid-template-columns: 3rem auto;
         grid-template-rows: auto;
       }
 
       .icon-container {
-        background: var(--color-green);
-        padding: var(--space-m) var(--space-l);
+        padding: var(--space-m) 0;
         margin: auto;
       }
 
@@ -41,16 +40,12 @@ class ExternalLinks extends LitElement {
         align-items: center;
 
         font-size: var(--font-size-s);
-        font-weight: var(--font-weight-bold);
         height: 100%;
         width: 100%;
-        padding: 0 var(--space-l);
       }
 
       a:link {
         color: var(--color-dark-and-light);
-
-        text-decoration: none;
       }
 
       a span {
@@ -74,26 +69,15 @@ class ExternalLinks extends LitElement {
 
   render() {
     return html`
-      <weather-section pink liftedHeading="Säätietoja muualla">
+      <weather-section gray liftedHeading="Säätietoja muualla">
         <nav>
-          <div class="link">
-            <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
-              <span>UV-indeksi</span>
-
-              <svg-icon
-                x-small
-                path="assets/image/icons.svg#new-window"
-              ></svg-icon>
-            </a>
-          </div>
-
           <div class="icon-container icon-container--sun">
             <svg-icon medium path="assets/image/icons.svg#uvIndex"></svg-icon>
           </div>
 
           <div class="link">
-            <a href="https://www.norkko.fi/">
-              <span>siitepölytiedote</span>
+            <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
+              <span>UV-indeksi</span>
             </a>
           </div>
 
@@ -102,8 +86,8 @@ class ExternalLinks extends LitElement {
           </div>
 
           <div class="link">
-            <a href="https://www.ilmatieteenlaitos.fi/revontulet-ja-avaruussaa">
-              <span>revontulet</span>
+            <a href="https://www.norkko.fi/">
+              <span>siitepölytiedote</span>
             </a>
           </div>
 
@@ -112,6 +96,12 @@ class ExternalLinks extends LitElement {
               medium
               path="assets/image/icons.svg#longTimeWeather"
             ></svg-icon>
+          </div>
+
+          <div class="link">
+            <a href="https://www.ilmatieteenlaitos.fi/revontulet-ja-avaruussaa">
+              <span>revontulet</span>
+            </a>
           </div>
         </nav>
       </weather-section>

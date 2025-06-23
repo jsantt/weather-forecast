@@ -71,7 +71,6 @@ class SunriseSunset extends LitElement {
         grid-template-columns: 1fr 1fr;
         grid-template-columns: 1fr 1fr auto;
         align-items: stretch;
-        padding: var(--space-s);
       }
 
       .uv {
@@ -239,7 +238,9 @@ class SunriseSunset extends LitElement {
               'uv-high': (this.radiation?.uvi ?? 0) >= 5,
             })}"
           >
-            <div class="uv-label">UV-Indeksi</div>
+            <div class="uv-label">
+              ${this.radiation ? 'UV-Indeksi' : 'UV-indeksi ei saatavilla'}
+            </div>
             <div class="uv-value">${this.radiation?.uvi}</div>
             <div class="uv-place">${this.radiation?.place}</div>
           </div>
@@ -247,11 +248,15 @@ class SunriseSunset extends LitElement {
             ${this._expanded === false
               ? html`
                   <div class="grid">
+                    <div class="label sunrise-label">
+                      ${this._sunrise ? 'Aurinko nousee' : 'Aurinko ei nouse'}
+                    </div>
                     <div class="value sunrise-value">${this._sunrise}</div>
-                    <div class="label sunrise-label">Aurinko nousee</div>
 
+                    <div class="label sunset-label">
+                      ${this._sunset ? 'Aurinko laskee' : 'Aurinko ei laske'}
+                    </div>
                     <div class="value sunset-value">${this._sunset}</div>
-                    <div class="label sunset-label">Aurinko laskee</div>
                   </div>
                   <a href="#" class="show-more" @click=${this._toggleDetails}
                     >Näytä enemmän</a
@@ -265,13 +270,13 @@ class SunriseSunset extends LitElement {
                     <div>${this._dawn}</div>
                     <div>Hämärä loppuu</div>
 
-                    <div class="bold">${this._sunrise}</div>
+                    <div class="bold">${this._sunrise ?? '-'}</div>
                     <div class="bold">Aurinko nousee</div>
 
                     <div>${this._solarNoon}</div>
                     <div>Aurinko korkeimmillaan</div>
 
-                    <div class="bold">${this._sunset}</div>
+                    <div class="bold">${this._sunset ?? '-'}</div>
                     <div class="bold">Aurinko laskee</div>
 
                     <div>${this._dusk}</div>
@@ -309,13 +314,13 @@ class SunriseSunset extends LitElement {
       this.location.lon
     );
     if (Number.isNaN(times.sunrise.getMinutes())) {
-      this._sunrise = 'ei tänään';
+      this._sunrise = undefined;
     } else {
       this._sunrise = SunriseSunset._formatTime(times.sunrise);
     }
 
     if (Number.isNaN(times.sunset.getMinutes())) {
-      this._sunset = 'ei huomenna';
+      this._sunset = undefined;
     } else {
       this._sunset = SunriseSunset._formatTime(times.sunset);
     }
