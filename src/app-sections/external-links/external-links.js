@@ -19,11 +19,7 @@ class ExternalLinks extends LitElement {
         display: grid;
         grid-template-columns: 3rem auto;
         grid-template-rows: auto;
-      }
-
-      .icon-container {
-        padding: var(--space-m) 0;
-        margin: auto;
+        grid-row-gap: var(--space-l);
       }
 
       svg,
