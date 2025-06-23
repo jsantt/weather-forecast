@@ -59,15 +59,15 @@ class WeatherInfo extends LitElement {
         ></svg-icon>
 
         <p>
-          Sääennuste.fi - Luotettava Ilmatieteen laitoksen sää nopeasti. Näet
-          virallisen sääennusteen, ilmanpaineen, ilmankosteuden ja
-          tuntiennusteet helposti yhdellä silmäyksellä.
+          Sääennuste &ndash; Ilmatieteen laitoksen luotettava ennuste. Näet sään
+          nyt, ilmanpaineen, ilmankosteuden sekä virallisen meteorologin
+          tuntiennusteen yhdellä silmäyksellä.
         </p>
 
-        <h3>Havainnot</h3>
+        <h3>Sää nyt</h3>
         <p>
-          Havainnot "kartalla" näyttää lähistön sääasemien tiedot "kartalla"
-          oikeassa suunnassa siten, että päällekkäin meneviä asemia on siirretty
+          Sää nyt näyttää lähistön sääasemien tiedot "kartalla" oikeassa
+          suunnassa siten, että päällekkäin meneviä asemia on siirretty
           mahdollisimman vähän.
         </p>
 

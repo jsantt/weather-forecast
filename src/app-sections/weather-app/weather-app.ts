@@ -93,10 +93,13 @@ class WeatherApp extends LitElement {
       }
 
       .by {
-        font-size: var(--font-size-s);
         border-radius: 0;
+        font-size: var(--font-size-s);
+
+        line-height: 0.9;
         text-align: center;
         margin-top: var(--space-l);
+        margin-bottom: var(--space-m);
       }
 
       .grid-container {
@@ -245,9 +248,11 @@ class WeatherApp extends LitElement {
           >
           </forecast-header>
           <div class="by">
+            <div>Ilmatieteen laitoksen avoin data</div>
+
             <object
-              width="100"
-              height="30"
+              width="130"
+              height="39"
               data="./assets/image/il-avoin-data-logo-rgb.svg"
               aria-label="Ilmatieteen laitoksen avoin data logo"
             ></object>
@@ -258,7 +263,7 @@ class WeatherApp extends LitElement {
           pink
           transparent
           class="grid-item grid-forecast"
-          liftedHeading="Ilmatieteen laitoksen ennuste"
+          liftedHeading="Meteorologin ennuste"
           ?padding=${false}
         >
           <!-- today, tomorrow and a day after tomorrow -->

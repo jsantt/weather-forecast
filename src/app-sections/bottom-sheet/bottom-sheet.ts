@@ -164,7 +164,7 @@ class BottomSheet extends LitElement {
   showWind?: boolean;
 
   @property({ type: Boolean, reflect: true })
-  darkMode?: boolean = true;
+  darkMode?: boolean = false;
 
   @property({ type: String })
   _error?: string;
