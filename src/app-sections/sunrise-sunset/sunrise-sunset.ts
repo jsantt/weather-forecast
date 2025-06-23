@@ -83,7 +83,6 @@ class SunriseSunset extends LitElement {
 
       .uv-label {
         font-size: var(--font-size-s);
-        font-weight: var(--font-weight-bold);
         margin-bottom: var(--space-m);
       }
 

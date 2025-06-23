@@ -78,7 +78,6 @@ class WeatherDayHeader extends LitElement {
         justify-self: center;
 
         font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
 
         margin: var(--space-l) 0;
       }
