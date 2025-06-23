@@ -94,6 +94,34 @@ function updateJsonLdObservations(observation: Station[]): void {
   setJsonLd('observations-ld', observationsJsonLd);
 }
 
+/*
+function updateJsonLdObservations(radiation: Radiation[]): void {
+  
+  const about = {
+    '@type': 'Place',
+    name: observation.at(0)?.region,
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: radiation.at(0)?.lat,
+      longitude: radiation.at(0)?.lon,
+    },
+  };
+
+  const observationsJsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Observation',
+      name: 'Lämpötila',
+      value: observation.at(0)?.temperature,
+      unitCode: 'CEL',
+      observationAbout: about,
+    }
+  ];
+  
+  setJsonLd('radiation-ld', observationsJsonLd);
+}
+  */
+
 function setJsonLd(elementId: string, value: Object) {
   const script = document.getElementById(elementId);
   if (!script) {

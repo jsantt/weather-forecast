@@ -304,6 +304,7 @@ class WeatherApp extends LitElement {
 
     if (this._location) {
       this._radiation = await getRadiationData(this._location);
+      //updateJsonLdRadiation(this._radiation)
     }
   }
 
