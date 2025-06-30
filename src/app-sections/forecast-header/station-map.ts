@@ -171,7 +171,6 @@ class StationMap extends LitElement {
                 stroke="transparent"
               ></circle>
 
-              
               <use
                 x="${
                   observation.calculated

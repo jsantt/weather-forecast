@@ -149,7 +149,15 @@ function getWeatherObservation(wawaCode?: number, cloudiness?: number): string {
 
   const description = resolveCloudiness(cloudiness)?.fi;
 
-  return description ?? 'Sääasemalta ei saada pilvisyys- ja sadetietoja';
+  if (!description) {
+    return 'Sääasemalta ei saada pilvisyys- ja sadetietoja';
+  }
+
+  if (lastHourDescription) {
+    return description;
+  }
+
+  return `Nyt ${description.toLocaleLowerCase()}`;
 }
 
 function getSmartSymbol(
@@ -181,13 +189,6 @@ function getSmartSymbol(
   return undefined;
 }
 
-export {
-  weatherSymbols,
-  getSmartSymbol,
-  getSymbolName,
-  getWeatherObservation,
-  type WeatherSymbol,
-};
 function resolveWawa(wawaCode: number) {
   return weatherSymbols.find((weatherSymbol: WeatherSymbol) =>
     weatherSymbol.wawa?.includes(wawaCode)
@@ -199,3 +200,11 @@ function resolveCloudiness(cloudiness: number) {
     weatherSymbol.cloudiness?.includes(cloudiness)
   );
 }
+
+export {
+  weatherSymbols,
+  getSmartSymbol,
+  getSymbolName,
+  getWeatherObservation,
+  type WeatherSymbol,
+};

@@ -60,15 +60,14 @@ class WeatherInfo extends LitElement {
 
         <p>
           Sääennuste &ndash; Ilmatieteen laitoksen luotettava ennuste. Näet sään
-          nyt, ilmanpaineen, ilmankosteuden sekä virallisen meteorologin
-          tuntiennusteen yhdellä silmäyksellä.
+          nyt, ilmanpaineen, ilmankosteuden, uv-ennusteen sekä virallisen
+          meteorologin tuntiennusteen yhdellä silmäyksellä.
         </p>
 
         <h3>Sää nyt</h3>
         <p>
-          Sää nyt näyttää lähistön sääasemien tiedot "kartalla" oikeassa
-          suunnassa siten, että päällekkäin meneviä asemia on siirretty
-          mahdollisimman vähän.
+          Näet kaikki lähistön sääasemat ja niiden jopa minuutin välein
+          päivittyvät tiedot pelkistetyllä kartalla.
         </p>
 
         <h3>Yksityisyys</h3>

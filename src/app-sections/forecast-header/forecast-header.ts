@@ -168,7 +168,7 @@ class ForecastHeader extends LitElement {
                 ? html`
                     <div class="selected-label">
                       ${this._selectedStation?.calculated
-                        ? 'LASKENNALLINEN'
+                        ? ''
                         : html`SÄÄASEMA ${this._selectedStation?.distance} km`}
                     </div>
 
