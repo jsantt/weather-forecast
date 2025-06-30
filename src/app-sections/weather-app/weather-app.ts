@@ -311,6 +311,10 @@ class WeatherApp extends LitElement {
   constructor() {
     super();
 
+    if (location.href.includes('localhost')) {
+      localStorage.setItem('umami.disabled', '1');
+    }
+
     if (window.location.href.includes('beta')) {
       window.localStorage.setItem('beta', 'true');
     }
