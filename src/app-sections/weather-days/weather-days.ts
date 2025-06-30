@@ -51,7 +51,10 @@ class WeatherDays extends LitElement {
             .forecastDay="${forecastDay}"
             ?expanded="${this.expanded[index]}"
           ></weather-day-header>
-          <smooth-expand ?expanded=${this.expanded[index]}>
+          <smooth-expand
+            ?expanded=${this.expanded[index]}
+            ?updateOnChange=${this.showWind}
+          >
             <weather-day
               @click=${() => this.toggle(index)}
               dayNumber=${index + 1}

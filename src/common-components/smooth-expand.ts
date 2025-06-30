@@ -18,6 +18,16 @@ class SmoothExpand extends LitElement {
     return 'smooth-expand';
   }
 
+  @property({ type: Boolean, reflect: true })
+  expanded: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  updateOnChange?: boolean = undefined;
+
+  updated() {
+    this.updateComponentHeight();
+  }
+
   static get styles() {
     return css`
       :host {
@@ -30,14 +40,11 @@ class SmoothExpand extends LitElement {
     `;
   }
 
-  @property({ type: Boolean, reflect: true })
-  expanded: boolean = false;
-
   render() {
     return html`<slot aria-hidden="${this.expanded === true}"></slot>`;
   }
 
-  updated() {
+  private updateComponentHeight() {
     if (this.expanded === true) {
       requestAnimationFrame(() => {
         this._setMaxHeight(this._getHiddenHeight() + 16);
