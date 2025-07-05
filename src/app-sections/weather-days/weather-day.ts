@@ -37,9 +37,19 @@ class WeatherDay extends LitElement {
   @state()
   private highestWindGustHour: number = 0;
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    if (!this.forecastDay) {
+      return;
+    }
+    this.highestWindGustHour = getHighestWindGustHour(this.forecastDay);
+    console.log(this.highestWindGustHour);
+  }
+
   updated(changedProperties: Map<string, any>) {
     if (changedProperties.has('dayData') && this.forecastDay !== undefined) {
       this.highestWindGustHour = getHighestWindGustHour(this.forecastDay);
+      console.log(this.highestWindGustHour);
     }
   }
 
