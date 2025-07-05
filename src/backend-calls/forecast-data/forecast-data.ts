@@ -75,6 +75,7 @@ type ForecastDay = {
   dayRainAmount: number;
   dayRainProbability: number;
   daySnowAmount: number;
+  dayHighestWindGustHour?: number;
   hours: ForecastHour[];
 };
 
@@ -230,10 +231,16 @@ class ForecastData extends LitElement {
         const daysWithRainProbability =
           ForecastData._addRainProbability(daysWithRainAmount);
 
+        const daysWithHighestWindGust = ForecastData.addHighestWindGustHour(
+          daysWithRainProbability
+        );
+
         const forecast: Forecast = {
           location: undefined,
-          days: daysWithRainProbability,
+          days: daysWithHighestWindGust,
         };
+
+        console.log(forecast);
 
         this.dispatch('forecast-data.new-data', forecast);
       })
@@ -262,7 +269,12 @@ class ForecastData extends LitElement {
       if (!isNaN(hour.temperature)) {
         const hourCopy = { ...hour };
         if (!days[dayIndex]) {
-          days[dayIndex] = { hours: [], dayRainAmount: 0, daySnowAmount: 0, dayRainProbability: 0};
+          days[dayIndex] = {
+            hours: [],
+            dayRainAmount: 0,
+            daySnowAmount: 0,
+            dayRainProbability: 0,
+          };
         }
         days[dayIndex].hours.push(hourCopy);
       }
@@ -430,6 +442,29 @@ class ForecastData extends LitElement {
       };
     });
     return daysWithRain;
+  }
+
+  private static addHighestWindGustHour(
+    forecastDays: ForecastDay[]
+  ): ForecastDay[] {
+    const daysWithHighestWind = forecastDays.map(
+      (day: ForecastDay): ForecastDay => {
+        const dayHighestWindGustHour = ForecastData.getHighestWindGustHour(day);
+
+        return {
+          ...day,
+          dayHighestWindGustHour,
+        };
+      }
+    );
+    return daysWithHighestWind;
+  }
+
+  private static getHighestWindGustHour(dayData: ForecastDay): number {
+    const dayHighest = dayData.hours.reduce((prev, current) =>
+      prev.windGust > current.windGust ? prev : current
+    );
+    return dayHighest.hour;
   }
 
   static _addRainType(forecastDays: ForecastHour[]): ForecastHour[] {

@@ -5,8 +5,8 @@ import './weather-description.js';
 import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
-import { getHighestWindGustHour, windClassification } from './wind-helper.js';
-import { property, state } from 'lit/decorators.js';
+import { windClassification } from './wind-helper.js';
+import { property } from 'lit/decorators.js';
 import { ForecastDay } from '../../backend-calls/forecast-data/forecast-data.js';
 import { getSymbolName } from '../../backend-calls/observation-data/weather-symbol-name.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -33,25 +33,6 @@ class WeatherDay extends LitElement {
 
   @property({ type: Boolean })
   expanded: boolean = false;
-
-  @state()
-  private highestWindGustHour: number = 0;
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    if (!this.forecastDay) {
-      return;
-    }
-    this.highestWindGustHour = getHighestWindGustHour(this.forecastDay);
-    console.log(this.highestWindGustHour);
-  }
-
-  updated(changedProperties: Map<string, any>) {
-    if (changedProperties.has('dayData') && this.forecastDay !== undefined) {
-      this.highestWindGustHour = getHighestWindGustHour(this.forecastDay);
-      console.log(this.highestWindGustHour);
-    }
-  }
 
   static get styles() {
     return css`
@@ -363,9 +344,14 @@ class WeatherDay extends LitElement {
                       .windSpeed="${hour.threeHourWindMax}"
                       .windGustSpeed="${hour.threeHourWindMaxGust}"
                       ?minimal="${this.showWind !== true}"
-                      ?isDayHighest=${(hour.hour === 3 &&
-                        this.highestWindGustHour === 1) ||
-                      Math.abs(hour.hour - this.highestWindGustHour) <= 1}
+                      ?isDayHighest=${!!(
+                        (hour.hour === 3 &&
+                          this.forecastDay?.dayHighestWindGustHour === 1) ||
+                        (this.forecastDay?.dayHighestWindGustHour !== undefined &&
+                          Math.abs(
+                            hour.hour - this.forecastDay.dayHighestWindGustHour
+                          ) <= 1)
+                      )}
                     >
                     </wind-icon>
                   `}
