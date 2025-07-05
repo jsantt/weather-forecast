@@ -240,8 +240,6 @@ class ForecastData extends LitElement {
           days: daysWithHighestWindGust,
         };
 
-        console.log(forecast);
-
         this.dispatch('forecast-data.new-data', forecast);
       })
       .catch((rejected) => {

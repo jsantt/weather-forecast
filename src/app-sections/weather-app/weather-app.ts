@@ -204,11 +204,38 @@ class WeatherApp extends LitElement {
     `;
   }
 
+  private onFetchDone() {
+    this._firstLoading = false;
+    this._loading = false;
+    this._firstLoading = false;
+  }
+
+  private onNewData(event: CustomEvent<Forecast[]>) {
+    this._forecastError = false;
+    this._forecast = event.detail;
+  }
+
   render() {
     return html`
       <!-- Observation / weather station data -->
       <observation-data .place="${this._forecastPlace}"> </observation-data>
-      <forecast-data .location="${this._location}"> </forecast-data>
+      <forecast-data
+        .location="${this._location}"
+        @forecast-data.fetching=${() => {
+          this._loading = true;
+        }}
+        @forecast-data.fetch-done=${this.onFetchDone}
+        @forecast-data.new-data=${((event: CustomEvent<Forecast[]>) => {
+          this.onNewData(event);
+        }) as EventListener}
+        @forecast-data.new-place=${((event: CustomEvent) => {
+          this._forecastPlace = event.detail;
+        }) as EventListener}
+        @forecast-data.fetch-error=${() => {
+          this._forecastError = true;
+        }}
+      >
+      </forecast-data>
 
       <bottom-sheet
         ?showDetails="${this._showDetails}"
@@ -319,32 +346,6 @@ class WeatherApp extends LitElement {
       window.localStorage.setItem('beta', 'true');
     }
 
-    // forecast data
-    this.addEventListener('forecast-data.fetching', () => {
-      this._loading = true;
-    });
-
-    this.addEventListener('forecast-data.fetch-done', () => {
-      this._fetchDone();
-      this._loading = false;
-      this._firstLoading = false;
-    });
-
-    this.addEventListener('forecast-data.new-data', ((
-      event: CustomEvent<Forecast[]>
-    ) => {
-      this._forecastError = false;
-      this._forecast = event.detail;
-    }) as EventListener);
-
-    this.addEventListener('forecast-data.new-place', ((event: CustomEvent) => {
-      this._forecastPlace = event.detail;
-    }) as EventListener);
-
-    this.addEventListener('forecast-data.fetch-error', () => {
-      this._forecastError = true;
-    });
-
     // observation data
 
     this.addEventListener('observation-data.new-data', ((
@@ -390,10 +391,6 @@ class WeatherApp extends LitElement {
     ) {
       this._darkMode = true;
     }
-  }
-
-  _fetchDone() {
-    this._firstLoading = false;
   }
 
   /**
