@@ -51,10 +51,7 @@ async function getRadiationData(
 
     stationJson.push({ place: name, uvi: Number(uvi), latlon, distance });
   }
-
   const orderedStations = stationJson.sort((a, b) => a.distance - b.distance);
-
-  console.log(orderedStations);
 
   return orderedStations.at(0);
 }

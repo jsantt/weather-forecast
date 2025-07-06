@@ -12,11 +12,9 @@ function resolveCollisions(observations: any[]) {
   const adjustedObs: any[] = [];
   observations.map((observation) => {
     const copy = { ...observation };
-    // console.log('OUTER', observation.name);
 
     let collision = false;
     adjustedObs.some((adjustedOb) => {
-      // console.log('inner', adjustedOb.name);
       if (collision === true) {
         return false;
       }
