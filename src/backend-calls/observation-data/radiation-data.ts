@@ -44,8 +44,8 @@ async function getRadiationData(
 
     const distance = distanceBetween(
       latlon.lat,
-      location.lat,
       latlon.lon,
+      location.lat,
       location.lon
     );
 
@@ -53,6 +53,8 @@ async function getRadiationData(
   }
 
   const orderedStations = stationJson.sort((a, b) => a.distance - b.distance);
+
+  console.log(orderedStations);
 
   return orderedStations.at(0);
 }

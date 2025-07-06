@@ -231,14 +231,7 @@ class ForecastHeader extends LitElement {
         return;
       }
 
-      // hack to fix expand issue with smooth expand
-      if (this.showDetails) {
-        this.showDetails = false;
-        setTimeout(() => {
-          this.showDetails = true;
-        }, 0);
-      }
-
+    
       // eslint-disable-next-line prefer-destructuring
       this._selectedStation = this.observationData.filter((item: any) => {
         return item.selectedStation === true;
