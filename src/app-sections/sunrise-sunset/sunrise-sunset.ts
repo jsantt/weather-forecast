@@ -64,6 +64,7 @@ class SunriseSunset extends LitElement {
     return css`
       :host {
         font-size: var(--font-size-m);
+        container-type: inline-size;
       }
 
       section {
@@ -73,17 +74,21 @@ class SunriseSunset extends LitElement {
         align-items: stretch;
       }
 
+      @container (max-width: 25rem) {
+        section {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .uv {
-        border-radius: var(--border-radius);
-        text-align: center;
         padding: var(--space-l);
         display: grid;
         align-items: center;
+        text-align: center;
       }
 
       .uv-label {
         font-size: var(--font-size-s);
-        margin-bottom: var(--space-m);
       }
 
       .uv-value {
@@ -203,11 +208,6 @@ class SunriseSunset extends LitElement {
         font-size: var(--font-size-xs);
       }
 
-      .uv-place {
-        margin-top: var(--space-m);
-        margin-bottom: var(--space-m);
-      }
-
       .show-more,
       .show-less {
         font-size: var(--font-size-xs);
@@ -238,10 +238,16 @@ class SunriseSunset extends LitElement {
             })}"
           >
             <div class="uv-label">
-              ${this.radiation ? 'UV-Indeksi' : 'UV-indeksi ei saatavilla'}
+              <div>
+                ${this.radiation ? 'UV-Indeksi' : 'UV-indeksi ei saatavilla'}
+              </div>
+              <div class="uv-place">${this.radiation?.place}</div>
             </div>
+
             <div class="uv-value">${this.radiation?.uvi}</div>
-            <div class="uv-place">${this.radiation?.place}</div>
+            <div class="uv-explanation">
+              ${SunriseSunset.getUvMessage(this.radiation?.uvi)}
+            </div>
           </div>
           <div class="times">
             ${this._expanded === false
@@ -351,6 +357,22 @@ class SunriseSunset extends LitElement {
     const fullMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
     return `${time.getHours()}.${fullMinutes}`;
+  }
+
+  private static getUvMessage(uvi: number | undefined) {
+    if (uvi === undefined) {
+      return '';
+    }
+
+    if (uvi <= 2) {
+      return 'UV-säteily on heikkoa, suojautumista ei tarvita';
+    }
+
+    if (uvi <= 3) {
+      return 'UV-säteily on kohtalaista, harkitse aurinkosuojaa';
+    }
+
+    return 'UV-säteily on voimakasta, käytä aurinkosuojaa';
   }
 }
 window.customElements.define(SunriseSunset.is, SunriseSunset);
