@@ -74,17 +74,22 @@ class SunriseSunset extends LitElement {
         align-items: stretch;
       }
 
-      @container (max-width: 25rem) {
-        section {
-          grid-template-columns: 1fr;
-        }
-      }
-
       .uv {
         padding: var(--space-xl);
         display: grid;
         align-items: center;
         text-align: center;
+        gap: var(--space-l);
+      }
+
+      @container (max-width: 25rem) {
+        section {
+          grid-template-columns: 1fr;
+        }
+
+        .uv {
+          padding: var(--space-xl) 3rem;
+        }
       }
 
       .uv-label {
@@ -205,7 +210,7 @@ class SunriseSunset extends LitElement {
         grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
         grid-gap: var(--space-s);
-        font-size: var(--font-size-xs);
+        
       }
 
       .show-more,
