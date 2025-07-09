@@ -107,8 +107,7 @@ class WeatherApp extends LitElement {
         grid-template-columns: minmax(330px, 450px);
         gap: var(--space-l);
 
-        max-width: 1500px;
-
+        max-width: 1000px;
         padding-bottom: 5rem;
         padding-left: var(--margin);
         padding-right: var(--margin);
@@ -183,22 +182,6 @@ class WeatherApp extends LitElement {
 
         .grid-copy {
           grid-area: copy;
-        }
-      }
-      @media only screen and (min-width: 1100px) {
-        .grid-container {
-          max-width: 1000px;
-          grid-template-columns: 6fr 4fr 4fr !important;
-          grid-template-areas:
-            'header header header '
-            'location sun links'
-            'map sun links'
-            'map info info  '
-            'map info info '
-            'forecast info info '
-            'forecast info info '
-            'symbols symbols symbols '
-            'copy copy copy ';
         }
       }
     `;

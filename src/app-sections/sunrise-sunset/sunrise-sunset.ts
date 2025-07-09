@@ -82,7 +82,7 @@ class SunriseSunset extends LitElement {
         gap: var(--space-l);
       }
 
-      @container (max-width: 25rem) {
+      @container (max-width: 27rem) {
         section {
           grid-template-columns: 1fr;
         }
@@ -210,7 +210,6 @@ class SunriseSunset extends LitElement {
         grid-template-columns: auto 1fr;
         grid-template-rows: auto auto;
         grid-gap: var(--space-s);
-        
       }
 
       .show-more,
