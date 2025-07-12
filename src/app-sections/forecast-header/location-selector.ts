@@ -25,6 +25,7 @@ class LocationSelector extends LitElement {
         display: block;
         text-align: center;
         max-width: 450px;
+        margin-bottom: -0.5rem;
       }
     `;
   }
