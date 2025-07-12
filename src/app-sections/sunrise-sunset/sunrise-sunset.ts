@@ -75,7 +75,7 @@ class SunriseSunset extends LitElement {
       }
 
       .uv {
-        padding: var(--space-xl);
+        padding: var(--margin);
         display: grid;
         align-items: center;
         text-align: center;
@@ -88,7 +88,7 @@ class SunriseSunset extends LitElement {
         }
 
         .uv {
-          padding: var(--space-xl) 3rem;
+          padding: var(--margin) 3rem;
         }
       }
 

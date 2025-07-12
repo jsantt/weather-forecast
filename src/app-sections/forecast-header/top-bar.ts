@@ -11,6 +11,7 @@ class TopBar extends LitElement {
     return css`
       :host {
         display: block;
+        padding: 0 var(--margin-header) var(--space-l) var(--margin-header);
       }
 
       header {
