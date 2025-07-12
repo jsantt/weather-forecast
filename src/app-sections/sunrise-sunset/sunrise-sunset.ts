@@ -102,7 +102,7 @@ class SunriseSunset extends LitElement {
       }
 
       .times {
-        padding: var(--space-l);
+        padding: var(--margin);
       }
 
       .uv-low {

@@ -108,7 +108,7 @@ class ForecastHeader extends LitElement {
 
         line-height: var(--line-height-dense);
 
-        padding: 0 var(--space-l);
+        padding: 0 var(--margin);
       }
       .selected-label {
         grid-area: label;
@@ -231,7 +231,6 @@ class ForecastHeader extends LitElement {
         return;
       }
 
-    
       // eslint-disable-next-line prefer-destructuring
       this._selectedStation = this.observationData.filter((item: any) => {
         return item.selectedStation === true;

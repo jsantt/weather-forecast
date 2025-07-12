@@ -32,6 +32,8 @@ class WeatherDayHeader extends LitElement {
   static get styles() {
     return css`
       :host {
+        background: var(--background-middle);
+
         display: grid;
         align-items: center;
         gap: var(--space-m);
@@ -41,7 +43,7 @@ class WeatherDayHeader extends LitElement {
 
         grid-template-rows: 4rem;
 
-        background: var(--background-middle);
+        padding: 0 var(--margin);
       }
 
       :host([expanded]) {
@@ -67,7 +69,6 @@ class WeatherDayHeader extends LitElement {
         font-weight: var(--font-weight-bold);
         text-transform: capitalize;
         color: var(--color-dark-and-light);
-        padding: var(--space-l);
       }
       .symbols {
         justify-self: center;
@@ -100,7 +101,6 @@ class WeatherDayHeader extends LitElement {
 
       expand-icon {
         color: var(--color-secondary-dark-and-light);
-        padding-right: 1.75rem;
       }
 
       .hide span {

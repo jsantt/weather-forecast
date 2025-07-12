@@ -43,8 +43,6 @@ class BottomNotification extends LitElement {
       section {
         color: var(--color-dark-and-light);
         font-size: var(--font-size-s);
-
-        padding: var(--space-l) 0 var(--space-l) var(--space-l);
       }
 
       header {

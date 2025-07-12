@@ -38,7 +38,7 @@ class WeatherSection extends LitElement {
       }
 
       :host([padding]) section {
-        padding: var(--padding-panel-textual);
+        padding: var(--margin);
       }
 
       :host([gray]) .lifted-heading {
@@ -63,7 +63,6 @@ class WeatherSection extends LitElement {
 
       section {
         background-color: var(--background-middle);
-        padding: var(--padding-panel);
         border-radius: var(--border-radius);
       }
 

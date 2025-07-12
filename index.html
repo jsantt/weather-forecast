@@ -67,34 +67,21 @@
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
         /* Responsive  */
-
-        --margin: 0rem;
-        --padding-body: 0;
-        --padding-panel: 0;
-        --padding-panel-textual: var(--space-xl) var(--space-m);
-
+        --margin: var(--space-l);
+        --margin-body: 0;
         --border-radius: 0;
 
-        @media only screen and (min-width: 360px) {
-          --margin: var(--space-s);
-        }
-
         @media only screen and (min-width: 400px) {
-          --border-radius: 5px;
-          --margin: var(--space-m);
-          --padding-panel: var(--space-m) var(--space-m);
-
-          --padding-panel-textual: var(--space-xl) var(--space-l);
-        }
-        @media only screen and (min-width: 450px) {
-          --margin: var(--space-l);
-        }
-
-        @media only screen and (min-width: 600px) {
           --margin: var(--space-xl);
         }
 
-        @media only screen and (min-width: 1200px) {
+        @media only screen and (min-width: 454px) {
+          --border-radius: 5px;
+          --margin: var(--space-xl);
+        }
+
+        @media only screen and (min-width: 500px) {
+          --margin-body: var(--margin);
         }
 
         /*

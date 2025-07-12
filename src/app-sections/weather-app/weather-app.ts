@@ -109,8 +109,8 @@ class WeatherApp extends LitElement {
 
         max-width: 1000px;
         padding-bottom: 5rem;
-        padding-left: var(--margin);
-        padding-right: var(--margin);
+        padding-left: var(--margin-body);
+        padding-right: var(--margin-body);
 
         padding-top: 1.5rem;
       }
