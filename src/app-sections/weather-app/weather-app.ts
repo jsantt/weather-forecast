@@ -268,23 +268,25 @@ class WeatherApp extends LitElement {
           </div>
         </weather-section>
 
-        <weather-section
-          pink
-          transparent
-          class="grid-item grid-forecast"
-          liftedHeading="Meteorologin ennuste"
-          ?padding=${false}
-        >
-          <!-- today, tomorrow and a day after tomorrow -->
-          <slot name="header"></slot>
+        ${this._forecast
+          ? html` <weather-section
+              pink
+              transparent
+              class="grid-item grid-forecast"
+              liftedHeading="Meteorologin ennuste"
+              ?padding=${false}
+            >
+              <!-- today, tomorrow and a day after tomorrow -->
+              <slot name="header"></slot>
 
-          <weather-days
-            .forecast="${this._forecast}"
-            ?showFeelsLike="${this._showFeelsLike}"
-            ?showWind="${this._showWind}"
-          >
-          </weather-days>
-        </weather-section>
+              <weather-days
+                .forecast="${this._forecast}"
+                ?showFeelsLike="${this._showFeelsLike}"
+                ?showWind="${this._showWind}"
+              >
+              </weather-days>
+            </weather-section>`
+          : ''}
 
         <sunrise-sunset
           class="grid-item grid-sun"
