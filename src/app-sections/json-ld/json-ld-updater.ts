@@ -10,13 +10,15 @@ function updateJsonSiteInfo() {
     sameAs: ['https://www.facebook.com/saaennuste.fi'],
     headline: 'Sää nyt ja 10 päivän ennuste',
     description:
-      'Nopein tapa tarkastaa Ilmatieteen laitoksen sääennuste. Palvelu tarjoaa ajantasaisen säätiedon ja 10 päivän ennusteen.',
+      'Luotettava Ilmatieteen laitoksen sääennuste - paras esitysmuoto. Näe sääasemien tiedot nyt ja sää tänään, huomenna ja 10 vrk vaivattomasti.',
     url: 'https://sääennuste.fi',
     keywords: [
       'sääennuste',
       'sää',
       'luotettavin sääennuste',
-      'ilmatieteen sää',
+      'Ilmatieteen sää',
+      'luotettava sääennuste',
+      'huomisen sää',
       'ilmanpaine',
       'ilmankosteus',
       'lumen syvyys',
