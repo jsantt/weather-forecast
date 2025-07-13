@@ -95,7 +95,14 @@ class ObservationData extends LitElement {
         'Cache-Control': 'no-cache',
       },
     })
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`
+          );
+        }
+        return response.text();
+      })
       .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then((parsedResponse) => {
         // Form [{feelsLike, humidity, ...}, {...}]

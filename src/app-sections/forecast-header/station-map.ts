@@ -124,7 +124,7 @@ class StationMap extends LitElement {
     } else {
       this.hundredIfNight = 0;
     }
-    if (this.observationError || this.observationData === undefined) {
+    if (this.observationError) {
       return html`<error-notification
         errorText="Sääasemien tietojen haku epäonnistui."
       >

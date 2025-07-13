@@ -251,7 +251,7 @@ class WeatherApp extends LitElement {
             ?loading="${this._loading}"
             .location="${this._location}"
             .observationData="${this._observationData}"
-            ?observationError="${this._observationError}"
+            ?observationError="${this._observationError || this._forecastError}"
             ?showFeelsLike="${this._showFeelsLike}"
             ?showWind="${this._showWind}"
           >

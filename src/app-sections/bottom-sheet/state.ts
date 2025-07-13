@@ -12,7 +12,6 @@ function getState(): string | null {
 
 function setState(value: string) {
   localStorage.setItem(KEY, value);
-  // console.log(`state changed to ${value}`);
 }
 
 function isState(value: string | null) {
