@@ -24,7 +24,7 @@ class ExternalLinks extends LitElement {
 
       svg,
       svg-icon {
-        fill: var(--color-blue);
+        fill: var(--color-dark-and-light);
       }
 
       svg-icon[path*='new-window'] {
