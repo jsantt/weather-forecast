@@ -106,17 +106,23 @@ class SunriseSunset extends LitElement {
       }
 
       .uv-low {
-        background-color: var(--color-green);
-        color: var(--color-dark);
+        background: var(--background-uv-low);
+        .uv-value {
+          color: var(--color-uv-low);
+        }
       }
       .uv-medium {
-        background-color: rgb(250, 228, 179);
-        color: var(--color-dark);
+        background: var(--background-uv-medium);
+        .uv-value {
+          color: var(--color-uv-medium);
+        }
       }
 
       .uv-high {
-        background-color: rgb(245, 211, 199);
-        color: var(--color-dark);
+        background: var(--background-uv-high);
+        .uv-value {
+          color: var(--color-uv-high);
+        }
       }
 
       .arrow-svg {

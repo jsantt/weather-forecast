@@ -14,6 +14,16 @@ class WeatherInfo extends LitElement {
         display: block;
       }
 
+      .grid {
+        display: grid;
+        grid-template-rows: auto auto;
+        height: 100%;
+      }
+
+      .text {
+        padding-bottom: var(--space-l);
+      }
+
       p {
         margin: 0;
       }
@@ -52,40 +62,40 @@ class WeatherInfo extends LitElement {
   render() {
     return html`
       <weather-section pink padding liftedHeading="Sääennuste.fi">
-        <svg-icon
-          medium
-          class="info-icon"
-          path="assets/image/icons.svg#info"
-        ></svg-icon>
+        <div class="grid">
+          <div class="text">
+            <svg-icon
+              medium
+              class="info-icon"
+              path="assets/image/icons.svg#info"
+            ></svg-icon>
 
-        <p>
-          Sääennuste &ndash; Ilmatieteen laitoksen luotettava ennuste. Näet sään
-          nyt, ilmanpaineen, ilmankosteuden, uv-ennusteen sekä virallisen
-          meteorologin tuntiennusteen yhdellä silmäyksellä.
-        </p>
+            <p>
+              Sääennuste &ndash; Ilmatieteen laitoksen luotettava ennuste. Näet
+              sään nyt, ilmanpaineen, ilmankosteuden, uv-ennusteen sekä
+              virallisen meteorologin tuntiennusteen yhdellä silmäyksellä.
+            </p>
 
-        <h3>Sää nyt</h3>
-        <p>
-          Näet kaikki lähistön sääasemat ja niiden jopa minuutin välein
-          päivittyvät tiedot pelkistetyllä kartalla.
-        </p>
+            <h3>Sää nyt</h3>
+            <p>
+              Näet kaikki lähistön sääasemat ja niiden jopa minuutin välein
+              päivittyvät tiedot pelkistetyllä kartalla.
+            </p>
 
-        <h3>Yksityisyys</h3>
-        Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja käyttäytyminen
-        kerätään käyttäjää tunnistamatta, joten sinun tarvitse hyväksyä turhia
-        käyttöehtoja.
-        <div slot="footer-left"></div>
-        <div slot="footer-right">
-          <svg-icon path="assets/image/icons.svg#cookie"></svg-icon>
+            <h3>Yksityisyys</h3>
+            Palvelu ei käytä evästeitä. Sivuston kävijämäärä ja käyttäytyminen
+            kerätään käyttäjää tunnistamatta, joten sinun tarvitse hyväksyä
+            turhia käyttöehtoja.
+
+            <h3>Palaute</h3>
+            <p>
+              Onko jokin rikki, puuttuuko ominaisuus tai onko sinulla idea miten
+              parantaisit sovellusta? Ota yhteyttä palaute@saaennuste.fi.
+            </p>
+          </div>
+
+          <share-app></share-app>
         </div>
-
-        <h3>Palaute</h3>
-        <p>
-          Onko jokin rikki, puuttuuko ominaisuus tai onko sinulla idea miten
-          parantaisit sovellusta? Ota yhteyttä palaute@saaennuste.fi.
-        </p>
-
-        <share-app></share-app>
       </weather-section>
     `;
   }
