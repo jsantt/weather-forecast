@@ -9,6 +9,15 @@ class BottomNotification extends LitElement {
     return 'bottom-notification';
   }
 
+  @property({ type: Boolean, reflect: true })
+  showInstall?: boolean;
+
+  @property({ type: String, reflect: true })
+  errorText?: string;
+
+  @property({ type: Boolean, reflect: true })
+  ios?: boolean;
+
   static get styles() {
     return css`
       :host {
@@ -19,25 +28,26 @@ class BottomNotification extends LitElement {
         position: fixed;
         top: 0;
         bottom: auto;
-        border-radius: 0;
       }
 
       .content {
         background: var(--background-topmost);
 
-        border-radius: 0.75rem;
-        border-top-right-radius: 0.75rem;
+        border-radius: var(--border-radius);
+
+        box-shadow: var(--box-shadow);
 
         display: grid;
         grid-template-columns: auto auto;
         max-width: 456px;
+
+        padding: var(--space-l);
         margin: 0 auto var(--space-l) auto;
 
         position: absolute;
         bottom: calc(45px + var(--safe-area-inset-bottom));
         left: 0px;
         right: 0px;
-        box-shadow: var(--box-shadow);
       }
 
       section {
@@ -49,11 +59,12 @@ class BottomNotification extends LitElement {
         margin: 0;
         font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
+        padding-bottom: var(--space-l);
       }
 
       .close {
         margin-left: auto;
-        padding: var(--space-l) var(--space-l) 0 var(--space-l);
+        padding: 0 0 var(--space-l) var(--space-l);
       }
 
       .home-icon {
@@ -98,7 +109,7 @@ class BottomNotification extends LitElement {
             <section aria-live="polite">
               ${this.showInstall === true
                 ? html` <header>
-                      Voit lisätä sovelluksen kotivalikkoon tai työpyödälle
+                      Lisää sovellus kotivalikkoon tai työpyödälle
                     </header>
                     ${this.ios
                       ? html` <ol>
@@ -144,15 +155,6 @@ class BottomNotification extends LitElement {
         : ''}
     `;
   }
-
-  @property({ type: Boolean, reflect: true })
-  showInstall?: boolean;
-
-  @property({ type: String, reflect: true })
-  errorText?: string;
-
-  @property({ type: Boolean, reflect: true })
-  ios?: boolean;
 
   _dispatchEvent(
     name: string,

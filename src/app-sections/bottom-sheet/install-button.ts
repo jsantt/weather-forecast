@@ -11,6 +11,7 @@ class InstallButton extends LitElement {
     return css`
       :host {
         display: block;
+        text-align: center;
       }
 
       button {
@@ -18,8 +19,7 @@ class InstallButton extends LitElement {
         border-radius: 3rem;
 
         color: var(--color-dark);
-        
-        
+
         font-family: inherit;
         font-optical-sizing: inherit;
         font-style: inherit;
@@ -29,6 +29,7 @@ class InstallButton extends LitElement {
         font-weight: var(--font-weight-bold);
 
         margin: 0;
+        max-width: 12rem;
         padding: var(--space-m) var(--space-l);
 
         text-align: center;
