@@ -31,6 +31,11 @@ class StationDetails extends LitElement {
         font-weight: 400;
       }
 
+      .unit {
+        color: var(--color-gray-500);
+        font-size: var(--font-size-xs);
+      }
+
       .explanation {
         color: var(--color-gray-500);
       }
@@ -67,7 +72,9 @@ class StationDetails extends LitElement {
         this.station?.humidity
           ? html`
               <div class="item">
-                <div class="value">${this.station.humidity} %</div>
+                <div class="value">
+                  ${this.station.humidity} <span class="unit">%</span>
+                </div>
                 <div class="explanation">ilmankosteus</div>
               </div>
             `
@@ -78,7 +85,8 @@ class StationDetails extends LitElement {
           ? html`
               <div class="item">
                 <div class="value">
-                  ${Math.round(this.station.pressure)} hPa
+                  ${Math.round(this.station.pressure)}
+                  <span class="unit">hPa</span>
                 </div>
                 <div class="explanation">ilmanpaine</div>
               </div>
@@ -89,7 +97,9 @@ class StationDetails extends LitElement {
         this.station?.dewPoint
           ? html`
               <div class="item">
-                <div class="value">${this.station.dewPoint} °C</div>
+                <div class="value">
+                  ${this.station.dewPoint} <span class="unit">°C</span>
+                </div>
                 <div class="explanation">kastepiste</div>
               </div>
             `
@@ -99,7 +109,9 @@ class StationDetails extends LitElement {
         this.station?.visibility
           ? html`
               <div class="item">
-                <div class="value">${this.station.visibility} km</div>
+                <div class="value">
+                  ${this.station.visibility} <span class="unit">km</span>
+                </div>
                 <div class="explanation">näkyvyys</div>
               </div>
             `
@@ -109,7 +121,9 @@ class StationDetails extends LitElement {
         this.station && StationDetails._snow(this.station.snow)
           ? html`
               <div class="item">
-                <div class="value">${this.station.snow} cm</div>
+                <div class="value">
+                  ${this.station.snow} <span class="unit">cm</span>
+                </div>
                 <div class="explanation">lumen syvyys</div>
               </div>
             `
@@ -119,7 +133,9 @@ class StationDetails extends LitElement {
         this.station?.rainExplanation
           ? html`
               <div class="item">
-                <div class="value">${this.station.rainExplanation} mm/h</div>
+                <div class="value">
+                  ${this.station.rainExplanation} <span class="unit">mm/h</span>
+                </div>
                 <div class="explanation">sateen rankkuus</div>
                 <div></div>
               </div>
@@ -130,7 +146,9 @@ class StationDetails extends LitElement {
         this.station?.rain
           ? html`
               <div class="item">
-                <div class="value">${this.station.rain} mm</div>
+                <div class="value">
+                  ${this.station.rain} <span class="unit">mm</span>
+                </div>
                 <div class="explanation">sade / edeltävä h</div>
               </div>
             `
@@ -155,7 +173,11 @@ class StationDetails extends LitElement {
       </div>
     -->
       <div class="item updated-time">
-      ${this.station?.calculated ? `Laskennallinen` : `havainnot klo ${StationDetails._time(this.station?.timestamp)}`}
+      ${
+        this.station?.calculated
+          ? `Laskennallinen`
+          : `havainnot klo ${StationDetails._time(this.station?.timestamp)}`
+      }
       </div>
     `;
   }

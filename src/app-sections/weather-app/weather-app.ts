@@ -273,7 +273,7 @@ class WeatherApp extends LitElement {
               pink
               transparent
               class="grid-item grid-forecast"
-              liftedHeading="Meteorologin ennuste"
+              liftedHeading="Meteorologin 10 vrk sääennuste"
               ?padding=${false}
             >
               <!-- today, tomorrow and a day after tomorrow -->

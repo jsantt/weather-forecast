@@ -103,6 +103,11 @@ class WeatherDayHeader extends LitElement {
         color: var(--color-secondary-dark-and-light);
       }
 
+      .today {
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-normal);
+      }
+
       .hide span {
         display: none;
       }
@@ -115,11 +120,8 @@ class WeatherDayHeader extends LitElement {
 
   private dayText() {
     let text: string;
-    if (this.dayNumber === 1) {
-      text = 'Tänään';
-    } else {
-      text = getWeekdayShort(this.dayNumber);
-    }
+
+    text = getWeekdayShort(this.dayNumber);
 
     if (this.expanded) {
       text += ` ${getDayNumber(this.dayNumber)}`;
@@ -131,7 +133,16 @@ class WeatherDayHeader extends LitElement {
     if (!this.forecastDay) {
       return;
     }
-    return html` <header>${this.dayText()}</header>
+    return html` <header>
+        ${this.dayText()}
+        <div class="today">
+          ${this.dayNumber === 1 ? 'tänään' : ''}${this.dayNumber === 2
+            ? 'huomenna'
+            : ''}${this.dayNumber === 3
+            ? 'ylihuomenna'
+            : ''}
+        </div>
+      </header>
       <div
         class=${classMap({
           temperature: true,

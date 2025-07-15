@@ -58,6 +58,11 @@ class StationMap extends LitElement {
         padding: var(--space-xl) var(--space-l) 0 var(--space-l);
       }
 
+      .heading-forecast {
+        font-size: var(--font-size-xs);
+        color: var(--color-gray-500);
+      }
+
       .temperature {
         font-size: 0.13px;
 

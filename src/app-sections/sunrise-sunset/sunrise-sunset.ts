@@ -374,12 +374,16 @@ class SunriseSunset extends LitElement {
       return '';
     }
 
-    if (uvi <= 2) {
-      return 'UV-säteily on heikkoa, suojautumista ei tarvita';
+    if (uvi < 2) {
+      return 'UV-säteily on heikkoa, aurinkosuojaa ei tarvita';
     }
 
-    if (uvi <= 3) {
-      return 'UV-säteily on kohtalaista, harkitse aurinkosuojaa';
+    if (uvi < 3) {
+      return 'UV-säteily on heikkoa, harkitse aurinkosuojaa';
+    }
+
+    if (uvi < 6) {
+      return 'UV-säteily on kohtalaista, käytä aurinkosuojaa';
     }
 
     return 'UV-säteily on voimakasta, käytä aurinkosuojaa';
