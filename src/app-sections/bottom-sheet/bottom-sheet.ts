@@ -191,7 +191,7 @@ class BottomSheet extends LitElement {
   _notification?: string;
 
   private _forceShowIos = false;
-  private _forceShowOthers = true;
+  private _forceShowOthers = false;
 
   render() {
     return html`
