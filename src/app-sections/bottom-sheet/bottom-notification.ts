@@ -57,8 +57,7 @@ class BottomNotification extends LitElement {
 
       header {
         margin: 0;
-        font-size: var(--font-size-m);
-        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-s);
         padding-bottom: var(--space-l);
       }
 
@@ -109,7 +108,10 @@ class BottomNotification extends LitElement {
             <section aria-live="polite">
               ${this.showInstall === true
                 ? html` <header>
-                      Lisää sovellus kotivalikkoon tai työpyödälle
+                      Lisää tämä sääsovellus kotivalikkoon tai työpöydälle ja
+                      käytä sitä kuin tavallista sovellusta! Asennus on nopeaa,
+                      eikä sovellus käytä evästeitä tai kerää yksilöiviä
+                      tietoja.
                     </header>
                     ${this.ios
                       ? html` <ol>
@@ -123,7 +125,7 @@ class BottomNotification extends LitElement {
                           </li>
                           <li>vieritä alaspäin</li>
                           <li>
-                            valitse "lisää Koti-valikkoon"
+                            valitse "Lisää Koti-valikkoon"
                             <svg-icon
                               path="assets/image/icons.svg#add-home"
                               small
