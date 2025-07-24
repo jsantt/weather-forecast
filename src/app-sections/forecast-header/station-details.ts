@@ -54,15 +54,6 @@ class StationDetails extends LitElement {
       .description .value {
         font-weight: 300;
       }
-
-      .updated-time {
-        grid-column: 1 / -1;
-
-        color: var(--color-light);
-        font-size: var(--font-size-s);
-
-        text-align: right;
-      }
     `;
   }
 
@@ -172,13 +163,6 @@ class StationDetails extends LitElement {
         <div class="explanation">symbol</div>
       </div>
     -->
-      <div class="item updated-time">
-      ${
-        this.station?.calculated
-          ? `Laskennallinen`
-          : `havainnot klo ${StationDetails._time(this.station?.timestamp)}`
-      }
-      </div>
     `;
   }
 

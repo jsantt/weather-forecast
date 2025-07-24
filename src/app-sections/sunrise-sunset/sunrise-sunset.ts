@@ -375,18 +375,18 @@ class SunriseSunset extends LitElement {
     }
 
     if (uvi < 2) {
-      return 'UV-säteily on heikkoa, aurinkosuojaa ei tarvita';
+      return 'UV-säteily on heikkoa, auringolta suojautumista ei tarvita';
     }
 
     if (uvi < 3) {
-      return 'UV-säteily on heikkoa, harkitse aurinkosuojaa';
+      return 'UV-säteily on heikkoa, harkitse auringolta suojautumista';
     }
 
     if (uvi < 6) {
-      return 'UV-säteily on kohtalaista, käytä aurinkosuojaa';
+      return 'UV-säteily on kohtalaista, suojaudu auringolta';
     }
 
-    return 'UV-säteily on voimakasta, käytä aurinkosuojaa';
+    return 'UV-säteily on voimakasta, suojaudu auringolta';
   }
 }
 window.customElements.define(SunriseSunset.is, SunriseSunset);

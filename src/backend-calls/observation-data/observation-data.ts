@@ -204,14 +204,8 @@ class ObservationData extends LitElement {
       'visibility'
     );
 
-    calculatedItem.timestamp = formattedObservations.reduce(
-      (accumulator, observation) => {
-        return observation.timestamp > accumulator
-          ? observation.timestamp
-          : accumulator;
-      },
-      0
-    );
+    const calculatedTimestamp = formattedObservations.at(0).timestamp;
+    calculatedItem.timestamp = calculatedTimestamp;
 
     // use nearest wawa code, average hard to calculate
     calculatedItem.wawaCode = formattedObservations

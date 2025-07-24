@@ -157,7 +157,7 @@ function getWeatherObservation(wawaCode?: number, cloudiness?: number): string {
     return description;
   }
 
-  return `Nyt ${description.toLocaleLowerCase()}`;
+  return description;
 }
 
 function getSmartSymbol(

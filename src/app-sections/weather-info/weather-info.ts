@@ -78,8 +78,13 @@ class WeatherInfo extends LitElement {
 
             <h3>Sää nyt</h3>
             <p>
-              Näet kaikki lähistön sääasemat ja niiden jopa minuutin välein
-              päivittyvät tiedot pelkistetyllä kartalla.
+              Pelkistetty kartta näyttää kaikki lähistön
+              <a href="https://www.ilmatieteenlaitos.fi/havaintoasemat"
+                >Ilmatieteen laitoksen sääasemat</a
+              >
+              kerralla ja kertoo virallisesti mitatun lämpötilan ja sään. Tiedät
+              luotettavasti, jos lähistöllä sataa. Sääasemat päivittävät
+              tietonsa 1&ndash;10 minuutin välein.
             </p>
 
             <h3>Yksityisyys</h3>

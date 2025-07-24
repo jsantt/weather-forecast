@@ -10,7 +10,8 @@ import '../../common-components/expand-icon.js';
 import './location-selector.ts';
 import './station-map.ts';
 import './station-details.ts';
-import { property } from 'lit/decorators.js';
+import './last-updated.ts';
+import { property, state } from 'lit/decorators.js';
 import { Station } from '../../backend-calls/observation-data/observation-data.ts';
 import { LocationCoordinates } from './station-map.ts';
 
@@ -40,8 +41,11 @@ class ForecastHeader extends LitElement {
   @property({ type: Boolean, reflect: true })
   showWind?: boolean;
 
-  @property({ type: Object })
+  @state()
   _selectedStation?: Station;
+
+  @state()
+  _updatedMinutesAgo?: number;
 
   static get styles() {
     return css`
@@ -65,10 +69,6 @@ class ForecastHeader extends LitElement {
         background-position: center;
 
         padding-bottom: var(--space-xl);
-      }
-
-      :host([showDetails]) header {
-        padding-bottom: var(--space-l);
       }
 
       h2 {
@@ -98,18 +98,17 @@ class ForecastHeader extends LitElement {
       .selected {
         display: grid;
         grid-template-columns: auto 1fr 1fr;
-        grid-template-rows: auto auto auto var(--space-m);
 
         grid-template-areas:
           'label    wind    expand  '
           'name     wind    expand  '
           'details  details details '
-          '.        .       .       ';
+          'updated  updated updated ';
 
         line-height: var(--line-height-dense);
-
         padding: 0 var(--margin);
       }
+
       .selected-label {
         grid-area: label;
 
@@ -148,6 +147,14 @@ class ForecastHeader extends LitElement {
         margin: var(--space-l) 0 0 0;
         padding: 0;
       }
+
+      .updated {
+        color: var(--color-gray-500);
+        grid-area: updated;
+        justify-self: end;
+
+        padding-top: var(--space-m);
+      }
     `;
   }
 
@@ -162,62 +169,51 @@ class ForecastHeader extends LitElement {
           ?showFeelsLike="${this.showFeelsLike}"
           ?showWind="${this.showWind}"
         ></station-map>
-            <div class="selected" @click="${this._expand}">
-            ${
-              this._selectedStation
-                ? html`
-                    <div class="selected-label">
-                      ${this._selectedStation?.calculated
-                        ? ''
-                        : html`SÄÄASEMA ${this._selectedStation?.distance} km`}
-                    </div>
+        <div class="selected" @click="${this._expand}">
+          ${this._selectedStation
+            ? html`
+                <div class="selected-label">
+                  ${this._selectedStation?.calculated
+                    ? ''
+                    : html`SÄÄASEMA ${this._selectedStation?.distance} km`}
+                </div>
 
-                    <expand-icon
-                      ?open=${this.showDetails}
-                      class="expand-icon"
-                    ></expand-icon>
-                  `
-                : null
-            }
-            <div class="selected-name">
-              
-              <span class="selected-text">
-              ${
-                this._selectedStation?.calculated
-                  ? this._selectedStation.name
-                  : this._selectedStation?.name
-              }
-               </span>
-              
-               </div>
-               <div class="selected-details">
-                <smooth-expand ?expanded="${this.showDetails}">
-                  <station-details
-                      .station="${this._selectedStation}"
-                    ></station-details>
-                </smooth-expand>
-
-                
-               </div>
-                ${
-                  this._selectedStation
-                    ? html` <wind-icon
-                        .degrees="${this._selectedStation.windDirection}"
-                        large
-                        .rating="${windClassification(
-                          this._selectedStation.windGust
-                        )}"
-                        whiteGust
-                        .windSpeed="${this._selectedStation?.wind}"
-                        .windGustSpeed="${this._selectedStation?.windGust}"
-                      >
-                      </wind-icon>`
-                    : null
-                }
-                      
-              </div>
-            </div>
-            
+                <expand-icon
+                  ?open=${this.showDetails}
+                  class="expand-icon"
+                ></expand-icon>
+              `
+            : null}
+          <div class="selected-name">
+            <span class="selected-text">
+              ${this._selectedStation?.calculated
+                ? this._selectedStation.name
+                : this._selectedStation?.name}
+            </span>
+          </div>
+          <div class="selected-details">
+            <smooth-expand ?expanded="${this.showDetails}">
+              <station-details
+                .station="${this._selectedStation}"
+              ></station-details>
+            </smooth-expand>
+          </div>
+          ${this._selectedStation
+            ? html` <wind-icon
+                .degrees="${this._selectedStation.windDirection}"
+                large
+                .rating="${windClassification(this._selectedStation.windGust)}"
+                whiteGust
+                .windSpeed="${this._selectedStation?.wind}"
+                .windGustSpeed="${this._selectedStation?.windGust}"
+              >
+              </wind-icon>`
+            : null}
+          <last-updated
+            .lastUpdated=${this._selectedStation?.timestamp}
+            class="updated"
+          ></last-updated>
+        </div>
       </header>
     `;
   }
@@ -235,7 +231,17 @@ class ForecastHeader extends LitElement {
       this._selectedStation = this.observationData.filter((item: any) => {
         return item.selectedStation === true;
       })[0];
+
+      this._updatedMinutesAgo = this.calculateLastUpdated(
+        this._selectedStation.timestamp
+      );
     });
+  }
+
+  private calculateLastUpdated(timestamp: Date) {
+    const now = Date.now();
+    const stationTime = new Date(timestamp).getTime();
+    return Math.floor((now - stationTime) / 60000);
   }
 
   _expand() {
