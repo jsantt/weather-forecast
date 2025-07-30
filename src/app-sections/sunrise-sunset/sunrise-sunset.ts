@@ -248,9 +248,7 @@ class SunriseSunset extends LitElement {
             })}"
           >
             <div class="uv-label">
-              <div>
-                ${this.radiation ? 'UV-Indeksi' : 'UV-indeksi ei saatavilla'}
-              </div>
+              <div>UV-Indeksi</div>
               <div class="uv-place">${this.radiation?.place}</div>
             </div>
 
@@ -371,7 +369,7 @@ class SunriseSunset extends LitElement {
 
   private static getUvMessage(uvi: number | undefined) {
     if (uvi === undefined) {
-      return '';
+      return 'Ei saatavilla';
     }
 
     if (uvi < 2) {
