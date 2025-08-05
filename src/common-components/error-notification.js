@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 
-import './svg-icon.js';
+import './svg-icon';
 
 class ErrorNotification extends LitElement {
   static get is() {
@@ -31,6 +31,10 @@ class ErrorNotification extends LitElement {
         height: 124px;
         width: 124px;
       }
+
+      .try-again {
+        padding: var(--space-l);
+      }
     `;
   }
 
@@ -49,7 +53,7 @@ class ErrorNotification extends LitElement {
         : ''
     }
         </div>
-        <div><a href="">Kokeile uudelleen.</a></div>
+        <div class="try-again"><a href="">Kokeile uudelleen.</a></div>
       </section>
     `;
   }

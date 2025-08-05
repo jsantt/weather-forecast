@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import '../weather-section/weather-section';
-import '../../common-components/svg-icon';
+import '../../common-components/svg-icon.js';
 import('../share-app/share-app.js');
 
 class WeatherInfo extends LitElement {

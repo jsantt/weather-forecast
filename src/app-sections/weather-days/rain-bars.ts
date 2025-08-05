@@ -112,7 +112,7 @@ class RainBars extends LitElement {
         );
 
         bar.setAttribute('class', `rainBar ${hour.rainType}`);
-        bar.setAttribute('width', '9');
+        bar.setAttribute('width', '8');
 
         const rectHeight = RainBars._rectHeight(
           hour.rain,

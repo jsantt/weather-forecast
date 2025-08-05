@@ -1,16 +1,26 @@
 import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
-class SvgIcon extends LitElement {
+export class SvgIcon extends LitElement {
   static get is() {
     return 'svg-icon';
   }
+
+  @property({ type: String, reflect: true })
+  path?: string;
+
+  @property({ type: Boolean, reflect: true })
+  small: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  medium: boolean = false;
 
   static get styles() {
     return css`
       :host {
         display: inline-block;
-        height: 45px;
-        width: 45px;
+        height: 48px;
+        width: 48px;
 
         vertical-align: middle;
       }
@@ -61,27 +71,15 @@ class SvgIcon extends LitElement {
     `;
   }
 
-  static get properties() {
-    return {
-      path: {
-        type: String,
-        reflect: true,
-      },
-      small: {
-        type: Boolean,
-        reflect: true,
-      },
-      medium: {
-        type: Boolean,
-        reflect: true,
-      },
-    };
-  }
-
   updated() {
-    this.shadowRoot
-      .querySelector('use')
-      .setAttributeNS('http://www.w3.org/1999/xlink', 'href', this.path);
+    const useElement = this.shadowRoot?.querySelector('use');
+    if (useElement && this.path) {
+      useElement.setAttributeNS(
+        'http://www.w3.org/1999/xlink',
+        'href',
+        this.path
+      );
+    }
   }
 }
 

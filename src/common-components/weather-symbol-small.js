@@ -1,11 +1,6 @@
 import { css, html, LitElement } from 'lit';
-import './svg-icon.js';
+import './svg-icon';
 
-/**
- * Snow: 41, 42, 43, 51, 52, 53 / [40-60]
- * thunder: 61, 62, 63, 64
- * slush: 71, 72, 73, 81, 82, 83
- */
 class WeatherSymbolSmall extends LitElement {
   static get is() {
     return 'weather-symbol-small';

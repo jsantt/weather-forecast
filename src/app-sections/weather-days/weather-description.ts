@@ -26,7 +26,7 @@ class WeatherDescription extends LitElement {
     return css`
       :host {
         display: block;
-        padding: var(--space-l) var(--margin);
+        padding: var(--space-l) 0;
       }
       .rain {
         fill: var(--color-rain);

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 
-import '../../common-components/svg-icon.js';
+import '../../common-components/svg-icon';
 
 class MaxWind extends LitElement {
   static get is() {

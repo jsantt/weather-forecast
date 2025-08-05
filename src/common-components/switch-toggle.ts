@@ -1,0 +1,50 @@
+import { LitElement, html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+
+@customElement('switch-toggle')
+export class SwitchToggle extends LitElement {
+  @property({ type: Boolean, reflect: true })
+  checked = false;
+
+  static styles = css`
+    :host {
+      display: inline-block;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    input[type='checkbox'] {
+      width: 1.5em;
+      height: 1.5em;
+      accent-color: var(--switch-toggle-accent, #0078d4);
+    }
+  `;
+
+  render() {
+    return html`
+      <label>
+        <slot></slot>
+        <input
+          type="checkbox"
+          class="switch-label-with-fallback visually-hidden"
+          id="switchv2"
+          ?checked=${this.checked}
+          @change=${this._onChange}
+        />
+      </label>
+    `;
+  }
+
+  private _onChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.dispatchEvent(
+      new CustomEvent('switch-toggle.change', {
+        detail: input.checked,
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+}

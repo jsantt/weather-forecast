@@ -24,6 +24,7 @@ import { LocationCoordinates } from '../../app-sections/forecast-header/station-
 
 type ForecastResponse = {
   humidity: HTMLCollection;
+  pressure: HTMLCollection;
   rain: HTMLCollection;
   rainProbability: HTMLCollection;
   smartSymbol: HTMLCollection;
@@ -85,6 +86,7 @@ type ForecastHourPartial = {
   threeHourWindMax: number;
 
   threeHourWindMaxGust: number;
+  pressure: number;
   rain: number;
   rainProbability: number;
   roundWind: number;
@@ -137,14 +139,12 @@ class ForecastData extends LitElement {
 
     this.dispatch('forecast-data.fetching');
 
-    // 'Humidity,ProbabilityThunderstorm,PrecipitationType,TotalCloudCover,PoP,RadiationLW,RadiationGlobal,WeatherNumber,Pressure',
-
     const params = {
       request: 'getFeature',
       storedquery_id:
         'fmi::forecast::edited::weather::scandinavia::point::timevaluepair',
       parameters:
-        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol,PoP',
+        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol,PoP,Pressure,Humidity',
       starttime: ForecastData._todayFirstHour(),
       endtime: ForecastData._endTime(),
       latlon: this.location.coordinates,
@@ -212,6 +212,7 @@ class ForecastData extends LitElement {
             hour: 3,
             feelsLike: NaN,
             humidity: NaN,
+            pressure: NaN,
             rain: NaN,
             rainProbability: NaN,
             rainProbabilityAggregate: NaN,
@@ -294,6 +295,7 @@ class ForecastData extends LitElement {
 
     return {
       humidity: getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity'),
+      pressure: getTimeAndValuePairs(timeSeries, 'mts-1-1-Pressure'),
       rain: getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h'),
       rainProbability: getTimeAndValuePairs(timeSeries, 'mts-1-1-PoP'),
       smartSymbol: getTimeAndValuePairs(timeSeries, 'mts-1-1-SmartSymbol'),
@@ -316,6 +318,7 @@ class ForecastData extends LitElement {
       const roundWindGust = Math.round(windGustValue);
       const rain = getValue(response.rain[i]);
       const rainProbability = getValue(response.rainProbability[i]);
+      const pressure = Math.round(getValue(response.pressure[i]));
       const smartSymbol = getValue(response.smartSymbol[i]);
 
       // previous wind and wind gust
@@ -337,7 +340,8 @@ class ForecastData extends LitElement {
 
       const forecastEntry: ForecastHourPartial & ForecastHourOptional = {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
-        humidity: humidityValue,
+        humidity: Math.round(humidityValue),
+        pressure,
         rain,
         rainProbability,
         snow: snowAmount(temperatureValue, rain, smartSymbol),

@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit';
 
 import './rain-bars.js';
 import './weather-description.js';
-import '../../common-components/smooth-expand.js';
 import '../../common-components/weather-symbol-small.js';
 import '../../common-components/wind-icon.js';
 import { windClassification } from './wind-helper.js';
@@ -24,6 +23,12 @@ class WeatherDay extends LitElement {
 
   @property({ type: Boolean, reflect: true })
   showWind: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  showPressure: boolean = false;
+
+  @property({ type: Boolean, reflect: true })
+  showHumidity: boolean = false;
 
   @property({ type: Object })
   forecastDay?: ForecastDay;
@@ -85,7 +90,9 @@ class WeatherDay extends LitElement {
         grid-template-columns: repeat(25, 1fr);
         grid-template-rows: minmax(0rem, auto);
 
-        padding-right: var(--space-m);
+        padding-left: var(--margin);
+
+        padding-right: var(--margin);
       }
 
       :host([daynumber='2']) day,
@@ -130,6 +137,48 @@ class WeatherDay extends LitElement {
         margin-bottom: var(--space-s);
       }
 
+      .pressure--text {
+        grid-row: 10;
+        grid-column: 2 / span 25;
+      }
+
+      .pressure--text,
+      .humidity--text {
+        font-size: var(--font-size-xs);
+        padding-top: var(--space-l);
+      }
+
+      .pressure {
+        grid-row: 11;
+        grid-column: span 3;
+      }
+
+      .pressure--empty {
+        grid-row: 11;
+        grid-column: span 1;
+      }
+
+      .humidity--text {
+        grid-row: 12;
+        grid-column: 2 / span 25;
+      }
+
+      .humidity {
+        grid-row: 13;
+        grid-column: span 3;
+      }
+
+      .humidity--empty {
+        grid-row: 13;
+        grid-column: span 1;
+      }
+
+      .pressure,
+      .humidity {
+        font-size: var(--font-size-s);
+        text-align: center;
+      }
+
       .hour--empty {
         grid-column: span 1;
       }
@@ -172,18 +221,6 @@ class WeatherDay extends LitElement {
         color: var(--color-dark-and-light);
       }
 
-      .temperature--min span {
-      }
-
-      .temperature--max span {
-      }
-
-      .temperature_line {
-        grid-column: span 25;
-        grid-row: 7;
-        height: 0;
-      }
-
       weather-description {
         grid-row: 100;
         grid-column: span 25;
@@ -198,8 +235,9 @@ class WeatherDay extends LitElement {
 
       .wind,
       .wind--empty {
-        grid-row: 9;
-        margin-top: 0.7rem;
+        grid-row: 7;
+        margin-top: 0.8rem;
+        margin-bottom: var(--space-m);
       }
 
       .temperature--empty,
@@ -214,19 +252,21 @@ class WeatherDay extends LitElement {
 
       .wind,
       .wind--empty,
-      weather-description,
-      smooth-expand {
+      weather-description {
         z-index: var(--z-index-2);
       }
 
       rain-bars {
         grid-column: span 25;
-        grid-row: 12;
+        grid-row: 8;
+        padding-top: var(--space-m);
       }
 
       .hourly-symbols {
-        grid-row: 13;
+        grid-row: 9;
+
         margin-top: -1.5rem;
+        margin-left: 0.4rem;
 
         z-index: var(--z-index-1);
       }
@@ -268,6 +308,18 @@ class WeatherDay extends LitElement {
                     <div class="symbol--empty"></div>
                     <div class="temperature--empty"></div>
                     <div class="wind--empty"></div>
+                    ${this.showPressure
+                      ? html`
+                          <div class="pressure--text">Ilmanpaine (hPa)</div>
+                          <div class="pressure--empty"></div>
+                        `
+                      : null}
+                    ${this.showHumidity
+                      ? html` <div class="humidity--text">
+                            Suhteellinen ilmankosteus (%)
+                          </div>
+                          <div class="humidity--empty"></div>`
+                      : null}
                   `
                 : ''}
 
@@ -337,6 +389,12 @@ class WeatherDay extends LitElement {
                           : ''}
                       </span>
                     </div>
+                    ${this.showPressure
+                      ? html` <div class="pressure">${hour.pressure}</div> `
+                      : null}
+                    ${this.showHumidity
+                      ? html` <div class="humidity">${hour.humidity}</div> `
+                      : null}
                     <wind-icon
                       class="symbol wind"
                       .degrees="${hour.windDirection}"
@@ -347,7 +405,8 @@ class WeatherDay extends LitElement {
                       ?isDayHighest=${!!(
                         (hour.hour === 3 &&
                           this.forecastDay?.dayHighestWindGustHour === 1) ||
-                        (this.forecastDay?.dayHighestWindGustHour !== undefined &&
+                        (this.forecastDay?.dayHighestWindGustHour !==
+                          undefined &&
                           Math.abs(
                             hour.hour - this.forecastDay.dayHighestWindGustHour
                           ) <= 1)

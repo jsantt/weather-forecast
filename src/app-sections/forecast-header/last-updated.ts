@@ -13,7 +13,7 @@ export class LastUpdated extends LitElement {
   lastUpdated?: Date;
 
   @state()
-  private minutesAgo = 0;
+  private minutesAgo?: number = undefined;
 
   private timerId: number | undefined;
 
@@ -47,7 +47,9 @@ export class LastUpdated extends LitElement {
   private startTimer() {
     this.stopTimer();
     this.timerId = window.setInterval(() => {
-      this.minutesAgo += 1;
+      if (this.minutesAgo !== undefined) {
+        this.minutesAgo += 1;
+      }
     }, 60000);
   }
 
@@ -62,12 +64,15 @@ export class LastUpdated extends LitElement {
   }
 
   render() {
-    if(this.minutesAgo === undefined) {
+    if (this.minutesAgo === undefined) {
       return null;
     }
     return html`
       <span class="last-updated">
-        ${this.minutesAgo === 0 ? 'Nyt' : html`${this.minutesAgo} minuutti${this.minutesAgo === 1 ? '' : 'a'} sitten`}
+        ${this.minutesAgo === 0
+          ? 'Nyt'
+          : html`${this.minutesAgo} minuutti${this.minutesAgo === 1 ? '' : 'a'}
+            sitten`}
       </span>
     `;
   }
