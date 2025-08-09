@@ -30,6 +30,9 @@ class WeatherDay extends LitElement {
   @property({ type: Boolean, reflect: true })
   showHumidity: boolean = false;
 
+  @property({ type: Boolean, reflect: true })
+  showThunderProbability: boolean = false;
+
   @property({ type: Object })
   forecastDay?: ForecastDay;
 
@@ -138,7 +141,7 @@ class WeatherDay extends LitElement {
       }
 
       .pressure--text {
-        grid-row: 10;
+        grid-row: 11;
         grid-column: 2 / span 25;
       }
 
@@ -149,27 +152,27 @@ class WeatherDay extends LitElement {
       }
 
       .pressure {
-        grid-row: 11;
+        grid-row: 12;
         grid-column: span 3;
       }
 
       .pressure--empty {
-        grid-row: 11;
+        grid-row: 12;
         grid-column: span 1;
       }
 
       .humidity--text {
-        grid-row: 12;
+        grid-row: 13;
         grid-column: 2 / span 25;
       }
 
       .humidity {
-        grid-row: 13;
+        grid-row: 14;
         grid-column: span 3;
       }
 
       .humidity--empty {
-        grid-row: 13;
+        grid-row: 14;
         grid-column: span 1;
       }
 
@@ -271,6 +274,22 @@ class WeatherDay extends LitElement {
         z-index: var(--z-index-1);
       }
 
+      .thunder {
+        color: var(--color-orange-500);
+        font-weight: var(--font-weight-bold);
+
+        grid-row: 10;
+        grid-column: span 3;
+
+        font-size: var(--font-size-xs);
+        text-align: center;
+      }
+
+      .thunder--empty {
+        grid-row: 10;
+        grid-column: span 1;
+      }
+
       .feels-like {
         font-style: italic;
       }
@@ -308,6 +327,9 @@ class WeatherDay extends LitElement {
                     <div class="symbol--empty"></div>
                     <div class="temperature--empty"></div>
                     <div class="wind--empty"></div>
+                    ${this.showThunderProbability
+                      ? html` <div class="thunder--empty"></div> `
+                      : null}
                     ${this.showPressure
                       ? html`
                           <div class="pressure--text">Ilmanpaine (hPa)</div>
@@ -324,10 +346,10 @@ class WeatherDay extends LitElement {
                 : ''}
 
               <div class="hour">
-                ${this._isThird(index) === true ? html`${hour.hour}` : ''}
+                ${this._isThird(index) ? html`${hour.hour}` : ''}
               </div>
 
-              ${this._isThird(index) === false
+              ${!this._isThird(index)
                 ? ''
                 : html`
                     <div class="symbol">
@@ -389,6 +411,7 @@ class WeatherDay extends LitElement {
                           : ''}
                       </span>
                     </div>
+
                     ${this.showPressure
                       ? html` <div class="pressure">${hour.pressure}</div> `
                       : null}
@@ -424,6 +447,15 @@ class WeatherDay extends LitElement {
                   ? html`${hour.wind}<br />${hour.windGust}<br />${hour.threeHourWindMax}<br />${hour.threeHourWindMaxGust}<br />`
                   : null}
               </div>
+              ${this.showThunderProbability && this._isThird(index)
+                ? html`
+                    <div class="thunder">
+                      ${hour.thunderProbabilityAggregate !== 0
+                        ? html`${hour.thunderProbabilityAggregate}%`
+                        : null}
+                    </div>
+                  `
+                : null}
             `;
           })}
 
@@ -435,7 +467,7 @@ class WeatherDay extends LitElement {
     `;
   }
 
-  private _isThird(index: number) {
+  private _isThird(index: number): boolean {
     if (this.debug === true) {
       return true;
     }

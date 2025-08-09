@@ -182,7 +182,7 @@ class BottomSheet extends LitElement {
   _installBadgeVisible?: boolean;
 
   @property({ type: Boolean, reflect: true })
-  _installAdOpen?: boolean;
+  _installPromptOpen?: boolean;
 
   @property({ type: Boolean, reflect: true })
   _ios?: boolean;
@@ -197,7 +197,7 @@ class BottomSheet extends LitElement {
     return html`
       <bottom-notification
         .errorText=${this._notification}
-        ?showInstall=${this._installAdOpen}
+        ?showInstall=${this._installPromptOpen}
         ?ios="${this._ios}"
       >
       </bottom-notification>
@@ -287,7 +287,7 @@ class BottomSheet extends LitElement {
 
     this.addEventListener('bottom-notification.closed', (e) => {
       if ((e as any).detail.iosInstructions === true) {
-        this._installAdOpen = false;
+        this._installPromptOpen = false;
 
         setState(STATE.INSTALL_BADGE_DISMISSED);
         this._installBadgeVisible = false;
@@ -323,7 +323,7 @@ class BottomSheet extends LitElement {
   _showInstallAd() {
     track(INSTALL_CLICKED);
 
-    this._installAdOpen = true;
+    this._installPromptOpen = true;
 
     if (this._showIosInstructions() === true) {
       BottomSheet._scrollTop();
@@ -419,7 +419,7 @@ class BottomSheet extends LitElement {
               'Avaa ulkoisessa selaimessa salliaksesi paikannus';
           } else {
             this._notification =
-              'Salli paikannus/sijainti selaimesi asetuksista';
+              'Salli paikannus/sijainti selaimesi asetuksista. Sijaintitietoa käytetään vain paikannukseen ja tietoa ei tallenneta.';
           }
         }
       );

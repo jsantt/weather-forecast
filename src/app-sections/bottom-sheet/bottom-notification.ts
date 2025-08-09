@@ -106,6 +106,7 @@ class BottomNotification extends LitElement {
       ${this.errorText !== undefined || this.showInstall
         ? html`<div class="content">
             <section aria-live="polite">
+      <!-- TODO: extract as a slotted content-->
               ${this.showInstall === true
                 ? html` <header>
                       Lisää tämä sääsovellus kotivalikkoon tai työpöydälle ja

@@ -16,7 +16,7 @@ class WeatherSection extends LitElement {
   liftedHeading?: string;
 
   @property({ type: Boolean, reflect: true })
-  orange?: boolean;
+  settings?: boolean;
 
   @property({ type: String })
   footer?: string;
@@ -31,10 +31,6 @@ class WeatherSection extends LitElement {
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
-      }
-
-      :host([padding]) .normal-heading {
-        padding: var(--space-m) var(--space-l) 0 var(--space-l);
       }
 
       :host([padding]) section {
@@ -59,6 +55,17 @@ class WeatherSection extends LitElement {
       :host([green]) .lifted-heading {
         background-color: var(--color-green);
         color: var(--color-dark);
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      svg-icon {
+        align-self: center;
+        padding-right: calc(var(--margin) - 8px);
+        color: var(--color-secondary-dark-and-light);
       }
 
       section {
@@ -110,15 +117,27 @@ class WeatherSection extends LitElement {
         ? ''
         : html`<header>
             <h2 class="lifted-heading">${this.liftedHeading}</h2>
+            ${this.settings
+              ? html`<svg-icon
+                  path="assets/image/icons.svg#settings3"
+                  small
+                  @click=${this.settingsClicked}
+                ></svg-icon>`
+              : null}
           </header>`}
-      ${this.heading === undefined
-        ? ''
-        : html`<h2 class="normal-heading">${this.heading}</h2>`}
-
       <section>
         <slot></slot>
       </section>
     `;
+  }
+
+  private settingsClicked() {
+    this.dispatchEvent(
+      new Event('weather-section.settings-clicked', {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }
 

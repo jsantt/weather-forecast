@@ -69,6 +69,9 @@ class WeatherApp extends LitElement {
   _showWind: boolean = false;
 
   @state()
+  _showSettings: boolean = false;
+
+  @state()
   _observationData?: any[];
 
   @state()
@@ -274,15 +277,19 @@ class WeatherApp extends LitElement {
               transparent
               class="grid-item grid-forecast"
               liftedHeading="Meteorologin 10 vrk sääennuste"
+              settings
               ?padding=${false}
+              @weather-section.settings-clicked=${() =>
+                (this._showSettings = !this._showSettings)}
             >
               <!-- today, tomorrow and a day after tomorrow -->
               <slot name="header"></slot>
 
               <weather-days
-                .forecast="${this._forecast}"
-                ?showFeelsLike="${this._showFeelsLike}"
-                ?showWind="${this._showWind}"
+                .forecast=${this._forecast}
+                ?showFeelsLike=${this._showFeelsLike}
+                ?showWind=${this._showWind}
+                ?showSettings=${this._showSettings}
               >
               </weather-days>
             </weather-section>`

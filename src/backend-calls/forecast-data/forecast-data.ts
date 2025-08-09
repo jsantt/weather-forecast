@@ -23,6 +23,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { LocationCoordinates } from '../../app-sections/forecast-header/station-map.ts';
 
 type ForecastResponse = {
+  thunderProbability: HTMLAllCollection;
   humidity: HTMLCollection;
   pressure: HTMLCollection;
   rain: HTMLCollection;
@@ -81,6 +82,7 @@ type ForecastDay = {
 };
 
 type ForecastHourPartial = {
+  thunderProbability: number;
   humidity: number;
   time: Date;
   threeHourWindMax: number;
@@ -107,6 +109,7 @@ type ForecastHourOptional = {
   smartSymbol?: number;
   smartSymbolAggregate?: number;
   rainProbabilityAggregate?: number;
+  thunderProbabilityAggregate?: number;
   rainType?: string;
   summerTimeStarts?: boolean;
 };
@@ -144,7 +147,7 @@ class ForecastData extends LitElement {
       storedquery_id:
         'fmi::forecast::edited::weather::scandinavia::point::timevaluepair',
       parameters:
-        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol,PoP,Pressure,Humidity',
+        'Humidity,Temperature,WindDirection,WindSpeedMS,HourlyMaximumGust,Precipitation1h,SmartSymbol,PoP,Pressure,Humidity,ProbabilityThunderstorm',
       starttime: ForecastData._todayFirstHour(),
       endtime: ForecastData._endTime(),
       latlon: this.location.coordinates,
@@ -185,11 +188,20 @@ class ForecastData extends LitElement {
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
         const aggregateAdded = ForecastData._addSymbolAggregate(rainTypeAdded);
 
-        const probabilityAggregateAdded =
-          ForecastData._addProbabilityAggregate(aggregateAdded);
+        const probabilityAggregateAdded = ForecastData._addAggregate(
+          aggregateAdded,
+          'rainProbability',
+          'rainProbabilityAggregate'
+        );
+
+        const thunderProbabilityAggregateAdded = ForecastData._addAggregate(
+          probabilityAggregateAdded,
+          'thunderProbability',
+          'thunderProbabilityAggregate'
+        );
 
         const days: ForecastDay[] = ForecastData.splitToDays(
-          probabilityAggregateAdded
+          thunderProbabilityAggregateAdded
         );
 
         let lastRemoved = [...days];
@@ -212,10 +224,12 @@ class ForecastData extends LitElement {
             hour: 3,
             feelsLike: NaN,
             humidity: NaN,
+            thunderProbability: NaN,
             pressure: NaN,
             rain: NaN,
             rainProbability: NaN,
             rainProbabilityAggregate: NaN,
+            thunderProbabilityAggregate: NaN,
             roundWind: NaN,
             roundWindGust: NaN,
             snow: NaN,
@@ -294,6 +308,10 @@ class ForecastData extends LitElement {
     );
 
     return {
+      thunderProbability: getTimeAndValuePairs(
+        timeSeries,
+        'mts-1-1-ProbabilityThunderstorm'
+      ),
       humidity: getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity'),
       pressure: getTimeAndValuePairs(timeSeries, 'mts-1-1-Pressure'),
       rain: getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h'),
@@ -313,6 +331,9 @@ class ForecastData extends LitElement {
       const temperatureValue = getValue(response.temperature[i]);
       const windValue = getValue(response.wind[i]);
       const windGustValue = getValue(response.windGust[i]);
+      const thunderProbability = Math.round(
+        getValue(response.thunderProbability[i])
+      );
       const humidityValue = getValue(response.humidity[i]);
       const roundWind = Math.round(windValue);
       const roundWindGust = Math.round(windGustValue);
@@ -340,6 +361,7 @@ class ForecastData extends LitElement {
 
       const forecastEntry: ForecastHourPartial & ForecastHourOptional = {
         feelsLike: feelsLike(temperatureValue, windValue, humidityValue),
+        thunderProbability,
         humidity: Math.round(humidityValue),
         pressure,
         rain,
@@ -486,17 +508,21 @@ class ForecastData extends LitElement {
     return result;
   }
 
-  static _addProbabilityAggregate(
-    forecastData: ForecastHour[]
-  ): ForecastHour[] {
+  static _addAggregate<T extends ForecastHour>(
+    forecastData: T[],
+    key: keyof T,
+    aggregateKey: keyof T
+  ): T[] {
     return forecastData.map((item, index) => {
       const newItem = { ...item };
       if ((index + 1) % 3 === 0) {
-        newItem.rainProbabilityAggregate = Math.max(
-          forecastData.at(index - 1)?.rainProbability ?? 0,
-          item.rainProbability,
-          forecastData.at(index + 1)?.rainProbability ?? 0
-        );
+        const prev = forecastData.at(index - 1) ?? item;
+        const next = forecastData.at(index + 1) ?? item;
+        newItem[aggregateKey] = Math.max(
+          (prev[key] as number) ?? 0,
+          (item[key] as number) ?? 0,
+          (next[key] as number) ?? 0
+        ) as T[keyof T];
       }
       return newItem;
     });

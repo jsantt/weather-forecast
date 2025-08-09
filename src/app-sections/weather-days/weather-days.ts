@@ -23,6 +23,12 @@ class WeatherDays extends LitElement {
   @property({ type: Boolean, reflect: true })
   showWind: boolean = false;
 
+  @property({ type: Boolean, reflect: true })
+  showSettings: boolean = false;
+
+  @state()
+  showThunderProbability: boolean = false;
+
   @state()
   showHumidity: boolean = false;
 
@@ -44,11 +50,14 @@ class WeatherDays extends LitElement {
       }
 
       .toggles {
+        background: var(--background-middle);
+        border-radius: var(--border-radius);
         display: grid;
-        justify-items: end;
         gap: var(--space-m);
-        padding: var(--space-l);
-        padding-bottom: var(--space-xl);
+        padding: var(--space-s) var(--space-l) var(--space-m) var(--space-l);
+      }
+      .info {
+        font-weight: var(--font-weight-bold);
       }
     `;
   }
@@ -68,6 +77,41 @@ class WeatherDays extends LitElement {
 
   render() {
     return html`
+      ${this.showSettings
+        ? html` <div class="toggles">
+            <div class="info">Valitse näytettävät tiedot</div>
+            <switch-toggle
+              @switch-toggle.change=${(e: { detail: boolean }) => {
+                this.updateSmoothExpand = !this.updateSmoothExpand;
+                this.showThunderProbability = e.detail;
+              }}
+              >Ukkosen todennäköisyys</switch-toggle
+            >
+
+            <switch-toggle
+              @switch-toggle.change=${(e: { detail: boolean }) => {
+                this.updateSmoothExpand = !this.updateSmoothExpand;
+                this.showWind = e.detail;
+              }}
+              >Tuuli</switch-toggle
+            >
+
+            <switch-toggle
+              @switch-toggle.change=${(e) => {
+                this.updateSmoothExpand = !this.updateSmoothExpand;
+                this.showPressure = e.detail;
+              }}
+              >Ilmanpaine</switch-toggle
+            >
+            <switch-toggle
+              @switch-toggle.change=${(e) => {
+                this.updateSmoothExpand = !this.updateSmoothExpand;
+                this.showHumidity = e.detail;
+              }}
+              >Suhteellinen ilmankosteus</switch-toggle
+            >
+          </div>`
+        : null}
       ${this.forecast?.days.map((forecastDay, index) => {
         return html`<div>
           <weather-day-header
@@ -86,6 +130,7 @@ class WeatherDays extends LitElement {
               dayNumber=${index + 1}
               ?showFeelsLike="${this.showFeelsLike}"
               ?showWind="${this.showWind}"
+              ?showThunderProbability="${this.showThunderProbability}"
               ?showPressure="${this.showPressure}"
               ?showHumidity="${this.showHumidity}"
               .forecastDay="${forecastDay}"
@@ -94,30 +139,6 @@ class WeatherDays extends LitElement {
           ></smooth-expand>
         </div>`;
       })}
-      <div class="toggles">
-        <switch-toggle
-          @switch-toggle.change=${(e) => {
-            this.updateSmoothExpand = !this.updateSmoothExpand;
-            this.showWind = e.detail;
-          }}
-          >Tuuli</switch-toggle
-        >
-
-        <switch-toggle
-          @switch-toggle.change=${(e) => {
-            this.updateSmoothExpand = !this.updateSmoothExpand;
-            this.showPressure = e.detail;
-          }}
-          >Ilmanpaine</switch-toggle
-        >
-        <switch-toggle
-          @switch-toggle.change=${(e) => {
-            this.updateSmoothExpand = !this.updateSmoothExpand;
-            this.showHumidity = e.detail;
-          }}
-          >Suhteellinen ilmankosteus</switch-toggle
-        >
-      </div>
     `;
   }
 }
