@@ -27,8 +27,7 @@ export class SwitchToggle extends LitElement {
       <label>
         <input
           type="checkbox"
-          class="switch-label-with-fallback visually-hidden"
-          id="switchv2"
+          switch
           ?checked=${this.checked}
           @change=${this._onChange}
         />
