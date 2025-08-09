@@ -16,8 +16,6 @@ export class SwitchToggle extends LitElement {
       gap: 0.5em;
     }
     input[type='checkbox'] {
-      width: 1.5em;
-      height: 1.5em;
       accent-color: var(--switch-toggle-accent, #0078d4);
     }
   `;
