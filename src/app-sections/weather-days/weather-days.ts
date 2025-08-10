@@ -30,6 +30,9 @@ class WeatherDays extends LitElement {
   showThunderProbability: boolean = false;
 
   @state()
+  showRainProbability: boolean = true;
+
+  @state()
   showHumidity: boolean = false;
 
   @state()
@@ -54,10 +57,11 @@ class WeatherDays extends LitElement {
         border-radius: var(--border-radius);
         display: grid;
         gap: var(--space-m);
-        padding: var(--space-s) var(--space-l) var(--space-m) var(--space-l);
+        padding: var(--space-l);
       }
       .info {
         font-weight: var(--font-weight-bold);
+        padding-bottom: var(--space-s);
       }
     `;
   }
@@ -79,7 +83,16 @@ class WeatherDays extends LitElement {
     return html`
       ${this.showSettings
         ? html` <div class="toggles">
-            <div class="info">Valitse näytettävät tiedot</div>
+            <div class="info">Valitse näytettävät lisätiedot (beta)</div>
+            <switch-toggle
+              checked
+              @switch-toggle.change=${(e: { detail: boolean }) => {
+                this.updateSmoothExpand = !this.updateSmoothExpand;
+                this.showRainProbability = e.detail;
+              }}
+              >Sateen todennäköisyys</switch-toggle
+            >
+
             <switch-toggle
               @switch-toggle.change=${(e: { detail: boolean }) => {
                 this.updateSmoothExpand = !this.updateSmoothExpand;
@@ -89,6 +102,7 @@ class WeatherDays extends LitElement {
             >
 
             <switch-toggle
+              ?checked=${this.showWind}
               @switch-toggle.change=${(e: { detail: boolean }) => {
                 this.updateSmoothExpand = !this.updateSmoothExpand;
                 this.showWind = e.detail;
@@ -130,6 +144,7 @@ class WeatherDays extends LitElement {
               dayNumber=${index + 1}
               ?showFeelsLike="${this.showFeelsLike}"
               ?showWind="${this.showWind}"
+              ?showRainProbability="${this.showRainProbability}"
               ?showThunderProbability="${this.showThunderProbability}"
               ?showPressure="${this.showPressure}"
               ?showHumidity="${this.showHumidity}"

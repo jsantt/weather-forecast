@@ -33,6 +33,9 @@ class WeatherDay extends LitElement {
   @property({ type: Boolean, reflect: true })
   showThunderProbability: boolean = false;
 
+  @property({ type: Boolean, reflect: true })
+  showRainProbability: boolean = true;
+
   @property({ type: Object })
   forecastDay?: ForecastDay;
 
@@ -309,6 +312,7 @@ class WeatherDay extends LitElement {
         margin-top: -0.7rem;
         color: #0a95d7;
         font-weight: 400;
+        min-height: var(--space-m);
       }
     `;
   }
@@ -364,7 +368,8 @@ class WeatherDay extends LitElement {
                            'sääsymboli'
                          }"
                       ></img><div class="rain-probability">${
-                        hour.smartSymbolAggregate % 100 >= 10
+                        hour.smartSymbolAggregate % 100 >= 10 &&
+                        this.showRainProbability
                           ? html`${Math.round(
                               hour.rainProbabilityAggregate || 0
                             )}%`
