@@ -24,14 +24,7 @@ class BottomSheet extends LitElement {
       :host {
         display: block;
         background: var(--background-topmost);
-
-        /*border-top-left-radius: 0.75rem;
-        border-top-right-radius: 0.75rem;
-*/
         box-shadow: var(--box-shadow-upwards);
-
-        /*       margin-left: var(--space-m);
-        margin-right: var(--space-m);*/
 
         position: fixed;
         bottom: 0;
@@ -151,6 +144,36 @@ class BottomSheet extends LitElement {
         top: 0;
         right: -0.35rem;
       }
+
+      header {
+        margin: 0;
+        font-size: var(--font-size-s);
+        padding-bottom: var(--space-l);
+      }
+
+      svg-icon {
+        color: var(--color-dark-and-light);
+      }
+
+      .home-icon {
+        stroke: var(--color-dark-and-light);
+      }
+
+      ol {
+        line-height: 1.8;
+        margin: var(--space-s) var(--space-l) var(--space-s) 0;
+        padding: 0 0 0 var(--space-l);
+      }
+
+      @media only screen and (min-width: 400px) {
+        button {
+          padding-bottom: 0;
+        }
+        ol {
+          margin-top: var(--space-m);
+          margin-bottom: var(--space-m);
+        }
+      }
     `;
   }
 
@@ -191,16 +214,51 @@ class BottomSheet extends LitElement {
   _notification?: string;
 
   private _forceShowIos = false;
-  private _forceShowOthers = false;
+  private _forceShowOthers = true;
 
   render() {
     return html`
-      <bottom-notification
-        .errorText=${this._notification}
-        ?showInstall=${this._installPromptOpen}
-        ?ios="${this._ios}"
-      >
-      </bottom-notification>
+      ${this._notification
+        ? html`<bottom-notification @bottom-notification.closed=${this.onClose}>
+            <div class="error">${this._notification}</div>
+          </bottom-notification>`
+        : null}
+      ${this._installPromptOpen
+        ? html`<bottom-notification
+            ?fix-to-top=${this._ios && this._installPromptOpen}
+            @bottom-notification.closed=${this.onClose}
+          >
+            <header>
+              Lisää sääennuste.fi kotivalikkoon tai työpöydälle ja käytä sitä
+              kuin tavallista sovellusta! Asennus on nopeaa, eikä sovellus käytä
+              evästeitä tai kerää yksilöiviä tietoja. Voit myös poistaa sen
+              tavallisen sovelluksen tapaan.
+            </header>
+            ${!this._ios
+              ? html` <install-button> Lisää nyt</install-button>`
+              : ''}
+            ${this._ios
+              ? html` <ol>
+                  <li>
+                    Napauta sivun alalaidasta
+                    <svg-icon
+                      class="home-icon"
+                      path="assets/image/icons.svg#iosShare"
+                      medium
+                    ></svg-icon>
+                  </li>
+                  <li>vieritä alaspäin</li>
+                  <li>
+                    valitse "Lisää Koti-valikkoon"
+                    <svg-icon
+                      path="assets/image/icons.svg#add-home"
+                      small
+                    ></svg-icon>
+                  </li>
+                </ol>`
+              : ''}</bottom-notification
+          >`
+        : null}
 
       <nav>
         ${this._installButtonVisible === false
@@ -286,7 +344,7 @@ class BottomSheet extends LitElement {
     });
 
     this.addEventListener('bottom-notification.closed', (e) => {
-      if ((e as any).detail.iosInstructions === true) {
+      if (this._ios && this._installPromptOpen) {
         this._installPromptOpen = false;
 
         setState(STATE.INSTALL_BADGE_DISMISSED);
@@ -300,6 +358,17 @@ class BottomSheet extends LitElement {
     this.addEventListener('install-button.clicked', () => {
       this._install();
     });
+  }
+
+  private onClose() {
+    if (this._installPromptOpen) {
+      this._installPromptOpen = false;
+      setState(STATE.INSTALL_BADGE_DISMISSED);
+      this._installBadgeVisible = false;
+    } else {
+      this._notification = undefined;
+      this._scheduleInstallBadge();
+    }
   }
 
   connectedCallback() {

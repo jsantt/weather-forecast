@@ -195,7 +195,7 @@
       />
     </symbol>
 
-    <symbol viewBox="0 0 100 60" id="iosShare">
+    <symbol stroke="currentColor" viewBox="0 0 100 60" id="iosShare">
       <polyline
         class="arrow"
         stroke-width="6"

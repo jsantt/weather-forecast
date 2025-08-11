@@ -2,21 +2,11 @@ import { css, html, LitElement } from 'lit';
 
 import './install-button';
 import '../../common-components/svg-icon';
-import { property } from 'lit/decorators.js';
 
 class BottomNotification extends LitElement {
   static get is() {
     return 'bottom-notification';
   }
-
-  @property({ type: Boolean, reflect: true })
-  showInstall?: boolean;
-
-  @property({ type: String, reflect: true })
-  errorText?: string;
-
-  @property({ type: Boolean, reflect: true })
-  ios?: boolean;
 
   static get styles() {
     return css`
@@ -24,7 +14,7 @@ class BottomNotification extends LitElement {
         display: block;
       }
 
-      :host([showInstall][ios]) .content {
+      :host([fix-to-top]) .content {
         position: fixed;
         top: 0;
         bottom: auto;
@@ -55,116 +45,31 @@ class BottomNotification extends LitElement {
         font-size: var(--font-size-s);
       }
 
-      header {
-        margin: 0;
-        font-size: var(--font-size-s);
-        padding-bottom: var(--space-l);
-      }
-
       .close {
         margin-left: auto;
         padding: 0 0 var(--space-l) var(--space-l);
-      }
-
-      .home-icon {
-        stroke: var(--color-dark-and-light);
-      }
-
-      svg-icon {
-        color: var(--color-dark-and-light);
-      }
-
-      svg-icon[medium] {
-        margin-top: -10px;
-      }
-
-      ol {
-        line-height: 1.8;
-        margin: var(--space-s) var(--space-l) var(--space-s) 0;
-        padding: 0 0 0 var(--space-l);
-      }
-
-      @media only screen and (min-width: 400px) {
-        button {
-          padding-bottom: 0;
-        }
-        ol {
-          margin-top: var(--space-m);
-          margin-bottom: var(--space-m);
-        }
-      }
-
-      install-button {
-        grid-column: span 2;
-        padding: 0 var(--space-l) var(--space-l) var(--space-l);
       }
     `;
   }
 
   render() {
-    return html`
-      ${this.errorText !== undefined || this.showInstall
-        ? html`<div class="content">
-            <section aria-live="polite">
-      <!-- TODO: extract as a slotted content-->
-              ${this.showInstall === true
-                ? html` <header>
-                      Lisää tämä sääsovellus kotivalikkoon tai työpöydälle ja
-                      käytä sitä kuin tavallista sovellusta! Asennus on nopeaa,
-                      eikä sovellus käytä evästeitä tai kerää yksilöiviä
-                      tietoja.
-                    </header>
-                    ${this.ios
-                      ? html` <ol>
-                          <li>
-                            Napauta sivun alalaidasta
-                            <svg-icon
-                              class="home-icon"
-                              path="assets/image/icons.svg#iosShare"
-                              medium
-                            ></svg-icon>
-                          </li>
-                          <li>vieritä alaspäin</li>
-                          <li>
-                            valitse "Lisää Koti-valikkoon"
-                            <svg-icon
-                              path="assets/image/icons.svg#add-home"
-                              small
-                            ></svg-icon>
-                          </li>
-                        </ol>`
-                      : ''}`
-                : ''}
-              ${this.errorText === undefined
-                ? html``
-                : html`<div class="error">${this.errorText}</div>`}
-            </section>
+    return html`<div class="content">
+      <section aria-live="polite">
+        <slot></slot>
+      </section>
 
-            <div
-              class="close"
-              role="button"
-              @click="${() =>
-                this._dispatchEvent('closed', {
-                  iosInstructions: this.showInstall,
-                })}"
-            >
-              <svg-icon path="assets/image/icons.svg#close" small></svg-icon>
-            </div>
-
-            ${!this.ios && this.showInstall
-              ? html` <install-button> Lisää nyt</install-button>`
-              : ''}
-          </div>`
-        : ''}
-    `;
+      <div
+        class="close"
+        role="button"
+        @click="${() => this._dispatchEvent('closed')}"
+      >
+        <svg-icon path="assets/image/icons.svg#close" small></svg-icon>
+      </div>
+    </div>`;
   }
 
-  _dispatchEvent(
-    name: string,
-    payload: { iosInstructions: boolean | undefined }
-  ) {
+  _dispatchEvent(name: string) {
     const event = new CustomEvent(`${BottomNotification.is}.${name}`, {
-      detail: payload,
       bubbles: true,
       composed: true,
     });
@@ -176,8 +81,6 @@ window.customElements.define(BottomNotification.is, BottomNotification);
 
 declare global {
   interface CustomEventMap {
-    'bottom-notification.closed': CustomEvent<{
-      iosInstructions: boolean | undefined;
-    }>;
+    'bottom-notification.closed': CustomEvent<void>;
   }
 }
