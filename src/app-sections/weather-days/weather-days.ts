@@ -27,7 +27,7 @@ class WeatherDays extends LitElement {
   showSettings: boolean = false;
 
   @state()
-  showThunderProbability: boolean = false;
+  showThunderProbability: boolean = true;
 
   @state()
   showRainProbability: boolean = true;
@@ -94,6 +94,7 @@ class WeatherDays extends LitElement {
             >
 
             <switch-toggle
+              checked
               @switch-toggle.change=${(e: { detail: boolean }) => {
                 this.updateSmoothExpand = !this.updateSmoothExpand;
                 this.showThunderProbability = e.detail;

@@ -455,7 +455,8 @@ class WeatherDay extends LitElement {
               ${this.showThunderProbability && this._isThird(index)
                 ? html`
                     <div class="thunder">
-                      ${hour.thunderProbabilityAggregate !== 0
+                      ${hour.thunderProbabilityAggregate !== 0 &&
+                      (hour.smartSymbolAggregate ?? 0) % 100 >= 70
                         ? html`${hour.thunderProbabilityAggregate}%`
                         : null}
                     </div>
