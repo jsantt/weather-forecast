@@ -45,7 +45,7 @@ class WeatherApp extends LitElement {
   _firstLoading: boolean = false;
 
   @state()
-  _forecast?: Forecast[];
+  _forecast?: Forecast;
 
   @state()
   _forecastError: boolean = false;
@@ -195,7 +195,7 @@ class WeatherApp extends LitElement {
     this._firstLoading = false;
   }
 
-  private onNewData(event: CustomEvent<Forecast[]>) {
+  private onNewData(event: CustomEvent<Forecast>) {
     this._forecastError = false;
     this._forecast = event.detail;
   }
@@ -210,7 +210,7 @@ class WeatherApp extends LitElement {
           this._loading = true;
         }}
         @forecast-data.fetch-done=${this.onFetchDone}
-        @forecast-data.new-data=${((event: CustomEvent<Forecast[]>) => {
+        @forecast-data.new-data=${((event: CustomEvent<Forecast>) => {
           this.onNewData(event);
         }) as EventListener}
         @forecast-data.new-place=${((event: CustomEvent) => {

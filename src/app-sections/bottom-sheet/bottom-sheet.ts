@@ -343,7 +343,7 @@ class BottomSheet extends LitElement {
       this._installButtonVisible = true;
     });
 
-    this.addEventListener('bottom-notification.closed', (e) => {
+    this.addEventListener('bottom-notification.closed', () => {
       if (this._ios && this._installPromptOpen) {
         this._installPromptOpen = false;
 
