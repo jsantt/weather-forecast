@@ -138,9 +138,7 @@ class WeatherDayHeader extends LitElement {
         <div class="today">
           ${this.dayNumber === 1 ? 'tänään' : ''}${this.dayNumber === 2
             ? 'huomenna'
-            : ''}${this.dayNumber === 3
-            ? 'ylihuomenna'
-            : ''}
+            : ''}${this.dayNumber === 3 ? 'ylihuomenna' : ''}
         </div>
       </header>
       <div
