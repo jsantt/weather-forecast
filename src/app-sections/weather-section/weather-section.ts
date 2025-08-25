@@ -61,10 +61,10 @@ class WeatherSection extends LitElement {
         display: flex;
         justify-content: space-between;
       }
-
+  
       svg-icon {
         align-self: center;
-        padding-right: calc(var(--margin) - 8px);
+        padding-right: calc(var(--margin) - 4px);
         color: var(--color-secondary-dark-and-light);
       }
 

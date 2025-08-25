@@ -2,9 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 import './weather-day.ts';
 import './weather-day-header.ts';
-import '../../common-components/smooth-expand.js';
-import '../../common-components/switch-toggle.ts';
-import '../../common-components/svg-icon.ts';
+import './weather-days-toggles.ts';
 
 import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
 import { property, state } from 'lit/decorators.js';
@@ -52,14 +50,6 @@ class WeatherDays extends LitElement {
         grid-row-gap: 2px;
       }
 
-      .toggles {
-        background: var(--background-middle);
-        border-radius: var(--border-radius);
-        display: grid;
-        gap: var(--space-m);
-        padding: var(--space-l);
-      }
-
       .info {
         font-weight: var(--font-weight-bold);
         padding-bottom: var(--space-s);
@@ -70,6 +60,48 @@ class WeatherDays extends LitElement {
         margin: 0 0 var(--space-l) 0;
       }
     `;
+  }
+
+  constructor() {
+    super();
+    this.readAndPopulateToggles();
+  }
+
+  private readAndPopulateToggles() {
+    const data = window.localStorage.getItem('weather-days-toggles');
+    if (data) {
+      try {
+        const parsed = JSON.parse(data) as Partial<Record<string, boolean>>;
+        if (typeof parsed.showWind === 'boolean') {
+          this.showWind = parsed.showWind;
+        }
+        if (typeof parsed.showRainProbability === 'boolean') {
+          this.showRainProbability = parsed.showRainProbability;
+        }
+        if (typeof parsed.showThunderProbability === 'boolean') {
+          this.showThunderProbability = parsed.showThunderProbability;
+        }
+        if (typeof parsed.showPressure === 'boolean') {
+          this.showPressure = parsed.showPressure;
+        }
+        if (typeof parsed.showHumidity === 'boolean') {
+          this.showHumidity = parsed.showHumidity;
+        }
+      } catch {
+        // ignore parse errors
+      }
+    }
+  }
+
+  private saveToLocalStorage() {
+    const data = {
+      showWind: this.showWind,
+      showRainProbability: this.showRainProbability,
+      showThunderProbability: this.showThunderProbability,
+      showPressure: this.showPressure,
+      showHumidity: this.showHumidity,
+    };
+    window.localStorage.setItem('weather-days-toggles', JSON.stringify(data));
   }
 
   updated(changedProperties: Map<string, unknown>) {
@@ -88,77 +120,40 @@ class WeatherDays extends LitElement {
   render() {
     return html`
       ${this.showSettings
-        ? html` <div class="toggles">
-            <div class="info">Valitse näytettävät lisätiedot (beta)</div>
-            <switch-toggle
-              checked
-              @switch-toggle.change=${(e: { detail: boolean }) => {
-                this.updateSmoothExpand = !this.updateSmoothExpand;
-                this.showRainProbability = e.detail;
-              }}
-              >Sateen todennäköisyys</switch-toggle
-            >
-
-            <switch-toggle
-              checked
-              @switch-toggle.change=${(e: { detail: boolean }) => {
-                this.updateSmoothExpand = !this.updateSmoothExpand;
-                this.showThunderProbability = e.detail;
-              }}
-              >Ukkosen todennäköisyys</switch-toggle
-            >
-
-            <switch-toggle
-              ?checked=${this.showWind}
-              @switch-toggle.change=${(e: { detail: boolean }) => {
+        ? html`
+            <weather-days-toggles
+              .showWind=${this.showWind}
+              .showRainProbability=${this.showRainProbability}
+              .showThunderProbability=${this.showThunderProbability}
+              .showPressure=${this.showPressure}
+              .showHumidity=${this.showHumidity}
+              @toggle-wind=${(e: CustomEvent) => {
                 this.updateSmoothExpand = !this.updateSmoothExpand;
                 this.showWind = e.detail;
+                this.saveToLocalStorage();
               }}
-              >Tuuli</switch-toggle
-            >
-            <p class="description">
-              Tuulen nopeus ilmoitetaan 10 minuutin keskiarvona. Puuskatuulen
-              nopeutena käytetään 10 minuutin aikana mitatun kolmen sekunnin
-              suurinta nopeutta. Heikossa tuulessa (alle 3,4m/s): vain lehdet
-              heiluvat. Kohtalaisessa tuulessa (3,4-7,9m/s) oksat heiluvat ja
-              kevyitä esineitä voi liikkua. Kovassa tuulessa (8,0-13,8m/s)
-              pienet puut taipuvat, kevyt irtoava tavara voi kulkea maata
-              pitkin. Myrskytuuli (yli 20,8m/s) voi kaataa puita ja aiheuttaa
-              vahinkoa rakenteille.
-            </p>
-
-            <switch-toggle
-              @switch-toggle.change=${(e) => {
+              @toggle-rain-probability=${(e: CustomEvent) => {
+                this.updateSmoothExpand = !this.updateSmoothExpand;
+                this.showRainProbability = e.detail;
+                this.saveToLocalStorage();
+              }}
+              @toggle-thunder-probability=${(e: CustomEvent) => {
+                this.updateSmoothExpand = !this.updateSmoothExpand;
+                this.showThunderProbability = e.detail;
+                this.saveToLocalStorage();
+              }}
+              @toggle-pressure=${(e: CustomEvent) => {
                 this.updateSmoothExpand = !this.updateSmoothExpand;
                 this.showPressure = e.detail;
+                this.saveToLocalStorage();
               }}
-              >Ilmanpaine</switch-toggle
-            >
-            <p class="description">
-              Korkeapaine tarkoittaa aluetta, jossa ilmanpaine on ympäristöä
-              korkeampi. Korkeapaineessa ilma laskee alaspäin, kuivuu ja
-              lämmetessään estää pilvien muodostumista, minkä vuoksi sää on
-              usein selkeä ja poutainen. Matalapaine taas on alue, jossa
-              ilmanpaine on ympäristöä matalampi. Siinä ilma nousee ylöspäin,
-              jäähtyy ja vesihöyry tiivistyy pilviksi, mikä johtaa pilvisyyteen,
-              sateisiin ja tuulisiin säihin. Matalapaineet tuovat siis
-              epävakaisempaa ja vaihtelevampaa säätä.
-            </p>
-            <switch-toggle
-              @switch-toggle.change=${(e) => {
+              @toggle-humidity=${(e: CustomEvent) => {
                 this.updateSmoothExpand = !this.updateSmoothExpand;
                 this.showHumidity = e.detail;
+                this.saveToLocalStorage();
               }}
-              >Suhteellinen ilmankosteus</switch-toggle
-            >
-            <p class="description">
-              Suhteellinen ilmankosteus ilmaisee prosentteina, kuinka paljon
-              vettä ilma sisältää suhteessa siihen, kuinka paljon se voi
-              maksimissaan sisältää kyseisessä lämpötilassa. Korkea ilmankosteus
-              voi tiivistyä pilviksi ja sateeksi. Se estää hien haihtumista ja
-              saa ilman tuntumaan lämpimämmältä.
-            </p>
-          </div>`
+            ></weather-days-toggles>
+          `
         : null}
       ${this.forecast?.days.map((forecastDay, index) => {
         return html`<div>
