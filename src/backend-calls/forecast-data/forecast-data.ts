@@ -183,6 +183,39 @@ class ForecastData extends LitElement {
         // turn data to json hours
         const hours = ForecastData._toJsonHours(filteredResponse);
 
+        // remove extra hour if autumn day light saving time
+        const dstIndex = getDstAutumnIndex(hours);
+        if (dstIndex >= 0) {
+          hours.splice(dstIndex, 1);
+        }
+
+        // add extra hour if spring day light saving time
+        const jumpIndex = getDstSpringIndex(hours);
+        if (jumpIndex >= 0) {
+          hours.splice(jumpIndex + 1, 0, {
+            hour: 3,
+            feelsLike: NaN,
+            humidity: NaN,
+            thunderProbability: NaN,
+            pressure: NaN,
+            rain: NaN,
+            rainProbability: NaN,
+            rainProbabilityAggregate: NaN,
+            thunderProbabilityAggregate: NaN,
+            roundWind: NaN,
+            roundWindGust: NaN,
+            snow: NaN,
+            temperature: NaN,
+            threeHourWindMax: NaN,
+            threeHourWindMaxGust: NaN,
+            time: new Date(),
+            wind: NaN,
+            windDirection: NaN,
+            windGust: NaN,
+            summerTimeStarts: true,
+          });
+        }
+
         // enrich data here to keep logic inside components simple
         const hourAdded = ForecastData._addFullHour(hours);
         const rainTypeAdded = ForecastData._addRainType(hourAdded);
@@ -208,40 +241,6 @@ class ForecastData extends LitElement {
         const lastDayEvening = days.at(-1)?.hours.at(23)?.temperature;
         if (!lastDayEvening) {
           lastRemoved = days.slice(0, -1);
-        }
-
-        // find daylight saving time change. The third hour is normally 3rd, not 4rd
-        const index = days.findIndex((day) => {
-          if (day.hours.at(2)?.hour === 4) {
-            return true;
-          }
-          return false;
-        });
-
-        // add extra array item for the missing 3rd hour
-        if (index >= 0) {
-          days.at(index)?.hours.splice(2, 0, {
-            hour: 3,
-            feelsLike: NaN,
-            humidity: NaN,
-            thunderProbability: NaN,
-            pressure: NaN,
-            rain: NaN,
-            rainProbability: NaN,
-            rainProbabilityAggregate: NaN,
-            thunderProbabilityAggregate: NaN,
-            roundWind: NaN,
-            roundWindGust: NaN,
-            snow: NaN,
-            temperature: NaN,
-            threeHourWindMax: NaN,
-            threeHourWindMaxGust: NaN,
-            time: new Date(),
-            wind: NaN,
-            windDirection: NaN,
-            windGust: NaN,
-            summerTimeStarts: true,
-          });
         }
 
         const daysWithMinAndMax =
@@ -632,6 +631,34 @@ class ForecastData extends LitElement {
     });
     this.dispatchEvent(event);
   }
+}
+
+function getDstAutumnIndex(hours: ForecastHour[]): number {
+  for (let i = 1; i < hours.length; i++) {
+    const prev = hours[i - 1];
+    const curr = hours[i];
+    if (
+      prev.hour === curr.hour &&
+      prev.time.getTimezoneOffset() !== curr.time.getTimezoneOffset()
+    ) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function getDstSpringIndex(hours: ForecastHour[]): number {
+  for (let i = 1; i < hours.length; i++) {
+    const prev = hours[i - 1];
+    const curr = hours[i];
+    if (
+      curr.hour - prev.hour > 1 &&
+      prev.time.getTimezoneOffset() !== curr.time.getTimezoneOffset()
+    ) {
+      return i - 1;
+    }
+  }
+  return -1;
 }
 
 declare global {

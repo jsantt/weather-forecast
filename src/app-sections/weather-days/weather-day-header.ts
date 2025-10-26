@@ -194,7 +194,7 @@ class WeatherDayHeader extends LitElement {
             : html`${this.forecastDay.dayMaxTemp !== undefined &&
               Math.round(this.forecastDay.dayMaxTemp)}°`}
         </span>
-      </div>
+        </div>
 
       <div class="symbols fade">
         ${this.expanded
