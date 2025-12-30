@@ -50,7 +50,7 @@ class WeatherDescription extends LitElement {
       ? html`Poutaa`
       : ''}
     ${this.dayData.dayRainAmount > 0
-      ? html`
+      ? html`<div>
           <svg class="rain" width="12" height="12" viewBox="0 0 32 32">
             <g>
               <path
@@ -65,10 +65,10 @@ class WeatherDescription extends LitElement {
             ? '(alle 1 mm)'
             : html`(${WeatherDescription.roundRain(this.dayData.dayRainAmount)}
               mm)`}
-        `
+        </div>`
       : ''}
     ${this.dayData.daySnowAmount > 0
-      ? html`
+      ? html`<div>
           <svg class="snow" width="12" height="12" viewBox="0 0 32 32">
             <g>
               <path
@@ -81,10 +81,10 @@ class WeatherDescription extends LitElement {
           </svg>
           Lumisadetta
           ${this.dayData.daySnowAmount < 0.5
-            ? '< 1 cm'
-            : html`Lumisadetta
-              ${WeatherDescription.roundRain(this.dayData.daySnowAmount)} cm`}
-        `
+            ? 'alle 1 cm'
+            : html`${WeatherDescription.roundRain(this.dayData.daySnowAmount)}
+              cm`}
+        </div>`
       : ''}`;
   }
 
