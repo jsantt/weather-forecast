@@ -23,7 +23,7 @@ class BottomNotification extends LitElement {
       .content {
         background: var(--background-topmost);
 
-        border-radius: var(--border-radius);
+        border-radius: 1.8rem;
 
         box-shadow: var(--box-shadow);
 
@@ -32,12 +32,13 @@ class BottomNotification extends LitElement {
         max-width: 456px;
 
         padding: var(--space-l);
-        margin: 0 auto var(--space-l) auto;
+        margin: 0 auto 0 auto;
 
-        position: absolute;
-        bottom: calc(45px + var(--safe-area-inset-bottom));
-        left: 0px;
-        right: 0px;
+        position: fixed;
+        bottom: max(0.5rem, var(--safe-area-inset-bottom));
+        left: 0.5rem;
+        right: 0.5rem;
+        z-index: 999;
       }
 
       section {

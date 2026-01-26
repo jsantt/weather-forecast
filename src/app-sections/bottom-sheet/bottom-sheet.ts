@@ -23,15 +23,34 @@ class BottomSheet extends LitElement {
     return css`
       :host {
         display: block;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.05) 0%,
+          rgba(0, 0, 0, 0.02) 100%
+        );
+
         background: var(--background-topmost);
+        border-radius: 1.8rem;
         box-shadow: var(--box-shadow-upwards);
 
+        padding: 0.25rem;
+
         position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        bottom: max(0.5rem, var(--safe-area-inset-bottom));
+        left: 0.5rem;
+        right: 0.5rem;
 
         z-index: var(--z-index-floating-1);
+
+        opacity: 0.98;
+      }
+
+      @media only screen and (min-width: 800px) {
+        :host {
+          max-width: 40rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
       }
 
       nav {
@@ -68,8 +87,7 @@ class BottomSheet extends LitElement {
         text-align: center;
         margin: 0 auto;
 
-        padding: var(--space-s) var(--space-s)
-          max(var(--space-s), var(--safe-area-inset-bottom)) var(--space-s);
+        padding: var(--space-s) var(--space-s) var(--space-s) var(--space-s);
 
         /* prevent double tab zooming on bottom bar component*/
         touch-action: manipulation;
@@ -149,6 +167,11 @@ class BottomSheet extends LitElement {
         margin: 0;
         font-size: var(--font-size-s);
         padding-bottom: var(--space-l);
+      }
+
+      .dots {
+        font-size: var(--font-size-xl);
+        line-height: 0.9;
       }
 
       svg-icon {
@@ -239,8 +262,9 @@ class BottomSheet extends LitElement {
               : ''}
             ${this._ios
               ? html` <ol>
+                  <li>Valitse <span class="dots">...</span></li>
                   <li>
-                    Napauta sivun alalaidasta
+                    Napauta "jaa" -ikonia
                     <svg-icon
                       class="home-icon"
                       path="assets/image/icons.svg#iosShare"
