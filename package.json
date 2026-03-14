@@ -6,11 +6,12 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "npm run generate-sitemap && tsc && vite build",
     "preview": "npm run build && vite preview",
     "prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
     "prettier:format": "prettier \"**/*.js\" --write --ignore-path .gitignore",
     "generate-logos": "pwa-assets-generator --preset minimal public/original-logo.svg",
+    "generate-sitemap": "node generate-sitemap.js",
     "deploy-test": "npm run build && firebase serve",
     "deploy-prod": "npm run build && firebase deploy"
   },
