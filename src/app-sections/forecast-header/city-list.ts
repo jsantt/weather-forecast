@@ -1,4 +1,12 @@
-const DEFAULT_PLACE = {
+type Place = {
+  city: string;
+  coordinates: string;
+  key?: string;
+  lat?: number;
+  lon?: number;
+};
+
+const DEFAULT_PLACE: Place = {
   city: 'Helsinki',
   coordinates: '60.1698557,24.9383791',
 };
@@ -7,7 +15,7 @@ const DEFAULT_PLACE = {
  * Top 10 Finnish cities by population. Shown in city selection
  * combobox
  */
-const TOP_10_CITIES = [
+const TOP_10_CITIES: Place[] = [
   { city: 'Helsinki', coordinates: '60.170833,24.937500' },
   { city: 'Espoo', coordinates: '60.205556,24.655556' },
   { city: 'Tampere', coordinates: '61.498056,23.760833' },
@@ -25,7 +33,7 @@ const TOP_10_CITIES = [
  * When specified, key property is used for FMI API, which does not
  * accept Finnish names for the cities that are officially Swedish speaking.
  */
-const CITIES = [
+const CITIES: Place[] = [
   { city: 'Akaa', coordinates: '61.166667,23.868056' },
   { city: 'Alajärvi', coordinates: '63.000000,23.816667' },
   { city: 'Alavieska', coordinates: '64.165278,24.306944' },
@@ -369,3 +377,4 @@ const CITIES = [
 ];
 
 export { CITIES, DEFAULT_PLACE, TOP_10_CITIES };
+export type { Place };

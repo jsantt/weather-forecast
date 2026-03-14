@@ -33,70 +33,71 @@ class LocationSelector extends LitElement {
   render() {
     return html` <combo-box
       .currentValue="${this.city}"
-      .items="${LocationSelector._placeList()}"
+      .items="${LocationSelector.placeList()}"
       key="city"
       ?loading=${this.loading}
+      @combo-box.clicked=${() => (this.city = '')}
+      @combo-box.new-value=${this._onComboBoxNewValue}
     ></combo-box>`;
   }
 
   constructor() {
     super();
 
-    window.addEventListener('visibilitychange', () => {
-      if (document.hidden === false) {
-        this._notifyPreviousPlace();
-      }
-    });
-    window.addEventListener('pageshow', (event) => {
-      if (event.persisted) {
-        this._notifyPreviousPlace();
-      }
-    });
+    window.addEventListener('visibilitychange', () =>
+      this._onVisibilityChange()
+    );
+    window.addEventListener('pageshow', (e) => this._onPageShow(e));
+  }
 
-    this.addEventListener('combo-box.clicked', () => {
-      this.city = '';
-    });
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('visibilitychange', this._onVisibilityChange);
+    window.removeEventListener('pageshow', this._onPageShow);
+  }
 
-    this.addEventListener('combo-box.new-value', ((
-      event: CustomEvent<string>
-    ) => {
-      this.city = event.detail;
+  _onVisibilityChange() {
+    if (document.hidden === false) {
+      this.onInit();
+    }
+  }
 
-      if (
-        event.detail === '' ||
-        event.detail === null ||
-        event.detail === undefined
-      ) {
-        return;
-      }
+  _onPageShow(event: PageTransitionEvent) {
+    if (event.persisted) {
+      this.onInit();
+    }
+  }
 
-      // combobox tells the city only, get city and coordinates from localstorage items and city list
-      const cityAndCoordinates = LocationSelector._placeList().find(
-        (item) => item.city === this.city
-      );
+  _onComboBoxNewValue(e: CustomEvent<string>) {
+    this.city = e.detail;
 
-      if (!cityAndCoordinates?.coordinates) {
-        return;
-      }
+    if (e.detail === '' || e.detail === null || e.detail === undefined) {
+      return;
+    }
 
-      const latLon = LocationSelector._splitCoordinates(
-        cityAndCoordinates.coordinates
-      );
+    // combobox tells the city only, get city and coordinates from localstorage items and city list
+    const cityAndCoordinates = LocationSelector.placeList().find(
+      (item) => item.city === this.city
+    );
 
-      const cityAndCoordinates2: {
-        city: string;
-        coordinates: string;
-        lat?: number;
-        lon?: number;
-      } = cityAndCoordinates;
-      cityAndCoordinates2.lat = parseFloat(latLon.lat);
-      cityAndCoordinates2.lon = parseFloat(latLon.lon);
+    if (!cityAndCoordinates?.coordinates) {
+      return;
+    }
 
-      this._dispatchEvent(
-        'location-selector.location-changed',
-        cityAndCoordinates2
-      );
-    }) as EventListener);
+    const latLon = LocationSelector._splitCoordinates(
+      cityAndCoordinates.coordinates
+    );
+
+    const cityAndCoordinates2: {
+      city: string;
+      coordinates: string;
+      lat?: number;
+      lon?: number;
+    } = cityAndCoordinates;
+    cityAndCoordinates2.lat = parseFloat(latLon.lat);
+    cityAndCoordinates2.lon = parseFloat(latLon.lon);
+
+    this.raiseEvent('location-selector.location-changed', cityAndCoordinates2);
   }
 
   static _splitCoordinates(coordinateString: string) {
@@ -105,7 +106,7 @@ class LocationSelector extends LitElement {
   }
 
   firstUpdated() {
-    this._notifyPreviousPlace();
+    this.onInit();
   }
 
   updated(changedProperties: Map<string, any>) {
@@ -128,8 +129,9 @@ class LocationSelector extends LitElement {
 
     const url = this.place.name;
 
-    LocationSelector._changeUrl('place', url);
-    LocationSelector._store('place', this.place.name, this.place.coordinates);
+    window.history.replaceState(null, '', `/${url}`);
+
+    LocationSelector.store('place', this.place.name, this.place.coordinates);
   }
 
   static _getPlaceName(name) {
@@ -143,30 +145,53 @@ class LocationSelector extends LitElement {
     return name;
   }
 
-  _notifyPreviousPlace() {
-    const storedPlaces = LocationSelector._getFromLocalStorage('place');
-
-    let currentPlace;
-    if (storedPlaces) {
-      // eslint-disable-next-line prefer-destructuring
-      currentPlace = LocationSelector._placeList()[0];
-    } else {
-      currentPlace = {
-        city: DEFAULT_PLACE.city,
-        coordinates: DEFAULT_PLACE.coordinates,
-      };
-      LocationSelector._storeIntoLocalStorage('place', TOP_10_CITIES);
-    }
-    const latLon = LocationSelector._splitCoordinates(currentPlace.coordinates);
-
-    currentPlace.lat = parseFloat(latLon.lat);
-    currentPlace.lon = parseFloat(latLon.lon);
-
-    this._dispatchEvent('location-selector.location-changed', currentPlace);
+  getContextPath(): string {
+    const pathname = window.location.pathname;
+    const match = pathname.match(/^\/([^\/]+)(?=\/|$)/);
+    return match ? match[1] : '';
   }
 
-  static _placeList() {
-    const previousLocations = LocationSelector._getFromLocalStorage('place');
+  onInit() {
+    const contextPath = this.getContextPath(); // Works for '/', '/myapp', but not '/my/app'
+
+    // get from URL
+    let currentPlace = CITIES.find((city) => city.city === contextPath);
+
+    // get from local storage
+    if (!currentPlace) {
+      const storedPlaces = LocationSelector.getFromLocalStorage('place');
+
+      if (storedPlaces) {
+        // eslint-disable-next-line prefer-destructuring
+        currentPlace = LocationSelector.placeList()[0];
+      } else {
+        // default
+        currentPlace = {
+          city: DEFAULT_PLACE.city,
+          coordinates: DEFAULT_PLACE.coordinates,
+        };
+        LocationSelector.storeIntoLocalStorage('place', TOP_10_CITIES);
+      }
+    }
+
+    const latLon = LocationSelector._splitCoordinates(currentPlace.coordinates);
+
+    // placeEvent example:
+    // {city: "Espoo",
+    // coordinates: "60.205556,24.655556",
+    // lat: 60.205556,
+    // lon: 24.655556}
+    const placeEvent = {
+      ...currentPlace,
+      lat: parseFloat(latLon.lat),
+      lon: parseFloat(latLon.lon),
+    };
+
+    this.raiseEvent('location-selector.location-changed', placeEvent);
+  }
+
+  static placeList() {
+    const previousLocations = LocationSelector.getFromLocalStorage('place');
     if (previousLocations === undefined) {
       return CITIES;
     }
@@ -183,15 +208,11 @@ class LocationSelector extends LitElement {
    * @return whether response API is supported
    */
 
-  static _responseApi() {
+  static responseApi() {
     return navigator.permissions;
   }
 
-  static _changeUrl(paramName, paramValue) {
-    window.history.replaceState(null, '', `?${paramName}=${paramValue}`);
-  }
-
-  _dispatchEvent(name, payload) {
+  raiseEvent(name: string, payload: Object) {
     const event = new CustomEvent(name, {
       detail: payload,
       bubbles: true,
@@ -200,33 +221,33 @@ class LocationSelector extends LitElement {
     this.dispatchEvent(event);
   }
 
-  static _formPlaceObject(city, coordinates) {
+  static formPlaceObject(city, coordinates) {
     return { city, coordinates };
   }
 
-  static _store(key: string, city, coordinates) {
-    const newPlace = [LocationSelector._formPlaceObject(city, coordinates)];
-    const previousPlaces = LocationSelector._getFromLocalStorage('place');
+  static store(key: string, city, coordinates) {
+    const newPlace = [LocationSelector.formPlaceObject(city, coordinates)];
+    const previousPlaces = LocationSelector.getFromLocalStorage('place');
 
     if (!previousPlaces || previousPlaces.length < 1) {
-      LocationSelector._storeIntoLocalStorage(key, newPlace);
+      LocationSelector.storeIntoLocalStorage(key, newPlace);
       return;
     }
 
     const filtered10 = newPlace.concat(
       previousPlaces.filter((item) => item.city !== city).slice(0, 9)
     );
-    LocationSelector._storeIntoLocalStorage(key, filtered10);
+    LocationSelector.storeIntoLocalStorage(key, filtered10);
   }
 
-  static _storeIntoLocalStorage(
+  static storeIntoLocalStorage(
     key: string,
     valueObject: { city: any; coordinates: any }[]
   ) {
     localStorage.setItem(key, JSON.stringify(valueObject));
   }
 
-  static _getFromLocalStorage(key: string):
+  static getFromLocalStorage(key: string):
     | {
         coordinates: string;
         city: string;

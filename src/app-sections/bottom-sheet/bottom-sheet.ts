@@ -31,7 +31,7 @@ class BottomSheet extends LitElement {
 
         background: var(--background-topmost);
         border-radius: 1.8rem;
-        box-shadow: var(--box-shadow-upwards);
+        box-shadow: var(--box-shadow);
 
         padding: 0.25rem;
 
@@ -57,6 +57,7 @@ class BottomSheet extends LitElement {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: auto;
+        grid-gap: 4px;
 
         max-width: 500px;
         margin: 0 auto;
@@ -108,13 +109,10 @@ class BottomSheet extends LitElement {
       }
 
       :host([showFeelsLike]) .feelsLike,
-      :host([showWind]) .wind {
-        border-top: 4px solid var(--color-dark-and-light);
-      }
-
-      :host([showFeelsLike]) .feelsLike-icon,
-      :host([showWind]) .wind-icon {
-        margin-top: -4px;
+      :host([showWind]) .wind,
+      :host([darkmode]) .darkmode {
+        background: var(--background-toggle);
+        border-radius: 1.8rem;
       }
 
       .locate-icon {
@@ -287,9 +285,9 @@ class BottomSheet extends LitElement {
       <nav>
         ${this._installButtonVisible === false
           ? html`<button @click="${BottomSheet._radar}">
-              <svg class="small-icon" viewBox="0 0 576 512" id="radar">
+              <svg class="small-icon" viewBox="0 0 640 640" id="radar">
                 <path
-                  d="M575.7 280.8C547.1 144.5 437.3 62.6 320 49.9V32c0-17.7-14.3-32-32-32s-32 14.3-32 32v17.9C138.3 62.6 29.5 144.5.3 280.8c-2.2 10.1 8.5 21.3 18.7 11.4 52-55 107.7-52.4 158.6 37 5.3 9.5 14.9 8.6 19.7 0 20.2-35.4 44.9-73.2 90.7-73.2 58.5 0 88.2 68.8 90.7 73.2 4.8 8.6 14.4 9.5 19.7 0 51-89.5 107.1-91.4 158.6-37 10.3 10 20.9-1.3 18.7-11.4zM256 301.7V432c0 8.8-7.2 16-16 16-7.8 0-13.2-5.3-15.1-10.7-5.9-16.7-24.1-25.4-40.8-19.5-16.7 5.9-25.4 24.2-19.5 40.8 11.2 31.9 41.6 53.3 75.4 53.3 44.1 0 80-35.9 80-80V301.6c-9.1-7.9-19.8-13.6-32-13.6-12.3.1-22.4 4.8-32 13.7z"
+                  d="M320 32C337.7 32 352 46.3 352 64L352 66C478.3 81.7 576 189.5 576 320C576 323.8 575.9 327.5 575.8 331.3C575.5 338.2 570.8 344.1 564.1 346C557.4 347.9 550.3 345.3 546.5 339.5C532.1 318.1 507.7 304 480 304C450.7 304 425.1 319.7 411.1 343.3C408.4 347.9 403.5 350.9 398.1 351.1C392.7 351.3 387.6 348.9 384.4 344.6C369.8 324.8 346.4 312 319.9 312C293.4 312 270 324.8 255.4 344.6C252.2 348.9 247.1 351.4 241.7 351.1C236.3 350.8 231.5 347.9 228.7 343.3C214.7 319.7 189.1 304 159.8 304C132.1 304 107.7 318.1 93.3 339.5C89.4 345.2 82.3 347.9 75.7 346C69.1 344.1 64.5 338.2 64.2 331.3C64.1 327.5 64 323.8 64 320C64 189.5 161.7 81.7 288 66L288 64C288 46.3 302.3 32 320 32zM352 392L352 494.6C352 539.6 315.5 576 270.6 576C239.8 576 211.6 558.6 197.8 531L195.5 526.3C187.6 510.5 194 491.3 209.8 483.4C225.6 475.5 244.8 481.9 252.7 497.7L255 502.4C258 508.3 264 512 270.6 512C280.2 512 288 504.2 288 494.6L288 392C288 374.3 302.3 360 320 360C337.7 360 352 374.3 352 392z"
                 />
               </svg>
               <div class="button-text">sadetutka</div>
@@ -310,12 +308,13 @@ class BottomSheet extends LitElement {
               </button>
             `}
 
-        <button @click="${this._toggleFeelsLike}" class="feelsLike">
+        <button @click="${this._toggleDarkMode}" class="darkmode">
           <svg-icon
-            class="small-icon feelsLike-icon"
-            path="assets/image/icons.svg#feelsLike"
+            class="small-icon darkmode-icon"
+            path="assets/image/icons.svg#darkmode"
           ></svg-icon>
-          <div class="button-text">tuntuu</div>
+
+          <div class="button-text">tumma</div>
         </button>
 
         <button @click="${this._geolocate}">
@@ -328,20 +327,20 @@ class BottomSheet extends LitElement {
           </div>
         </button>
 
+        <button @click="${this._toggleFeelsLike}" class="feelsLike">
+          <svg-icon
+            class="small-icon feelsLike-icon"
+            path="assets/image/icons.svg#feelsLike"
+          ></svg-icon>
+          <div class="button-text">tuntuu</div>
+        </button>
+
         <button @click="${this._toggleWind}" class="wind">
           <svg-icon
             class="small-icon wind-icon"
             path="assets/image/icons.svg#wind"
           ></svg-icon>
           <div class="button-text">tuuli</div>
-        </button>
-        <button @click="${this._toggleDarkMode}" class="darkmode">
-          <svg-icon
-            class="small-icon darkmode-icon"
-            path="assets/image/icons.svg#darkmode"
-          ></svg-icon>
-
-          <div class="button-text">tumma</div>
         </button>
       </nav>
     `;
