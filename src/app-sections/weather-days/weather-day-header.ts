@@ -100,7 +100,7 @@ class WeatherDayHeader extends LitElement {
       }
 
       expand-icon {
-        color: var(--color-secondary-dark-and-light);
+        color: var(--color-tertiary-dark-and-light);
       }
 
       .today {
@@ -194,7 +194,7 @@ class WeatherDayHeader extends LitElement {
             : html`${this.forecastDay.dayMaxTemp !== undefined &&
               Math.round(this.forecastDay.dayMaxTemp)}°`}
         </span>
-        </div>
+      </div>
 
       <div class="symbols fade">
         ${this.expanded
