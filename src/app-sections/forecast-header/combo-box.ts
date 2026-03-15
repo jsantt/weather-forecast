@@ -133,11 +133,14 @@ class ComboBox extends LitElement {
       }
 
       :host([_open]) input[type='text'] {
-        border-radius: var(--border-radius);
+        background: var(--background-topmost);
+        border-radius: 2rem;
+
+        margin-bottom: var(--space-l);
+
         padding-left: 2rem;
         padding-right: 2rem;
         transition: padding var(--transition-time);
-        box-shadow: var(--box-shadow);
       }
 
       :host([_open]) smooth-expand {
@@ -146,10 +149,12 @@ class ComboBox extends LitElement {
 
       input[type='text']:focus {
         outline: none;
+        background: var(--background-topmost);
       }
 
       smooth-expand {
         --transition: max-height var(--transition-time);
+        border-radius: 1.5rem;
 
         margin-top: -3px;
         position: absolute;
@@ -160,20 +165,18 @@ class ComboBox extends LitElement {
         left: 0;
         right: 0;
 
-        background: var(--background-middle);
+        background: var(--background-topmost);
         color: var(--color-dark-and-light);
       }
 
       /* when navigating through the items using the arrow keys: */
       li[aria-selected='true'],
       li:hover {
-        background: var(--color-blue-700);
-        color: var(--color-gray-300);
+        background: var(--background);
       }
 
       li[aria-selected='true'] strong,
       li:hover strong {
-        background: var(--color-blue-800);
         color: var(--color-gray-100);
       }
 
