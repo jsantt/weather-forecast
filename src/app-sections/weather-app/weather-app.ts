@@ -320,9 +320,11 @@ class WeatherApp extends LitElement {
   async locationChanged(event: CustomEvent) {
     this._location = { ...event.detail };
 
-    if (this._location) {
+    if (this._location && this._location.city) {
       this._radiation = await getRadiationData(this._location);
       //updateJsonLdRadiation(this._radiation)
+
+      document.title = `Sääennuste - ${this._location.city}`;
     }
   }
 

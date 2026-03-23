@@ -22,8 +22,8 @@ class TopBar extends LitElement {
         grid-template-columns: auto 1fr auto;
         grid-template-rows: 1fr;
         grid-template-areas:
-          'icon heading language'
-          'icon slogan language';
+          'icon heading menu'
+          'icon slogan menu';
 
         column-gap: var(--space-m);
       }
@@ -39,12 +39,14 @@ class TopBar extends LitElement {
         height: 32px;
       }
 
-      .language {
-        grid-area: language;
+      .menu {
+        grid-area: menu;
         align-self: self-start;
 
         font-size: var(--font-size-s);
         fill: var(--color-dark-and-light);
+
+        padding: var(--space-s);
         text-align: right;
       }
 
@@ -92,10 +94,9 @@ class TopBar extends LitElement {
         Nopein tapa tarkastaa sää
       </weather-paragraph>
 
-      <!--div class="language">
-        <svg-icon small path="assets/image/icons.svg#caret-down"></svg-icon>
-        English
-      </div-->
+      <!-- div class="menu">
+        <svg-icon small path="assets/image/icons.svg#menu"></svg-icon>
+      </div -->
     </header> `;
   }
 }
