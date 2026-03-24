@@ -180,6 +180,11 @@ class ComboBox extends LitElement {
         color: var(--color-gray-100);
       }
 
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
       strong {
         font-weight: var(--font-weight-bold);
       }
@@ -231,8 +236,10 @@ class ComboBox extends LitElement {
             >
               ${this._filteredItems.map((item) => {
                 return html` <li tabindex="-1" @click="${this._onItemClick}">
-                  ${this._highlightMatch(item.city)}
-                  <input type="hidden" .value="${item.city}" />
+                  <a href="${item.city}">
+                    ${this._highlightMatch(item.city)}
+                    <input type="hidden" .value="${item.city}" />
+                  </a>
                 </li>`;
               })}
             </ul>
