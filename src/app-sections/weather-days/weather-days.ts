@@ -127,6 +127,9 @@ class WeatherDays extends LitElement {
               .showThunderProbability=${this.showThunderProbability}
               .showPressure=${this.showPressure}
               .showHumidity=${this.showHumidity}
+              @weather-day-toggles.close-modal=${() => {
+                this.showSettings = false;
+              }}
               @toggle-wind=${(e: CustomEvent) => {
                 this.updateSmoothExpand = !this.updateSmoothExpand;
                 this.showWind = e.detail;
