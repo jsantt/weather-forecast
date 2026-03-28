@@ -191,27 +191,13 @@ class ForecastData extends LitElement {
 
         // add extra hour if spring day light saving time
         const jumpIndex = getDstSpringIndex(hours);
+
         if (jumpIndex >= 0) {
+          const prevHour = hours[jumpIndex];
           hours.splice(jumpIndex + 1, 0, {
+            ...prevHour,
             hour: 3,
-            feelsLike: NaN,
-            humidity: NaN,
-            thunderProbability: NaN,
-            pressure: NaN,
-            rain: NaN,
-            rainProbability: NaN,
-            rainProbabilityAggregate: NaN,
-            thunderProbabilityAggregate: NaN,
-            roundWind: NaN,
-            roundWindGust: NaN,
-            snow: NaN,
-            temperature: NaN,
-            threeHourWindMax: NaN,
-            threeHourWindMaxGust: NaN,
-            time: new Date(),
-            wind: NaN,
-            windDirection: NaN,
-            windGust: NaN,
+            time: new Date(prevHour.time.getTime() + 60 * 60 * 1000), // add 1 hour
             summerTimeStarts: true,
           });
         }
@@ -637,10 +623,7 @@ function getDstAutumnIndex(hours: ForecastHour[]): number {
   for (let i = 1; i < hours.length; i++) {
     const prev = hours[i - 1];
     const curr = hours[i];
-    if (
-      prev.hour === curr.hour &&
-      prev.time.getTimezoneOffset() !== curr.time.getTimezoneOffset()
-    ) {
+    if (prev.time.getTimezoneOffset() < curr.time.getTimezoneOffset()) {
       return i;
     }
   }
@@ -651,10 +634,8 @@ function getDstSpringIndex(hours: ForecastHour[]): number {
   for (let i = 1; i < hours.length; i++) {
     const prev = hours[i - 1];
     const curr = hours[i];
-    if (
-      curr.hour - prev.hour > 1 &&
-      prev.time.getTimezoneOffset() !== curr.time.getTimezoneOffset()
-    ) {
+
+    if (prev.time.getTimezoneOffset() > curr.time.getTimezoneOffset()) {
       return i - 1;
     }
   }
