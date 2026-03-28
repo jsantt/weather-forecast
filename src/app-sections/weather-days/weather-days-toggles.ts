@@ -13,7 +13,6 @@ export class WeatherDaysToggles extends LitElement {
   static styles = css`
     .modal {
       background-color: rgba(0, 0, 0, 0.7);
-
       position: fixed;
       z-index: var(--z-index-floating-2);
       top: 0;
@@ -36,6 +35,7 @@ export class WeatherDaysToggles extends LitElement {
       gap: var(--space-l);
 
       max-width: 500px;
+
       padding: var(--space-l);
     }
     .info {

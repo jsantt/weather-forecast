@@ -59,7 +59,7 @@ class ComboBox extends LitElement {
         list-style-type: none;
         padding: 0;
         margin: 0;
-        max-height: calc(100vh - 5rem);
+        max-height: calc(100dvh - 6rem);
         overflow-y: auto;
       }
 
