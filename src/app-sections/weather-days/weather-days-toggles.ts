@@ -21,12 +21,8 @@ export class WeatherDaysToggles extends LitElement {
       right: 0;
       bottom: 0;
 
-      justify-content: center;
-      align-items: center;
-      display: flex;
-
-      padding: var(--space-l);
       overflow-y: auto;
+      padding: var(--space-l);
     }
 
     .close {
@@ -37,7 +33,7 @@ export class WeatherDaysToggles extends LitElement {
       background: var(--background-middle);
       border-radius: var(--border-radius);
       display: grid;
-      gap: var(--space-m);
+      gap: var(--space-l);
 
       max-width: 500px;
       padding: var(--space-l);
