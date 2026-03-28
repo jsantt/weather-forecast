@@ -44,6 +44,7 @@ class ComboBox extends LitElement {
     return css`
       :host {
         display: block;
+        transition: background-color var(--transition-time);
       }
 
       :host * {
@@ -58,7 +59,7 @@ class ComboBox extends LitElement {
         list-style-type: none;
         padding: 0;
         margin: 0;
-        max-height: 500px;
+        max-height: calc(100vh - 5rem);
         overflow-y: auto;
       }
 
@@ -86,6 +87,9 @@ class ComboBox extends LitElement {
         padding: var(--space-s);
       }
 
+      .close {
+        top: 10px;
+      }
       :host([_loadingPlus]) .refresh {
         animation: spin 1s infinite linear;
         transform-origin: center center;
@@ -136,11 +140,26 @@ class ComboBox extends LitElement {
         background: var(--background-topmost);
         border-radius: 2rem;
 
+        margin-top: var(--space-m);
         margin-bottom: var(--space-l);
 
-        padding-left: 2rem;
-        padding-right: 2rem;
         transition: padding var(--transition-time);
+      }
+
+      :host([_open]) {
+        position: fixed;
+        z-index: var(--z-index-floating-2);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: 100%;
+        max-height: 100%;
+
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        padding: var(--space-m);
       }
 
       :host([_open]) smooth-expand {
@@ -167,6 +186,7 @@ class ComboBox extends LitElement {
 
         background: var(--background-topmost);
         color: var(--color-dark-and-light);
+        transition: opacity var(--transition-time);
       }
 
       /* when navigating through the items using the arrow keys: */
@@ -200,7 +220,7 @@ class ComboBox extends LitElement {
 
     return html`
       <form autocomplete="off" spellcheck="false">
-        <label id="label" for="comboInput"> Valitse kaupunki </label>
+        <label id="paikka" for="comboInput"> Valitse paikka </label>
         <div
           class="combobox"
           role="combobox"
@@ -213,11 +233,15 @@ class ComboBox extends LitElement {
             @input=${() => this.onInput()}
             @keydown=${(ev: KeyboardEvent) => this.onKeyDown(ev)}
             autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
             .value=${this.currentValue ?? ''}
             type="text"
-            name="myCountry"
+            name="paikka"
             aria-label="Sää paikassa"
-            aria-labelledby="label"
+            aria-labelledby="paikka"
+            aria-autocomplete="list"
             @click="${this._onInputClick}"
           />
           <svg-icon
