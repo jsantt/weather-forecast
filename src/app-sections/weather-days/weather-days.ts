@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import './weather-day.ts';
 import './weather-day-header.ts';
 import './weather-days-toggles.ts';
+import '../../common-components/modal-overlay.js';
 
 import { Forecast } from '../../backend-calls/forecast-data/forecast-data.ts';
 import { property, state } from 'lit/decorators.js';
@@ -119,45 +120,47 @@ class WeatherDays extends LitElement {
 
   render() {
     return html`
-      ${this.showSettings
-        ? html`
-            <weather-days-toggles
-              .showWind=${this.showWind}
-              .showRainProbability=${this.showRainProbability}
-              .showThunderProbability=${this.showThunderProbability}
-              .showPressure=${this.showPressure}
-              .showHumidity=${this.showHumidity}
-              @weather-day-toggles.close-modal=${() => {
-                this.showSettings = false;
-              }}
-              @toggle-wind=${(e: CustomEvent) => {
-                this.updateSmoothExpand = !this.updateSmoothExpand;
-                this.showWind = e.detail;
-                this.saveToLocalStorage();
-              }}
-              @toggle-rain-probability=${(e: CustomEvent) => {
-                this.updateSmoothExpand = !this.updateSmoothExpand;
-                this.showRainProbability = e.detail;
-                this.saveToLocalStorage();
-              }}
-              @toggle-thunder-probability=${(e: CustomEvent) => {
-                this.updateSmoothExpand = !this.updateSmoothExpand;
-                this.showThunderProbability = e.detail;
-                this.saveToLocalStorage();
-              }}
-              @toggle-pressure=${(e: CustomEvent) => {
-                this.updateSmoothExpand = !this.updateSmoothExpand;
-                this.showPressure = e.detail;
-                this.saveToLocalStorage();
-              }}
-              @toggle-humidity=${(e: CustomEvent) => {
-                this.updateSmoothExpand = !this.updateSmoothExpand;
-                this.showHumidity = e.detail;
-                this.saveToLocalStorage();
-              }}
-            ></weather-days-toggles>
-          `
-        : null}
+      <modal-overlay
+        ?open=${this.showSettings}
+        @modal-overlay.close=${() => (this.showSettings = false)}
+      >
+        <weather-days-toggles
+          .showWind=${this.showWind}
+          .showRainProbability=${this.showRainProbability}
+          .showThunderProbability=${this.showThunderProbability}
+          .showPressure=${this.showPressure}
+          .showHumidity=${this.showHumidity}
+          @weather-day-toggles.close-modal=${() => {
+            this.showSettings = false;
+          }}
+          @toggle-wind=${(e: CustomEvent) => {
+            this.updateSmoothExpand = !this.updateSmoothExpand;
+            this.showWind = e.detail;
+            this.saveToLocalStorage();
+          }}
+          @toggle-rain-probability=${(e: CustomEvent) => {
+            this.updateSmoothExpand = !this.updateSmoothExpand;
+            this.showRainProbability = e.detail;
+            this.saveToLocalStorage();
+          }}
+          @toggle-thunder-probability=${(e: CustomEvent) => {
+            this.updateSmoothExpand = !this.updateSmoothExpand;
+            this.showThunderProbability = e.detail;
+            this.saveToLocalStorage();
+          }}
+          @toggle-pressure=${(e: CustomEvent) => {
+            this.updateSmoothExpand = !this.updateSmoothExpand;
+            this.showPressure = e.detail;
+            this.saveToLocalStorage();
+          }}
+          @toggle-humidity=${(e: CustomEvent) => {
+            this.updateSmoothExpand = !this.updateSmoothExpand;
+            this.showHumidity = e.detail;
+            this.saveToLocalStorage();
+          }}
+        ></weather-days-toggles>
+      </modal-overlay>
+
       ${this.forecast?.days.map((forecastDay, index) => {
         return html`<div>
           <weather-day-header
