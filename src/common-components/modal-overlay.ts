@@ -8,15 +8,9 @@ export class ModalOverlay extends LitElement {
   @query('dialog') private dialog!: HTMLDialogElement;
 
   static styles = css`
-    :host {
-      display: none;
-    }
-
     :host([open]) {
       display: block;
-    }
 
-    .overlay {
       background-color: rgba(0, 0, 0, 0.7);
       padding: var(--space-l);
 
@@ -25,23 +19,18 @@ export class ModalOverlay extends LitElement {
       bottom: 0;
       left: 0;
       top: 0;
+    }
 
-      overflow-y: auto;
+    dialog {
+      border: none;
+
       z-index: var(--z-index-floating-2);
     }
 
-    :host([open]) .overlay {
+    :host([open]) {
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .content {
-      max-width: 500px;
-    }
-
-    :host([open]) .content {
-      width: 100%;
     }
   `;
 
@@ -59,15 +48,9 @@ export class ModalOverlay extends LitElement {
   render() {
     return html`
       <dialog class="overlay" @close="${this.handleClose}">
-        <div class="content" @click="${this.handleContentClick}">
-          <slot></slot>
-        </div>
+        <slot></slot>
       </dialog>
     `;
-  }
-
-  private handleContentClick(event: Event) {
-    event.stopPropagation();
   }
 
   private handleClose() {

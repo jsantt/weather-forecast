@@ -11,25 +11,11 @@ export class WeatherDaysToggles extends LitElement {
   @property({ type: Boolean }) showHumidity = false;
 
   static styles = css`
-    .modal {
-      background-color: rgba(0, 0, 0, 0.7);
-      position: fixed;
-      z-index: var(--z-index-floating-2);
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      overflow-y: auto;
-      padding: var(--space-l);
-    }
-
     .close {
       text-align: right;
     }
 
     .toggles {
-      background: var(--background-middle);
       border-radius: var(--border-radius);
       display: grid;
       gap: var(--space-l);
