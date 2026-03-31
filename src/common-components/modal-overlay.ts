@@ -8,29 +8,13 @@ export class ModalOverlay extends LitElement {
   @query('dialog') private dialog!: HTMLDialogElement;
 
   static styles = css`
-    :host([open]) {
-      display: block;
-
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: var(--space-l);
-
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      top: 0;
-    }
-
     dialog {
-      border: none;
-
+      border: none;s
       z-index: var(--z-index-floating-2);
     }
 
-    :host([open]) {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.5);
     }
   `;
 

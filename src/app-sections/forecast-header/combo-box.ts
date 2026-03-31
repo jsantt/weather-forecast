@@ -156,7 +156,7 @@ class ComboBox extends LitElement {
         max-width: 100%;
         max-height: 100%;
 
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: rgba(0, 0, 0, 0.5);
         display: flex;
         justify-content: center;
         padding: var(--space-m);

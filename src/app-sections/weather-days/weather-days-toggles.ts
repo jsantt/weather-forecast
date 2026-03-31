@@ -87,11 +87,11 @@ export class WeatherDaysToggles extends LitElement {
           <p class="description">
             Tuulen nopeus ilmoitetaan 10 minuutin keskiarvona. Puuskatuulen
             nopeutena käytetään 10 minuutin aikana mitatun kolmen sekunnin
-            suurinta nopeutta. Heikossa tuulessa (alle 3,4m/s): vain lehdet
-            heiluvat. Kohtalaisessa tuulessa (3,4-7,9m/s) oksat heiluvat ja
-            kevyitä esineitä voi liikkua. Kovassa tuulessa (8,0-13,8m/s) pienet
+            suurinta nopeutta. Heikossa tuulessa (alle 3,4 m/s): vain lehdet
+            heiluvat. Kohtalaisessa tuulessa (3,4-7,9 m/s) oksat heiluvat ja
+            kevyitä esineitä voi liikkua. Kovassa tuulessa (8,0-13,8 m/s) pienet
             puut taipuvat, kevyt irtoava tavara voi kulkea maata pitkin.
-            Myrskytuuli (yli 20,8m/s) voi kaataa puita ja aiheuttaa vahinkoa
+            Myrskytuuli (yli 20,8 m/s) voi kaataa puita ja aiheuttaa vahinkoa
             rakenteille.
           </p>
 
