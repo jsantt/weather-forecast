@@ -240,12 +240,11 @@ class ComboBox extends LitElement {
             type="text"
             name="paikka"
             aria-label="Sää paikassa"
-            aria-labelledby="paikka"
             aria-autocomplete="list"
-            @click="${this._onInputClick}"
+            @click="${this.onInputClick}"
           />
           <svg-icon
-            @click="${this._refresh}"
+            @click="${this.refresh}"
             class="${this._open === true ? 'close' : 'refresh'}"
             path="${this._open === true
               ? 'assets/image/icons.svg#close'
@@ -312,14 +311,14 @@ class ComboBox extends LitElement {
     });
   }
 
-  _onInputClick() {
+  onInputClick() {
     if (this.currentValue !== undefined && this.currentValue.length > 0) {
       this._previousValue = this.currentValue;
     }
     this._dispatch('combo-box.clicked');
   }
 
-  _refresh() {
+  refresh() {
     if (this.currentValue === '') {
       this.currentValue = this._previousValue;
     }
