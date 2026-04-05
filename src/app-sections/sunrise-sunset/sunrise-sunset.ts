@@ -305,7 +305,7 @@ class SunriseSunset extends LitElement {
     `;
   }
 
-  async updated() {
+  async willUpdate() {
     if (this.location !== undefined) {
       this._updateSunsetSunrise();
     }

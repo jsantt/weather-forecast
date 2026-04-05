@@ -105,7 +105,7 @@ class WeatherDays extends LitElement {
     window.localStorage.setItem('weather-days-toggles', JSON.stringify(data));
   }
 
-  updated(changedProperties: Map<string, unknown>) {
+  willUpdate(changedProperties: Map<string, unknown>) {
     super.updated?.(changedProperties);
     if (changedProperties.has('showWind')) {
       this.updateSmoothExpand = !this.updateSmoothExpand;

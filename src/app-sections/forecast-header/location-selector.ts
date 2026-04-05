@@ -109,7 +109,7 @@ class LocationSelector extends LitElement {
     this.onInit();
   }
 
-  updated(changedProperties: Map<string, any>) {
+  willUpdate(changedProperties: Map<string, any>) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === 'place' && this.place != null) {
         this._newPlace();

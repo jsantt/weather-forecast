@@ -218,7 +218,7 @@ class ForecastHeader extends LitElement {
     `;
   }
 
-  updated(changedProperties: Map<string, any>) {
+  willUpdate(changedProperties: Map<string, any>) {
     changedProperties.forEach((_, propName): undefined => {
       if (
         propName !== 'observationData' ||
